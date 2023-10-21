@@ -1,7 +1,7 @@
 
 .no-docker
 Makefile.local.mk
-
+.idea
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
