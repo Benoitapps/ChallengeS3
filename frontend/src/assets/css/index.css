@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+  /* Colors */
+  --primary: #FF6F61;
+  --primary-hover: #FF6F61;
+  --background: #F9F9F9;
+  --chatbot: #FFE8E5;
+
+  /* Text colors */
+  --text-black: #3F3735;
+  --text-grey: #989898;
+  --text-white: #FFFFFF;
+
+  /* Shadow */
+  --shadow: 0px 3px 4px 0px rgba(165, 165, 165, 0.25);
+  --reco-border: -1px 0px 0px 0px rgba(165, 165, 165, 0.25);
+
+  /* Border radius */
+  --radius-card: 15px;
+  --radius-prefer: 10px;
+  --radius-input: 5px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--background);
+}
+
+video,
+img,
+svg,
+object {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li,
+a,
+span,
+input,
+button {
+  font-family: "Montserrat", sans-serif;
+}
