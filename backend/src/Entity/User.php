@@ -4,9 +4,47 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
+use Symfony\Component\Serializer\Annotation\Groups;
+
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            normalizationContext: [
+                'groups' => [
+                    'user:read',
+                ],
+            ]
+        ),
+        new Get(
+            normalizationContext: [
+                'groups' => [
+                    'user:read',
+                ],
+            ]
+        ),
+        new Post(),
+        new Patch(),
+    ],
+    // denormalizationContext: [
+    //     'groups' => [
+    //         'user:write',
+    //     ],
+    // ],
+    // normalizationContext: [
+    //     'groups' => [
+    //         'user:read',
+    //     ],
+    // ],
+)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -14,33 +52,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private ?int $id = null;
-
+    
+    #[Groups(['user:read'])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
-
+    
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private array $roles = [];
-
+    
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
     private ?string $password = null;
-
+    
     #[ORM\Column(length: 255)]
+    #[Groups(['user:read'])]
     private ?string $firstname = null;
-
+    
     #[ORM\Column(length: 255)]
+    #[Groups(['user:read'])]
     private ?string $lastname = null;
-
+    
     #[ORM\OneToOne(inversedBy: 'auth', cascade: ['persist', 'remove'])]
+    #[Groups(['user:read'])]
     private ?Client $client = null;
-
+    
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
+    #[Groups(['user:read'])]
     private ?Coach $coach = null;
-
+    
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
+    #[Groups(['user:read'])]
     private ?Manager $manager = null;
 
     public function getId(): ?int

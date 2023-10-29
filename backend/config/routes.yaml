@@ -3,3 +3,7 @@
 #        path: ../src/Controller/
 #        namespace: App\Controller
 #    type: attribute
+
+auth_token:
+  path: /auth_token
+  methods: [POST]
