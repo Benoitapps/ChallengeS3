@@ -14,6 +14,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\State\UserPasswordHasher;
 
 #[ApiResource(
     operations: [
@@ -31,8 +33,22 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
                 ],
             ]
         ),
-        new Post(),
-        new Patch(),
+        new Post(
+            processor: UserPasswordHasher::class,
+            denormalizationContext: [
+                'groups' => [
+                    'user:write',
+                ],
+            ]
+        ),
+        new Patch(
+            processor: UserPasswordHasher::class,
+            denormalizationContext: [
+                'groups' => [
+                    'user:update',
+                ],
+            ]
+        ),
     ],
     // denormalizationContext: [
     //     'groups' => [
@@ -47,6 +63,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[UniqueEntity('email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -55,13 +72,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private ?int $id = null;
     
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'user:write', 'user:update'])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
     
     #[ORM\Column]
     #[Groups(['user:read'])]
     private array $roles = [];
+
+    #[Groups(['user:write', 'user:update'])]
+    private ?string $plainPassword = null;
     
     /**
      * @var string The hashed password
@@ -70,23 +90,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
     
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $firstname = null;
     
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $lastname = null;
     
     #[ORM\OneToOne(inversedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'user:write'])]
     private ?Client $client = null;
     
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'user:write'])]
     private ?Coach $coach = null;
     
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'user:write'])]
     private ?Manager $manager = null;
 
     public function getId(): ?int
@@ -122,7 +142,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -131,6 +150,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $password): static
+    {
+        $this->plainPassword = $password;
 
         return $this;
     }
@@ -156,7 +187,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     public function getFirstname(): ?string
