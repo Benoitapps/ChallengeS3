@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
-import isActive from "../hook/isActive"
+import { isActive, getUsers } from "../hook/isActive"
 
 function HomePage() {
     const [actif, setActif] = useState(null);
     const handleClick = async () => {
         setActif(await isActive());
+    }
+    const handleClickUsers = async () => {
+        const users = await getUsers();
+        console.log(users);
     }
 
     return (
@@ -13,6 +17,7 @@ function HomePage() {
             <br />
             <div>Click here to see if the backend is started</div>
             <button onClick={handleClick}>Back started ?</button>
+            <button onClick={handleClickUsers}>Get users in console log</button>
             {
                 actif === null 
                     ? <></> 
