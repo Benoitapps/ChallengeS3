@@ -39,6 +39,11 @@ use App\State\UserPasswordHasher;
                 'groups' => [
                     'user:write',
                 ],
+            ],
+            normalizationContext: [
+                'groups' => [
+                    'user:read',
+                ],
             ]
         ),
         new Patch(
@@ -47,19 +52,14 @@ use App\State\UserPasswordHasher;
                 'groups' => [
                     'user:update',
                 ],
+            ],
+            normalizationContext: [
+                'groups' => [
+                    'user:read',
+                ],
             ]
         ),
     ],
-    // denormalizationContext: [
-    //     'groups' => [
-    //         'user:write',
-    //     ],
-    // ],
-    // normalizationContext: [
-    //     'groups' => [
-    //         'user:read',
-    //     ],
-    // ],
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]

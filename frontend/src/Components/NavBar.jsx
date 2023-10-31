@@ -12,6 +12,12 @@ function NavBar() {
                     <li>
                         <Link to="/club">Club</Link>
                     </li>
+                    <li>
+                        <Link to="/signup">Inscription</Link>
+                    </li>
+                    <li>
+                        <Link to="/login">Connexion</Link>
+                    </li>
                 </ul>
             </nav>
 
