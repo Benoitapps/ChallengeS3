@@ -4,19 +4,17 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
     firewalls:
+        dev:
+            pattern: ^/_(profiler|wdt)
+            security: false
         api:
             pattern: ^/api
             stateless: true
-            provider: app_user_provider
+            provider: user_provider
             jwt: ~
-
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-
         main:
             json_login:
-                check_path: /auth_token
+                check_path: auth # The name in routes.yaml is enough for mapping
                 username_path: email
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
@@ -26,13 +24,13 @@ security:
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ALLOWED_TO_SWITCH]
 
     access_control:
-    # - { path: ^/admin, roles: ROLE_ADMIN }
-    # - { path: ^/auth_token, roles: PUBLIC_ACCESS }
-    # - { path: ^/api/users, roles: ROLE_USER }
+        - { path: ^/api$, roles: PUBLIC_ACCESS } # Autorise uniquement l'accès à la racine de l'API
+        - { path: ^/auth, roles: PUBLIC_ACCESS }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 
     providers:
         # used to reload user from session & other features (e.g. switch_user)
-        app_user_provider:
+        user_provider:
             entity:
                 class: App\Entity\User
                 property: email
