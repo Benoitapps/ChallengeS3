@@ -3,8 +3,9 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import Popup from "./Popup.jsx";
-import './../assets/css/App.css';
+import PopUp from "./Popup.jsx";
+import '../../assets/css/App.css';
+import '../../assets/css/Schedule.css';
 
 export default class Schedule extends React.Component {
 
@@ -16,14 +17,29 @@ export default class Schedule extends React.Component {
         };
     }
 
+     formatReadableDate(dateString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        const date = new Date(dateString);
+        const year = date.getUTCFullYear();
+        const month = date.getUTCMonth() + 1; // Les mois sont 0-indexés, donc on ajoute 1
+        const day = date.getUTCDate();
+        const hours = date.getUTCHours();
+        const minutes = date.getUTCMinutes();
+        const seconds = date.getUTCSeconds();
+
+        return `${day} ${month} ${year}, ${hours}:0${minutes}`;
+    }
+
     handleDateClick = (arg) => {
         console.log(arg);
         console.log("state",this.state.isModalOpen)
 
+        let DateFormat = this.formatReadableDate(arg.dateStr);
+
         const modalContent = (
             <div>
-                <h2>Date sélectionnée :</h2>
-                <p>{arg.dateStr}</p>
+                <h2>Voulez vous prendre le crenaux du :</h2>
+                <p>{DateFormat}</p>
             </div>
         );
 
@@ -41,8 +57,6 @@ export default class Schedule extends React.Component {
         });
     };
 
-
-
     render() {
         const events = [
             {
@@ -51,22 +65,17 @@ export default class Schedule extends React.Component {
                 end: '2023-11-02T10:31:01.297Z',
             },
         ];
-        const customViews = {
-            week: {
-                type: 'timeGridWeek',
-                buttonText: 'Semaine',
-            },
-        };
+
 
         return (
             <>
+                <div className="calendar">
             <FullCalendar
                 plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
                 initialView={'timeGridWeek'}
                 slotDuration="01:00:00"
                 events={events}
                 allDaySlot={false}
-                views={customViews}
                 editable={true}
                 selectable={true}
                 slotMinTime="05:00:00"
@@ -84,15 +93,17 @@ export default class Schedule extends React.Component {
                     startTime: '08:00',
                     endTime: '17:00',
                 }}
-                // height={"90em"}
+                height={"31em"}
                 locale={"fr"}
                 dateClick={(e) => this.handleDateClick(e)}
             />
-                <div className="test">
-
-                    <Popup show={this.state.isModalOpen} onClose={this.closeModal}>
+                </div>
+                <div className="flex">
+                <div className="popup">
+                    <PopUp show={this.state.isModalOpen} onClose={this.closeModal}>
                         {this.state.modalContent}
-                    </Popup>
+                    </PopUp>
+                </div>
                 </div>
             </>
 

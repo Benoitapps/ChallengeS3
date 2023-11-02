@@ -21,9 +21,7 @@ function NavBar() {
                     <li>
                         <Link to="/schedule">Schedule</Link>
                     </li>
-                    <li>
-                        <Link to="/calendar">Calendrier</Link>
-                    </li>
+
                 </ul>
             </nav>
 
