@@ -2,9 +2,44 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\ScheduleRepository;
+use App\State\UserPasswordHasher;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
+
+#[ApiResource(
+    normalizationContext: ['groups' => ['schedule:read']],
+//    denormalizationContext: ['groups' => ['schedule:write']],
+    operations: [
+        new GetCollection(
+            normalizationContext: [
+                'groups' => ['schedule:read']
+            ]
+        ),
+        new Get(
+            normalizationContext: [
+                'groups' => ['schedule:read']
+            ]
+        ),
+        new Post(
+            normalizationContext: [
+                'groups' => ['schedule:write']
+            ]
+        ),
+        new Patch(
+            normalizationContext: [
+                'groups' => ['schedule:update']
+            ]
+        ),
+    ],
+)]
 
 #[ORM\Entity(repositoryClass: ScheduleRepository::class)]
 class Schedule
@@ -14,12 +49,15 @@ class Schedule
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['schedule:read','schedule:write','schedule:update'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $start_date = null;
 
+    #[Groups(['schedule:read','schedule:write','schedule:update'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $end_date = null;
 
+    #[Groups(['schedule:read', 'schedule:write','schedule:update'])]
     #[ORM\ManyToOne(inversedBy: 'schedules')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Coach $coach = null;

@@ -30,9 +30,9 @@ function SignUp() {
                     plainPassword: data.get('password'),
                 }),
             });
-
+            console.log(result);
             const body = await result.json();
-
+            console.log(body);
             if (result.status === 422) {
                 setError(body.violations[0].message + ' ' + body.violations[0].propertyPath);
             } else if (!result.ok) {

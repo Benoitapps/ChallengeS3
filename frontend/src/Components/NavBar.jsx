@@ -18,6 +18,12 @@ function NavBar() {
                     <li>
                         <Link to="/login">Connexion</Link>
                     </li>
+                    <li>
+                        <Link to="/schedule">Schedule</Link>
+                    </li>
+                    <li>
+                        <Link to="/calendar">Calendrier</Link>
+                    </li>
                 </ul>
             </nav>
 
