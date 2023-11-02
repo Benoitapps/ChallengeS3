@@ -4,8 +4,7 @@ import Home from './Components/Home';
 import NavBar from './Components/NavBar';
 import Login from './Components/Authentication/Login';
 import SignUp from './Components/Authentication/SignUp';
-import Schedule from './Components/Schedule';
-import Calendar from './Components/Calendar';
+import Schedule from './Components/Calendar/Schedule.jsx';
 
 function App() {
   return (
@@ -18,7 +17,6 @@ function App() {
             <Route path="signup" element={<SignUp/>} />
             <Route path="login" element={<Login/>} />
             <Route path="schedule" element={<Schedule/>} />
-            <Route path="calendar" element={<Calendar/>} />
           </Route>
         </Routes>
       </BrowserRouter>
