@@ -3,9 +3,12 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import listPlugin from '@fullcalendar/list'
 import PopUp from "./Popup.jsx";
 import '../../assets/css/App.css';
 import '../../assets/css/Schedule.css';
+import {tab} from './events.jsx';
+
 
 export default class Schedule extends React.Component {
 
@@ -17,7 +20,13 @@ export default class Schedule extends React.Component {
         };
     }
 
-     formatReadableDate(dateString) {
+    componentDidMount() {
+        tab().then((transformedData) => {
+            this.setState({ events: transformedData });
+        });
+    }
+
+    formatReadableDate(dateString) {
         const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
         const date = new Date(dateString);
         const year = date.getUTCFullYear();
@@ -29,6 +38,7 @@ export default class Schedule extends React.Component {
 
         return `${day} ${month} ${year}, ${hours}:0${minutes}`;
     }
+
 
     handleDateClick = (arg) => {
         console.log(arg);
@@ -58,23 +68,15 @@ export default class Schedule extends React.Component {
     };
 
     render() {
-        const events = [
-            {
-                title: 'Événement 1',
-                start: '2023-11-02T08:31:01.297Z',
-                end: '2023-11-02T10:31:01.297Z',
-            },
-        ];
-
 
         return (
             <>
                 <div className="calendar">
             <FullCalendar
-                plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
+                plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin,listPlugin ]}
                 initialView={'timeGridWeek'}
                 slotDuration="01:00:00"
-                events={events}
+                events={this.state.events}
                 allDaySlot={false}
                 editable={true}
                 selectable={true}
@@ -85,7 +87,7 @@ export default class Schedule extends React.Component {
                     {
                        start : "today prev,next",
                         center: 'title',
-                        end: 'dayGridMonth,timeGridWeek'
+                        end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                     }
                 }
                 businessHours={{

@@ -16,8 +16,6 @@ class PrestationFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $coach1 = $manager->getRepository(Coach::class)->findOneBy(['biography' => "Biography1"]);
-        $coach2 = $manager->getRepository(Coach::class)->findOneBy(['biography' => "Biography2"]);
 
         $franchise1 = $manager->getRepository(Franchise::class)->findOneBy(['name' => "Franchise1"]);
 
@@ -43,7 +41,6 @@ class PrestationFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
-            CoachFixtures::class,
             FranchiseFixture::class
 
         ];

@@ -2,10 +2,45 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\SlotRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
+#[ApiResource(
+    operations: [
+    new GetCollection(
+        normalizationContext: [
+            'groups' => ['slot:read']
+        ]
+    ),
+    new Get(
+        normalizationContext: [
+            'groups' => ['slot:read']
+        ]
+    ),
+    new Post(
+        denormalizationContext: [
+            'groups' => ['slot:write']
+        ]
+    ),
+    new Patch(
+        normalizationContext: [
+            'groups' => ['slot:update']
+        ]
+    ),
+//    new GetCollectionByCoach(
+//        path: '/slots/coach/{id}',
+//        methods: ['GET'],
+//        controller: GetCollectionByCoachAction::class,
+//    )
+],
+)]
 #[ORM\Entity(repositoryClass: SlotRepository::class)]
 class Slot
 {
@@ -14,20 +49,29 @@ class Slot
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['slot:read','slot:write','slot:update','coach:read'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $start_date = null;
 
+    #[Groups(['slot:read','slot:write','slot:update','coach:read'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $end_date = null;
 
+    #[Groups(['slot:read','slot:write','slot:update','coach:read'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Prestation $prestation = null;
 
+    #[Groups(['slot:read','slot:write','slot:update','coach:read'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?TimeOff $time_off = null;
 
+    #[Groups(['slot:read','slot:write','slot:update','coach:read'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Client $client = null;
+
+    #[Groups(['slot:read','slot:write','slot:update'])]
+    #[ORM\ManyToOne(inversedBy: 'slots')]
+    private ?Coach $coach = null;
 
     public function getId(): ?int
     {
@@ -90,6 +134,18 @@ class Slot
     public function setClient(?Client $client): static
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getCoach(): ?Coach
+    {
+        return $this->coach;
+    }
+
+    public function setCoach(?Coach $coach): static
+    {
+        $this->coach = $coach;
 
         return $this;
     }

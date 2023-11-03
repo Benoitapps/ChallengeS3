@@ -26,6 +26,7 @@ class Coach
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $biography = null;
 
+    #[Groups(['slot:read','coach:read'])]
     #[ORM\OneToOne(inversedBy: 'coach', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $auth = null;
@@ -49,6 +50,10 @@ class Coach
     #[ORM\ManyToMany(targetEntity: TimeOff::class, mappedBy: 'coachs')]
     private Collection $timeOffs;
 
+    #[Groups(['coach:read'])]
+    #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Slot::class)]
+    private Collection $slots;
+
     public function __construct()
     {
         $this->schedules = new ArrayCollection();
@@ -56,6 +61,7 @@ class Coach
         $this->reviewCoaches = new ArrayCollection();
         $this->prestations = new ArrayCollection();
         $this->timeOffs = new ArrayCollection();
+        $this->slots = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -238,6 +244,36 @@ class Coach
     {
         if ($this->timeOffs->removeElement($timeOff)) {
             $timeOff->removeCoach($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Slot>
+     */
+    public function getSlots(): Collection
+    {
+        return $this->slots;
+    }
+
+    public function addSlot(Slot $slot): static
+    {
+        if (!$this->slots->contains($slot)) {
+            $this->slots->add($slot);
+            $slot->setCoach($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSlot(Slot $slot): static
+    {
+        if ($this->slots->removeElement($slot)) {
+            // set the owning side to null (unless already changed)
+            if ($slot->getCoach() === $this) {
+                $slot->setCoach(null);
+            }
         }
 
         return $this;
