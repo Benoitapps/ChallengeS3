@@ -71,6 +71,8 @@ export default class Schedule extends React.Component {
 
         return (
             <>
+                <main>
+
                 <div className="calendar">
             <FullCalendar
                 plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin,listPlugin ]}
@@ -107,6 +109,7 @@ export default class Schedule extends React.Component {
                     </PopUp>
                 </div>
                 </div>
+                </main>
             </>
 
         )

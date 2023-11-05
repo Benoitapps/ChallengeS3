@@ -19,6 +19,7 @@ const getUsers = async () => {
             method: "GET",
             headers: {
                 Accept: "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         });
         let data = await result.json();
