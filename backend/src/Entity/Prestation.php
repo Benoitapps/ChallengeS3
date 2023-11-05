@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
+
 use App\Repository\PrestationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,7 +12,15 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource()]
+#[ApiResource(
+    operations: [
+        new Post(
+            denormalizationContext: [
+                'groups' => ['prestation:write']
+            ]
+        ),
+    ]
+)]
 #[ORM\Entity(repositoryClass: PrestationRepository::class)]
 class Prestation
 {
@@ -19,23 +29,28 @@ class Prestation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['slot:read'])]
+    #[Groups(['slot:read','coach:read','prestation:write'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Groups(['prestation:write'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[Groups(['prestation:write'])]
     #[ORM\Column]
     private ?float $price = null;
 
+    #[Groups(['prestation:write'])]
     #[ORM\ManyToMany(targetEntity: Coach::class, inversedBy: 'prestations')]
     private Collection $coach;
 
+    #[Groups(['prestation:write'])]
     #[ORM\ManyToOne(inversedBy: 'prestations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Franchise $franchise = null;
 
+    #[Groups(['prestation:write'])]
     #[ORM\OneToMany(mappedBy: 'prestation', targetEntity: Slot::class)]
     private Collection $slots;
 

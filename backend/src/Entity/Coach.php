@@ -35,6 +35,7 @@ class Coach
     #[ORM\JoinColumn(nullable: false)]
     private ?Franchise $franchise = null;
 
+    #[Groups(['coach:read'])]
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Schedule::class)]
     private Collection $schedules;
 
@@ -44,9 +45,11 @@ class Coach
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: ReviewCoach::class)]
     private Collection $reviewCoaches;
 
+    #[Groups(['coach:read'])]
     #[ORM\ManyToMany(targetEntity: Prestation::class, mappedBy: 'coach')]
     private Collection $prestations;
 
+    #[Groups(['coach:read'])]
     #[ORM\ManyToMany(targetEntity: TimeOff::class, mappedBy: 'coachs')]
     private Collection $timeOffs;
 

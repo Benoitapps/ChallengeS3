@@ -19,7 +19,7 @@ class TimeOff
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['slot:read'])]
+    #[Groups(['slot:read','coach:read'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
