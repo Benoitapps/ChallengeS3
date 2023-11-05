@@ -26,21 +26,27 @@ class SlotFixtures extends Fixture implements DependentFixtureInterface
         $prestation1 = $manager->getRepository(Prestation::class)->findOneBy(['name' => "Prestation1"]);
         $prestation2 = $manager->getRepository(Prestation::class)->findOneBy(['name' => "Prestation2"]);
 
+        $coach1 = $manager->getRepository(Coach::class)->findOneBy(['biography' => "Biography1"]);
+        $coach2 = $manager->getRepository(Coach::class)->findOneBy(['biography' => "Biography2"]);
+
+
         $timeoff1 = $manager->getRepository(TimeOff::class)->findOneBy(['name' => "Vacances1"]);
 
         $object = (new Slot())
             ->setPrestation($prestation1)
             ->setClient($client1)
-            ->setStartDate(new \DateTime('2021-01-01 10:00:00'))
-            ->setEndDate(new \DateTime('2021-01-01 11:00:00'));
+            ->setStartDate((new \DateTime('now'))->modify('+3 hours'))
+            ->setEndDate((new \DateTime('now'))->modify('+4 hours'))
+            ->setCoach($coach1);
 
         $manager->persist($object);
 
         $object = (new Slot())
             ->setTimeOff($timeoff1)
             ->setClient($client1)
-            ->setStartDate(new \DateTime('2021-01-01 10:00:00'))
-            ->setEndDate(new \DateTime('2021-01-01 11:00:00'));
+            ->setStartDate((new \DateTime('now'))->modify('+7 hours'))
+            ->setEndDate((new \DateTime('now'))->modify('+8 hours'))
+            ->setCoach($coach2);
 
         $manager->persist($object);
 

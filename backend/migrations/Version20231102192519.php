@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20231021171457 extends AbstractMigration
+final class Version20231102192519 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -32,7 +32,8 @@ final class Version20231021171457 extends AbstractMigration
         $this->addSql('CREATE SEQUENCE slot_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE time_off_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE "user_id_seq" INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE TABLE client (id INT NOT NULL, address VARCHAR(255) DEFAULT NULL, city VARCHAR(255) DEFAULT NULL, zip_code VARCHAR(5) DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE client (id INT NOT NULL, auth_id INT DEFAULT NULL, address VARCHAR(255) DEFAULT NULL, city VARCHAR(255) DEFAULT NULL, zip_code VARCHAR(5) DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_C74404558082819C ON client (auth_id)');
         $this->addSql('CREATE TABLE coach (id INT NOT NULL, auth_id INT NOT NULL, franchise_id INT NOT NULL, biography TEXT DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_3F596DCC8082819C ON coach (auth_id)');
         $this->addSql('CREATE INDEX IDX_3F596DCC523CAB89 ON coach (franchise_id)');
@@ -63,9 +64,9 @@ final class Version20231021171457 extends AbstractMigration
         $this->addSql('CREATE TABLE time_off_coach (time_off_id INT NOT NULL, coach_id INT NOT NULL, PRIMARY KEY(time_off_id, coach_id))');
         $this->addSql('CREATE INDEX IDX_DE4A11380A965CA ON time_off_coach (time_off_id)');
         $this->addSql('CREATE INDEX IDX_DE4A1133C105691 ON time_off_coach (coach_id)');
-        $this->addSql('CREATE TABLE "user" (id INT NOT NULL, client_id INT DEFAULT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE "user" (id INT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649E7927C74 ON "user" (email)');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D64919EB6921 ON "user" (client_id)');
+        $this->addSql('ALTER TABLE client ADD CONSTRAINT FK_C74404558082819C FOREIGN KEY (auth_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE coach ADD CONSTRAINT FK_3F596DCC8082819C FOREIGN KEY (auth_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE coach ADD CONSTRAINT FK_3F596DCC523CAB89 FOREIGN KEY (franchise_id) REFERENCES franchise (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE company ADD CONSTRAINT FK_4FBF094F783E3463 FOREIGN KEY (manager_id) REFERENCES manager (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
@@ -84,7 +85,6 @@ final class Version20231021171457 extends AbstractMigration
         $this->addSql('ALTER TABLE slot ADD CONSTRAINT FK_AC0E206719EB6921 FOREIGN KEY (client_id) REFERENCES client (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE time_off_coach ADD CONSTRAINT FK_DE4A11380A965CA FOREIGN KEY (time_off_id) REFERENCES time_off (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE time_off_coach ADD CONSTRAINT FK_DE4A1133C105691 FOREIGN KEY (coach_id) REFERENCES coach (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE "user" ADD CONSTRAINT FK_8D93D64919EB6921 FOREIGN KEY (client_id) REFERENCES client (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     public function down(Schema $schema): void
@@ -103,6 +103,7 @@ final class Version20231021171457 extends AbstractMigration
         $this->addSql('DROP SEQUENCE slot_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE time_off_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE "user_id_seq" CASCADE');
+        $this->addSql('ALTER TABLE client DROP CONSTRAINT FK_C74404558082819C');
         $this->addSql('ALTER TABLE coach DROP CONSTRAINT FK_3F596DCC8082819C');
         $this->addSql('ALTER TABLE coach DROP CONSTRAINT FK_3F596DCC523CAB89');
         $this->addSql('ALTER TABLE company DROP CONSTRAINT FK_4FBF094F783E3463');
@@ -121,7 +122,6 @@ final class Version20231021171457 extends AbstractMigration
         $this->addSql('ALTER TABLE slot DROP CONSTRAINT FK_AC0E206719EB6921');
         $this->addSql('ALTER TABLE time_off_coach DROP CONSTRAINT FK_DE4A11380A965CA');
         $this->addSql('ALTER TABLE time_off_coach DROP CONSTRAINT FK_DE4A1133C105691');
-        $this->addSql('ALTER TABLE "user" DROP CONSTRAINT FK_8D93D64919EB6921');
         $this->addSql('DROP TABLE client');
         $this->addSql('DROP TABLE coach');
         $this->addSql('DROP TABLE company');

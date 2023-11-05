@@ -90,19 +90,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
     
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write','slot:read','coach:read'])]
     private ?string $firstname = null;
     
     #[ORM\Column(length: 255)]
     #[Groups(['user:read', 'user:write'])]
     private ?string $lastname = null;
     
-    #[ORM\OneToOne(inversedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read', 'user:write'])]
-    private ?Client $client = null;
-    
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
     #[Groups(['user:read', 'user:write'])]
+    private ?Client $client = null;
+
+    #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
+    #[Groups(['user:read', 'user:write',])]
     private ?Coach $coach = null;
     
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
