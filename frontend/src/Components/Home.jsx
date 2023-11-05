@@ -13,21 +13,22 @@ function HomePage() {
 
     return (
         <>
-            <h1>Home Page</h1>
-            <br />
-            <div>Click here to see if the backend is started</div>
-            <button onClick={handleClick}>Back started ?</button>
-            <button onClick={handleClickUsers}>Get users in console log</button>
-            {
-                actif === null 
-                    ? <></> 
-                    : <>
-                        <div>
-                            Back is {actif ? "actif" : "not actif"}
-                        </div>
-                    </>
-            }
-            
+            <main>
+                <h1>Home Page</h1>
+                <br />
+                <div>Click here to see if the backend is started</div>
+                <button onClick={handleClick}>Back started ?</button>
+                <button onClick={handleClickUsers}>Get users in console log</button>
+                {
+                    actif === null
+                        ? <></>
+                        : <>
+                            <div>
+                                Back is {actif ? "actif" : "not actif"}
+                            </div>
+                        </>
+                }
+            </main>
         </>
     )
 }

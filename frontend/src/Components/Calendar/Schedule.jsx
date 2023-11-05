@@ -69,42 +69,44 @@ export default class Schedule extends React.Component {
 
         return (
             <>
-                <div className="calendar">
-            <FullCalendar
-                plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
-                initialView={'timeGridWeek'}
-                slotDuration="01:00:00"
-                events={events}
-                allDaySlot={false}
-                editable={true}
-                selectable={true}
-                slotMinTime="05:00:00"
-                slotMaxTime="22:00:00"
-                // contentHeight="200px"
-                headerToolbar={
-                    {
-                       start : "today prev,next",
-                        center: 'title',
-                        end: 'dayGridMonth,timeGridWeek'
-                    }
-                }
-                businessHours={{
-                    daysOfWeek: [1, 2, 3, 4, 5, 6],
-                    startTime: '08:00',
-                    endTime: '17:00',
-                }}
-                height={"31em"}
-                locale={"fr"}
-                dateClick={(e) => this.handleDateClick(e)}
-            />
-                </div>
-                <div className="flex">
-                <div className="popup">
-                    <PopUp show={this.state.isModalOpen} onClose={this.closeModal}>
-                        {this.state.modalContent}
-                    </PopUp>
-                </div>
-                </div>
+                <main>
+                    <div className="calendar">
+                        <FullCalendar
+                            plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
+                            initialView={'timeGridWeek'}
+                            slotDuration="01:00:00"
+                            events={events}
+                            allDaySlot={false}
+                            editable={true}
+                            selectable={true}
+                            slotMinTime="05:00:00"
+                            slotMaxTime="22:00:00"
+                            // contentHeight="200px"
+                            headerToolbar={
+                                {
+                                    start : "today prev,next",
+                                    center: 'title',
+                                    end: 'dayGridMonth,timeGridWeek'
+                                }
+                            }
+                            businessHours={{
+                                daysOfWeek: [1, 2, 3, 4, 5, 6],
+                                startTime: '08:00',
+                                endTime: '17:00',
+                            }}
+                            height={"31em"}
+                            locale={"fr"}
+                            dateClick={(e) => this.handleDateClick(e)}
+                        />
+                    </div>
+                    <div className="flex">
+                        <div className="popup">
+                            <PopUp show={this.state.isModalOpen} onClose={this.closeModal}>
+                                {this.state.modalContent}
+                            </PopUp>
+                        </div>
+                    </div>
+                </main>
             </>
 
         )

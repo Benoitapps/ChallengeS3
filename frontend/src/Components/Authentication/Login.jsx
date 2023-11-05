@@ -40,17 +40,19 @@ function Login() {
 
     return (
         <div>
-            <h1>Connexion</h1>
+            <main>
+                <h1>Connexion</h1>
 
-            <form action="POST" onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', maxWidth: '300px', margin: 'auto' }}>
-                <label htmlFor="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Email" autoComplete="email" required />
+                <form action="POST" onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', maxWidth: '300px', margin: 'auto' }}>
+                    <label htmlFor="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Email" autoComplete="email" required />
 
-                <label htmlFor="password">Mot de passe</label>
-                <input type="password" id="password" name="password" placeholder="Mot de passe" autoComplete="current-password" required/>
+                    <label htmlFor="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" placeholder="Mot de passe" autoComplete="current-password" required/>
 
-                <input type="submit" value={loading ? 'Connexion en cours...' : 'Connexion'} disabled={loading} />
-            </form>
+                    <input type="submit" value={loading ? 'Connexion en cours...' : 'Connexion'} disabled={loading} />
+                </form>
+            </main>
         </div>
     );
 }
