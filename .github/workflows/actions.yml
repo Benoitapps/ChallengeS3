@@ -43,7 +43,7 @@ jobs:
 
       - name: test with curl
         run: |
-          npm preview &
+          npm run preview &
           sleep 5
           curl -v http://localhost:4173/ -I
 
