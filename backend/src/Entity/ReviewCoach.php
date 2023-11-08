@@ -16,13 +16,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
     uriTemplate: '/coaches/{id}/reviews',
     operations: [
         new GetCollection(),
-        new Post(),
+    ],
+    uriVariables: [
+        'id' => new Link(toProperty: 'coach', fromClass: Coach::class)
     ],
 )]
 #[ApiResource(
     normalizationContext: ['groups' => ['review-coach:read']],
     denormalizationContext: ['groups' => ['review-coach:write']],
     operations: [
+        new Post(),
         new Patch(
             denormalizationContext: [
                 'groups' => ['review-coach:update']
@@ -48,7 +51,7 @@ class ReviewCoach
     #[Groups(['review-coach:read', 'review-coach:write'])]
     private ?Client $client = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reviewCoaches')]
+    #[ORM\ManyToOne(targetEntity: Coach::class, inversedBy: 'reviewCoaches')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['review-coach:read', 'review-coach:write'])]
     private ?Coach $coach = null;
