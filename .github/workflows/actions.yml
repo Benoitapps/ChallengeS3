@@ -7,12 +7,13 @@ on:
       - dev
       - feature/github-actions
     paths:
-      # - 'frontend/**'
+      - 'frontend/**'
 
   pull_request:
     branches:
       - main
       - dev
+      - feature/github-actions
     paths:
       - 'frontend/**'
 
