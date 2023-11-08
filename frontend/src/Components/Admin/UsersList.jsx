@@ -20,7 +20,7 @@ function UsersList() {
 
     return (
         <>
-            {usersLoading && <div>Loading...</div>}
+            {usersLoading && <div>Chargement...</div>}
             <div>
                 {users.map((user) => (
                     <div key={user.id} style={{display: 'flex', justifyContent: 'space-evenly', textAlign: 'left'}}>
