@@ -24,7 +24,8 @@ use App\State\UserPasswordHasher;
                 'groups' => [
                     'user:read',
                 ],
-            ]
+            ],
+            security: "is_granted('ROLE_ADMIN')"
         ),
         new Get(
             normalizationContext: [
@@ -38,6 +39,7 @@ use App\State\UserPasswordHasher;
             denormalizationContext: [
                 'groups' => [
                     'user:write',
+                    'user:admin:write',
                 ],
             ],
             normalizationContext: [
@@ -51,6 +53,7 @@ use App\State\UserPasswordHasher;
             denormalizationContext: [
                 'groups' => [
                     'user:update',
+                    'user:admin:update'
                 ],
             ],
             normalizationContext: [
@@ -69,15 +72,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups(['user:admin:read'])]
     private ?int $id = null;
     
-    #[Groups(['user:read', 'user:write', 'user:update'])]
+    #[Groups(['user:read', 'user:write', 'user:update', 'user:admin:write', 'user:admin:update'])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
     
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups(['user:admin:read', 'user:admin:write', 'user:admin:update'])]
     private array $roles = [];
 
     #[Groups(['user:write', 'user:update'])]
@@ -90,23 +93,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
     
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:write','slot:read','coach:read'])]
+    #[Groups(['user:read', 'user:write','slot:read','coach:read', 'user:admin:write', 'user:admin:update'])]
     private ?string $firstname = null;
     
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update'])]
     private ?string $lastname = null;
     
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update'])]
     private ?Client $client = null;
 
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read', 'user:write',])]
+    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update'])]
     private ?Coach $coach = null;
     
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update'])]
     private ?Manager $manager = null;
 
     public function getId(): ?int
