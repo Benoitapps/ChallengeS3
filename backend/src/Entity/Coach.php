@@ -39,9 +39,11 @@ class Coach
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Schedule::class)]
     private Collection $schedules;
 
+    #[Groups(['coach:read'])]
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: ReviewClient::class)]
     private Collection $reviewClients;
 
+    #[Groups(['coach:read'])]
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: ReviewCoach::class)]
     private Collection $reviewCoaches;
 
