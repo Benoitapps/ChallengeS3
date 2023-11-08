@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login({ handleConnect }) {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
@@ -31,6 +31,7 @@ function Login() {
 
             const body = await result.json();
             localStorage.setItem('token', body.token);
+            handleConnect();
             navigate("/");
         } catch (error) {
             alert('Une erreur est survenue lors de la tentative de connexion. Veuillez réessayer plus tard.');

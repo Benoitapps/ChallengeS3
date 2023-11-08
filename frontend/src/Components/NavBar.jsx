@@ -3,7 +3,7 @@ import { Outlet, Link } from "react-router-dom";
 import '@css/NavBar.css';
 import logo from '@img/logo.svg';
 
-function NavBar() {
+function NavBar({ isConnected, handleDisconnect }) {
     return (
         <>
             <header className="header">
@@ -24,12 +24,20 @@ function NavBar() {
                             </li>
                         </div>
                         <div className="header__right">
-                            <li>
-                                <Link to="/login">Se connecter</Link>
-                            </li>
-                            <li>
-                                <Link to="/signup" className="signup">Inscription</Link>
-                            </li>
+                            {
+                                isConnected
+                                    ? <li>
+                                        <Link to="/" onClick={handleDisconnect}>Déconnexion</Link>
+                                    </li>
+                                    : <>
+                                        <li>
+                                            <Link to="/login">Se connecter</Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/signup" className="signup">Inscription</Link>
+                                        </li>
+                                    </>
+                            }
                         </div>
                     </ul>
                 </nav>
