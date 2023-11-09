@@ -37,7 +37,7 @@ function App() {
         <Routes>
           <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} />}>
             <Route index element={<Home />} />
-            <Route path="club" element={<h1>Liste des clubs</h1>} />
+            <Route path="club" element={<main><h1>Liste des clubs</h1></main>} />
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login handleConnect={handleConnect} />} />
             <Route path="schedule" element={<Schedule />} />

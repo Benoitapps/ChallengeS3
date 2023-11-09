@@ -1,11 +1,12 @@
-import React, {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import { Outlet, Link, useLocation } from "react-router-dom";
 import '@css/NavBar.css';
 import logo from '@img/logo.svg';
 
 function NavBar({ isConnected, handleDisconnect }) {
-    const [isMenuVisible, setIsMenuVisible] = React.useState(true);
+    const [isMenuVisible, setIsMenuVisible] = useState(true);
     const location = useLocation();
+    const links = document.querySelectorAll('.header__links');
 
     useEffect(() => {
         if (location.pathname === '/login' || location.pathname === '/signup') {
@@ -13,8 +14,15 @@ function NavBar({ isConnected, handleDisconnect }) {
         } else {
             setIsMenuVisible(true);
         }
-    }, [location]);
 
+        links.forEach(link => {
+            if (link.pathname === location.pathname) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }, [location]);
 
     return (
         <>
@@ -28,13 +36,13 @@ function NavBar({ isConnected, handleDisconnect }) {
                           </li>
                           <div className="header__center">
                               <li>
-                                  <Link to="/club">Clubs</Link>
+                                  <Link to="/club" className="header__links">Clubs</Link>
                               </li>
                               <li>
-                                  <Link to="/schedule">Schedule</Link>
+                                  <Link to="/schedule" className="header__links">Schedule</Link>
                               </li>
                               <li>
-                                  <Link to="/profile">Profil</Link>
+                                  <Link to="/profile" className="header__links">Profil</Link>
                               </li>
                           </div>
                           <div className="header__right">
