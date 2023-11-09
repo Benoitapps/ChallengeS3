@@ -71,6 +71,10 @@ a {
     color: var(--primary);
 }
 
+a:hover {
+    color: var(--primary-hover);
+}
+
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -113,10 +117,18 @@ input[type="submit"] {
     border-radius: 25px;
 }
 
+button:active {
+    background: var(--system);
+}
+
 input[type="submit"] {
     background: var(--primary) !important;
     box-shadow: none !important;
     color: var(--text-white);
+}
+
+input[type="submit"]:active {
+    background: var(--primary-hover) !important;
 }
 
 main {

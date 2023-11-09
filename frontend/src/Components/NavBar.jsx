@@ -39,7 +39,7 @@ function NavBar({ isConnected, handleDisconnect }) {
                                   <Link to="/club" className="header__links">Clubs</Link>
                               </li>
                               <li>
-                                  <Link to="/schedule" className="header__links">Schedule</Link>
+                                  <Link to="/schedule" className="header__links">Mes cours</Link>
                               </li>
                               <li>
                                   <Link to="/profile" className="header__links">Profil</Link>

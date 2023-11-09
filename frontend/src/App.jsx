@@ -8,6 +8,7 @@ import NavBar from './Components/NavBar';
 import Login from './Components/Authentication/Login';
 import SignUp from './Components/Authentication/SignUp';
 import Schedule from './Components/Calendar/Schedule.jsx';
+import Profile from './Components/Profile.jsx';
 
 // Admin
 import NavBarAdmin from './Components/Admin/NavBar';
@@ -41,6 +42,7 @@ function App() {
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login handleConnect={handleConnect} />} />
             <Route path="schedule" element={<Schedule />} />
+            <Route path="profile" element={<Profile />} />
           </Route>
 
           {/* Admin route */}
