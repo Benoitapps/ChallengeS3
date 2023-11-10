@@ -37,14 +37,12 @@ jobs:
           node-version: 20.x
 
       - name: Install NPM Dependencies
-        run: |
-          cd frontend
-          npm i
+        run: npm i
 
       - name: Build Project
         run: npm run build
 
-      - name: test with curl
+      - name: Test with curl
         run: |
           npm run preview &
           sleep 5
