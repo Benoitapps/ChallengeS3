@@ -14,17 +14,29 @@ import Profile from './Components/Profile.jsx';
 import NavBarAdmin from './Components/Admin/NavBar';
 import HomeAdmin from './Components/Admin/Home';
 import UsersList from './Components/Admin/UsersList.jsx';
+import AdminRoute from './AdminRoute.jsx';
+
+// Special
+import Unauthorize from './Components/Unauthorize.jsx';
 
 function App() {
   const [isConnected, setIsConnected] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const handleDisconnect = () => {
     localStorage.removeItem('token');
     setIsConnected(false);
+    setIsAdmin(false);
   }
 
   const handleConnect = () => {
     setIsConnected(true);
+    // decode jwt token
+    const token = localStorage.getItem('token');
+    const payload = token.split('.')[1];
+    const decodedPayload = atob(payload);
+    const user = JSON.parse(decodedPayload);
+    setIsAdmin(user.roles.includes('ROLE_ADMIN'));
   }
 
   useEffect(() => {
@@ -36,7 +48,8 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} />}>
+          {/* Front */}
+          <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} />}>
             <Route index element={<Home />} />
             <Route path="club" element={<main><h1>Liste des clubs</h1></main>} />
             <Route path="signup" element={<SignUp />} />
@@ -49,13 +62,16 @@ function App() {
           <Route path="admin/*" 
             element={(
               <Routes>
-                <Route path="/" element={<NavBarAdmin isConnected={isConnected} handleDisconnect={handleDisconnect} />}>
-                  <Route index element={<HomeAdmin />} />
-                  <Route path="users" element={<UsersList />} />
+                <Route path="/" element={<NavBarAdmin isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} />}>
+                  <Route index element={<AdminRoute index component={HomeAdmin} isAdmin={isAdmin} />} />
+                  <Route path="users" element={<AdminRoute component={UsersList} isAdmin={isAdmin} />} />
                 </Route>
               </Routes>
             )} 
           />
+
+          {/* Special */}
+          <Route path="unauthorized" element={<Unauthorize/>} />
         </Routes>
       </BrowserRouter>
     </>
