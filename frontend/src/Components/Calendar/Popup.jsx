@@ -1,13 +1,15 @@
 import React from 'react';
 import '@css/Popup.css';
+import {addslot} from './create.jsx';
+
+
 
 const Popup = ({ show, children, onClose, onOk }) => {
     if (!show) return null;
 
     const handleOk = () => {
-        if (onOk) {
-            onOk();
-        }
+        addslot()
+
         onClose();
     };
 

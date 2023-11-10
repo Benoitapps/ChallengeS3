@@ -13,13 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
-    operations: [
-        new Post(
-            denormalizationContext: [
-                'groups' => ['prestation:write']
-            ]
-        ),
-    ]
+
 )]
 #[ORM\Entity(repositoryClass: PrestationRepository::class)]
 class Prestation

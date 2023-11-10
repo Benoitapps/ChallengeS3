@@ -20,6 +20,7 @@ export default class Schedule extends React.Component {
     }
 
     componentDidMount() {
+        console.log("init events")
         tab().then((transformedData) => {
             this.setState({ events: transformedData });
         });
@@ -86,7 +87,7 @@ export default class Schedule extends React.Component {
 
         return (
             <>
-                <main class="schedule">
+                <main className="schedule">
                     <FullCalendar
                         plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin,listPlugin ]}
                         initialView={'timeGridWeek'}
@@ -95,8 +96,8 @@ export default class Schedule extends React.Component {
                         allDaySlot={false}
                         editable={true}
                         selectable={true}
-                        slotMinTime="05:00:00"
-                        slotMaxTime="22:00:00"
+                        // slotMinTime="05:00:00"
+                        // slotMaxTime="22:00:00"
                         headerToolbar={
                             {
                                start : "today prev,next",
@@ -109,7 +110,7 @@ export default class Schedule extends React.Component {
                             startTime: '08:00',
                             endTime: '17:00',
                         }}
-                        height={"31.7em"}
+                        height={"42em"}
                         locale={"fr"}
                         dateClick={(e) => this.handleDateClick(e)}
                     />

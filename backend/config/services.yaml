@@ -27,6 +27,12 @@ services:
         bind:
             $processor: '@api_platform.doctrine.orm.state.persist_processor'
 
+
+    App\Doctrine\CurrentUserSlotExtension:
+        tags:
+            - { name: api_platform.doctrine.orm.query_extension.collection }
+
+
     # ? Cache
 #    api_platform.cache.metadata.property:
 #        parent: cache.system

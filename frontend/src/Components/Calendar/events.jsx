@@ -1,11 +1,11 @@
-import { getSlots } from "../../hook/events";
+import { getSlots } from "../../hook/Schedule/events.js";
 
 const transformData = (initialData) => {
     return initialData.map((item, index) => ({
         id: index,
         title: (item.prestation && item.prestation.name) || (item.time_off && item.time_off.name),
-        start: new Date(item.start_date),
-        end: new Date(item.end_date),
+        start: new Date(item.startDate),
+        end: new Date(item.endDate),
         backgroundColor: item.prestation ? "#02d4fc" : "#443737",
     }));
 };
