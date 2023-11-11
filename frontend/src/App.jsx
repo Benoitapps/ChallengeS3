@@ -31,18 +31,29 @@ function App() {
 
   const handleConnect = () => {
     setIsConnected(true);
-    // decode jwt token
-    const token = localStorage.getItem('token');
-    const payload = token.split('.')[1];
-    const decodedPayload = atob(payload);
-    const user = JSON.parse(decodedPayload);
-    setIsAdmin(user.roles.includes('ROLE_ADMIN'));
+    setIsAdmin(userIsAdmin());
   }
+
+  useEffect(() => {
+    setIsAdmin(userIsAdmin());
+  }, []);
 
   useEffect(() => {
       const token = localStorage.getItem('token');
       setIsConnected(token !== null);
   }, [isConnected]);
+
+  const userIsAdmin = () => {
+    const token = localStorage.getItem('token');
+    if (token !== null) {
+      // decode jwt token
+      const payload = token.split('.')[1];
+      const decodedPayload = atob(payload);
+      const user = JSON.parse(decodedPayload);
+      return user.roles.includes('ROLE_ADMIN');
+    }
+    return false;
+  }
 
   return (
     <>
