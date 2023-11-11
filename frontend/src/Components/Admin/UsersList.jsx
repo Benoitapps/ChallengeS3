@@ -19,7 +19,7 @@ function UsersList() {
     }, []);
 
     return (
-        <>
+        <main>
             {usersLoading && <div>Chargement...</div>}
             <div>
                 {users.map((user) => (
@@ -44,7 +44,7 @@ function UsersList() {
                     </div>
                 ))}
             </div>
-        </>
+        </main>
     );
 }
 
