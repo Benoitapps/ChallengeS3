@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useRef,useEffect, useState} from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -8,29 +8,53 @@ import PopUp from "./Popup.jsx";
 import '@css/Schedule.css';
 import {tab} from './events.jsx';
 
+function Schedule() {
+    const [events, setEvents] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalContent, setModalContent] = useState(null);
+    const [dateStartModal, setDateStartModal] = useState(null);
+    const [dateEndModal, setDateEndModal] = useState(null);
 
-export default class Schedule extends React.Component {
+    const [calendarFilterStart, setCalendarFilterStart ] = useState(null);
+    const [calendarFilterEnd, setCalendarFilterEnd ] = useState(null);
+    const [calendarView, setCalendarView ] = useState(null);
+    const calendarRef = useRef(null);
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            isModalOpen: false,
-            modalContent: null,
-        };
-    }
 
-    componentDidMount() {
-        console.log("init events")
-        tab().then((transformedData) => {
-            this.setState({ events: transformedData });
-        });
-    }
+    useEffect(() => {
 
-    formatReadableDate(dateString) {
+        if(calendarRef.current){
+            console.log("calendarRef.current",calendarRef.current.getApi().currentData.dateProfile);
+
+            console.log("calendarRef.current",calendarRef.current.getApi().currentData.dateProfile.currentRange.start);
+            console.log("calendarRef.current",calendarRef.current.getApi().currentData.dateProfile.currentRange.end);
+            const dateFilterStart = calendarRef.current.getApi().currentData.dateProfile.currentRange.start;
+            const dateFilterEnd = calendarRef.current.getApi().currentData.dateProfile.currentRange.end;
+
+            console.log("new Date(dateFilterStart)",new Date(dateFilterStart))
+
+
+            const start = new Date(dateFilterStart);
+            setCalendarFilterStart(start)
+
+            console.log("start",start)
+            console.log("resultat", calendarFilterStart)
+        }
+
+        async function fetchData() {
+            console.log("init events")
+            let events = await tab(calendarFilterStart,calendarFilterEnd);
+            setEvents(events);
+            console.log("events",events)
+        }
+        fetchData();
+    }, []);
+
+    const formatReadableDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
         const date = new Date(dateString);
         const year = date.getUTCFullYear();
-        const month = date.getUTCMonth() + 1; // Les mois sont 0-indexés, donc on ajoute 1
+        const month = date.getUTCMonth() + 1;
         const day = date.getUTCDate();
         const hours = date.getUTCHours();
         const minutes = date.getUTCMinutes();
@@ -42,12 +66,32 @@ export default class Schedule extends React.Component {
         }
     }
 
+    const handleViewChange = (view) => {
 
-    handleDateClick = (arg) => {
+        setCalendarView(view.view.type) ;
+        console.log("view",calendarView);
+    };
+
+    const handleDateChange = (arg) => {
+        console.log("date",arg.startStr)
+        setCalendarFilterStart(arg.startStr);
+        setCalendarFilterEnd(arg.endStr);
+
+        console.log("dateStartFilter",calendarFilterStart);
+        console.log("dateEndFilter",calendarFilterEnd);
+
+    }
+
+    const handleDateClick = (arg) => {
         console.log(arg);
-        console.log("state",this.state.isModalOpen)
+        console.log("isModalOpen",isModalOpen)
 
-        let DateFormat = this.formatReadableDate(arg.dateStr);
+        setDateStartModal(arg.startStr);
+        setDateEndModal(arg.endStr);
+
+        console.log("dateStartModal",dateStartModal);
+        console.log("dateEndModal",dateEndModal);
+        let DateFormat = formatReadableDate(arg.dateStr);
 
         const modalContent = (
             <div className="popup__content__texts">
@@ -70,57 +114,51 @@ export default class Schedule extends React.Component {
             </div>
         );
 
-        this.setState({
-            isModalOpen: true,
-            modalContent: modalContent,
-        });
+        setIsModalOpen(true);
+        setModalContent(modalContent);
     };
 
-    closeModal = () => {
-        this.setState({
-            isModalOpen: false,
-            modalContent: null,
-        });
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setModalContent(null);
     };
 
-    render() {
-
-        return (
-            <>
-                <main className="schedule">
-                    <FullCalendar
-                        plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin,listPlugin ]}
-                        initialView={'timeGridWeek'}
-                        slotDuration="01:00:00"
-                        events={this.state.events}
-                        allDaySlot={false}
-                        editable={true}
-                        selectable={true}
-                        // slotMinTime="05:00:00"
-                        // slotMaxTime="22:00:00"
-                        headerToolbar={
-                            {
-                               start : "today prev,next",
-                                center: 'title',
-                                end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-                            }
-                        }
-                        businessHours={{
-                            daysOfWeek: [1, 2, 3, 4, 5, 6],
-                            startTime: '08:00',
-                            endTime: '17:00',
-                        }}
-                        height={"42em"}
-                        locale={"fr"}
-                        dateClick={(e) => this.handleDateClick(e)}
-                    />
-                    <PopUp show={this.state.isModalOpen} onClose={this.closeModal}>
-                        {this.state.modalContent}
-                    </PopUp>
-                </main>
-            </>
-
-        )
-    }
-
+    return (
+        <main className="schedule">
+            <FullCalendar
+                ref={calendarRef}
+                plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin,listPlugin ]}
+                initialView={'timeGridWeek'}
+                slotDuration="01:00:00"
+                events={events}
+                allDaySlot={false}
+                editable={true}
+                selectable={true}
+                // slotMinTime="05:00:00"
+                // slotMaxTime="22:00:00"
+                headerToolbar={
+                    {
+                        start : "today prev,next",
+                        center: 'title',
+                        end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                    }
+                }
+                businessHours={{
+                    daysOfWeek: [1, 2, 3, 4, 5, 6],
+                    startTime: '08:00',
+                    endTime: '17:00',
+                }}
+                height={"42em"}
+                locale={"fr"}
+                dateClick={(e) => handleDateClick(e)}
+                viewDidMount={handleViewChange}
+                datesSet={handleDateChange}
+            />
+            <PopUp show={isModalOpen} onClose={() => closeModal()} dateStart={dateStartModal} dateEnd={dateEndModal}>
+                {modalContent}
+            </PopUp>
+        </main>
+    );
 }
+
+export default Schedule;

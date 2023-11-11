@@ -4,10 +4,12 @@ import {addslot} from './create.jsx';
 
 
 
-const Popup = ({ show, children, onClose, onOk }) => {
+const Popup = ({ show, children, onClose, dateStart, dateEnd }) => {
     if (!show) return null;
 
     const handleOk = () => {
+        console.log("dateStart", dateStart);
+        console.log("dateEnd", dateEnd);
         addslot()
 
         onClose();

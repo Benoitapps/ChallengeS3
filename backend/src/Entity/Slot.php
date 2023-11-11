@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
@@ -56,11 +57,7 @@ class Slot
     #[ORM\Column]
     private ?int $id = null;
 
-    private ?\DateTimeInterface $customStartDate = null;
-
-    private ?\DateTimeInterface $customEndDate = null;
-
-//    #[ApiFilter(CustomSlotDateFilter::class)]
+    #[ApiFilter(DateFilter::class)]
     #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $startDate = null;
@@ -89,39 +86,6 @@ class Slot
     {
         return $this->id;
     }
-
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getCustomStartDate(): ?\DateTimeInterface
-    {
-        return $this->customStartDate;
-    }
-
-    /**
-     * @param \DateTimeInterface|null $customStartDate
-     */
-    public function setCustomStartDate(?\DateTimeInterface $customStartDate): void
-    {
-        $this->customStartDate = $customStartDate;
-    }
-
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getCustomEndDate(): ?\DateTimeInterface
-    {
-        return $this->customEndDate;
-    }
-
-    /**
-     * @param \DateTimeInterface|null $customEndDate
-     */
-    public function setCustomEndDate(?\DateTimeInterface $customEndDate): void
-    {
-        $this->customEndDate = $customEndDate;
-    }
-
 
 
     public function getStartDate(): ?\DateTimeInterface

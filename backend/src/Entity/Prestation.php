@@ -23,7 +23,7 @@ class Prestation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['slot:read','coach:read','prestation:write'])]
+    #[Groups(['slot:read','slot:read:collection','coach:read','prestation:write'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
