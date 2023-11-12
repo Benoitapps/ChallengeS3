@@ -9,6 +9,7 @@ function ClubsList() {
     const [clubs, setClubs] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchData();
@@ -18,17 +19,20 @@ function ClubsList() {
         const result = await getClubs(currentPage);
         setClubs(result['hydra:member']);
         setTotalItems(result['hydra:totalItems']);
+        setLoading(false);
     };
 
     return (
         <>
             {
-                clubs.map(club => (
+                loading 
+                ? <div>Chargement...</div> 
+                : clubs.map(club => (
                     <ClubItem club={club} key={club.id}/>
                 ))
             }
 
-            <Pagination totalItems={totalItems} itemsPerPage={ITEM_PER_PAGE} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            <Pagination totalItems={totalItems} itemsPerPage={ITEM_PER_PAGE} currentPage={currentPage} setCurrentPage={setCurrentPage} setLoading={setLoading} />
         </>
     );
 }
