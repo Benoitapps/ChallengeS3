@@ -37,7 +37,7 @@ class Prestation
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[Groups(['prestation:write'])]
+    #[Groups(['prestation:write', 'franchise:read'])]
     #[ORM\Column]
     private ?float $price = null;
 

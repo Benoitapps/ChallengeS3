@@ -9,6 +9,7 @@ import Login from './Components/Authentication/Login';
 import SignUp from './Components/Authentication/SignUp';
 import Schedule from './Components/Calendar/Schedule.jsx';
 import Profile from './Components/Profile.jsx';
+import ClubsPage from './Components/Club/ClubsPage.jsx';
 
 // Admin
 import NavBarAdmin from './Components/Admin/NavBar';
@@ -62,7 +63,7 @@ function App() {
           {/* Front */}
           <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} />}>
             <Route index element={<Home />} />
-            <Route path="club" element={<main><h1>Liste des clubs</h1></main>} />
+            <Route path="club" element={<ClubsPage/>} />
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login handleConnect={handleConnect} />} />
             <Route path="schedule" element={<Schedule />} />

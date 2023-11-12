@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new GetCollection(
+            paginationItemsPerPage: 4,
             normalizationContext: [
                 'groups' => [
                     'franchise:read',
