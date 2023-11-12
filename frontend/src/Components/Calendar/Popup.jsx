@@ -4,15 +4,17 @@ import {addslot} from './create.jsx';
 
 
 
-const Popup = ({ show, children, onClose, dateStart, dateEnd }) => {
+const Popup = ({ show, children, date, onClose, button1, button2, nameButton1, nameButton2, annuler,showButton }) => {
     if (!show) return null;
 
-    const handleOk = () => {
-        console.log("dateStart", dateStart);
-        console.log("dateEnd", dateEnd);
-        addslot()
+    console.log("date", date);
 
-        onClose();
+    const handleOk = () => {
+        // console.log("dateStart", dateStart);
+        // console.log("dateEnd", dateEnd);
+        // addslot()
+        //
+        // onClose();
     };
 
     return (
@@ -22,9 +24,16 @@ const Popup = ({ show, children, onClose, dateStart, dateEnd }) => {
                     <path d="M18 7.05 16.95 6 12 10.95 7.05 6 6 7.05 10.95 12 6 16.95 7.05 18 12 13.05 16.95 18 18 16.95 13.05 12 18 7.05Z"></path>
                 </svg>
                 {children}
+
                 <div className="popup__content__buttons">
-                    <button onClick={handleOk} className="primary-button">Réserver</button>
-                    <button onClick={onClose}>Annuler</button>
+                    <button onClick={button1} className="primary-button">{nameButton1}</button>
+                    {showButton && (
+                        <button onClick={button2} className="primary-button">
+                            {nameButton2}
+                        </button>
+                    )}
+
+                    <button onClick={onClose}>{annuler}</button>
                 </div>
             </div>
         </div>
@@ -32,3 +41,4 @@ const Popup = ({ show, children, onClose, dateStart, dateEnd }) => {
 };
 
 export default Popup;
+

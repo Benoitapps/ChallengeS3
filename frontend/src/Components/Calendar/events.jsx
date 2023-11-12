@@ -2,7 +2,7 @@ import { getSlots } from "../../hook/Schedule/events.js";
 
 const transformData = (initialData) => {
     return initialData.map((item, index) => ({
-        id: index,
+        id: item.id,
         title: (item.prestation && item.prestation.name) || (item.time_off && item.time_off.name),
         start: new Date(item.startDate),
         end: new Date(item.endDate),

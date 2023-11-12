@@ -1,5 +1,5 @@
 
-const postSlot = async () => {
+const postSlot = async (dateStart,dateEnd) => {
     try {
         const result = await fetch("http://localhost:8888/api/slots", {
             method: "POST",
@@ -10,8 +10,8 @@ const postSlot = async () => {
             },
             body: JSON.stringify(
                 {
-                    "startDate": "2023-11-09T19:25:47.214Z",
-                    "endDate": "2023-11-09T19:25:47.214Z",
+                    "startDate": dateStart,
+                    "endDate": dateEnd,
                     "prestation": "api/prestations/27",
                     "client": "api/clients/27",
                     "coach": "api/coaches/27"
