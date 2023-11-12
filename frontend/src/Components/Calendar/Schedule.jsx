@@ -21,25 +21,23 @@ function Schedule() {
     const calendarRef = useRef(null);
 
 
+    // useEffect(() => {
+    //     if(calendarRef.current){
+    //
+    //         const dateFilterStart = calendarRef.current.getApi().currentData.dateProfile.currentRange.start;
+    //         const dateFilterEnd = calendarRef.current.getApi().currentData.dateProfile.currentRange.end;
+    //
+    //         setCalendarFilterStart(new Date(dateFilterStart).toISOString())
+    //         setCalendarFilterEnd(new Date(dateFilterEnd).toISOString())
+    //
+    //
+    //         // console.log("resultat 1er use effect ", calendarFilterStart + "and" + calendarFilterEnd);
+    //     }
+    // },[]);
+
+
     useEffect(() => {
-
-        if(calendarRef.current){
-            console.log("calendarRef.current",calendarRef.current.getApi().currentData.dateProfile);
-
-            console.log("calendarRef.current",calendarRef.current.getApi().currentData.dateProfile.currentRange.start);
-            console.log("calendarRef.current",calendarRef.current.getApi().currentData.dateProfile.currentRange.end);
-            const dateFilterStart = calendarRef.current.getApi().currentData.dateProfile.currentRange.start;
-            const dateFilterEnd = calendarRef.current.getApi().currentData.dateProfile.currentRange.end;
-
-            console.log("new Date(dateFilterStart)",new Date(dateFilterStart))
-
-
-            const start = new Date(dateFilterStart);
-            setCalendarFilterStart(start)
-
-            console.log("start",start)
-            console.log("resultat", calendarFilterStart)
-        }
+        console.log("resultat 2eme use effect ", calendarFilterStart + "and" + calendarFilterEnd);
 
         async function fetchData() {
             console.log("init events")
@@ -47,8 +45,13 @@ function Schedule() {
             setEvents(events);
             console.log("events",events)
         }
-        fetchData();
-    }, []);
+        if(calendarFilterStart !== null && calendarFilterEnd !== null){
+            fetchData();
+        }
+    }, [calendarFilterStart]);
+
+
+
 
     const formatReadableDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
@@ -69,22 +72,19 @@ function Schedule() {
     const handleViewChange = (view) => {
 
         setCalendarView(view.view.type) ;
-        console.log("view",calendarView);
     };
 
     const handleDateChange = (arg) => {
         console.log("date",arg.startStr)
-        setCalendarFilterStart(arg.startStr);
-        setCalendarFilterEnd(arg.endStr);
 
-        console.log("dateStartFilter",calendarFilterStart);
-        console.log("dateEndFilter",calendarFilterEnd);
-
+        setCalendarFilterStart(new Date(arg.startStr).toISOString())
+        setCalendarFilterEnd(new Date(arg.endStr).toISOString())
+        // setCalendarFilterStart(arg.startStr);
+        // setCalendarFilterEnd(arg.endStr);
     }
 
     const handleDateClick = (arg) => {
         console.log(arg);
-        console.log("isModalOpen",isModalOpen)
 
         setDateStartModal(arg.startStr);
         setDateEndModal(arg.endStr);

@@ -3,7 +3,7 @@ const getSlots = async (filterDateStart =null, filterDateEnd = null) => {
     try {
 
         console.log("filterDateStart",filterDateStart + "and" + "filterDateEnd",filterDateEnd);
-        const apiUrl = `http://localhost:8888/api/slots?startDate[before]=${filterDateStart}&startDate[after]=${filterDateEnd}`;
+        const apiUrl = `http://localhost:8888/api/slots?page=1&startDate[before]=${filterDateEnd}&startDate[after]=${filterDateStart}`;
 
         const result = await fetch(apiUrl, {
             method: "GET",
