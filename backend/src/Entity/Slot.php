@@ -53,27 +53,27 @@ class Slot
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['slot:read:collection'])]
+    #[Groups(['slot:read:collection','coach:read:slots'])]
     private ?int $id = null;
 
     #[ApiFilter(DateFilter::class)]
-    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $startDate = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $endDate = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Prestation $prestation = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?TimeOff $time_off = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:read:collection','slot:write','slot:update','coach:read'])]
+    #[Groups(['slot:read','slot:read:collection','slot:read:collection','slot:write','slot:update'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Client $client = null;
 

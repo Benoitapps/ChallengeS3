@@ -12,9 +12,9 @@ const postSlot = async (dateStart,dateEnd) => {
                 {
                     "startDate": dateStart,
                     "endDate": dateEnd,
-                    "prestation": "api/prestations/27",
-                    "client": "api/clients/27",
-                    "coach": "api/coaches/27"
+                    "prestation": "api/prestations/31",
+                    "client": "api/clients/31",
+                    "coach": "api/coaches/32"
                 }
             ),
 

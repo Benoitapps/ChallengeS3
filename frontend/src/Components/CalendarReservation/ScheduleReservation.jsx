@@ -4,14 +4,23 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
-import PopUp from "./Popup.jsx";
+import PopUp from "./../Calendar/Popup.jsx";
 import '@css/Schedule.css';
-import {tab} from './events.jsx';
-import {addslot} from './create.jsx';
-import {eventDetails} from './eventDetails.jsx';
+import {tab} from './../Calendar/events.jsx';
+import {addslot} from './../Calendar/create.jsx';
+import {eventDetails} from './../Calendar/eventDetails.jsx';
 import { deleteSlot } from "../../hook/Schedule/eventDelete.js";
+import { eventCoach } from "./eventCoach.jsx";
+import { sheduleCoach } from "./sheduleCoach.jsx"
 
-function Schedule() {
+function ScheduleReservation() {
+
+    const [idPrestation, setIdPrstation] = useState([]);
+    const [idCoach, setIdCoach] = useState(32);
+
+    const [scheduleHeur, setSheduleHeur] = useState([]);
+
+
     const [events, setEvents] = useState([]);
     const [eventId, setEventId] = useState("");
 
@@ -28,11 +37,50 @@ function Schedule() {
     const calendarRef = useRef(null);
 
 
+    const customBusinessHours = [
+        {
+            daysOfWeek: [1,2],
+            startTime: '09:00:',
+            endTime: '18:00',
+        },
+        {
+            daysOfWeek: [3,4,5,6,0],
+            startTime: '05:00',
+            endTime: '16:00',
+        },
+    ];
+
+    // useEffect(() => {
+    //
+    //     async function fetchDataHorraire() {
+    //         let tabHorraire = await sheduleCoach(idCoach, calendarFilterStart, calendarFilterEnd);
+    //         console.log("tabHorraire", tabHorraire)
+    //         setSheduleHeur(tabHorraire);
+    //     }
+    //     fetchDataHorraire()
+    //     if (calendarRef && calendarRef.current.getApi()) {
+    //         const api = calendarRef.current.getApi();
+    //
+    //         // Ajouter les heures de bureau personnalisées
+    //         api.setOption('businessHours', scheduleHeur);
+    //     }
+    // }, []);
+
     async function fetchData() {
         console.log("init events")
-        let events = await tab(calendarFilterStart, calendarFilterEnd);
-        setEvents(events);
-        console.log("events", events)
+        let tabHorraire = await sheduleCoach(idCoach, calendarFilterStart, calendarFilterEnd);
+        console.log("tabHorraire", tabHorraire)
+        let eventCoaches = await eventCoach(idCoach);
+        console.log("eventCoaches", eventCoaches)
+
+        if (calendarRef && calendarRef.current.getApi()) {
+            const api = calendarRef.current.getApi();
+
+            // Ajouter les heures de bureau personnalisées
+            api.setOption('businessHours', tabHorraire);
+        }
+        setEvents(eventCoaches);
+        setSheduleHeur(tabHorraire);
     }
 
     useEffect(() => {
@@ -184,6 +232,7 @@ function Schedule() {
         closeModal();
     };
 
+
     return (
         <main className="schedule">
             <FullCalendar
@@ -191,6 +240,7 @@ function Schedule() {
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
                 initialView={'timeGridWeek'}
                 slotDuration="01:00:00"
+
                 events={events}
                 allDaySlot={false}
                 editable={false}
@@ -208,9 +258,8 @@ function Schedule() {
                 height={"42em"}
                 locale={"fr"}
                 dateClick={(e) => handleDateClick(e)}
-                // viewDidMount={handleViewChange}
                 datesSet={handleDateChange}
-                eventClick={handleEventInfo}
+                eventClick={false}
             />
             <PopUp show={isModalOpen} onClose={() => closeModal()} button1={() => reserveModal()} nameButton1={"Réserver"}
                    annuler={"Annuler"}>
@@ -224,4 +273,4 @@ function Schedule() {
     );
 }
 
-export default Schedule;
+export default ScheduleReservation;
