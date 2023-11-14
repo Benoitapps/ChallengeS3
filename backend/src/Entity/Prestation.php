@@ -13,7 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
-
+    operations: [
+        new Post(
+            denormalizationContext: [
+                'groups' => ['prestation:write']
+            ]
+        ),
+    ]
 )]
 #[ORM\Entity(repositoryClass: PrestationRepository::class)]
 class Prestation
@@ -23,7 +29,7 @@ class Prestation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['slot:read','slot:read:collection','prestation:write','coach:read:slots'])]
+    #[Groups(['slot:read','slot:read:collection','prestation:write','coach:read:slots','franchise:read'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -31,7 +37,7 @@ class Prestation
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[Groups(['prestation:write'])]
+    #[Groups(['prestation:write', 'franchise:read'])]
     #[ORM\Column]
     private ?float $price = null;
 

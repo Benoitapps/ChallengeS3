@@ -8,7 +8,21 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-#[ApiResource()]
+use ApiPlatform\Metadata\GetCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            paginationItemsPerPage: 4,
+            normalizationContext: [
+                'groups' => [
+                    'franchise:read',
+                ],
+            ],
+        ),
+    ]
+)]
 #[ORM\Entity(repositoryClass: FranchiseRepository::class)]
 class Franchise
 {
@@ -18,28 +32,35 @@ class Franchise
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['franchise:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['franchise:read'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['franchise:read'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['franchise:read'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 5)]
+    #[Groups(['franchise:read'])]
     private ?string $zip_code = null;
 
     #[ORM\ManyToOne(inversedBy: 'franchises')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['franchise:read'])]
     private ?Company $company = null;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Coach::class)]
     private Collection $coachs;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Prestation::class)]
+    #[Groups(['franchise:read'])]
     private Collection $prestations;
 
     public function __construct()

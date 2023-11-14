@@ -1,8 +1,9 @@
 import './assets/css/App.css';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 
 // Front
+import UserRoute from './UserRoute.jsx';
 import Home from './Components/Home';
 import NavBar from './Components/NavBar';
 import Login from './Components/Authentication/Login';
@@ -10,6 +11,7 @@ import SignUp from './Components/Authentication/SignUp';
 import Schedule from './Components/Calendar/Schedule.jsx';
 import ScheduleReservation from './Components/CalendarReservation/ScheduleReservation.jsx';
 import Profile from './Components/Profile.jsx';
+import ClubsPage from './Components/Club/ClubsPage.jsx';
 
 // Admin
 import NavBarAdmin from './Components/Admin/NavBar';
@@ -21,8 +23,20 @@ import AdminRoute from './AdminRoute.jsx';
 import Unauthorize from './Components/Unauthorize.jsx';
 
 function App() {
-  const [isConnected, setIsConnected] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const userIsAdmin = () => {
+    const token = localStorage.getItem('token');
+    if (token !== null) {
+      // decode jwt token
+      const payload = token.split('.')[1];
+      const decodedPayload = atob(payload);
+      const user = JSON.parse(decodedPayload);
+      return user.roles.includes('ROLE_ADMIN');
+    }
+    return false;
+  }
+
+  const [isConnected, setIsConnected] = useState(!!localStorage.getItem('token'));
+  const [isAdmin, setIsAdmin] = useState(userIsAdmin() || false);
 
   const handleDisconnect = () => {
     localStorage.removeItem('token');
@@ -32,18 +46,15 @@ function App() {
 
   const handleConnect = () => {
     setIsConnected(true);
-    // decode jwt token
-    const token = localStorage.getItem('token');
-    const payload = token.split('.')[1];
-    const decodedPayload = atob(payload);
-    const user = JSON.parse(decodedPayload);
-    setIsAdmin(user.roles.includes('ROLE_ADMIN'));
+    setIsAdmin(userIsAdmin());
   }
 
   useEffect(() => {
-      const token = localStorage.getItem('token');
-      setIsConnected(token !== null);
-  }, [isConnected]);
+    setIsAdmin(userIsAdmin());
+
+    const token = localStorage.getItem('token');
+    setIsConnected(token !== null);
+  }, []);
 
   return (
     <>
@@ -51,13 +62,21 @@ function App() {
         <Routes>
           {/* Front */}
           <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} />}>
+            {/* Route for user not connected */}
             <Route index element={<Home />} />
-            <Route path="club" element={<main><h1>Liste des clubs</h1></main>} />
+            <Route path="club" element={<ClubsPage/>} />
+
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login handleConnect={handleConnect} />} />
-            <Route path="schedule" element={<Schedule />} />
+
+            {/* Route for user connected */}
+            <Route path="schedule" element={ <UserRoute component={Schedule} isConnected={isConnected}/> } />
+            <Route path="profile" element={ <UserRoute component={Profile} isConnected={isConnected}/> } />
+
+            {/* Route doesn't exist */}
+            <Route path="*" element={<Navigate to="/" />} />
+
             <Route path="scheduleReservation" element={<ScheduleReservation />} />
-            <Route path="profile" element={<Profile />} />
           </Route>
 
           {/* Admin route */}

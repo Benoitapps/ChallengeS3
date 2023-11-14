@@ -36,7 +36,7 @@ const transformData = (initialData, date1 , date2) => {
             }
         }
         if (add === 0) {
-            tabres.push({start_date: "2001-10-10T17:00:00+00:00", end_date: "2001-10-10T17:00:00+00:00"})
+            tabres.push({start_date: tabfiltre[i], end_date: tabfiltre[i]})
 
         }
     }

@@ -16,25 +16,18 @@ class PrestationFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-
-        $franchise1 = $manager->getRepository(Franchise::class)->findOneBy(['name' => "Franchise1"]);
-
-
-        $object = (new Prestation())
-            ->setFranchise($franchise1)
-            ->setName("Prestation1")
-            ->setDescription("Description1")
-            ->setPrice(10);
-
-        $manager->persist($object);
-
-        $object = (new Prestation())
-            ->setFranchise($franchise1)
-            ->setName("Prestation2")
-            ->setDescription("Description2")
-            ->setPrice(20);
-
-        $manager->persist($object);
+        for ($i = 0; $i <= 35; $i++) {
+            $franchise = $manager->getRepository(Franchise::class)->findOneBy(['name' => "Franchise" . $i]);
+            if ($franchise) {
+                $object = (new Prestation())
+                    ->setFranchise($franchise)
+                    ->setName("Prestation" . $i)
+                    ->setDescription("Description" . $i)
+                    ->setPrice($i);
+    
+                $manager->persist($object);
+            }
+        }
 
         $manager->flush();
     }
@@ -42,7 +35,6 @@ class PrestationFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             FranchiseFixture::class
-
         ];
     }
 }

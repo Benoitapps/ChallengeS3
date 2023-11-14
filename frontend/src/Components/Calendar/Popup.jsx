@@ -1,21 +1,8 @@
 import React from 'react';
 import '@css/Popup.css';
-import {addslot} from './create.jsx';
 
-
-
-const Popup = ({ show, children, date, onClose, button1, button2, nameButton1, nameButton2, annuler,showButton }) => {
+const Popup = ({ show, children, onClose, button1, button2, nameButton1, nameButton2, annuler,showButton }) => {
     if (!show) return null;
-
-    console.log("date", date);
-
-    const handleOk = () => {
-        // console.log("dateStart", dateStart);
-        // console.log("dateEnd", dateEnd);
-        // addslot()
-        //
-        // onClose();
-    };
 
     return (
         <div className="popup">

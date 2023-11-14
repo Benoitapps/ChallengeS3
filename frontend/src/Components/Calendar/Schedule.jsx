@@ -207,7 +207,7 @@ function Schedule() {
 
                 height={"42em"}
                 locale={"fr"}
-                dateClick={(e) => handleDateClick(e)}
+                // dateClick={(e) => handleDateClick(e)}
                 // viewDidMount={handleViewChange}
                 datesSet={handleDateChange}
                 eventClick={handleEventInfo}

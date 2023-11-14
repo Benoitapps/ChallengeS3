@@ -15,8 +15,9 @@ import { sheduleCoach } from "./sheduleCoach.jsx"
 
 function ScheduleReservation() {
 
-    const [idPrestation, setIdPrstation] = useState([]);
-    const [idCoach, setIdCoach] = useState(32);
+    const [idPrestation, setIdPrstation] = useState(33);
+    const [idCoach, setIdCoach] = useState(34);
+    const [idClient, setIdClient] = useState(33);
 
     const [scheduleHeur, setSheduleHeur] = useState([]);
 
@@ -37,41 +38,9 @@ function ScheduleReservation() {
     const calendarRef = useRef(null);
 
 
-    const customBusinessHours = [
-        {
-            daysOfWeek: [1,2],
-            startTime: '09:00:',
-            endTime: '18:00',
-        },
-        {
-            daysOfWeek: [3,4,5,6,0],
-            startTime: '05:00',
-            endTime: '16:00',
-        },
-    ];
-
-    // useEffect(() => {
-    //
-    //     async function fetchDataHorraire() {
-    //         let tabHorraire = await sheduleCoach(idCoach, calendarFilterStart, calendarFilterEnd);
-    //         console.log("tabHorraire", tabHorraire)
-    //         setSheduleHeur(tabHorraire);
-    //     }
-    //     fetchDataHorraire()
-    //     if (calendarRef && calendarRef.current.getApi()) {
-    //         const api = calendarRef.current.getApi();
-    //
-    //         // Ajouter les heures de bureau personnalisées
-    //         api.setOption('businessHours', scheduleHeur);
-    //     }
-    // }, []);
-
     async function fetchData() {
-        console.log("init events")
         let tabHorraire = await sheduleCoach(idCoach, calendarFilterStart, calendarFilterEnd);
-        console.log("tabHorraire", tabHorraire)
         let eventCoaches = await eventCoach(idCoach);
-        console.log("eventCoaches", eventCoaches)
 
         if (calendarRef && calendarRef.current.getApi()) {
             const api = calendarRef.current.getApi();
@@ -84,7 +53,6 @@ function ScheduleReservation() {
     }
 
     useEffect(() => {
-        console.log("resultat 2eme use effect ", calendarFilterStart + "and" + calendarFilterEnd);
         if (calendarFilterStart !== null && calendarFilterEnd !== null) {
             fetchData();
         }
@@ -114,78 +82,37 @@ function ScheduleReservation() {
         }
     }
 
-
-
     const handleDateChange = (arg) => {
         setCalendarFilterStart(new Date(arg.startStr).toISOString())
         setCalendarFilterEnd(new Date(arg.endStr).toISOString())
     }
 
-    const handleEventInfo = (info) => {
-        // console.log("info",info.event._def.publicId)
-        setEventId(info.event._def.publicId);
+    const handleDateClick = (arg) => {
+        console.log("arg", arg)
 
-        async function fetchEventDetails() {
-            console.log("init events")
-            let eventDetail = await eventDetails(info.event._def.publicId);
-            console.log("eventDetail", eventDetail)
+        console.log("horraire",scheduleHeur)
 
-            let DateFormat = formatReadableDate(info.el.fcSeg.eventRange.range.start);
-
-            const modalContentInfo = (
-                <div className="popup__content__texts">
-                    {/*<h2>Réserver ce créneau de {calendarView} avec {calendarView} </h2>*/}
-                    <h2>Vous avez reserver un Cours :</h2>
-
-                    <p>Prestation : {eventDetail.title}</p>
-                    <p>Coach : {eventDetail.coach} </p>
-                    <p>Client : {eventDetail.client}</p>
-
-                    <ul className="popup__content__texts__datetime">
-                        <li>
-                            <svg width="30" height="30" fill="currentColor" viewBox="0 0 24 24"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M19.5 3h-3V1.5H15V3H9V1.5H7.5V3h-3C3.675 3 3 3.675 3 4.5v15c0 .825.675 1.5 1.5 1.5h15c.825 0 1.5-.675 1.5-1.5v-15c0-.825-.675-1.5-1.5-1.5Zm0 16.5h-15V9h15v10.5Zm0-12h-15v-3h3V6H9V4.5h6V6h1.5V4.5h3v3Z"></path>
-                            </svg>
-                            <p>{DateFormat.date}</p>
-                        </li>
-                        <li>
-                            <svg width="30" height="30" fill="currentColor" viewBox="0 0 24 24"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M12 22.5a10.5 10.5 0 1 1 0-21 10.5 10.5 0 0 1 0 21ZM12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z"></path>
-                                <path d="m15.443 16.5-4.193-4.193V5.25h1.5v6.435l3.75 3.758-1.057 1.057Z"></path>
-                            </svg>
-                            <p>{DateFormat.time}</p>
-                        </li>
-                    </ul>
-                </div>
-            );
-
-            setIsModalOpenDetail(true);
-            setModalContent(modalContentInfo);
-
+        for (let i = 0; i < scheduleHeur.length; i++) {
+            if (arg.dateStr === scheduleHeur[i].start_date) {
+                console.log("resultat", )
+            }
         }
 
-        fetchEventDetails();
+        let dateGood = new Date(arg.dateStr);
+        dateGood.setHours(dateGood.getHours() + 1);
+
+        let dateOrigine  = new Date(arg.dateStr);
+
+        setDateStartModal(dateGood);
+        setDateEndModal(dateOrigine);
 
 
-    }
-
-
-    const handleDateClick = (arg) => {
-
-        setDateStartModal(arg.dateStr);
-        setDateEndModal(arg.dateStr);
-
-
-        let DateFormat = formatReadableDate(arg.dateStr);
+        let DateFormat = formatReadableDate(dateGood);
 
         const modalContentreserve = (
             <div className="popup__content__texts">
                 {/*<h2>Réserver ce créneau de {calendarView} avec {calendarView} </h2>*/}
-                <h2>Réserver ce créneau de PRESTATION avec COACH </h2>
+                <h2>Réserver ce créneau de {idPrestation} avec {idCoach} </h2>
                 <ul className="popup__content__texts__datetime">
                     <li>
                         <svg width="30" height="30" fill="currentColor" viewBox="0 0 24 24"
@@ -220,7 +147,7 @@ function ScheduleReservation() {
 
     const reserveModal = (e) => {
 
-        addslot(dateStartModal, dateEndModal);
+        addslot(dateStartModal, dateEndModal, idPrestation, idCoach,idClient);
         fetchData();
         closeModal();
     };
@@ -240,7 +167,6 @@ function ScheduleReservation() {
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
                 initialView={'timeGridWeek'}
                 slotDuration="01:00:00"
-
                 events={events}
                 allDaySlot={false}
                 editable={false}
