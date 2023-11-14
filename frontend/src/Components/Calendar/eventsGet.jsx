@@ -12,12 +12,7 @@ const transformData = (initialData) => {
 
 export const tab = async (filterDateStart , filterDateEnd ) => {
 
-    // console.log("filterDateStart",filterDateStart + "and" + "filterDateEnd",filterDateEnd);
-
     const initialData = await getSlots(filterDateStart, filterDateEnd);
-    console.log("initialdata", initialData);
-
     const transformedData = transformData(initialData);
-    console.log(transformedData);
     return transformedData;
 };

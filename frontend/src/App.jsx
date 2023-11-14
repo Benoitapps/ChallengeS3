@@ -9,7 +9,7 @@ import NavBar from './Components/NavBar';
 import Login from './Components/Authentication/Login';
 import SignUp from './Components/Authentication/SignUp';
 import Schedule from './Components/Calendar/Schedule.jsx';
-import ScheduleReservation from './Components/CalendarReservation/ScheduleReservation.jsx';
+import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
 import Profile from './Components/Profile.jsx';
 import ClubsPage from './Components/Club/ClubsPage.jsx';
 

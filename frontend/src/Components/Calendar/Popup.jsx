@@ -1,7 +1,7 @@
 import React from 'react';
 import '@css/Popup.css';
 
-const Popup = ({ show, children, onClose, button1, button2, nameButton1, nameButton2, annuler,showButton }) => {
+const Popup = ({ show, children, onClose, button1, button2, nameButton1, nameButton2, annuler,showButton,showButton1 }) => {
     if (!show) return null;
 
     return (
@@ -13,7 +13,9 @@ const Popup = ({ show, children, onClose, button1, button2, nameButton1, nameBut
                 {children}
 
                 <div className="popup__content__buttons">
-                    <button onClick={button1} className="primary-button">{nameButton1}</button>
+                    {showButton1 && (
+                        <button onClick={button1} className="primary-button">{nameButton1}</button>
+                    )}
                     {showButton && (
                         <button onClick={button2} className="primary-button">
                             {nameButton2}

@@ -1,5 +1,5 @@
 
-const postSlot = async (dateEnd,dateStart, idPrestation, idCoach, idClient) => {
+const postSlot = async (dateStart,dateEnd, idPrestation, idCoach, idClient) => {
     try {
         const result = await fetch("http://localhost:8888/api/slots", {
             method: "POST",
