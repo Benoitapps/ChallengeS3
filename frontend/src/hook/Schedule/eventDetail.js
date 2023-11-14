@@ -1,10 +1,15 @@
 
-const getSlots = async () => {
+const getSlotDetails = async (id) => {
+
     try {
-        const result = await fetch("http://localhost:8888/api/slots", {
+
+        const apiUrl = `http://localhost:8888/api/slots/${id}`;
+
+        const result = await fetch(apiUrl, {
             method: "GET",
             headers: {
                 Accept: "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         });
         let data = await result.json();
@@ -15,4 +20,4 @@ const getSlots = async () => {
     }
 };
 
-export { getSlots };
+export { getSlotDetails };

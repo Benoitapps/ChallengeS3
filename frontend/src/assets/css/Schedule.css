@@ -39,10 +39,10 @@
   background-color: var(--dark-border);
 }
 
-.schedule .fc-non-business {
-  background-color: transparent;
-}
-
 .schedule .fc-timegrid-col.fc-day-today {
   background-color: var(--primay-selected);
+}
+
+.schedule .fc-non-business {
+  background-color: #6c6c6c5c;
 }

@@ -6,24 +6,29 @@ import interactionPlugin from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
 import PopUp from "./Popup.jsx";
 import '@css/Schedule.css';
-import {tab} from './eventsGet.jsx';
 import {addslot} from './eventCreate.jsx';
-import {eventDetails} from './eventDetails.jsx';
 import { deleteSlot } from "../../hook/Schedule/eventDelete.js";
+import { eventCoach } from "./eventCoach.jsx";
+import { sheduleCoach } from "./sheduleCoachGet.jsx"
 
-function Schedule() {
+function ScheduleReservation() {
 
-    //les evenements de la personne connecter (client ou coach)
+    const [idPrestation, setIdPrstation] = useState(33);
+    const [idCoach, setIdCoach] = useState(34);
+    const [idClient, setIdClient] = useState(33);
+
+    //Horraire du coach ainsi que ces evenements
+    const [scheduleHeur, setSheduleHeur] = useState([]);
     const [events, setEvents] = useState([]);
-    const [eventId, setEventId] = useState("");
 
     //Type de Modal et son contenu
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpenDetail, setIsModalOpenDetail] = useState(false);
+    const [isModalOpenErreur, setIsModalOpenErreur] = useState(false);
     const [modalContent, setModalContent] = useState(null);
 
     //Date de debut et de fin de la reservation
-    const [dateStartModal, setDateStartModal] = useState(null);
+    const [dateStartModal, setDateStartModal] = useState(null);//
     const [dateEndModal, setDateEndModal] = useState(null);
 
     //Date de debut et de fin du calendrier (de la semaine selectionner)
@@ -31,12 +36,20 @@ function Schedule() {
     const [calendarFilterEnd, setCalendarFilterEnd] = useState(null);
     const calendarRef = useRef(null);
 
-    //recuperation des evenements
+    //recuperation des evenement et des horraires du coach
     async function fetchData() {
-        let events = await tab(calendarFilterStart, calendarFilterEnd);
-        setEvents(events);
+        let tabHorraire = await sheduleCoach(idCoach, calendarFilterStart, calendarFilterEnd);
+        let eventCoaches = await eventCoach(idCoach);
+
+        if (calendarRef && calendarRef.current.getApi()) {
+            const api = calendarRef.current.getApi();
+            api.setOption('businessHours', tabHorraire);
+        }
+        setEvents(eventCoaches);
+        setSheduleHeur(tabHorraire);
     }
-    //recuperation des evenements au chargement de la page
+
+    //recuperation des evenement et des horraires du coach au chargement de la page
     useEffect(() => {
         if (calendarFilterStart !== null && calendarFilterEnd !== null) {
             fetchData();
@@ -54,16 +67,21 @@ function Schedule() {
             second: '2-digit'
         };
         const date = new Date(dateString);
+        const date2 = new Date(dateString);
         const year = date.getUTCFullYear();
         const month = date.getUTCMonth() + 1;
         const day = date.getUTCDate();
-        const hours = date.getUTCHours();
+        const hours = date.getUTCHours()<10? "0"+date.getUTCHours() : date.getUTCHours();
         const minutes = date.getUTCMinutes();
         const seconds = date.getUTCSeconds();
+        date2.setHours(date.getHours() + 1);
+        const hours2 = date2.getUTCHours()<10? "0"+date2.getUTCHours() : date2.getUTCHours();
 
         return {
             date: `${day}/${month}/${year}`,
-            time: `${hours}:0${minutes} à ${hours + 1}:0${minutes}`,
+            time: `${hours}:0${minutes} à ${hours2}:0${minutes}`,
+            timeCompareStart: `${hours}:0${minutes}`,
+            timeCompareEnd: `${hours2}:0${minutes}`
         }
     }
 
@@ -72,23 +90,49 @@ function Schedule() {
         setCalendarFilterEnd(new Date(arg.endStr).toISOString())
     }
 
-    //avoir les details de l'evenement
-    const handleEventInfo = (info) => {
-        setEventId(info.event._def.publicId);
+    const handleDateClick = (arg) => {
 
-        async function fetchEventDetails() {
+        let dateBaseStart = new Date(arg.dateStr);
+        let dateBaseEnd = new Date(arg.dateStr);
+        dateBaseEnd.setHours(dateBaseEnd.getHours() + 1);
 
-            let eventDetail = await eventDetails(info.event._def.publicId);
-            let DateFormat = formatReadableDate(info.el.fcSeg.eventRange.range.start);
+        let now = new Date();
 
-            const modalContentInfo = (
+        let DateFormat = formatReadableDate(dateBaseStart);
+        let dateClick = arg.dayEl.dataset.date
+        let click = false;
+
+        console.log("scheduleHeur",scheduleHeur)
+        for (let i = 0; i < scheduleHeur.length; i++) {//verification que le slot est bien dans les horraires du coach et qui soit pas deja passer
+            if (dateClick === scheduleHeur[i].date) {
+                const time1start = new Date("2000-01-01T"+scheduleHeur[i].startTime+":00Z");//horaire du coach
+                const time1end = new Date("2000-01-01T"+scheduleHeur[i].endTime+":00Z");
+
+                const time2start = new Date("2000-01-01T"+DateFormat.timeCompareStart+":00Z");//click
+                const time2end = new Date("2000-01-01T"+DateFormat.timeCompareEnd+":00Z");
+
+                console.log("time1start",time1start)
+                console.log("time1end",time1end)
+                console.log("time2start",time2start)
+                console.log("time2end",time2end)
+
+                i = scheduleHeur.length;
+                click = (time2start >= time1start && time2end < time1end) && (dateBaseStart > now);
+            }
+
+
+        }
+
+
+        if(click === true) {//si le slot peut etre cree
+
+            setDateStartModal(dateBaseStart);
+            setDateEndModal(dateBaseEnd);
+
+            const modalContentreserve = (
                 <div className="popup__content__texts">
-
-                    <h2>Vous avez reserver un Cours :</h2>
-                    <p>Prestation : {eventDetail.title}</p>
-                    <p>Coach : {eventDetail.coach} </p>
-                    <p>Client : {eventDetail.client}</p>
-
+                    {/*<h2>Réserver ce créneau de {calendarView} avec {calendarView} </h2>*/}
+                    <h2>Réserver ce créneau de {idPrestation} avec {idCoach} </h2>
                     <ul className="popup__content__texts__datetime">
                         <li>
                             <svg width="30" height="30" fill="currentColor" viewBox="0 0 24 24"
@@ -111,22 +155,34 @@ function Schedule() {
                 </div>
             );
 
-            setIsModalOpenDetail(true);
-            setModalContent(modalContentInfo);
+            setIsModalOpen(true);
+            setModalContent(modalContentreserve);
+        }else{
+            const modalContentreserve = (
+                <div className="popup__content__texts">
 
+                    <h2>Le Coach ne travail pas durant ces horraires ou l'horraire selectionner est deja passer</h2>
+
+                </div>
+            );
+            setIsModalOpenErreur(true);
+            setModalContent(modalContentreserve);
         }
-        fetchEventDetails();
-    }
+
+    };
 
     const closeModal = () => {
         setIsModalOpenDetail(false);
         setIsModalOpen(false);
+        setIsModalOpenErreur(false);
         setModalContent(null);
+
     };
 
     const reserveModal = (e) => {
 
-        addslot(dateStartModal, dateEndModal);
+        console.log("dateStartModal", dateStartModal)
+        addslot(dateStartModal, dateEndModal, idPrestation, idCoach,idClient);
         fetchData();
         closeModal();
     };
@@ -137,6 +193,7 @@ function Schedule() {
         fetchData();
         closeModal();
     };
+
 
     return (
         <main className="schedule">
@@ -149,29 +206,36 @@ function Schedule() {
                 allDaySlot={false}
                 editable={false}
                 selectable={true}
+                slotMinTime="02:00:00"
+                slotMaxTime="22:00:00"
                 headerToolbar={
                     {
                         start: "today prev,next",
                         center: 'title',
-                        end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                        end: 'dayGridMonth,timeGridWeek,listWeek'
                     }
                 }
-                height={"42em"}
+
+                height={"38em"}
                 locale={"fr"}
-                // dateClick={(e) => handleDateClick(e)}
-                // viewDidMount={handleViewChange}
+                dateClick={(e) => handleDateClick(e)}
                 datesSet={handleDateChange}
-                eventClick={handleEventInfo}
+                eventClick={false}
             />
-            <PopUp show={isModalOpen} onClose={() => closeModal()} button1={() => reserveModal()} nameButton1={"Réserver"}
+            <PopUp show={isModalOpen} showButton1={true} onClose={() => closeModal()} button1={() => reserveModal()} nameButton1={"Réserver"}
                    annuler={"Annuler"}>
                 {modalContent}
             </PopUp>
-            <PopUp show={isModalOpenDetail} showButton={true} showButton1={true} onClose={() => closeModal()} button1={() => reserveModal()} button2={() => deleteSlotbyID()}
+            <PopUp show={isModalOpenDetail} showButton={true} onClose={() => closeModal()} button1={() => reserveModal()} button2={() => deleteSlotbyID()}
                    nameButton1={"Modifier"} nameButton2={"Supprimer"} annuler={"Annuler"}>
+                {modalContent}
+            </PopUp>
+            <PopUp show={isModalOpenErreur}  onClose={() => closeModal()}
+                   annuler={"Retour"}>
                 {modalContent}
             </PopUp>
         </main>
     );
 }
-export default Schedule;
+
+export default ScheduleReservation;

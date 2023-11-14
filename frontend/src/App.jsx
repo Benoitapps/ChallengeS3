@@ -9,6 +9,7 @@ import NavBar from './Components/NavBar';
 import Login from './Components/Authentication/Login';
 import SignUp from './Components/Authentication/SignUp';
 import Schedule from './Components/Calendar/Schedule.jsx';
+import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
 import Profile from './Components/Profile.jsx';
 import ClubsPage from './Components/Club/ClubsPage.jsx';
 
@@ -33,7 +34,7 @@ function App() {
     }
     return false;
   }
-  
+
   const [isConnected, setIsConnected] = useState(!!localStorage.getItem('token'));
   const [isAdmin, setIsAdmin] = useState(userIsAdmin() || false);
 
@@ -75,6 +76,7 @@ function App() {
             {/* Route doesn't exist */}
             <Route path="*" element={<Navigate to="/" />} />
 
+            <Route path="scheduleReservation" element={<ScheduleReservation />} />
           </Route>
 
           {/* Admin route */}
