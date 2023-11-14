@@ -1,4 +1,4 @@
-import { addDays,addMinutes, parseISO, format,isSameDay } from 'date-fns';
+import { addDays,addMinutes, parseISO,isSameDay } from 'date-fns';
 import { getScheduleCoach } from "../../hook/ScheduleReservation/scheduleCoach.js";
 
 const transformData = (initialData, date1 , date2) => {
@@ -11,9 +11,6 @@ const transformData = (initialData, date1 , date2) => {
     }
     tab.sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
 
-    console.log("tab", tab)
-
-    console.log("date1fefe",date1)
     const datenv = new Date(date1);
     let filtredate1 = addMinutes(datenv,1);
     let filtredate2 = addDays(filtredate1,1);
@@ -22,64 +19,32 @@ const transformData = (initialData, date1 , date2) => {
     let filtredate5 = addDays(filtredate1,4);
     let filtredate6 = addDays(filtredate1,5);
     let filtredate7 = addDays(filtredate1,6);
+    let tabfiltre = [filtredate1,filtredate2,filtredate3,filtredate4,filtredate5,filtredate6,filtredate7]
 
+    let tabres = []
+    for (let i = 0; i < tabfiltre.length; i++) {
+        let add = 0;
+        for (let j = 0; j < tab.length; j++) {
+            let datenv2 = parseISO(tab[j].start_date);
 
-    console.log("les date",filtredate1 ,filtredate2 ,filtredate3 ,filtredate4 ,filtredate5 ,filtredate6 ,filtredate7 )
-
-
-
-    let tabVrai = [];
-
-    for (let i = 0; i < tab.length; i++) {
-
-        const datenv1 = parseISO(tab[i].start_date);
-
-        if (isSameDay(datenv1, filtredate1)) {
-            tabVrai[0] = tab[i];
-        } else if (isSameDay(datenv1, filtredate2)) {
-            tabVrai[1] = tab[i];
-        } else if (isSameDay(datenv1, filtredate3)) {
-            tabVrai[2] = tab[i];
-        } else if (isSameDay(datenv1, filtredate4)) {
-            tabVrai[3] = tab[i];
-        } else if (isSameDay(datenv1, filtredate5)) {
-            tabVrai[4] = tab[i];
-        } else if (isSameDay(datenv1, filtredate6)) {
-            tabVrai[5] = tab[i];
-        } else if (isSameDay(datenv1, filtredate7)) {
-            tabVrai[6] = tab[i];
-        }else{
+            if (isSameDay(tabfiltre[i], datenv2)) {
+                tabres.push(tab[j]);
+                add = 1;
+                i++;
+            }else{
+                add=0;
+            }
+        }
+        if (add === 0) {
+            tabres.push({start_date: "2001-10-10T17:00:00+00:00", end_date: "2001-10-10T17:00:00+00:00"})
 
         }
     }
 
-    console.log("tabVrai",tabVrai)
-
-
-    for (let i = 0; i < tabVrai.length; i++) {
-        if (Object.keys(tabVrai[i]).length === 0) {
-            console.log(`L'élément à l'indice ${i} est un objet vide.`);
-        }
-    }
-
-
-    const tabVrai2 = tabVrai.map((element) => {
-        if (!element) {
-            return {test : "test"}; // Remplacez l'élément vide par un objet vide
-        } else {
-            return element;
-        }
-    });
-
-    console.log("tabVrai2",tabVrai2)
-
-
-    const heuresEtMinutesUniquement = tab.map(objet => ({
+    const heuresEtMinutesUniquement = tabres.map(objet => ({
         start_date: new Date(objet.start_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         end_date: new Date(objet.end_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }));
-
-    console.log("heuresEtMinutesUniquement", heuresEtMinutesUniquement);
 
     const tableauAvecIndex = [
         {
@@ -119,20 +84,13 @@ const transformData = (initialData, date1 , date2) => {
         },
     ]
 
-
-
-    console.log("tableauAvecIndex", tableauAvecIndex)
     return tableauAvecIndex
 };
 
 
 export const sheduleCoach = async (id, date1, date2) => {
     const initialData = await getScheduleCoach(id);
-    console.log("horraire", initialData.schedules);
-    console.log("date1", date1);
-    console.log("date2", date2);
 
     const transformedData = transformData(initialData,  date1 ,date2);
-    console.log("resultat tableau ",transformedData);
     return transformedData;
 };
