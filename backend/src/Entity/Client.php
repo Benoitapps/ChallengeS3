@@ -16,6 +16,7 @@ class Client
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups(['slot:read'])]
     #[ORM\Column]
     private ?int $id = null;
 

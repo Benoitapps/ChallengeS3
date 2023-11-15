@@ -10,12 +10,15 @@ import {addslot} from './eventCreate.jsx';
 import { deleteSlot } from "../../hook/Schedule/eventDelete.js";
 import { eventCoach } from "./eventCoach.jsx";
 import { sheduleCoach } from "./sheduleCoachGet.jsx"
+import {postSlot} from "../../hook/Schedule/eventPost.js";
+import {patchSlot} from "../../hook/Schedule/eventPatch.js";
+import { useNavigate } from 'react-router-dom';
 
-function ScheduleReservation() {
+function ScheduleReservation({ eventDetail }) {
 
-    const [idPrestation, setIdPrstation] = useState(33);
-    const [idCoach, setIdCoach] = useState(34);
-    const [idClient, setIdClient] = useState(33);
+    const [idPrestation, setIdPrestation] = useState(eventDetail.idPrestation);
+    const [idCoach, setIdCoach] = useState(eventDetail.idCoach);
+    const [idClient, setIdClient] = useState(eventDetail.idClient);
 
     //Horraire du coach ainsi que ces evenements
     const [scheduleHeur, setSheduleHeur] = useState([]);
@@ -35,9 +38,12 @@ function ScheduleReservation() {
     const [calendarFilterStart, setCalendarFilterStart] = useState(null);
     const [calendarFilterEnd, setCalendarFilterEnd] = useState(null);
     const calendarRef = useRef(null);
+    const navigate = useNavigate();
+
 
     //recuperation des evenement et des horraires du coach
     async function fetchData() {
+        console.log("idCoach",idCoach);
         let tabHorraire = await sheduleCoach(idCoach, calendarFilterStart, calendarFilterEnd);
         let eventCoaches = await eventCoach(idCoach);
 
@@ -51,9 +57,11 @@ function ScheduleReservation() {
 
     //recuperation des evenement et des horraires du coach au chargement de la page
     useEffect(() => {
+        console.log("je met a jour 2")
         if (calendarFilterStart !== null && calendarFilterEnd !== null) {
             fetchData();
         }
+        console.log("eventDetail",eventDetail);
     }, [calendarFilterStart]);
 
 
@@ -132,7 +140,9 @@ function ScheduleReservation() {
             const modalContentreserve = (
                 <div className="popup__content__texts">
                     {/*<h2>Réserver ce créneau de {calendarView} avec {calendarView} </h2>*/}
-                    <h2>Réserver ce créneau de {idPrestation} avec {idCoach} </h2>
+                    <h2>Remplacer par ce créneau de {idPrestation} avec {idCoach} </h2>
+
+
                     <ul className="popup__content__texts__datetime">
                         <li>
                             <svg width="30" height="30" fill="currentColor" viewBox="0 0 24 24"
@@ -181,11 +191,41 @@ function ScheduleReservation() {
 
     const reserveModal = (e) => {
 
-        console.log("dateStartModal", dateStartModal)
-        addslot(dateStartModal, dateEndModal, idPrestation, idCoach,idClient);
-        fetchData();
-        closeModal();
+        const upadateSlot = async (dateStart, dateEnd, slotId) => {
+            const getData = await patchSlot(dateStart, dateEnd,slotId);
+            navigate("/schedule");
+        }
+
+        const addslot = async (dateStart, dateEnd, idPrestation, idCoach, idClient) => {
+            const getData = await postSlot(dateStart, dateEnd,idPrestation,idCoach,idClient);
+            if (getData && getData?.status === 500) {
+                console.log("ya une erreur")
+                const modalContentreserve = (
+
+                    <h2>Le créneau est déjà réservé</h2>
+
+                );
+                setIsModalOpenErreur(true);
+                setModalContent(modalContentreserve);
+            }else {
+                console.log("ya pas d'erreur",getData )
+            }
+            fetchData();
+            closeModal();
+        };
+
+        console.log("eventDetail",eventDetail.mode)
+        if(eventDetail.mode === "update"){
+            console.log("update")
+            upadateSlot(dateStartModal, dateEndModal,eventDetail.slotId);
+        }else{
+            console.log("add")
+            addslot(dateStartModal, dateEndModal,idPrestation,idCoach,idClient);
+        }
+
     };
+
+
 
     const deleteSlotbyID = (e) => {
 

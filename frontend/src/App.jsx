@@ -38,6 +38,12 @@ function App() {
   const [isConnected, setIsConnected] = useState(!!localStorage.getItem('token'));
   const [isAdmin, setIsAdmin] = useState(userIsAdmin() || false);
 
+  const [eventDetail, setEventDetail] = useState(null);
+
+  const onButtonClick = (detail) => {
+    setEventDetail(detail);
+  };
+
   const handleDisconnect = () => {
     localStorage.removeItem('token');
     setIsConnected(false);
@@ -70,13 +76,13 @@ function App() {
             <Route path="login" element={<Login handleConnect={handleConnect} />} />
 
             {/* Route for user connected */}
-            <Route path="schedule" element={ <UserRoute component={Schedule} isConnected={isConnected}/> } />
+            <Route path="schedule" element={ <UserRoute component={Schedule} onButtonClick={setEventDetail} isConnected={isConnected}/> } />
             <Route path="profile" element={ <UserRoute component={Profile} isConnected={isConnected}/> } />
 
             {/* Route doesn't exist */}
             <Route path="*" element={<Navigate to="/" />} />
 
-            <Route path="scheduleReservation" element={<ScheduleReservation />} />
+            <Route path="scheduleReservation" element={<ScheduleReservation eventDetail={eventDetail}/>} />
           </Route>
 
           {/* Admin route */}

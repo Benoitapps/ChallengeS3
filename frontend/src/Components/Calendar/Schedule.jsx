@@ -1,4 +1,5 @@
 import React, {useRef, useEffect, useState} from 'react'
+import { useNavigate } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -11,11 +12,13 @@ import {addslot} from './eventCreate.jsx';
 import {eventDetails} from './eventDetails.jsx';
 import { deleteSlot } from "../../hook/Schedule/eventDelete.js";
 
-function Schedule() {
+
+function Schedule({ onButtonClick, ...otherProps }) {
 
     //les evenements de la personne connecter (client ou coach)
     const [events, setEvents] = useState([]);
     const [eventId, setEventId] = useState("");
+    const [eventDetail, setEventDetail] = useState(null);
 
     //Type de Modal et son contenu
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,6 +33,7 @@ function Schedule() {
     const [calendarFilterStart, setCalendarFilterStart] = useState(null);
     const [calendarFilterEnd, setCalendarFilterEnd] = useState(null);
     const calendarRef = useRef(null);
+    const navigate = useNavigate();
 
     //recuperation des evenements
     async function fetchData() {
@@ -42,6 +46,7 @@ function Schedule() {
             fetchData();
         }
     }, [calendarFilterStart]);
+
 
 
     const formatReadableDate = (dateString) => {
@@ -79,6 +84,7 @@ function Schedule() {
         async function fetchEventDetails() {
 
             let eventDetail = await eventDetails(info.event._def.publicId);
+            setEventDetail(eventDetail);
             let DateFormat = formatReadableDate(info.el.fcSeg.eventRange.range.start);
 
             const modalContentInfo = (
@@ -124,12 +130,17 @@ function Schedule() {
         setModalContent(null);
     };
 
-    const reserveModal = (e) => {
 
-        addslot(dateStartModal, dateEndModal);
-        fetchData();
-        closeModal();
-    };
+    const updateModal = (e) => {
+        if (typeof onButtonClick === 'function') {
+            onButtonClick(eventDetail);
+
+        }else{
+        }
+        console.log("changement de page")
+        navigate("/scheduleReservation");
+
+    }
 
     const deleteSlotbyID = (e) => {
 
@@ -167,7 +178,7 @@ function Schedule() {
                    annuler={"Annuler"}>
                 {modalContent}
             </PopUp>
-            <PopUp show={isModalOpenDetail} showButton={true} showButton1={true} onClose={() => closeModal()} button1={() => reserveModal()} button2={() => deleteSlotbyID()}
+            <PopUp show={isModalOpenDetail} showButton={true} showButton1={true} onClose={() => closeModal()} button1={() => updateModal()} button2={() => deleteSlotbyID()}
                    nameButton1={"Modifier"} nameButton2={"Supprimer"} annuler={"Annuler"}>
                 {modalContent}
             </PopUp>
