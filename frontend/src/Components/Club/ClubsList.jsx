@@ -27,8 +27,8 @@ function ClubsList() {
             {
                 loading 
                 ? <div>Chargement...</div> 
-                : clubs.map(club => (
-                    <ClubItem club={club} key={club.id}/>
+                : clubs.map((club, index) => (
+                    <ClubItem club={club} key={index}/>
                 ))
             }
 
