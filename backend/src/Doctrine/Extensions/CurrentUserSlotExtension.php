@@ -12,7 +12,7 @@ use App\Entity\Coach;
 
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\SecurityBundle\Security;
- class CurrentUserSlotExtension implements QueryCollectionExtensionInterface
+class CurrentUserSlotExtension implements QueryCollectionExtensionInterface
 {
     public function __construct(private readonly Security $security)
     {
