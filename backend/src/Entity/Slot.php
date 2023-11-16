@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
+    paginationItemsPerPage: 50,
     operations: [
     new GetCollection(
         normalizationContext: [

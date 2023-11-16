@@ -13,8 +13,8 @@ const postSlot = async (dateStart,dateEnd, idPrestation, idCoach, idClient) => {
             },
             body: JSON.stringify(
                 {
-                    "startDate": "2023-11-15 13:00:00",
-                    "endDate": "2023-11-15 14:00:00",
+                    "startDate": dateStart,
+                    "endDate": dateEnd,
                     "prestation": "api/prestations/"+idPrestation,
                     "client": "api/clients/"+idClient,
                     "coach": "api/coaches/"+idCoach

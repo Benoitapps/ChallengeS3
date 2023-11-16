@@ -1,6 +1,6 @@
 <?php
 // api/src/Doctrine/CurrentUserExtension.php
-namespace App\Doctrine;
+namespace App\Doctrine\Extensions;
 
 use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
@@ -12,7 +12,7 @@ use App\Entity\Coach;
 
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\SecurityBundle\Security;
- class CurrentUserSLotExtension implements QueryCollectionExtensionInterface
+ class CurrentUserSlotExtension implements QueryCollectionExtensionInterface
 {
     public function __construct(private readonly Security $security)
     {

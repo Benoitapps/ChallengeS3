@@ -20,6 +20,10 @@ function ScheduleReservation({ eventDetail }) {
     const [idCoach, setIdCoach] = useState(eventDetail.idCoach);
     const [idClient, setIdClient] = useState(eventDetail.idClient);
 
+    // const [idPrestation, setIdPrestation] = useState(33);
+    // const [idCoach, setIdCoach] = useState(34);
+    // const [idClient, setIdClient] = useState(33);
+
     //Horraire du coach ainsi que ces evenements
     const [scheduleHeur, setSheduleHeur] = useState([]);
     const [events, setEvents] = useState([]);
@@ -43,7 +47,6 @@ function ScheduleReservation({ eventDetail }) {
 
     //recuperation des evenement et des horraires du coach
     async function fetchData() {
-        console.log("idCoach",idCoach);
         let tabHorraire = await sheduleCoach(idCoach, calendarFilterStart, calendarFilterEnd);
         let eventCoaches = await eventCoach(idCoach);
 
@@ -57,11 +60,9 @@ function ScheduleReservation({ eventDetail }) {
 
     //recuperation des evenement et des horraires du coach au chargement de la page
     useEffect(() => {
-        console.log("je met a jour 2")
         if (calendarFilterStart !== null && calendarFilterEnd !== null) {
             fetchData();
         }
-        console.log("eventDetail",eventDetail);
     }, [calendarFilterStart]);
 
 
@@ -110,7 +111,6 @@ function ScheduleReservation({ eventDetail }) {
         let dateClick = arg.dayEl.dataset.date
         let click = false;
 
-        console.log("scheduleHeur",scheduleHeur)
         for (let i = 0; i < scheduleHeur.length; i++) {//verification que le slot est bien dans les horraires du coach et qui soit pas deja passer
             if (dateClick === scheduleHeur[i].date) {
                 const time1start = new Date("2000-01-01T"+scheduleHeur[i].startTime+":00Z");//horaire du coach
@@ -208,24 +208,18 @@ function ScheduleReservation({ eventDetail }) {
                 setIsModalOpenErreur(true);
                 setModalContent(modalContentreserve);
             }else {
-                console.log("ya pas d'erreur",getData )
             }
             fetchData();
             closeModal();
         };
 
-        console.log("eventDetail",eventDetail.mode)
-        if(eventDetail.mode === "update"){
-            console.log("update")
+        if(eventDetail && (eventDetail.mode === "update")){
             upadateSlot(dateStartModal, dateEndModal,eventDetail.slotId);
         }else{
-            console.log("add")
             addslot(dateStartModal, dateEndModal,idPrestation,idCoach,idClient);
         }
 
     };
-
-
 
     const deleteSlotbyID = (e) => {
 
