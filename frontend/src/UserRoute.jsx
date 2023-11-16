@@ -1,10 +1,10 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Route, Navigate } from "react-router-dom";
 
-function UserRoute({ component: Component, isConnected }, props) {
+function UserRoute({ component: Component, isConnected, onButtonClick, ...rest }) {
     return (
         <>
-            {isConnected ? <Component {...props} /> : <Navigate to="/login" />}
+            {isConnected ? <Component onButtonClick={onButtonClick} {...rest} /> : <Navigate to="/login" />}
         </>
     );
 }

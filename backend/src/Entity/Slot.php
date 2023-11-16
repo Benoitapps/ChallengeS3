@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
+    paginationItemsPerPage: 50,
     operations: [
     new GetCollection(
         normalizationContext: [
@@ -34,7 +35,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ]
     ),
     new Patch(
-        normalizationContext: [
+        denormalizationContext: [
             'groups' => ['slot:update']
         ]
     ),
@@ -53,7 +54,7 @@ class Slot
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['slot:read:collection','coach:read:slots'])]
+    #[Groups(['slot:read:collection','slot:read','coach:read:slots'])]
     private ?int $id = null;
 
     #[ApiFilter(DateFilter::class)]
@@ -65,19 +66,19 @@ class Slot
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $endDate = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','coach:read:slots'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Prestation $prestation = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','coach:read:slots'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?TimeOff $time_off = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:read:collection','slot:write','slot:update'])]
+    #[Groups(['slot:read','slot:read:collection','slot:read:collection','slot:write'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Client $client = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Coach $coach = null;
 

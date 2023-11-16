@@ -10,12 +10,19 @@ import {addslot} from './eventCreate.jsx';
 import { deleteSlot } from "../../hook/Schedule/eventDelete.js";
 import { eventCoach } from "./eventCoach.jsx";
 import { sheduleCoach } from "./sheduleCoachGet.jsx"
+import {postSlot} from "../../hook/Schedule/eventPost.js";
+import {patchSlot} from "../../hook/Schedule/eventPatch.js";
+import { useNavigate } from 'react-router-dom';
 
-function ScheduleReservation() {
+function ScheduleReservation({ eventDetail }) {
 
-    const [idPrestation, setIdPrstation] = useState(33);
-    const [idCoach, setIdCoach] = useState(34);
-    const [idClient, setIdClient] = useState(33);
+    const [idPrestation, setIdPrestation] = useState(eventDetail.idPrestation);
+    const [idCoach, setIdCoach] = useState(eventDetail.idCoach);
+    const [idClient, setIdClient] = useState(eventDetail.idClient);
+
+    // const [idPrestation, setIdPrestation] = useState(33);
+    // const [idCoach, setIdCoach] = useState(34);
+    // const [idClient, setIdClient] = useState(33);
 
     //Horraire du coach ainsi que ces evenements
     const [scheduleHeur, setSheduleHeur] = useState([]);
@@ -35,6 +42,8 @@ function ScheduleReservation() {
     const [calendarFilterStart, setCalendarFilterStart] = useState(null);
     const [calendarFilterEnd, setCalendarFilterEnd] = useState(null);
     const calendarRef = useRef(null);
+    const navigate = useNavigate();
+
 
     //recuperation des evenement et des horraires du coach
     async function fetchData() {
@@ -102,7 +111,6 @@ function ScheduleReservation() {
         let dateClick = arg.dayEl.dataset.date
         let click = false;
 
-        console.log("scheduleHeur",scheduleHeur)
         for (let i = 0; i < scheduleHeur.length; i++) {//verification que le slot est bien dans les horraires du coach et qui soit pas deja passer
             if (dateClick === scheduleHeur[i].date) {
                 const time1start = new Date("2000-01-01T"+scheduleHeur[i].startTime+":00Z");//horaire du coach
@@ -132,7 +140,9 @@ function ScheduleReservation() {
             const modalContentreserve = (
                 <div className="popup__content__texts">
                     {/*<h2>Réserver ce créneau de {calendarView} avec {calendarView} </h2>*/}
-                    <h2>Réserver ce créneau de {idPrestation} avec {idCoach} </h2>
+                    <h2>Remplacer par ce créneau de {idPrestation} avec {idCoach} </h2>
+
+
                     <ul className="popup__content__texts__datetime">
                         <li>
                             <svg width="30" height="30" fill="currentColor" viewBox="0 0 24 24"
@@ -181,10 +191,34 @@ function ScheduleReservation() {
 
     const reserveModal = (e) => {
 
-        console.log("dateStartModal", dateStartModal)
-        addslot(dateStartModal, dateEndModal, idPrestation, idCoach,idClient);
-        fetchData();
-        closeModal();
+        const upadateSlot = async (dateStart, dateEnd, slotId) => {
+            const getData = await patchSlot(dateStart, dateEnd,slotId);
+            navigate("/schedule");
+        }
+
+        const addslot = async (dateStart, dateEnd, idPrestation, idCoach, idClient) => {
+            const getData = await postSlot(dateStart, dateEnd,idPrestation,idCoach,idClient);
+            if (getData && getData?.status === 500) {
+                console.log("ya une erreur")
+                const modalContentreserve = (
+
+                    <h2>Le créneau est déjà réservé</h2>
+
+                );
+                setIsModalOpenErreur(true);
+                setModalContent(modalContentreserve);
+            }else {
+            }
+            fetchData();
+            closeModal();
+        };
+
+        if(eventDetail && (eventDetail.mode === "update")){
+            upadateSlot(dateStartModal, dateEndModal,eventDetail.slotId);
+        }else{
+            addslot(dateStartModal, dateEndModal,idPrestation,idCoach,idClient);
+        }
+
     };
 
     const deleteSlotbyID = (e) => {
