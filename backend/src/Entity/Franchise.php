@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
@@ -21,6 +22,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
                 ],
             ],
         ),
+        new Get(
+            normalizationContext: [
+                'groups' => [
+                    'franchise:read',
+                ],
+            ],
+        )
     ]
 )]
 #[ORM\Entity(repositoryClass: FranchiseRepository::class)]
@@ -29,6 +37,7 @@ class Franchise
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['franchise:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]

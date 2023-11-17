@@ -58,7 +58,7 @@ class Coach
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $biography = null;
 
-    #[Groups(['slot:read','coach:read'])]
+    #[Groups(['slot:read', 'coach:read', 'prestation:read', 'franchise:read'])]
     #[ORM\OneToOne(inversedBy: 'coach', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $auth = null;
