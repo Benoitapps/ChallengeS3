@@ -2,6 +2,8 @@ import './assets/css/App.css';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 
+import { accountService } from './services/account.service.js';
+
 // Front
 import UserRoute from './UserRoute.jsx';
 import Home from './Components/Home';
@@ -27,11 +29,8 @@ function App() {
   const userIsAdmin = () => {
     const token = localStorage.getItem('token');
     if (token !== null) {
-      // decode jwt token
-      const payload = token.split('.')[1];
-      const decodedPayload = atob(payload);
-      const user = JSON.parse(decodedPayload);
-      return user.roles.includes('ROLE_ADMIN');
+      return accountService.getValuesToken()
+              .roles.includes('ROLE_ADMIN');
     }
     return false;
   }
@@ -84,7 +83,7 @@ function App() {
             {/* Route doesn't exist */}
             <Route path="*" element={<Navigate to="/" />} />
 
-            <Route path="scheduleReservation" element={<ScheduleReservation eventDetail={eventDetail}/>} />
+            <Route path="prestation/:prestationId/coach/:coachId" element={<ScheduleReservation eventDetail={eventDetail}/>} />
           </Route>
 
           {/* Admin route */}

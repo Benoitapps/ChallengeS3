@@ -12,17 +12,20 @@ import { eventCoach } from "./eventCoach.jsx";
 import { sheduleCoach } from "./sheduleCoachGet.jsx"
 import {postSlot} from "../../hook/Schedule/eventPost.js";
 import {patchSlot} from "../../hook/Schedule/eventPatch.js";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function ScheduleReservation({ eventDetail }) {
+    const { coachId, prestationId } = useParams();
 
-    const [idPrestation, setIdPrestation] = useState(eventDetail.idPrestation);
-    const [idCoach, setIdCoach] = useState(eventDetail.idCoach);
-    const [idClient, setIdClient] = useState(eventDetail.idClient);
+    // const [idPrestation, setIdPrestation] = useState(eventDetail.idPrestation);
+    // const [idCoach, setIdCoach] = useState(eventDetail.idCoach);
+    // const [idClient, setIdClient] = useState(eventDetail.idClient);
 
-    // const [idPrestation, setIdPrestation] = useState(33);
-    // const [idCoach, setIdCoach] = useState(34);
-    // const [idClient, setIdClient] = useState(33);
+    const [idPrestation, setIdPrestation] = useState(prestationId);
+    const [idCoach, setIdCoach] = useState(coachId);
+    // TODO Benoit: to change
+    // ? envoyer les données au back, puis enregistrer les données en fonction du user qui a envoyé la donnée 
+    const [idClient, setIdClient] = useState(33);
 
     //Horraire du coach ainsi que ces evenements
     const [scheduleHeur, setSheduleHeur] = useState([]);

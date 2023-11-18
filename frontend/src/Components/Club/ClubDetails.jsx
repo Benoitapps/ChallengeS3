@@ -51,7 +51,7 @@ function ClubDetails() {
                                                             <div>
                                                                 {coach.auth.firstname} {coach.auth.lastname}
                                                             </div>
-                                                            <Link to='/'>
+                                                            <Link to={"/prestation/" + prestation.id + "/coach/" + coach.id}>
                                                                 <button>voir coach</button>
                                                             </Link>
                                                         </div>

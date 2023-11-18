@@ -34,7 +34,7 @@ class Prestation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[Groups(['slot:read'])]
+    #[Groups(['slot:read', 'franchise:read'])]
     #[ORM\Column]
     private ?int $id = null;
 

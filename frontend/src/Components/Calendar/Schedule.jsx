@@ -138,8 +138,9 @@ function Schedule({ onButtonClick, ...otherProps }) {
         }else{
         }
         console.log("changement de page")
-        navigate("/scheduleReservation");
-
+        // TODO Benoit: changer de page avec cette route : /prestation/:prestationId/coach/:coachId
+        // navigate("/scheduleReservation");
+        alert('Schedule.jsx, line 143, change route to /prestation/:prestationId/coach/:coachId');
     }
 
     const deleteSlotbyID = (e) => {
