@@ -56,11 +56,11 @@ jobs:
 
     steps:
       - name: Discord notification
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      uses: Ilshidur/action-discord@0.3.2
-      with:
-        args: 'The build is done!'
+        uses: Ilshidur/action-discord@0.3.2
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        with:
+          args: 'The build is done!'
 
   # deploy:
   #   runs-on: ubuntu-latest
