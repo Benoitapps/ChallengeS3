@@ -49,3 +49,29 @@
   transform: translateY(calc(-100% - 5px));
   color: red;
 }
+
+/* ? tabs style */
+.tab button {
+  background-color: inherit;
+  box-shadow: none;
+  border: none;
+  border-radius: initial;
+  outline: none;
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+.tab button:hover {
+  background-color: var(--primay-selected);
+}
+
+.tab button.active {
+  border-bottom: 2px solid var(--primary);
+}
+
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  justify-content: center;
+  align-items: center;
+}

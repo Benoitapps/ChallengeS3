@@ -16,6 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\State\UserPasswordHasher;
+use App\Controller\UserController;
 
 #[ApiResource(
     operations: [
@@ -36,6 +37,7 @@ use App\State\UserPasswordHasher;
         ),
         new Post(
             processor: UserPasswordHasher::class,
+            controller: UserController::class,
             denormalizationContext: [
                 'groups' => [
                     'user:write',
