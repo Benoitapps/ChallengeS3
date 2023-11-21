@@ -19,6 +19,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
                 'groups' => ['prestation:write']
             ]
         ),
+        new Get(
+            normalizationContext: [
+                'groups' => [
+                    'prestation:read',
+                ],
+            ],
+        )
     ]
 )]
 #[ORM\Entity(repositoryClass: PrestationRepository::class)]
@@ -26,24 +33,25 @@ class Prestation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups(['slot:read', 'franchise:read'])]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['slot:read','coach:read','prestation:write', 'company:read:franchise', 'franchise:read'])]
+    #[Groups(['slot:read', 'slot:read:collection', 'prestation:write', 'prestation:read', 'coach:read:slots', 'company:read:franchise', 'franchise:read'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[Groups(['prestation:write'])]
+    #[Groups(['prestation:write', 'prestation:read'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[Groups(['prestation:write'])]
+    #[Groups(['prestation:write', 'prestation:read', 'franchise:read'])]
     #[ORM\Column]
     private ?float $price = null;
 
-    #[Groups(['prestation:write'])]
+    #[Groups(['prestation:write', 'prestation:read', 'franchise:read'])]
     #[ORM\ManyToMany(targetEntity: Coach::class, inversedBy: 'prestations')]
-    private Collection $coach;
+    private Collection $coach; // ! to change to coachs
 
     #[Groups(['prestation:write'])]
     #[ORM\ManyToOne(inversedBy: 'prestations')]

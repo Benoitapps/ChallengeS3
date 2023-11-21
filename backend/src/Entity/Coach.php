@@ -3,6 +3,10 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\CoachRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,8 +15,36 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
-    normalizationContext: ['groups' => ['coach:read']],
-    denormalizationContext: ['groups' => ['coach:write']],
+
+    operations: [
+        new Post(
+            denormalizationContext: ['groups' => ['coach:write']],
+        ),
+        new Get(
+            normalizationContext: ['groups' => ['coach:read']],
+        ),
+        new GetCollection(
+            normalizationContext: ['groups' => ['coach:read']],
+        ),
+        new Patch(
+            denormalizationContext: ['groups' => ['coach:write']],
+        ),
+
+        new Get(
+            uriTemplate: '/coaches/slots/{id}',
+            normalizationContext: [
+                'groups' => ['coach:read:slots']
+            ]
+        ),
+        new Get(
+            uriTemplate: '/coaches/shedules/{id}',
+            normalizationContext: [
+                'groups' => ['coach:read:shedules']
+            ]
+        ),
+    ]
+
+
 )]
 #[ORM\Entity(repositoryClass: CoachRepository::class)]
 class Coach
@@ -20,13 +52,13 @@ class Coach
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['schedule:read', 'schedule:write'])]
+    #[Groups(['schedule:read', 'schedule:write','slot:read', 'franchise:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $biography = null;
 
-    #[Groups(['slot:read','coach:read', 'company:read:franchise', 'franchise:read'])]
+    #[Groups(['slot:read', 'coach:read', 'prestation:read', 'company:read:franchise', 'franchise:read'])]
     #[ORM\OneToOne(inversedBy: 'coach', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $auth = null;
@@ -35,13 +67,15 @@ class Coach
     #[ORM\JoinColumn(nullable: false)]
     private ?Franchise $franchise = null;
 
-    #[Groups(['coach:read'])]
+    #[Groups(['coach:read','coach:read:shedules'])]
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Schedule::class)]
     private Collection $schedules;
 
+    #[Groups(['coach:read'])]
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: ReviewClient::class)]
     private Collection $reviewClients;
 
+    #[Groups(['coach:read'])]
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: ReviewCoach::class)]
     private Collection $reviewCoaches;
 
@@ -53,7 +87,8 @@ class Coach
     #[ORM\ManyToMany(targetEntity: TimeOff::class, mappedBy: 'coachs')]
     private Collection $timeOffs;
 
-    #[Groups(['coach:read'])]
+
+    #[Groups(['coach:read','coach:read:slots'])]
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Slot::class)]
     private Collection $slots;
 

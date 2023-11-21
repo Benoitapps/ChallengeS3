@@ -49,11 +49,11 @@ class Schedule
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['schedule:read','schedule:write','schedule:update'])]
+    #[Groups(['schedule:read','schedule:write','schedule:update','coach:read:shedules'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $start_date = null;
 
-    #[Groups(['schedule:read','schedule:write','schedule:update'])]
+    #[Groups(['schedule:read','schedule:write','schedule:update','coach:read:shedules'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $end_date = null;
 

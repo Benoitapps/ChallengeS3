@@ -19,6 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new GetCollection(
+            paginationItemsPerPage: 4,
             normalizationContext: ['groups' => ['franchise:read']],
             security: "is_granted('ROLE_MANAGER')",
         ),
@@ -58,6 +59,7 @@ class Franchise
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['franchise:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]

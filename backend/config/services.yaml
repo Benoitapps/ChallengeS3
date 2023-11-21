@@ -26,6 +26,17 @@ services:
     App\State\UserPasswordHasher:
         bind:
             $processor: '@api_platform.doctrine.orm.state.persist_processor'
+    
+    App\Doctrine\Extensions\FindFranchisesExtension:
+        tags:
+            - { name: api_platform.doctrine.orm.query_extension.collection }
+            - { name: api_platform.doctrine.orm.query_extension.item }
+
+
+    App\Doctrine\Extensions\CurrentUserSlotExtension:
+        tags:
+            - { name: api_platform.doctrine.orm.query_extension.collection }
+
 
     # ? Cache
 #    api_platform.cache.metadata.property:

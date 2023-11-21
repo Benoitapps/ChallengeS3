@@ -1,41 +1,105 @@
 import './assets/css/App.css';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
+
+import { accountService } from './services/account.service.js';
+
+// Front
+import UserRoute from './UserRoute.jsx';
 import Home from './Components/Home';
 import NavBar from './Components/NavBar';
 import Login from './Components/Authentication/Login';
 import SignUp from './Components/Authentication/SignUp';
 import Schedule from './Components/Calendar/Schedule.jsx';
-import { useEffect, useState } from 'react';
+import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
+import Profile from './Components/Profile.jsx';
+import ClubsPage from './Components/Club/ClubsPage.jsx';
+import ClubDetails from './Components/Club/ClubDetails.jsx';
+
+// Admin
+import NavBarAdmin from './Components/Admin/NavBar';
+import HomeAdmin from './Components/Admin/Home';
+import UsersList from './Components/Admin/UsersList.jsx';
+import AdminRoute from './AdminRoute.jsx';
+
+// Special
+import Unauthorize from './Components/Unauthorize.jsx';
 
 function App() {
-  const [isConnected, setIsConnected] = useState(false);
+  const userIsAdmin = () => {
+    const token = localStorage.getItem('token');
+    if (token !== null) {
+      return accountService.getValuesToken()
+              .roles.includes('ROLE_ADMIN');
+    }
+    return false;
+  }
+
+  const [isConnected, setIsConnected] = useState(!!localStorage.getItem('token'));
+  const [isAdmin, setIsAdmin] = useState(userIsAdmin() || false);
+
+  const [eventDetail, setEventDetail] = useState(null);
+
+  const onButtonClick = (detail) => {
+    setEventDetail(detail);
+  };
 
   const handleDisconnect = () => {
     localStorage.removeItem('token');
     setIsConnected(false);
+    setIsAdmin(false);
   }
 
   const handleConnect = () => {
     setIsConnected(true);
+    setIsAdmin(userIsAdmin());
   }
 
   useEffect(() => {
-      const token = localStorage.getItem('token');
-      setIsConnected(token !== null);
-  }, [isConnected]);
+    setIsAdmin(userIsAdmin());
+
+    const token = localStorage.getItem('token');
+    setIsConnected(token !== null);
+  }, []);
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} />}>
+          {/* Front */}
+          <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} />}>
+            {/* Route for user not connected */}
             <Route index element={<Home />} />
-            <Route path="club" element={<h1>Liste des clubs</h1>} />
-            <Route path="signup" element={<SignUp/>} />
-            <Route path="/" />
-            <Route path="login" element={<Login handleConnect={handleConnect} />} />          
-            <Route path="schedule" element={<Schedule/>} />
+            <Route path="club" element={<ClubsPage/>} />
+            <Route path="club/:id" element={<ClubDetails/>} />
+
+            <Route path="signup" element={<SignUp />} />
+            <Route path="login" element={<Login handleConnect={handleConnect} />} />
+
+            {/* Route for user connected */}
+            <Route path="schedule" element={ <UserRoute component={Schedule} onButtonClick={setEventDetail} isConnected={isConnected}/> } />
+            <Route path="profile" element={ <UserRoute component={Profile} isConnected={isConnected}/> } />
+
+            {/* Route doesn't exist */}
+            <Route path="*" element={<Navigate to="/" />} />
+
+            <Route path="prestation/:prestationId/coach/:coachId" element={<ScheduleReservation eventDetail={eventDetail}/>} />
           </Route>
+
+          {/* Admin route */}
+          <Route path="admin/*" 
+            element={(
+              <Routes>
+                <Route path="/" element={<NavBarAdmin isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} />}>
+                  <Route index element={<AdminRoute index component={HomeAdmin} isAdmin={isAdmin} />} />
+                  <Route path="users" element={<AdminRoute component={UsersList} isAdmin={isAdmin} />} />
+                </Route>
+              </Routes>
+            )} 
+          />
+
+          {/* Special */}
+          <Route path="unauthorized" element={<Unauthorize/>} />
         </Routes>
       </BrowserRouter>
     </>

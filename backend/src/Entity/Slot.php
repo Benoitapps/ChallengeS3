@@ -2,21 +2,26 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Filter\CustomSlotDateFilter;
 use App\Repository\SlotRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
+    paginationItemsPerPage: 50,
     operations: [
     new GetCollection(
         normalizationContext: [
-            'groups' => ['slot:read']
+            'groups' => ['slot:read:collection']
         ]
     ),
     new Get(
@@ -30,10 +35,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ]
     ),
     new Patch(
-        normalizationContext: [
+        denormalizationContext: [
             'groups' => ['slot:update']
         ]
     ),
+    new Delete()
+
 //    new GetCollectionByCoach(
 //        path: '/slots/coach/{id}',
 //        methods: ['GET'],
@@ -47,29 +54,31 @@ class Slot
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['slot:read:collection','slot:read','coach:read:slots'])]
     private ?int $id = null;
 
-    #[Groups(['slot:read','slot:write','slot:update','coach:read'])]
+    #[ApiFilter(DateFilter::class)]
+    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $start_date = null;
+    private ?\DateTimeInterface $startDate = null;
 
-    #[Groups(['slot:read','slot:write','slot:update','coach:read'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $end_date = null;
+    private ?\DateTimeInterface $endDate = null;
 
-    #[Groups(['slot:read','slot:write','slot:update','coach:read'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','coach:read:slots'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Prestation $prestation = null;
 
-    #[Groups(['slot:read','slot:write','slot:update','coach:read'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','coach:read:slots'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?TimeOff $time_off = null;
 
-    #[Groups(['slot:read','slot:write','slot:update','coach:read'])]
+    #[Groups(['slot:read','slot:read:collection','slot:read:collection','slot:write'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Client $client = null;
 
-    #[Groups(['slot:read','slot:write','slot:update'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Coach $coach = null;
 
@@ -78,26 +87,27 @@ class Slot
         return $this->id;
     }
 
+
     public function getStartDate(): ?\DateTimeInterface
     {
-        return $this->start_date;
+        return $this->startDate;
     }
 
-    public function setStartDate(\DateTimeInterface $start_date): static
+    public function setStartDate(\DateTimeInterface $startDate): static
     {
-        $this->start_date = $start_date;
+        $this->startDate = $startDate;
 
         return $this;
     }
 
     public function getEndDate(): ?\DateTimeInterface
     {
-        return $this->end_date;
+        return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $end_date): static
+    public function setEndDate(\DateTimeInterface $endDate): static
     {
-        $this->end_date = $end_date;
+        $this->endDate = $endDate;
 
         return $this;
     }

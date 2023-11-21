@@ -16,33 +16,24 @@ class FranchiseFixture extends Fixture implements DependentFixtureInterface
     {
         $compa1 = $manager->getRepository(Company::class)->findAll();
 
+        for ($i = 0; $i <= 35; $i++) {
+            $object = (new Franchise())
+                ->setCompany($compa1[0])
+                ->setName("Franchise" . $i)
+                ->setDescription("Description" . $i)
+                ->setAddress("address" . $i)
+                ->setCity("city" . $i)
+                ->setZipCode("75001");
 
-        $object = (new Franchise())
-              ->setCompany($compa1[0])
-                ->setName("Franchise1")
-                ->setDescription("Description1")
-                ->setAddress("address1")
-                ->setCity("marignane")
-                ->setZipCode("13700");
+            $manager->persist($object);
+        }
 
-        $manager->persist($object);
-
-        $object = (new Franchise())
-            ->setCompany($compa1[0])
-            ->setName("Franchise2")
-            ->setDescription("Description2")
-            ->setAddress("address2")
-            ->setCity("Lyon")
-            ->setZipCode("69000");
-
-        $manager->persist($object);
         $manager->flush();
     }
     public function getDependencies(): array
     {
         return [
             CompanyFixtures::class,
-
         ];
     }
 }
