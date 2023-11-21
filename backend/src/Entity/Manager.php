@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ManagerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 #[ApiResource()]
 
 #[ORM\Entity(repositoryClass: ManagerRepository::class)]
@@ -17,6 +19,7 @@ class Manager
 
     #[ORM\OneToOne(inversedBy: 'manager', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['company:read'])]
     private ?User $auth = null;
 
     #[ORM\OneToOne(mappedBy: 'manager', cascade: ['persist', 'remove'])]

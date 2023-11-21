@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20231102192519 extends AbstractMigration
+final class Version20231117201724 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -56,10 +56,11 @@ final class Version20231102192519 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_2CD741D73C105691 ON review_coach (coach_id)');
         $this->addSql('CREATE TABLE schedule (id INT NOT NULL, coach_id INT NOT NULL, start_date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, end_date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_5A3811FB3C105691 ON schedule (coach_id)');
-        $this->addSql('CREATE TABLE slot (id INT NOT NULL, prestation_id INT DEFAULT NULL, time_off_id INT DEFAULT NULL, client_id INT DEFAULT NULL, start_date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, end_date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE slot (id INT NOT NULL, prestation_id INT DEFAULT NULL, time_off_id INT DEFAULT NULL, client_id INT DEFAULT NULL, coach_id INT DEFAULT NULL, start_date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, end_date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_AC0E20679E45C554 ON slot (prestation_id)');
         $this->addSql('CREATE INDEX IDX_AC0E206780A965CA ON slot (time_off_id)');
         $this->addSql('CREATE INDEX IDX_AC0E206719EB6921 ON slot (client_id)');
+        $this->addSql('CREATE INDEX IDX_AC0E20673C105691 ON slot (coach_id)');
         $this->addSql('CREATE TABLE time_off (id INT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE time_off_coach (time_off_id INT NOT NULL, coach_id INT NOT NULL, PRIMARY KEY(time_off_id, coach_id))');
         $this->addSql('CREATE INDEX IDX_DE4A11380A965CA ON time_off_coach (time_off_id)');
@@ -83,6 +84,7 @@ final class Version20231102192519 extends AbstractMigration
         $this->addSql('ALTER TABLE slot ADD CONSTRAINT FK_AC0E20679E45C554 FOREIGN KEY (prestation_id) REFERENCES prestation (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE slot ADD CONSTRAINT FK_AC0E206780A965CA FOREIGN KEY (time_off_id) REFERENCES time_off (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE slot ADD CONSTRAINT FK_AC0E206719EB6921 FOREIGN KEY (client_id) REFERENCES client (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE slot ADD CONSTRAINT FK_AC0E20673C105691 FOREIGN KEY (coach_id) REFERENCES coach (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE time_off_coach ADD CONSTRAINT FK_DE4A11380A965CA FOREIGN KEY (time_off_id) REFERENCES time_off (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE time_off_coach ADD CONSTRAINT FK_DE4A1133C105691 FOREIGN KEY (coach_id) REFERENCES coach (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
@@ -120,6 +122,7 @@ final class Version20231102192519 extends AbstractMigration
         $this->addSql('ALTER TABLE slot DROP CONSTRAINT FK_AC0E20679E45C554');
         $this->addSql('ALTER TABLE slot DROP CONSTRAINT FK_AC0E206780A965CA');
         $this->addSql('ALTER TABLE slot DROP CONSTRAINT FK_AC0E206719EB6921');
+        $this->addSql('ALTER TABLE slot DROP CONSTRAINT FK_AC0E20673C105691');
         $this->addSql('ALTER TABLE time_off_coach DROP CONSTRAINT FK_DE4A11380A965CA');
         $this->addSql('ALTER TABLE time_off_coach DROP CONSTRAINT FK_DE4A1133C105691');
         $this->addSql('DROP TABLE client');

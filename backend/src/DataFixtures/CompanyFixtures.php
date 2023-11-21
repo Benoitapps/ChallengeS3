@@ -21,7 +21,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             ->setName("Company1")
             ->setDescription("Description1")
             ->setKbis("Kbis1")
-            ->setIsVerified(true);
+            ->setIsVerified(false);
 
         $manager->persist($object);
 

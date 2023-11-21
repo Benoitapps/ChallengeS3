@@ -3,12 +3,39 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\CompanyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-#[ApiResource()]
+use Symfony\Component\Serializer\Annotation\Groups;
+
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(
+            normalizationContext: ['groups' => ['company:read']],
+            security: "is_granted('ROLE_MANAGER')",
+        ),
+        new Post(
+            denormalizationContext: ['groups' => ['company:write']],
+            security: "is_granted('ROLE_MANAGER')",
+        ),
+        new Delete(),
+        new Patch(
+            denormalizationContext: ['groups' => ['company:update']],
+        ),
+    ],
+//    normalizationContext: ['groups' => ['company:read','company:read:user-is-logged']],
+//    denormalizationContext: ['groups' => ['company:write']],
+    security: "is_granted('ROLE_ADMIN')",
+)]
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 class Company
@@ -19,22 +46,31 @@ class Company
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['company:read', 'company:write', 'franchise:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+//    #[Groups(['company:read:user-is-logged', 'company:write'])]
+    #[Groups(['company:read', 'company:write'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::TEXT)]
+//    #[Groups(['company:read:user-is-logged', 'company:write'])]
+    #[Groups(['company:read', 'company:write'])]
     private ?string $kbis = null;
 
     #[ORM\Column]
-    private ?bool $is_verified = null;
+    #[Groups(['company:read', 'company:write'])]
+    private ?bool $isVerified = false;
 
     #[ORM\OneToOne(inversedBy: 'company', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+//    #[Groups(['company:read:user-is-logged', 'company:write'])]
+    #[Groups(['company:read', 'company:write'])]
     private ?Manager $manager = null;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Franchise::class, orphanRemoval: true)]
+    #[Groups(['company:read'])]
     private Collection $franchises;
 
     public function __construct()
@@ -85,12 +121,12 @@ class Company
 
     public function isIsVerified(): ?bool
     {
-        return $this->is_verified;
+        return $this->isVerified;
     }
 
-    public function setIsVerified(bool $is_verified): static
+    public function setIsVerified(bool $isVerified): static
     {
-        $this->is_verified = $is_verified;
+        $this->isVerified = $isVerified;
 
         return $this;
     }
