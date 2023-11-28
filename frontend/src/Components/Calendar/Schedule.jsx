@@ -1,5 +1,5 @@
 import React, {useRef, useEffect, useState} from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -91,7 +91,7 @@ function Schedule({ onButtonClick, ...otherProps }) {
                 <div className="popup__content__texts">
 
                     <h2>Vous avez reserver un Cours :</h2>
-                    <p>Prestation : {eventDetail.title}</p>
+                    <p>Prestation : {eventDetail.title} {eventDetail.idPrestation}</p>
                     <p>Coach : {eventDetail.coach} </p>
                     <p>Client : {eventDetail.client}</p>
 
@@ -131,17 +131,19 @@ function Schedule({ onButtonClick, ...otherProps }) {
     };
 
 
-    const updateModal = (e) => {
+    const updateModal = () => {
+
+
         if (typeof onButtonClick === 'function') {
             onButtonClick(eventDetail);
-
-        }else{
         }
-        console.log("changement de page")
-        // TODO Benoit: changer de page avec cette route : /prestation/:prestationId/coach/:coachId
-        // navigate("/scheduleReservation");
-        alert('Schedule.jsx, line 143, change route to /prestation/:prestationId/coach/:coachId');
-    }
+
+        console.log("changement de page");
+        console.log(eventDetail);
+        const route = `/prestation/${eventDetail.idPrestation}/coach/${eventDetail.idCoach}`;
+
+        navigate(route);
+    };
 
     const deleteSlotbyID = (e) => {
 
@@ -152,6 +154,9 @@ function Schedule({ onButtonClick, ...otherProps }) {
 
     return (
         <main className="schedule">
+
+            <h1>Mes Reservations</h1>
+
             <FullCalendar
                 ref={calendarRef}
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}

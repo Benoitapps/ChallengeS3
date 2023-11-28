@@ -32,6 +32,7 @@ function Login({ handleConnect }) {
             }
 
             const body = await result.json();
+            console.log(body);
             localStorage.setItem('token', body.token);
             handleConnect();
             navigate("/");

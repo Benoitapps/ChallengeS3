@@ -23,8 +23,6 @@ function ScheduleReservation({ eventDetail }) {
 
     const [idPrestation, setIdPrestation] = useState(prestationId);
     const [idCoach, setIdCoach] = useState(coachId);
-    // TODO Benoit: to change
-    // ? envoyer les données au back, puis enregistrer les données en fonction du user qui a envoyé la donnée 
     const [idClient, setIdClient] = useState(33);
 
     //Horraire du coach ainsi que ces evenements
@@ -106,7 +104,8 @@ function ScheduleReservation({ eventDetail }) {
 
         let dateBaseStart = new Date(arg.dateStr);
         let dateBaseEnd = new Date(arg.dateStr);
-        dateBaseEnd.setHours(dateBaseEnd.getHours() + 1);
+        dateBaseStart.setHours(dateBaseStart.getHours() + 1);
+        dateBaseEnd.setHours(dateBaseEnd.getHours() + 2);
 
         let now = new Date();
 
@@ -122,10 +121,10 @@ function ScheduleReservation({ eventDetail }) {
                 const time2start = new Date("2000-01-01T"+DateFormat.timeCompareStart+":00Z");//click
                 const time2end = new Date("2000-01-01T"+DateFormat.timeCompareEnd+":00Z");
 
-                console.log("time1start",time1start)
-                console.log("time1end",time1end)
-                console.log("time2start",time2start)
-                console.log("time2end",time2end)
+                console.log("heur Debut Coach",time1start)
+                console.log("heur fin coach",time1end)
+                console.log("Heur debut click",time2start)
+                console.log("heur fin click",time2end)
 
                 i = scheduleHeur.length;
                 click = (time2start >= time1start && time2end < time1end) && (dateBaseStart > now);
@@ -253,7 +252,7 @@ function ScheduleReservation({ eventDetail }) {
                     }
                 }
 
-                height={"38em"}
+                height={"36em"}
                 locale={"fr"}
                 dateClick={(e) => handleDateClick(e)}
                 datesSet={handleDateChange}
