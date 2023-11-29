@@ -18,7 +18,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     operations: [
-        new GetCollection(),
+        new GetCollection(
+//            juste pour tester, à supprimer ensuite
+            security: "is_granted('ROLE_MANAGER')",
+        ),
         new Get(
             normalizationContext: ['groups' => ['company:read']],
             security: "is_granted('ROLE_MANAGER')",

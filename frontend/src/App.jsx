@@ -15,12 +15,19 @@ import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
 import Profile from './Components/Profile.jsx';
 import ClubsPage from './Components/Club/ClubsPage.jsx';
 import ClubDetails from './Components/Club/ClubDetails.jsx';
+import SignUpCompany from "./Components/Authentication/SignUpCompany.jsx";
 
 // Admin
 import NavBarAdmin from './Components/Admin/NavBar';
 import HomeAdmin from './Components/Admin/Home';
 import UsersList from './Components/Admin/UsersList.jsx';
 import AdminRoute from './AdminRoute.jsx';
+
+// Manager
+import NavBarManager from './Components/Manager/NavBar';
+import HomeManager from './Components/Manager/Home';
+import ManagerRoute from './ManagerRoute.jsx';
+import AddCompany from "./Components/Manager/AddCompany.jsx";
 
 // Special
 import Unauthorize from './Components/Unauthorize.jsx';
@@ -35,8 +42,18 @@ function App() {
     return false;
   }
 
+  const userIsManager = () => {
+    const token = localStorage.getItem('token');
+    if (token !== null) {
+      return accountService.getValuesToken()
+          .roles.includes('ROLE_MANAGER');
+    }
+    return false;
+  }
+
   const [isConnected, setIsConnected] = useState(!!localStorage.getItem('token'));
   const [isAdmin, setIsAdmin] = useState(userIsAdmin() || false);
+  const [isManager, setIsManager] = useState(userIsManager() || false);
 
   const [eventDetail, setEventDetail] = useState(null);
 
@@ -48,15 +65,18 @@ function App() {
     localStorage.removeItem('token');
     setIsConnected(false);
     setIsAdmin(false);
+    setIsManager(false);
   }
 
   const handleConnect = () => {
     setIsConnected(true);
     setIsAdmin(userIsAdmin());
+    setIsManager(userIsManager());
   }
 
   useEffect(() => {
     setIsAdmin(userIsAdmin());
+    setIsManager(userIsManager());
 
     const token = localStorage.getItem('token');
     setIsConnected(token !== null);
@@ -67,7 +87,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Front */}
-          <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} />}>
+          <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} isManager={isManager}/>}>
             {/* Route for user not connected */}
             <Route index element={<Home />} />
             <Route path="club" element={<ClubsPage/>} />
@@ -75,6 +95,7 @@ function App() {
 
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login handleConnect={handleConnect} />} />
+            <Route path="signupcompany" element={<SignUpCompany />} />
 
             {/* Route for user connected */}
             <Route path="schedule" element={ <UserRoute component={Schedule} onButtonClick={setEventDetail} isConnected={isConnected}/> } />
@@ -87,7 +108,7 @@ function App() {
           </Route>
 
           {/* Admin route */}
-          <Route path="admin/*" 
+          <Route path="admin/*"
             element={(
               <Routes>
                 <Route path="/" element={<NavBarAdmin isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} />}>
@@ -95,7 +116,20 @@ function App() {
                   <Route path="users" element={<AdminRoute component={UsersList} isAdmin={isAdmin} />} />
                 </Route>
               </Routes>
-            )} 
+            )}
+          />
+
+          {/* Manager route */}
+          <Route path="manager/*"
+                 element={(
+                     <Routes>
+                       <Route path="/" element={<NavBarManager isConnected={isConnected} handleDisconnect={handleDisconnect} isManager={isManager} />}>
+                         <Route index element={<ManagerRoute index component={HomeManager} isManager={isManager} />} />
+                         <Route path="company" element={<ManagerRoute component={AddCompany} isManager={isManager}/>} />
+                         <Route path="franchise" element={<ManagerRoute component={AddCompany} isManager={isManager}/>} />
+                       </Route>
+                     </Routes>
+                 )}
           />
 
           {/* Special */}
