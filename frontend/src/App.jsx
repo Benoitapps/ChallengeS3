@@ -15,7 +15,6 @@ import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
 import Profile from './Components/Profile.jsx';
 import ClubsPage from './Components/Club/ClubsPage.jsx';
 import ClubDetails from './Components/Club/ClubDetails.jsx';
-import SignUpCompany from "./Components/Authentication/SignUpCompany.jsx";
 
 // Admin
 import NavBarAdmin from './Components/Admin/NavBar';
@@ -28,6 +27,7 @@ import NavBarManager from './Components/Manager/NavBar';
 import HomeManager from './Components/Manager/Home';
 import ManagerRoute from './ManagerRoute.jsx';
 import AddCompany from "./Components/Manager/AddCompany.jsx";
+import AddFranchise from "./Components/Manager/AddFranchise.jsx";
 
 // Special
 import Unauthorize from './Components/Unauthorize.jsx';
@@ -95,7 +95,6 @@ function App() {
 
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login handleConnect={handleConnect} />} />
-            <Route path="signupcompany" element={<SignUpCompany />} />
 
             {/* Route for user connected */}
             <Route path="schedule" element={ <UserRoute component={Schedule} onButtonClick={setEventDetail} isConnected={isConnected}/> } />
@@ -126,7 +125,7 @@ function App() {
                        <Route path="/" element={<NavBarManager isConnected={isConnected} handleDisconnect={handleDisconnect} isManager={isManager} />}>
                          <Route index element={<ManagerRoute index component={HomeManager} isManager={isManager} />} />
                          <Route path="company" element={<ManagerRoute component={AddCompany} isManager={isManager}/>} />
-                         <Route path="franchise" element={<ManagerRoute component={AddCompany} isManager={isManager}/>} />
+                         <Route path="franchise" element={<ManagerRoute component={AddFranchise} isManager={isManager}/>} />
                        </Route>
                      </Routes>
                  )}

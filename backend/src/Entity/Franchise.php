@@ -80,7 +80,7 @@ class Franchise
 
     #[ORM\Column(length: 5)]
     #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
-    private ?string $zip_code = null;
+    private ?string $zipCode = null;
 
     #[ORM\ManyToOne(inversedBy: 'franchises')]
     #[ORM\JoinColumn(nullable: false)]
@@ -88,11 +88,11 @@ class Franchise
     private ?Company $company = null;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Coach::class)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
+    #[Groups(['franchise:read', 'company:read:franchise'])]
     private Collection $coachs;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Prestation::class)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
+    #[Groups(['franchise:read', 'company:read:franchise'])]
     private Collection $prestations;
 
     public function __construct()
@@ -156,12 +156,12 @@ class Franchise
 
     public function getZipCode(): ?string
     {
-        return $this->zip_code;
+        return $this->zipCode;
     }
 
-    public function setZipCode(string $zip_code): static
+    public function setZipCode(string $zipCode): static
     {
-        $this->zip_code = $zip_code;
+        $this->zipCode = $zipCode;
 
         return $this;
     }
