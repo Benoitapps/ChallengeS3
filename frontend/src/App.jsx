@@ -40,6 +40,7 @@ function App() {
 
   const [eventDetail, setEventDetail] = useState(null);
 
+
   const onButtonClick = (detail) => {
     setEventDetail(detail);
   };
@@ -83,7 +84,10 @@ function App() {
             {/* Route doesn't exist */}
             <Route path="*" element={<Navigate to="/" />} />
 
-            <Route path="prestation/:prestationId/coach/:coachId" element={<ScheduleReservation eventDetail={eventDetail}/>} />
+            <Route path="prestation/:prestationId/coach/:coachId/update" element={<ScheduleReservation eventDetail={eventDetail} isUpdate={true}/>} />
+            <Route path="prestation/:prestationId/coach/:coachId/add" element={<ScheduleReservation eventDetail={eventDetail} isUpdate={false}/>} />
+
+
           </Route>
 
           {/* Admin route */}

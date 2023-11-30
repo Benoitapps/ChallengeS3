@@ -13,17 +13,15 @@ import { sheduleCoach } from "./sheduleCoachGet.jsx"
 import {postSlot} from "../../hook/Schedule/eventPost.js";
 import {patchSlot} from "../../hook/Schedule/eventPatch.js";
 import { useNavigate, useParams } from 'react-router-dom';
+import {getUserId} from "../User/DecodeUser.jsx";
 
-function ScheduleReservation({ eventDetail }) {
+function ScheduleReservation({ eventDetail, isUpdate, }) {
     const { coachId, prestationId } = useParams();
 
-    // const [idPrestation, setIdPrestation] = useState(eventDetail.idPrestation);
-    // const [idCoach, setIdCoach] = useState(eventDetail.idCoach);
-    // const [idClient, setIdClient] = useState(eventDetail.idClient);
 
     const [idPrestation, setIdPrestation] = useState(prestationId);
     const [idCoach, setIdCoach] = useState(coachId);
-    const [idClient, setIdClient] = useState(33);
+    const [idClient, setIdClient] = useState(getUserId());
 
     //Horraire du coach ainsi que ces evenements
     const [scheduleHeur, setSheduleHeur] = useState([]);
@@ -61,6 +59,8 @@ function ScheduleReservation({ eventDetail }) {
 
     //recuperation des evenement et des horraires du coach au chargement de la page
     useEffect(() => {
+        console.log("eventDetail",eventDetail);
+        console.log("isUpdate",isUpdate);
         if (calendarFilterStart !== null && calendarFilterEnd !== null) {
             fetchData();
         }
@@ -215,7 +215,7 @@ function ScheduleReservation({ eventDetail }) {
             closeModal();
         };
 
-        if(eventDetail && (eventDetail.mode === "update")){
+        if(isUpdate){
             upadateSlot(dateStartModal, dateEndModal,eventDetail.slotId);
         }else{
             addslot(dateStartModal, dateEndModal,idPrestation,idCoach,idClient);

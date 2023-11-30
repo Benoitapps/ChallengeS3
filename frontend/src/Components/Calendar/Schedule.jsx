@@ -140,7 +140,7 @@ function Schedule({ onButtonClick, ...otherProps }) {
 
         console.log("changement de page");
         console.log(eventDetail);
-        const route = `/prestation/${eventDetail.idPrestation}/coach/${eventDetail.idCoach}`;
+        const route = `/prestation/${eventDetail.idPrestation}/coach/${eventDetail.idCoach}/update`;
 
         navigate(route);
     };
