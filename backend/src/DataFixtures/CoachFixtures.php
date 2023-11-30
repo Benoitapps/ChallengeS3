@@ -34,13 +34,27 @@ class CoachFixtures extends Fixture implements DependentFixtureInterface
         $manager->persist($object);
 
         $manager->flush();
+
+        for ($i = 0; $i <= 3; $i++) {
+            $franchise = $manager->getRepository(Franchise::class)->findAll()[$i];
+            $prestations = $franchise->getPrestations();
+
+            foreach ($prestations as $key => $prestation) {
+                $coach = $manager->getRepository(Coach::class)->findAll()[$key];
+                $prestation->addCoach($coach);
+            }
+
+            $manager->persist($prestation);
+        }
+
+        $manager->flush();
     }
+    
     public function getDependencies(): array
     {
         return [
             UserFixtures::class,
             FranchiseFixture::class,
-
         ];
     }
 }
