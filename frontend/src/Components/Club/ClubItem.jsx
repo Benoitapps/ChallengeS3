@@ -32,7 +32,9 @@ function ClubItem({ club }) {
                     </div>
                 </div>
                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <div>A partir de <span style={{color: '#2970FF', fontSize: '19px', fontWeight: '600'}}>{minPrice}€</span> / prestation</div>
+                    {
+                        minPrice ? <div>A partir de <span style={{color: '#2970FF', fontSize: '19px', fontWeight: '600'}}>{minPrice}€</span> / prestation</div> : <div>Pas de prestation</div>
+                    }
                     <Link to={link}>
                         <button>Voir plus</button>
                     </Link>
