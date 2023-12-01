@@ -3,7 +3,7 @@ const getIdClient = async (id) => {
 
     try {
 
-        const apiUrl = `http://localhost:8888/api/clients/${id}`;
+        const apiUrl = `http://localhost:8888/api/users/${id}`;
 
         const result = await fetch(apiUrl, {
             method: "GET",
@@ -20,4 +20,4 @@ const getIdClient = async (id) => {
     }
 };
 
-export { getSlotCoach };
+export { getIdClient };

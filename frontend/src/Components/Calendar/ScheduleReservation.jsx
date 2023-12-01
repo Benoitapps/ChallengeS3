@@ -21,7 +21,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
     const [idPrestation, setIdPrestation] = useState(prestationId);
     const [idCoach, setIdCoach] = useState(coachId);
-    const [idClient, setIdClient] = useState(getUserId());
+    const [idClient, setIdClient] = useState(null);
 
     //Horraire du coach ainsi que ces evenements
     const [scheduleHeur, setSheduleHeur] = useState([]);
@@ -48,11 +48,13 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
     async function fetchData() {
         let tabHorraire = await sheduleCoach(idCoach, calendarFilterStart, calendarFilterEnd);
         let eventCoaches = await eventCoach(idCoach);
+        let idClient = await getUserId();
 
         if (calendarRef && calendarRef.current.getApi()) {
             const api = calendarRef.current.getApi();
             api.setOption('businessHours', tabHorraire);
         }
+        setIdClient(idClient);
         setEvents(eventCoaches);
         setSheduleHeur(tabHorraire);
     }
@@ -139,11 +141,15 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
             setDateStartModal(dateBaseStart);
             setDateEndModal(dateBaseEnd);
 
+
             const modalContentreserve = (
                 <div className="popup__content__texts">
-                    {/*<h2>Réserver ce créneau de {calendarView} avec {calendarView} </h2>*/}
-                    <h2>Remplacer par ce créneau de {idPrestation} avec {idCoach} </h2>
 
+                    {isUpdate ? (
+                        <h2>Remplacer le créneau de {eventDetail.title} avec {eventDetail.coach}</h2>
+                    ) : (
+                        <h2>Reserver le créneau de : </h2>
+                    )}
 
                     <ul className="popup__content__texts__datetime">
                         <li>
@@ -216,8 +222,11 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
         };
 
         if(isUpdate){
+            console.log("le update")
             upadateSlot(dateStartModal, dateEndModal,eventDetail.slotId);
         }else{
+            console.log("le add")
+            console.log("idClient",idClient);
             addslot(dateStartModal, dateEndModal,idPrestation,idCoach,idClient);
         }
 
@@ -233,6 +242,9 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
     return (
         <main className="schedule">
+
+            <h1>Calendrier du Coach</h1>
+
             <FullCalendar
                 ref={calendarRef}
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}

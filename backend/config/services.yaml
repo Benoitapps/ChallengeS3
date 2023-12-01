@@ -38,6 +38,11 @@ services:
             - { name: api_platform.doctrine.orm.query_extension.collection }
 
 
+    App\EventListener\JwtCreatedListener:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJwtCreated }
+
+
     # ? Cache
 #    api_platform.cache.metadata.property:
 #        parent: cache.system
