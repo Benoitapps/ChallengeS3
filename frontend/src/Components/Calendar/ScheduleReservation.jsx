@@ -14,9 +14,12 @@ import {postSlot} from "../../hook/Schedule/eventPost.js";
 import {patchSlot} from "../../hook/Schedule/eventPatch.js";
 import { useNavigate, useParams } from 'react-router-dom';
 import {getUserId} from "../User/DecodeUser.jsx";
+import loadingGIF from "@img/loading.gif";
+
 
 function ScheduleReservation({ eventDetail, isUpdate, }) {
     const { coachId, prestationId } = useParams();
+    const [loading, setLoading] = useState(true);
 
 
     const [idPrestation, setIdPrestation] = useState(prestationId);
@@ -57,11 +60,18 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
         setIdClient(idClient);
         setEvents(eventCoaches);
         setSheduleHeur(tabHorraire);
+        setLoading(false);
     }
+
 
     //recuperation des evenement et des horraires du coach au chargement de la page
     useEffect(() => {
         console.log("eventDetail",eventDetail);
+
+        if(eventDetail == null){
+            navigate("/schedule");
+        }
+
         console.log("isUpdate",isUpdate);
         if (calendarFilterStart !== null && calendarFilterEnd !== null) {
             fetchData();
@@ -146,7 +156,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
                 <div className="popup__content__texts">
 
                     {isUpdate ? (
-                        <h2>Remplacer le créneau de {eventDetail.title} avec {eventDetail.coach}</h2>
+                        <h2>Remplacer le créneau de :</h2>
                     ) : (
                         <h2>Reserver le créneau de : </h2>
                     )}
@@ -241,7 +251,13 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
 
     return (
-        <main className="schedule">
+        <main>
+
+            <div className="schedule">
+
+
+                {loading?  <div className="fondLoader"></div> : null}
+                {loading? <img className="loader" src={loadingGIF}  alt="Chargement..."/> : null}
 
             <h1>Calendrier du Coach</h1>
 
@@ -282,6 +298,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
                    annuler={"Retour"}>
                 {modalContent}
             </PopUp>
+                </div>
         </main>
     );
 }

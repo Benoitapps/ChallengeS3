@@ -11,10 +11,16 @@ import {tab} from './eventsGet.jsx';
 import {addslot} from './eventCreate.jsx';
 import {eventDetails} from './eventDetails.jsx';
 import { deleteSlot } from "../../hook/Schedule/eventDelete.js";
+import loadingGIF from "@img/loading.gif";
+import logo from "@img/logo.svg";
+
+
 
 
 function Schedule({ onButtonClick, ...otherProps }) {
 
+    //attente avant de charger les evenements
+    const [loading, setLoading] = useState(true);
     //les evenements de la personne connecter (client ou coach)
     const [events, setEvents] = useState([]);
     const [eventId, setEventId] = useState("");
@@ -39,6 +45,7 @@ function Schedule({ onButtonClick, ...otherProps }) {
     async function fetchData() {
         let events = await tab(calendarFilterStart, calendarFilterEnd);
         setEvents(events);
+        setLoading(false);
     }
     //recuperation des evenements au chargement de la page
     useEffect(() => {
@@ -46,6 +53,10 @@ function Schedule({ onButtonClick, ...otherProps }) {
             fetchData();
         }
     }, [calendarFilterStart]);
+
+    useEffect(() => {
+
+    }, [loading]);
 
 
 
@@ -79,6 +90,10 @@ function Schedule({ onButtonClick, ...otherProps }) {
 
     //avoir les details de l'evenement
     const handleEventInfo = (info) => {
+        console.log("lance loader");
+        setLoading(true);
+
+
         setEventId(info.event._def.publicId);
 
         async function fetchEventDetails() {
@@ -117,11 +132,14 @@ function Schedule({ onButtonClick, ...otherProps }) {
                 </div>
             );
 
+
             setIsModalOpenDetail(true);
             setModalContent(modalContentInfo);
 
         }
         fetchEventDetails();
+        setLoading(false);
+
     }
 
     const closeModal = () => {
@@ -132,7 +150,6 @@ function Schedule({ onButtonClick, ...otherProps }) {
 
 
     const updateModal = () => {
-
 
         if (typeof onButtonClick === 'function') {
             onButtonClick(eventDetail);
@@ -153,7 +170,13 @@ function Schedule({ onButtonClick, ...otherProps }) {
     };
 
     return (
-        <main className="schedule">
+        <main>
+            <div className="schedule">
+
+
+            {loading?  <div className="fondLoader"></div> : null}
+            {loading? <img className="loader" src={loadingGIF}  alt="Chargement..."/> : null}
+
 
             <h1>Mes Reservations</h1>
 
@@ -188,6 +211,7 @@ function Schedule({ onButtonClick, ...otherProps }) {
                    nameButton1={"Modifier"} nameButton2={"Supprimer"} annuler={"Annuler"}>
                 {modalContent}
             </PopUp>
+            </div>
         </main>
     );
 }
