@@ -13,19 +13,15 @@ import { sheduleCoach } from "./sheduleCoachGet.jsx"
 import {postSlot} from "../../hook/Schedule/eventPost.js";
 import {patchSlot} from "../../hook/Schedule/eventPatch.js";
 import { useNavigate, useParams } from 'react-router-dom';
+import {getUserId} from "../User/DecodeUser.jsx";
 
-function ScheduleReservation({ eventDetail }) {
+function ScheduleReservation({ eventDetail, isUpdate, }) {
     const { coachId, prestationId } = useParams();
 
-    // const [idPrestation, setIdPrestation] = useState(eventDetail.idPrestation);
-    // const [idCoach, setIdCoach] = useState(eventDetail.idCoach);
-    // const [idClient, setIdClient] = useState(eventDetail.idClient);
 
     const [idPrestation, setIdPrestation] = useState(prestationId);
     const [idCoach, setIdCoach] = useState(coachId);
-    // TODO Benoit: to change
-    // ? envoyer les données au back, puis enregistrer les données en fonction du user qui a envoyé la donnée 
-    const [idClient, setIdClient] = useState(33);
+    const [idClient, setIdClient] = useState(null);
 
     //Horraire du coach ainsi que ces evenements
     const [scheduleHeur, setSheduleHeur] = useState([]);
@@ -52,17 +48,21 @@ function ScheduleReservation({ eventDetail }) {
     async function fetchData() {
         let tabHorraire = await sheduleCoach(idCoach, calendarFilterStart, calendarFilterEnd);
         let eventCoaches = await eventCoach(idCoach);
+        let idClient = await getUserId();
 
         if (calendarRef && calendarRef.current.getApi()) {
             const api = calendarRef.current.getApi();
             api.setOption('businessHours', tabHorraire);
         }
+        setIdClient(idClient);
         setEvents(eventCoaches);
         setSheduleHeur(tabHorraire);
     }
 
     //recuperation des evenement et des horraires du coach au chargement de la page
     useEffect(() => {
+        console.log("eventDetail",eventDetail);
+        console.log("isUpdate",isUpdate);
         if (calendarFilterStart !== null && calendarFilterEnd !== null) {
             fetchData();
         }
@@ -106,7 +106,8 @@ function ScheduleReservation({ eventDetail }) {
 
         let dateBaseStart = new Date(arg.dateStr);
         let dateBaseEnd = new Date(arg.dateStr);
-        dateBaseEnd.setHours(dateBaseEnd.getHours() + 1);
+        dateBaseStart.setHours(dateBaseStart.getHours() + 1);
+        dateBaseEnd.setHours(dateBaseEnd.getHours() + 2);
 
         let now = new Date();
 
@@ -122,10 +123,10 @@ function ScheduleReservation({ eventDetail }) {
                 const time2start = new Date("2000-01-01T"+DateFormat.timeCompareStart+":00Z");//click
                 const time2end = new Date("2000-01-01T"+DateFormat.timeCompareEnd+":00Z");
 
-                console.log("time1start",time1start)
-                console.log("time1end",time1end)
-                console.log("time2start",time2start)
-                console.log("time2end",time2end)
+                console.log("heur Debut Coach",time1start)
+                console.log("heur fin coach",time1end)
+                console.log("Heur debut click",time2start)
+                console.log("heur fin click",time2end)
 
                 i = scheduleHeur.length;
                 click = (time2start >= time1start && time2end < time1end) && (dateBaseStart > now);
@@ -140,11 +141,15 @@ function ScheduleReservation({ eventDetail }) {
             setDateStartModal(dateBaseStart);
             setDateEndModal(dateBaseEnd);
 
+
             const modalContentreserve = (
                 <div className="popup__content__texts">
-                    {/*<h2>Réserver ce créneau de {calendarView} avec {calendarView} </h2>*/}
-                    <h2>Remplacer par ce créneau de {idPrestation} avec {idCoach} </h2>
 
+                    {isUpdate ? (
+                        <h2>Remplacer le créneau de {eventDetail.title} avec {eventDetail.coach}</h2>
+                    ) : (
+                        <h2>Reserver le créneau de : </h2>
+                    )}
 
                     <ul className="popup__content__texts__datetime">
                         <li>
@@ -216,9 +221,12 @@ function ScheduleReservation({ eventDetail }) {
             closeModal();
         };
 
-        if(eventDetail && (eventDetail.mode === "update")){
+        if(isUpdate){
+            console.log("le update")
             upadateSlot(dateStartModal, dateEndModal,eventDetail.slotId);
         }else{
+            console.log("le add")
+            console.log("idClient",idClient);
             addslot(dateStartModal, dateEndModal,idPrestation,idCoach,idClient);
         }
 
@@ -234,6 +242,9 @@ function ScheduleReservation({ eventDetail }) {
 
     return (
         <main className="schedule">
+
+            <h1>Calendrier du Coach</h1>
+
             <FullCalendar
                 ref={calendarRef}
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
@@ -253,7 +264,7 @@ function ScheduleReservation({ eventDetail }) {
                     }
                 }
 
-                height={"38em"}
+                height={"36em"}
                 locale={"fr"}
                 dateClick={(e) => handleDateClick(e)}
                 datesSet={handleDateChange}

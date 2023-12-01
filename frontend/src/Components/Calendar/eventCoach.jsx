@@ -2,13 +2,22 @@ import { getSlotCoach } from "../../hook/ScheduleReservation/eventCoach.js";
 
 
 const transformData = (initialData) => {
-    return initialData.slots.map((item, index) => ({
-        id: item.id,
-        title: "Indisponible",
-        start: new Date(item.startDate),
-        end: new Date(item.endDate),
-        backgroundColor: item.prestation ? "#000000" : "#f10606",
-    }));
+    return initialData.slots.map((item, index) => {
+        const startDate = new Date(item.startDate);
+        const endDate = new Date(item.endDate);
+
+        // Soustraire une heure
+        startDate.setHours(startDate.getHours() - 1);
+        endDate.setHours(endDate.getHours() - 1);
+
+        return {
+            id: item.id,
+            title: "Reservé",
+            start: startDate,
+            end: endDate,
+            backgroundColor: item.prestation ? "#000000" : "#646464",
+        };
+    });
 };
     // const transHorraire = (initialData) => {
     //     for (let i = 0; i < initialData.slots.length-1; i++) {

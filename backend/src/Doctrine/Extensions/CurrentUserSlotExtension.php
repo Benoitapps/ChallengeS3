@@ -38,4 +38,6 @@ class CurrentUserSlotExtension implements QueryCollectionExtensionInterface
         }
 
     }
+
+
 }

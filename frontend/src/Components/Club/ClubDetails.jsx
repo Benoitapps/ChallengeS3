@@ -48,7 +48,7 @@ function ClubDetails() {
                                                                 return (
                                                                     <div class="coach-card" key={index}>
                                                                         <div class="coach-name">{coach.auth.firstname} {coach.auth.lastname}</div>
-                                                                        <Link to={"/prestation/" + prestation.id + "/coach/" + coach.id} class="view-coach-button">
+                                                                        <Link to={"/prestation/" + prestation.id + "/coach/" + coach.id + "/add"} class="view-coach-button">
                                                                             Voir coach
                                                                         </Link>
                                                                     </div>
