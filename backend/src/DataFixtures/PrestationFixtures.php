@@ -16,25 +16,27 @@ class PrestationFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i <= 35; $i++) {
-            $franchise = $manager->getRepository(Franchise::class)->findOneBy(['name' => "Franchise" . $i]);
-            if ($franchise) {
+        for ($i = 0; $i <= 8; $i++) {
+            $franchise = $manager->getRepository(Franchise::class)->findAll()[$i];
+
+            for ($j=0; $j < 2; $j++) { 
                 $object = (new Prestation())
                     ->setFranchise($franchise)
-                    ->setName("Prestation" . $i)
-                    ->setDescription("Description" . $i)
-                    ->setPrice($i);
-    
+                    ->setName("Prestation" . $j)
+                    ->setDescription("Description" . $j)
+                    ->setPrice(rand(10, 100));
+
                 $manager->persist($object);
             }
         }
 
         $manager->flush();
     }
+
     public function getDependencies(): array
     {
         return [
-            FranchiseFixture::class
+            FranchiseFixture::class,
         ];
     }
 }

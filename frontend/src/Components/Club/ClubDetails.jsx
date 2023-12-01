@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getClubDetails } from '../../hook/clubs/getClub';
-
+import '@css/Clubs.css';
 
 function ClubDetails() {
     const { id } = useParams();
@@ -21,50 +21,48 @@ function ClubDetails() {
     return (
         <main>
             {
-                loading 
-                ? <div>Chargement...</div> 
-                : 
-                <div>
-                    <div>{club.name}</div>
-                    <div>{club.company.name}</div>
-                    <div>{club.description}</div>
-                    <div>
-                        <div>{club.address}</div>
-                        <div>{club.city}</div>
-                        <div>{club.zip_code}</div>
+                loading
+                    ? <div class="loading">Chargement...</div>
+                    :
+                    <div class="container-club">
+                        <div class="club-card">
+                            <div class="club-name">{club.name}</div>
+                            <div class="company-name">{club.company.name}</div>
+                            <div class="description">{club.description}</div>
+                            <div class="address">
+                                <div class="city-zip">{club.address}, {club.city} - {club.zip_code}</div>
+                            </div>
+                            <div class="prestations">
+                                {
+                                    club.prestations.map((prestation, index) => {
+                                        return (
+                                            <div class="prestation-card" key={index}>
+                                                <div class="prestation-name">{prestation.name}</div>
+                                                <div class="prestation-price">Prix : {prestation.price}€</div>
+                                                <div class="coach-list">
+                                                    {
+                                                        prestation.coach.length === 0
+                                                            ? 'Pas de coach disponible'
+                                                            :
+                                                            prestation.coach.map((coach, index) => {
+                                                                return (
+                                                                    <div class="coach-card" key={index}>
+                                                                        <div class="coach-name">{coach.auth.firstname} {coach.auth.lastname}</div>
+                                                                        <Link to={"/prestation/" + prestation.id + "/coach/" + coach.id + "/add"} class="view-coach-button">
+                                                                            Voir coach
+                                                                        </Link>
+                                                                    </div>
+                                                                )
+                                                            })
+                                                    }
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        Les prestations : 
-                        {
-                            club.prestations.map((prestation, index) => {
-                                return (
-                                    <div key={index}>
-                                        <div>
-                                            {prestation.name} sont prix est de : {prestation.price}€ avec le(s) coach(s) 
-                                            { 
-                                                prestation.coach.length === 0 
-                                                ? ' pas de coach disponible'
-                                                :
-                                                prestation.coach.map((coach, index) => {
-                                                    return (
-                                                        <div key={index}>
-                                                            <div>
-                                                                {coach.auth.firstname} {coach.auth.lastname}
-                                                            </div>
-                                                            <Link to={"/prestation/" + prestation.id + "/coach/" + coach.id+"/add"}>
-                                                                <button>voir coach</button>
-                                                            </Link>
-                                                        </div>
-                                                    )
-                                                })
-                                            }
-                                        </div>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                </div>
             }
         </main>
     );
