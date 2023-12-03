@@ -106,7 +106,7 @@ function Schedule({ onButtonClick, ...otherProps }) {
                 <div className="popup__content__texts">
 
                     <h2>Vous avez reserver un Cours :</h2>
-                    <p>Prestation : {eventDetail.title} {eventDetail.idPrestation}</p>
+                    <p>Prestation : {eventDetail.title}</p>
                     <p>Coach : {eventDetail.coach} </p>
                     <p>Client : {eventDetail.client}</p>
 
