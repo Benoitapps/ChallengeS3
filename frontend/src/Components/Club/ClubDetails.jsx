@@ -11,7 +11,6 @@ function ClubDetails() {
     useEffect(() => {
         const fetchData = async () => {
             const result = await getClubDetails(id);
-            console.log(result)
             setClub(result);
             setLoading(false);
         };

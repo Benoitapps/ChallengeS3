@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getCoachDetails } from "../../hook/coach/getCoach.js";
+import { accountService } from '../../services/account.service.js';
 import '@css/Coach.css';
 
 function CoachDetails() {
@@ -17,14 +18,12 @@ function CoachDetails() {
             setLoading(false);
         };
         fetchData();
-
-
     }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = new FormData(e.target);
-        const user = JSON.parse(localStorage.getItem('myUser'));
+        const user = accountService.getValuesToken();
 
         const addReview = await fetch(`http://localhost:8888/api/review_coaches`, {
             method: 'POST',
@@ -33,7 +32,7 @@ function CoachDetails() {
             },
             body: JSON.stringify({
                 coach: `api/coaches/${id}`,
-                client: `api/clients/${user.userId}`,
+                client: `api/clients/${user.user_id}`,
                 note: parseInt(data.get('note')),
             }),
         });
