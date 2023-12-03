@@ -6,7 +6,6 @@ import { accountService } from './services/account.service.js';
 
 // Front
 import UserRoute from './UserRoute.jsx';
-import Home from './Components/Home';
 import NavBar from './Components/NavBar';
 import Login from './Components/Authentication/Login';
 import SignUp from './Components/Authentication/SignUp';
@@ -71,8 +70,7 @@ function App() {
           {/* Front */}
           <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} />}>
             {/* Route for user not connected */}
-            <Route index element={<Home />} />
-            <Route path="club" element={<ClubsPage/>} />
+            <Route index element={<ClubsPage/>} />
             <Route path="club/:id" element={<ClubDetails/>} />
             <Route path="coach/:id" element={<CoachDetails/>} />
 
