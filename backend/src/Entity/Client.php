@@ -40,6 +40,9 @@ class Client
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: ReviewClient::class)]
     private Collection $reviewClients;
 
+    #[Groups(['coach:read'])]
+    private ?float $averageRatingClient = null;
+
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: ReviewCoach::class)]
     private Collection $reviewCoaches;
 
@@ -144,6 +147,16 @@ class Client
         }
 
         return $this;
+    }
+
+    public function getAverageRatingClient(): ?float
+    {
+        $sum = 0;
+        foreach ($this->reviewClients as $reviewClient) {
+            $sum += $reviewClient->getNote();
+        }
+        $this->averageRatingClient = $sum / count($this->reviewClients);
+        return $this->averageRatingClient;
     }
 
     /**

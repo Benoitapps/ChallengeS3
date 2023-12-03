@@ -22,34 +22,37 @@ function ClubDetails() {
         <main>
             {
                 loading
-                    ? <div class="loading">Chargement...</div>
+                    ? <div className="loading">Chargement...</div>
                     :
-                    <div class="container-club">
-                        <div class="club-card">
-                            <div class="club-name">{club.name}</div>
-                            <div class="company-name">{club.company.name}</div>
-                            <div class="description">{club.description}</div>
-                            <div class="address">
-                                <div class="city-zip">{club.address}, {club.city} - {club.zip_code}</div>
+                    <div className="container-club">
+                        <div className="club-card">
+                            <div className="club-name">{club.name}</div>
+                            <div className="company-name">{club.company.name}</div>
+                            <div className="description">{club.description}</div>
+                            <div className="address">
+                                <div className="city-zip">{club.address}, {club.city} - {club.zip_code}</div>
                             </div>
-                            <div class="prestations">
+                            <div className="prestations">
                                 {
                                     club.prestations.map((prestation, index) => {
                                         return (
-                                            <div class="prestation-card" key={index}>
-                                                <div class="prestation-name">{prestation.name}</div>
-                                                <div class="prestation-price">Prix : {prestation.price}€</div>
-                                                <div class="coach-list">
+                                            <div className="prestation-card" key={index}>
+                                                <div className="prestation-name">{prestation.name}</div>
+                                                <div className="prestation-price">Prix : {prestation.price}€</div>
+                                                <div className="coach-list">
                                                     {
                                                         prestation.coach.length === 0
                                                             ? 'Pas de coach disponible'
                                                             :
                                                             prestation.coach.map((coach, index) => {
                                                                 return (
-                                                                    <div class="coach-card" key={index}>
-                                                                        <div class="coach-name">{coach.auth.firstname} {coach.auth.lastname}</div>
-                                                                        <Link to={"/prestation/" + prestation.id + "/coach/" + coach.id + "/add"} class="view-coach-button">
+                                                                    <div className="coach-card" key={index}>
+                                                                        <div className="coach-name">{coach.auth.firstname} {coach.auth.lastname}</div>
+                                                                        <Link to={"/coach/" + coach.id} className="view-coach-button">
                                                                             Voir coach
+                                                                        </Link>
+                                                                        <Link to={"/prestation/" + prestation.id + "/coach/" + coach.id + "/add"} className="view-coach-button">
+                                                                            Réserver un créneau
                                                                         </Link>
                                                                     </div>
                                                                 )

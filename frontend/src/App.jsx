@@ -15,6 +15,7 @@ import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
 import Profile from './Components/Profile.jsx';
 import ClubsPage from './Components/Club/ClubsPage.jsx';
 import ClubDetails from './Components/Club/ClubDetails.jsx';
+import CoachDetails from './Components/Coach/CoachDetails.jsx';
 
 // Admin
 import NavBarAdmin from './Components/Admin/NavBar';
@@ -73,6 +74,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="club" element={<ClubsPage/>} />
             <Route path="club/:id" element={<ClubDetails/>} />
+            <Route path="coach/:id" element={<CoachDetails/>} />
 
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login handleConnect={handleConnect} />} />
@@ -86,7 +88,6 @@ function App() {
 
             <Route path="prestation/:prestationId/coach/:coachId/update" element={<ScheduleReservation eventDetail={eventDetail} isUpdate={true}/>} />
             <Route path="prestation/:prestationId/coach/:coachId/add" element={<ScheduleReservation eventDetail={eventDetail} isUpdate={false}/>} />
-
 
           </Route>
 
