@@ -43,7 +43,6 @@ class SlotFixtures extends Fixture implements DependentFixtureInterface
 
         $object = (new Slot())
             ->setTimeOff($timeoff1)
-            ->setClient($client1)
             ->setStartDate((new \DateTime('now'))->modify('+7 hours'))
             ->setEndDate((new \DateTime('now'))->modify('+8 hours'))
             ->setCoach($coach2);
