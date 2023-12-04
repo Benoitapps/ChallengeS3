@@ -84,8 +84,8 @@ function App() {
             {/* Route doesn't exist */}
             <Route path="*" element={<Navigate to="/" />} />
 
-            <Route path="prestation/:prestationId/coach/:coachId/update" element={<ScheduleReservation eventDetail={eventDetail} isUpdate={true}/>} />
-            <Route path="prestation/:prestationId/coach/:coachId/add" element={<ScheduleReservation eventDetail={eventDetail} isUpdate={false}/>} />
+            <Route path="prestation/:prestationId/coach/:coachId/update" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={true} isConnected={isConnected}/> }  />
+            <Route path="prestation/:prestationId/coach/:coachId/add" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={false} isConnected={isConnected}/>} />
 
           </Route>
 
