@@ -32,10 +32,10 @@ const transformData = (initialData) => {
 
 export const eventCoach = async (id) => {
     const initialData = await getSlotCoach(id);
-    console.log("initialdata", initialData);
+    // console.log("initialdata", initialData);
     // const res = transHorraire(initialData)
     const transformedData = transformData(initialData);
-    console.log("transform",transformedData);
+    // console.log("transform",transformedData);
 
     return transformedData;
 };
