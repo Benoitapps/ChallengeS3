@@ -8,6 +8,9 @@ const getCompanies = async () => {
             },
         });
         let data = await result.json();
+        if (result.status !== 200) {
+            throw data;
+        }
         return data;
     } catch (error) {
         console.error("Erreur lors de la recherche :", error);

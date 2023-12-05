@@ -10,7 +10,6 @@ function CompaniesList() {
             setCompaniesLoading(true);
 
             let companies = await getCompanies();
-
             setCompanies(companies);
             setCompaniesLoading(false);
         };

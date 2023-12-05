@@ -72,6 +72,9 @@ function App() {
   }
 
   useEffect(() => {
+    if (localStorage.getItem('token') && accountService.getValuesToken().exp < Date.now()) {
+      localStorage.removeItem('token');
+    }
     setIsAdmin(userIsAdmin());
     setIsManager(userIsManager());
 
