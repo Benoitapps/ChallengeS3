@@ -66,8 +66,8 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
     //recuperation des evenement et des horraires du coach au chargement de la page
     useEffect(() => {
-        console.log("eventDetail",eventDetail);
-        console.log("isUpdate",isUpdate);
+        // console.log("eventDetail",eventDetail);
+        // console.log("isUpdate",isUpdate);
         if (calendarFilterStart !== null && calendarFilterEnd !== null) {
             fetchData();
 
@@ -129,10 +129,10 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
                 const time2start = new Date("2000-01-01T"+DateFormat.timeCompareStart+":00Z");//click
                 const time2end = new Date("2000-01-01T"+DateFormat.timeCompareEnd+":00Z");
 
-                console.log("heur Debut Coach",time1start)
-                console.log("heur fin coach",time1end)
-                console.log("Heur debut click",time2start)
-                console.log("heur fin click",time2end)
+                // console.log("heur Debut Coach",time1start)
+                // console.log("heur fin coach",time1end)
+                // console.log("Heur debut click",time2start)
+                // console.log("heur fin click",time2end)
 
                 i = scheduleHeur.length;
                 click = (time2start >= time1start && time2end < time1end) && (dateBaseStart > now);
@@ -225,18 +225,18 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
             }
 
             setLoading(true);
-            console.log("loading lancer a ",loading);
+            // console.log("loading lancer a ",loading);
 
             fetchData();
             closeModal();
         };
 
         if(isUpdate){
-            console.log("le update")
+            // console.log("le update")
             upadateSlot(dateStartModal, dateEndModal,eventDetail.slotId);
         }else{
-            console.log("le add")
-            console.log("idClient",idClient);
+            // console.log("le add")
+            // console.log("idClient",idClient);
             addslot(dateStartModal, dateEndModal,idPrestation,idCoach,idClient);
         }
 

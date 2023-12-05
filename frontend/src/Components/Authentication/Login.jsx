@@ -33,10 +33,12 @@ function Login({ handleConnect }) {
             const body = await result.json();
 
             localStorage.setItem('token', body.token);
+            // const decodedToken = jwtDecode(body.token);
+            // console.log("decode", decodedToken);
             handleConnect();
             navigate("/");
         } catch (error) {
-            alert('Une erreur est survenue lors de la tentative de connexion. Veuillez réessayer plus tard:' + error);
+            alert('Une erreur est survenue lors de la tentative de connexion. Veuillez réessayer plus tard.');
             setLoading(false);
         }
     };

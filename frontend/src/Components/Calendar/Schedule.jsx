@@ -15,8 +15,6 @@ import loadingGIF from "@img/loading.gif";
 import logo from "@img/logo.svg";
 
 
-
-
 function Schedule({ onButtonClick, ...otherProps }) {
 
     //attente avant de charger les evenements
@@ -155,8 +153,8 @@ function Schedule({ onButtonClick, ...otherProps }) {
             onButtonClick(eventDetail);
         }
 
-        console.log("changement de page");
-        console.log(eventDetail);
+        // console.log("changement de page");
+        // console.log(eventDetail);
         const route = `/prestation/${eventDetail.idPrestation}/coach/${eventDetail.idCoach}/update`;
 
         navigate(route);
