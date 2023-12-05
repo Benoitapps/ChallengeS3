@@ -19,6 +19,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new GetCollection(
+            normalizationContext: [
+                'groups' => [
+                    'franchise:read',
+                ],
+            ],
+            security: "is_granted('ROLE_MANAGER')",
+        ),
+        new GetCollection(
+            uriTemplate: '/franchises/with-prestations',
             paginationItemsPerPage: 4,
             normalizationContext: ['groups' => ['franchise:read']],
             security: "is_granted('ROLE_MANAGER')",

@@ -17,6 +17,9 @@ final class FindFranchisesExtension implements QueryCollectionExtensionInterface
 
     public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []): void
     {
+        if ($operation->getUriTemplate() !== '/franchises/with-prestations') {
+            return;
+        }
         $this->addWhere($queryBuilder, $resourceClass);
     }
 

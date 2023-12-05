@@ -28,14 +28,14 @@ security:
         ROLE_USER:        []
 
     access_control:
-#        - { path: ^/api$, roles: PUBLIC_ACCESS } # Autorise uniquement l'accès à la racine de l'API
-#        - { path: ^/auth, roles: PUBLIC_ACCESS }
-#        - { path: ^/api/franchises, roles: PUBLIC_ACCESS }
-#        - { path: ^/api/prestations/[\d]+, methods: GET, roles: PUBLIC_ACCESS }
-#        - { path: ^/api/users, methods: POST, roles: PUBLIC_ACCESS }
-#        - { path: ^/api/users, methods: GET, roles: PUBLIC_ACCESS }
-#        - { path: ^/api/managers, methods: POST, roles: PUBLIC_ACCESS }
-#        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api$, roles: PUBLIC_ACCESS } # Autorise uniquement l'accès à la racine de l'API
+        - { path: ^/auth, roles: PUBLIC_ACCESS }
+        - { path: ^/api/franchises, roles: PUBLIC_ACCESS }
+        - { path: ^/api/prestations/[\d]+, methods: GET, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users, methods: POST, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users, methods: GET, roles: PUBLIC_ACCESS }
+        - { path: ^/api/managers, methods: POST, roles: PUBLIC_ACCESS }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 
         # role admin
         - { path: ^/admin, roles: ROLE_ADMIN }
