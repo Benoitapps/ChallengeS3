@@ -23,6 +23,6 @@ export const tab = async (filterDateStart , filterDateEnd ) => {
 
     const initialData = await getSlots(filterDateStart, filterDateEnd);
     const transformedData = transformData(initialData);
-    console.log(transformedData, transformedData)
+    // console.log(transformedData, transformedData)
     return transformedData;
 };
