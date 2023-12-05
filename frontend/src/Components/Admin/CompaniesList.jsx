@@ -54,7 +54,7 @@ function CompaniesList() {
                             <th>Manager id</th>
                             <th>Nom de la company</th>
                             <th>Description</th>
-                            <td>Actions</td>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>

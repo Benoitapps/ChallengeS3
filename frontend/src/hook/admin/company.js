@@ -8,7 +8,7 @@ const getCompanies = async () => {
             },
         });
         let data = await result.json();
-        if (result.status !== 200) {
+        if (data?.message) {
             throw data;
         }
         return data;

@@ -8,7 +8,7 @@ const getUsers = async () => {
             },
         });
         let data = await result.json();
-        if(data.status !== 200) {
+        if (data?.message) {
             throw data;
         }
         return data;

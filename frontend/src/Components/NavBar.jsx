@@ -41,16 +41,22 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager }) {
                     Clubs
                   </Link>
                 </li>
-                <li>
-                  <Link to="/schedule" className="header__links">
-                    Mes cours
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/profile" className="header__links">
-                    Profil
-                  </Link>
-                </li>
+                {isConnected ? (
+                  <>
+                    <li>
+                      <Link to="/schedule" className="header__links">
+                        Mes cours
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/profile" className="header__links">
+                        Profil
+                      </Link>
+                    </li>
+                  </>
+                )
+                : <></>
+              }
               </div>
               <div className="header__right">
                 {
