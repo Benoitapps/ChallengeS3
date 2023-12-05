@@ -50,9 +50,9 @@ function CoachDetails() {
                         <div className="coach-card">
                             <div className="coach-card__name">{coach.auth.firstname}</div>
                             <div className="coach-card__note">{
-                                coach.averageRatingCoach === 0
+                                coach.rating === 0
                                     ? 'Pas de note'
-                                    : coach.averageRatingCoach
+                                    : coach.rating
                             }</div>
                         </div>
 

@@ -1,5 +1,5 @@
 const addReview = async (coachId, clientId, note) => {
-    const result = await fetch(`http://localhost:8888/api/review_coaches`, {
+    return await fetch(`http://localhost:8888/api/review_coaches`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
@@ -12,7 +12,6 @@ const addReview = async (coachId, clientId, note) => {
             note: note,
         }),
     });
-    return result;
 };
 
 export { addReview };
