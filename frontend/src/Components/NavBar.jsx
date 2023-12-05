@@ -37,13 +37,13 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager }) {
               </li>
               <div className="header__center">
                 <li>
-                  <Link to="/schedule" className="header__links">
-                    Mes cours
+                  <Link to="/scheduleReservation" className="header__links">
+                    Clubs
                   </Link>
                 </li>
                 <li>
-                  <Link to="/scheduleReservation" className="header__links">
-                   Prendre des cours
+                  <Link to="/schedule" className="header__links">
+                    Mes cours
                   </Link>
                 </li>
                 <li>
