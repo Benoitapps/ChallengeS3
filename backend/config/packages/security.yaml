@@ -36,6 +36,8 @@ security:
         # TODO : A supprimer
         - { path: ^/api/review_coaches, methods: GET, roles: PUBLIC_ACCESS }
         - { path: ^/api/users, methods: POST, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users, methods: GET, roles: PUBLIC_ACCESS }
+        - { path: ^/api/managers, methods: POST, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 
         # role admin

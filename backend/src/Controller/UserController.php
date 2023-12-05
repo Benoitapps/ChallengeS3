@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Client;
+use App\Entity\Coach;
+use App\Entity\Manager;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -26,8 +29,18 @@ class UserController extends AbstractController
         $user->setFirstName($userData['firstname']);
         $user->setLastName($userData['lastname']);
 
-        if (isset($userData['userType']) && strtolower($userData['userType']) == 'manager') {
+        $userType = $userData['userType'];
+
+        if ($this->isManager($userType)) {
             $user->setRoles(['ROLE_MANAGER']);
+        }
+
+//        if ($this->isCoach($userType)) {
+//            $user->setRoles(['ROLE_COACH']);
+//        }
+
+        if ($this->isClient($userType)) {
+            $user->setRoles(['ROLE_CLIENT']);
         }
 
         $user->setPlainPassword($userData['plainPassword']);
@@ -45,6 +58,27 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
+        if ($this->isManager($userType)) {
+            $manager = new Manager();
+            $manager->setAuth($user);
+            $entityManager->persist($manager);
+            $entityManager->flush();
+        }
+
+//        if ($this->isCoach($userType)) {
+//            $coach = new Coach();
+//            $coach->setAuth($user);
+//            $entityManager->persist($coach);
+//            $entityManager->flush();
+//        }
+
+        if ($this->isClient($userType)) {
+            $client = new Client();
+            $client->setAuth($user);
+            $entityManager->persist($client);
+            $entityManager->flush();
+        }
+
         $userData = [
             // 'id' => $user->getId(),
             'email' => $user->getEmail(),
@@ -57,5 +91,20 @@ class UserController extends AbstractController
             json_encode($userData),
             Response::HTTP_CREATED
         );
+    }
+
+    private function isClient($userType)
+    {
+        return isset($userType) && strtolower($userType) == 'client';
+    }
+
+//    private function isCoach($userType)
+//    {
+//        return isset($userType) && strtolower($userType) == 'coach';
+//    }
+
+    private function isManager($userType)
+    {
+        return isset($userType) && strtolower($userType) == 'manager';
     }
 }

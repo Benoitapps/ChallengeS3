@@ -3,9 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Get;
-
+use ApiPlatform\Metadata\Post;
 use App\Repository\PrestationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -38,7 +37,7 @@ class Prestation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['slot:read','slot:read:collection','prestation:write', 'prestation:read', 'coach:read:slots','franchise:read'])]
+    #[Groups(['slot:read', 'slot:read:collection', 'prestation:write', 'prestation:read', 'coach:read:slots', 'company:read:franchise', 'franchise:read'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 

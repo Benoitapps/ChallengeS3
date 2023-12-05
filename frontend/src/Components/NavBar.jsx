@@ -3,7 +3,7 @@ import { Outlet, Link, useLocation } from "react-router-dom";
 import "@css/NavBar.css";
 import logo from "@img/logo.svg";
 
-function NavBar({ isConnected, handleDisconnect, isAdmin }) {
+function NavBar({ isConnected, handleDisconnect, isAdmin, isManager }) {
   const [isMenuVisible, setIsMenuVisible] = useState(true);
   const location = useLocation();
   const links = document.querySelectorAll(".header__links");
@@ -56,6 +56,15 @@ function NavBar({ isConnected, handleDisconnect, isAdmin }) {
                       </Link>
                     </li>
                   )
+                }
+                {
+                    isManager && (
+                        <li>
+                          <Link to="/manager" className="header__links">
+                            Manager
+                          </Link>
+                        </li>
+                    )
                 }
                 {isConnected ? (
                   <li>
