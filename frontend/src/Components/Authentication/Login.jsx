@@ -32,7 +32,6 @@ function Login({ handleConnect }) {
 
             const body = await result.json();
 
-            console.log(body);
             localStorage.setItem('token', body.token);
             // const decodedToken = jwtDecode(body.token);
             // console.log("decode", decodedToken);
