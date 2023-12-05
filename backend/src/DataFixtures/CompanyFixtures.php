@@ -21,7 +21,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             ->setName("Fitness Park")
             ->setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget aliquam lacinia, nunc nisl aliquet nunc, quis aliquam nisl nisl")
             ->setKbis("Kbis1")
-            ->setIsVerified(true);
+            ->setIsVerified(false);
 
         $manager->persist($object);
 

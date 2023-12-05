@@ -3,9 +3,30 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\ManagerRepository;
 use Doctrine\ORM\Mapping as ORM;
-#[ApiResource()]
+use Symfony\Component\Serializer\Annotation\Groups;
+
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(
+            normalizationContext: ['groups' => ['company:read']],
+        ),
+        new Post(
+            denormalizationContext: ['groups' => ['manager:write']],
+        ),
+        new Delete(),
+        new Patch(
+            denormalizationContext: ['groups' => ['company:update']],
+        ),
+    ],
+)]
 
 #[ORM\Entity(repositoryClass: ManagerRepository::class)]
 class Manager
@@ -17,6 +38,7 @@ class Manager
 
     #[ORM\OneToOne(inversedBy: 'manager', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['company:read', 'manager:write'])]
     private ?User $auth = null;
 
     #[ORM\OneToOne(mappedBy: 'manager', cascade: ['persist', 'remove'])]

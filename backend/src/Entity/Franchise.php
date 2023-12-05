@@ -3,13 +3,17 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\FranchiseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Get;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
@@ -20,25 +24,44 @@ use Symfony\Component\Serializer\Annotation\Groups;
                     'franchise:read',
                 ],
             ],
+            security: "is_granted('ROLE_MANAGER')",
         ),
         new GetCollection(
             uriTemplate: '/franchises/with-prestations',
             paginationItemsPerPage: 4,
-            normalizationContext: [
-                'groups' => [
-                    'franchise:read',
-                ],
-            ],
+            normalizationContext: ['groups' => ['franchise:read']],
+//            security: "is_granted('ROLE_MANAGER')",
         ),
         new Get(
-            normalizationContext: [
-                'groups' => [
-                    'franchise:read',
-                ],
-            ],
-        )
+            normalizationContext: ['groups' => ['franchise:read']],
+//            security: "is_granted('ROLE_MANAGER')",
+        ),
+        new Post(
+            denormalizationContext: ['groups' => ['franchise:write']],
+            security: "is_granted('ROLE_MANAGER')",
+        ),
+        new Delete(),
+        new Patch(
+            denormalizationContext: ['groups' => ['franchise:update']],
+        ),
+    ],
+//    normalizationContext: ['groups' => ['franchise:read']],
+//    denormalizationContext: ['groups' => ['franchise:write']],
+//    security: "is_granted('ROLE_ADMIN')",
+)]
+#[ApiResource(
+    uriTemplate: 'companies/{id}/franchises',
+    shortName: 'Company',
+    operations: [
+        new GetCollection(
+            normalizationContext: ['groups' => ['company:read:franchise']],
+        ),
+    ],
+    uriVariables: [
+        'id' => new Link(toProperty: 'company', fromClass: Company::class)
     ]
 )]
+
 #[ORM\Entity(repositoryClass: FranchiseRepository::class)]
 class Franchise
 {
@@ -49,35 +72,36 @@ class Franchise
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['franchise:read'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['franchise:read'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['franchise:read'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['franchise:read'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 5)]
-    #[Groups(['franchise:read'])]
-    private ?string $zip_code = null;
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
+    private ?string $zipCode = null;
 
     #[ORM\ManyToOne(inversedBy: 'franchises')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['franchise:read'])]
+    #[Groups(['franchise:read', 'franchise:write'])]
     private ?Company $company = null;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Coach::class)]
+    #[Groups(['franchise:read', 'company:read:franchise'])]
     private Collection $coachs;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Prestation::class)]
-    #[Groups(['franchise:read'])]
+    #[Groups(['franchise:read', 'company:read:franchise'])]
     private Collection $prestations;
 
     public function __construct()
@@ -141,12 +165,12 @@ class Franchise
 
     public function getZipCode(): ?string
     {
-        return $this->zip_code;
+        return $this->zipCode;
     }
 
-    public function setZipCode(string $zip_code): static
+    public function setZipCode(string $zipCode): static
     {
-        $this->zip_code = $zip_code;
+        $this->zipCode = $zipCode;
 
         return $this;
     }

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import '@css/Authentification.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Login({ handleConnect }) {
     const navigate = useNavigate();
@@ -33,6 +32,7 @@ function Login({ handleConnect }) {
 
             const body = await result.json();
 
+            console.log(body);
             localStorage.setItem('token', body.token);
             // const decodedToken = jwtDecode(body.token);
             // console.log("decode", decodedToken);
