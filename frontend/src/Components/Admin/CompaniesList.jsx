@@ -30,9 +30,16 @@ function CompaniesList() {
             }),
         });
         result = await result.json();
-        if(result.id) {
-            window.location.reload();
-        }
+        if (!result) return alert('Erreur lors de la modification de la company');
+
+        setCompanies(
+            companies.map((company) => {
+                if (company.id === companyId) {
+                    company.isVerified = !verified;
+                }
+                return company;
+            })
+        );
     };
 
     return (
