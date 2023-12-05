@@ -18,23 +18,21 @@ function CompaniesList() {
         loadData();
     }, []);
 
-    const handleVerifCompany = async (companyId) => {
-        console.log('Vérification de la société');
-        // TODO: to implement
-        // let result = await fetch('http://localhost:8000/api/admin/company/verify', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': 'Bearer ' + localStorage.getItem('token'),
-        //     },
-        //     body: JSON.stringify({
-        //         companyId
-        //     }),
-        // });
-
-        // result = await result.json();
-
-        // console.log(result)
+    const handleVerifCompany = async (companyId, verified) => {
+        let result = await fetch('http://localhost:8888/api/companies/' + companyId, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/merge-patch+json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            },
+            body: JSON.stringify({
+                isVerified: !verified,
+            }),
+        });
+        result = await result.json();
+        if(result.id) {
+            window.location.reload();
+        }
     };
 
     return (
@@ -46,9 +44,9 @@ function CompaniesList() {
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Is verified</th>
+                            <th>Vérifié</th>
                             <th>Manager id</th>
-                            <th>Name</th>
+                            <th>Nom de la company</th>
                             <th>Description</th>
                             <td>Actions</td>
                         </tr>
@@ -62,9 +60,15 @@ function CompaniesList() {
                                 <td>{company.name}</td>
                                 <td style={{width: '20%'}}>{company.description}</td>
                                 <td>
-                                    <button onClick={() => handleVerifCompany(company.id)}>
-                                        Vérifier
-                                    </button>
+                                    {
+                                        company.isVerified 
+                                        ? <button onClick={() => handleVerifCompany(company.id, company.isVerified)}>
+                                            Réfuté
+                                        </button>
+                                        : <button onClick={() => handleVerifCompany(company.id, company.isVerified)}>
+                                            Vérifier
+                                        </button>
+                                    }
                                 </td>
                             </tr>
                         ))}
