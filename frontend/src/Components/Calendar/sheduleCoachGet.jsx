@@ -43,10 +43,20 @@ const transformData = (initialData, date1 , date2) => {
 
     }
 
-    const heuresEtMinutesUniquement = tabres.map(objet => ({
-        start_date: new Date(objet.start_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        end_date: new Date(objet.end_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    }));
+    const heuresEtMinutesUniquement = tabres.map(objet => {
+        const startDate = new Date(objet.start_date);
+        const endDate = new Date(objet.end_date);
+
+        // Soustraire deux heures aux dates
+        startDate.setHours(startDate.getHours() -1);
+        endDate.setHours(endDate.getHours() - 1);
+        endDate.setMinutes(endDate.getMinutes() +1);
+
+        return {
+            start_date: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            end_date: endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+    });
 
 
     const dateUniquement = tabres.map(objet => ({

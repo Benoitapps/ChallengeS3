@@ -80,6 +80,9 @@ class Coach
     private Collection $reviewCoaches;
 
     #[Groups(['coach:read'])]
+    private ?float $averageRatingCoach = null;
+
+    #[Groups(['coach:read'])]
     #[ORM\ManyToMany(targetEntity: Prestation::class, mappedBy: 'coach')]
     private Collection $prestations;
 
@@ -231,6 +234,16 @@ class Coach
         }
 
         return $this;
+    }
+
+    public function getAverageRatingCoach(): ?float
+    {
+        $sum = 0;
+        foreach ($this->reviewCoaches as $reviewCoach) {
+            $sum += $reviewCoach->getNote();
+        }
+        $this->averageRatingCoach = $sum / count($this->reviewCoaches);
+        return $this->averageRatingCoach;
     }
 
     /**

@@ -19,5 +19,6 @@ export const eventDetails = async (id) => {
     const initialData = await getSlotDetails(id);
     console.log(initialData)
     const transformedData = transformData(initialData);
+    console.log(transformedData);
     return transformedData;
 };

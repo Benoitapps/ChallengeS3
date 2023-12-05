@@ -30,11 +30,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
             uriTemplate: '/franchises/with-prestations',
             paginationItemsPerPage: 4,
             normalizationContext: ['groups' => ['franchise:read']],
-            security: "is_granted('ROLE_MANAGER')",
+//            security: "is_granted('ROLE_MANAGER')",
         ),
         new Get(
             normalizationContext: ['groups' => ['franchise:read']],
-            security: "is_granted('ROLE_MANAGER')",
+//            security: "is_granted('ROLE_MANAGER')",
         ),
         new Post(
             denormalizationContext: ['groups' => ['franchise:write']],
@@ -47,7 +47,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
 //    normalizationContext: ['groups' => ['franchise:read']],
 //    denormalizationContext: ['groups' => ['franchise:write']],
-    security: "is_granted('ROLE_ADMIN')",
+//    security: "is_granted('ROLE_ADMIN')",
 )]
 #[ApiResource(
     uriTemplate: 'companies/{id}/franchises',

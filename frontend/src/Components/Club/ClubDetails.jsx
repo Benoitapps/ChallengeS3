@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getClubDetails } from '../../hook/clubs/getClub';
-
+import '@css/Clubs.css';
 
 function ClubDetails() {
     const { id } = useParams();
@@ -11,7 +11,6 @@ function ClubDetails() {
     useEffect(() => {
         const fetchData = async () => {
             const result = await getClubDetails(id);
-            console.log(result)
             setClub(result);
             setLoading(false);
         };
@@ -21,50 +20,51 @@ function ClubDetails() {
     return (
         <main>
             {
-                loading 
-                ? <div>Chargement...</div> 
-                : 
-                <div>
-                    <div>{club.name}</div>
-                    <div>{club.company.name}</div>
-                    <div>{club.description}</div>
-                    <div>
-                        <div>{club.address}</div>
-                        <div>{club.city}</div>
-                        <div>{club.zip_code}</div>
+                loading
+                    ? <div className="loading">Chargement...</div>
+                    :
+                    <div className="container-club">
+                        <div className="club-card">
+                            <div className="club-name">{club.name}</div>
+                            <div className="company-name">{club.company.name}</div>
+                            <div className="description">{club.description}</div>
+                            <div className="address">
+                                <div className="city-zip">{club.address}, {club.city} - {club.zip_code}</div>
+                            </div>
+                            <div className="prestations">
+                                {
+                                    club.prestations.map((prestation, index) => {
+                                        return (
+                                            <div className="prestation-card" key={index}>
+                                                <div className="prestation-name">{prestation.name}</div>
+                                                <div className="prestation-price">Prix : {prestation.price}€</div>
+                                                <div className="coach-list">
+                                                    {
+                                                        prestation.coach.length === 0
+                                                            ? 'Pas de coach disponible'
+                                                            :
+                                                            prestation.coach.map((coach, index) => {
+                                                                return (
+                                                                    <div className="coach-card" key={index}>
+                                                                        <div className="coach-name">{coach.auth.firstname} {coach.auth.lastname}</div>
+                                                                        <Link to={"/coach/" + coach.id} className="view-coach-button">
+                                                                            Voir coach
+                                                                        </Link>
+                                                                        <Link to={"/prestation/" + prestation.id + "/coach/" + coach.id + "/add"} className="view-coach-button">
+                                                                            Réserver un créneau
+                                                                        </Link>
+                                                                    </div>
+                                                                )
+                                                            })
+                                                    }
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        Les prestations : 
-                        {
-                            club.prestations.map((prestation, index) => {
-                                return (
-                                    <div key={index}>
-                                        <div>
-                                            {prestation.name} sont prix est de : {prestation.price}€ avec le(s) coach(s) 
-                                            { 
-                                                prestation.coach.length === 0 
-                                                ? ' pas de coach disponible'
-                                                :
-                                                prestation.coach.map((coach, index) => {
-                                                    return (
-                                                        <div key={index}>
-                                                            <div>
-                                                                {coach.auth.firstname} {coach.auth.lastname}
-                                                            </div>
-                                                            <Link to={"/prestation/" + prestation.id + "/coach/" + coach.id}>
-                                                                <button>voir coach</button>
-                                                            </Link>
-                                                        </div>
-                                                    )
-                                                })
-                                            }
-                                        </div>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                </div>
             }
         </main>
     );

@@ -3,20 +3,24 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource()]
+#[ApiResource(
+
+)]
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[Groups(['slot:read'])]
+    #[Groups(['slot:read','client:read','user:read'])]
     #[ORM\Column]
     private ?int $id = null;
 
@@ -35,6 +39,9 @@ class Client
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: ReviewClient::class)]
     private Collection $reviewClients;
+
+    #[Groups(['coach:read'])]
+    private ?float $averageRatingClient = null;
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: ReviewCoach::class)]
     private Collection $reviewCoaches;
@@ -140,6 +147,16 @@ class Client
         }
 
         return $this;
+    }
+
+    public function getAverageRatingClient(): ?float
+    {
+        $sum = 0;
+        foreach ($this->reviewClients as $reviewClient) {
+            $sum += $reviewClient->getNote();
+        }
+        $this->averageRatingClient = $sum / count($this->reviewClients);
+        return $this->averageRatingClient;
     }
 
     /**

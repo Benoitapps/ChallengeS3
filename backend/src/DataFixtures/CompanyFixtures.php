@@ -18,8 +18,8 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
 
         $object = (new Company())
            ->setManager($manager1[0])
-            ->setName("Company1")
-            ->setDescription("Description1")
+            ->setName("Fitness Park")
+            ->setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget aliquam lacinia, nunc nisl aliquet nunc, quis aliquam nisl nisl")
             ->setKbis("Kbis1")
             ->setIsVerified(false);
 

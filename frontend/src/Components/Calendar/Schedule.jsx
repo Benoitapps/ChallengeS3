@@ -1,5 +1,5 @@
 import React, {useRef, useEffect, useState} from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -11,10 +11,16 @@ import {tab} from './eventsGet.jsx';
 import {addslot} from './eventCreate.jsx';
 import {eventDetails} from './eventDetails.jsx';
 import { deleteSlot } from "../../hook/Schedule/eventDelete.js";
+import loadingGIF from "@img/loading.gif";
+import logo from "@img/logo.svg";
+
+
 
 
 function Schedule({ onButtonClick, ...otherProps }) {
 
+    //attente avant de charger les evenements
+    const [loading, setLoading] = useState(true);
     //les evenements de la personne connecter (client ou coach)
     const [events, setEvents] = useState([]);
     const [eventId, setEventId] = useState("");
@@ -39,6 +45,7 @@ function Schedule({ onButtonClick, ...otherProps }) {
     async function fetchData() {
         let events = await tab(calendarFilterStart, calendarFilterEnd);
         setEvents(events);
+        setLoading(false);
     }
     //recuperation des evenements au chargement de la page
     useEffect(() => {
@@ -46,6 +53,10 @@ function Schedule({ onButtonClick, ...otherProps }) {
             fetchData();
         }
     }, [calendarFilterStart]);
+
+    useEffect(() => {
+
+    }, [loading]);
 
 
 
@@ -79,6 +90,10 @@ function Schedule({ onButtonClick, ...otherProps }) {
 
     //avoir les details de l'evenement
     const handleEventInfo = (info) => {
+        console.log("lance loader");
+        setLoading(true);
+
+
         setEventId(info.event._def.publicId);
 
         async function fetchEventDetails() {
@@ -117,11 +132,14 @@ function Schedule({ onButtonClick, ...otherProps }) {
                 </div>
             );
 
+
             setIsModalOpenDetail(true);
             setModalContent(modalContentInfo);
 
         }
         fetchEventDetails();
+        setLoading(false);
+
     }
 
     const closeModal = () => {
@@ -131,17 +149,18 @@ function Schedule({ onButtonClick, ...otherProps }) {
     };
 
 
-    const updateModal = (e) => {
+    const updateModal = () => {
+
         if (typeof onButtonClick === 'function') {
             onButtonClick(eventDetail);
-
-        }else{
         }
-        console.log("changement de page")
-        // TODO Benoit: changer de page avec cette route : /prestation/:prestationId/coach/:coachId
-        // navigate("/scheduleReservation");
-        alert('Schedule.jsx, line 143, change route to /prestation/:prestationId/coach/:coachId');
-    }
+
+        console.log("changement de page");
+        console.log(eventDetail);
+        const route = `/prestation/${eventDetail.idPrestation}/coach/${eventDetail.idCoach}/update`;
+
+        navigate(route);
+    };
 
     const deleteSlotbyID = (e) => {
 
@@ -151,7 +170,16 @@ function Schedule({ onButtonClick, ...otherProps }) {
     };
 
     return (
-        <main className="schedule">
+        <main>
+            <div className="schedule">
+
+
+            {loading?  <div className="fondLoader"></div> : null}
+            {loading? <img className="loader" src={loadingGIF}  alt="Chargement..."/> : null}
+
+
+            <h1>Mes Reservations</h1>
+
             <FullCalendar
                 ref={calendarRef}
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
@@ -183,6 +211,7 @@ function Schedule({ onButtonClick, ...otherProps }) {
                    nameButton1={"Modifier"} nameButton2={"Supprimer"} annuler={"Annuler"}>
                 {modalContent}
             </PopUp>
+            </div>
         </main>
     );
 }

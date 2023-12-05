@@ -6,7 +6,6 @@ import { accountService } from './services/account.service.js';
 
 // Front
 import UserRoute from './UserRoute.jsx';
-import Home from './Components/Home';
 import NavBar from './Components/NavBar';
 import Login from './Components/Authentication/Login';
 import SignUp from './Components/Authentication/SignUp';
@@ -15,6 +14,7 @@ import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
 import Profile from './Components/Profile.jsx';
 import ClubsPage from './Components/Club/ClubsPage.jsx';
 import ClubDetails from './Components/Club/ClubDetails.jsx';
+import CoachDetails from './Components/Coach/CoachDetails.jsx';
 
 // Admin
 import NavBarAdmin from './Components/Admin/NavBar';
@@ -57,6 +57,7 @@ function App() {
 
   const [eventDetail, setEventDetail] = useState(null);
 
+
   const onButtonClick = (detail) => {
     setEventDetail(detail);
   };
@@ -89,9 +90,9 @@ function App() {
           {/* Front */}
           <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} isManager={isManager}/>}>
             {/* Route for user not connected */}
-            <Route index element={<Home />} />
-            <Route path="club" element={<ClubsPage/>} />
+            <Route index element={<ClubsPage/>} />
             <Route path="club/:id" element={<ClubDetails/>} />
+            <Route path="coach/:id" element={<CoachDetails/>} />
 
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login handleConnect={handleConnect} />} />
@@ -103,7 +104,9 @@ function App() {
             {/* Route doesn't exist */}
             <Route path="*" element={<Navigate to="/" />} />
 
-            <Route path="prestation/:prestationId/coach/:coachId" element={<ScheduleReservation eventDetail={eventDetail}/>} />
+            <Route path="prestation/:prestationId/coach/:coachId/update" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={true} isConnected={isConnected}/> }  />
+            <Route path="prestation/:prestationId/coach/:coachId/add" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={false} isConnected={isConnected}/>} />
+
           </Route>
 
           {/* Admin route */}

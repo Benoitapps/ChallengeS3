@@ -1,0 +1,17 @@
+.container-coach {
+  width: 100%;
+  padding: 50px;
+}
+
+.container-coach .coach-card__name {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.container-coach .coach-card__note {
+  font-weight: 700;
+}
+
+.error {
+  color: red;
+}

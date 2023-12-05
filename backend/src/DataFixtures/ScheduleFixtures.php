@@ -19,82 +19,46 @@ class ScheduleFixtures extends Fixture implements DependentFixtureInterface
         $coach2 = $manager->getRepository(Coach::class)->findOneBy(['biography' => "Biography2"]);
 
 
-        $object = (new Schedule())
-            ->setCoach($coach1)
-            ->setStartDate(new \DateTime('2021-01-01 10:00:00'))
-            ->setEndDate(new \DateTime('2021-01-01 11:00:00'));
+        $dateBefore = new \DateTime('-2 days');
+        $this->createSchedule($manager, $coach1, $dateBefore);
 
+        $dateBefore = new \DateTime('-1 days');
+        $this->createSchedule($manager, $coach1, $dateBefore);
 
-        $manager->persist($object);
+        // Aujourd'hui
+        $today = new \DateTime('now');
+        $this->createSchedule($manager, $coach1, $today);
 
-        $object = (new Schedule())
-            ->setCoach($coach2)
-            ->setStartDate(new \DateTime('2021-01-01 10:00:00'))
-            ->setEndDate(new \DateTime('2021-01-01 11:00:00'));
+        $dateAfter = new \DateTime('+1 days');
+        $this->createSchedule($manager, $coach1, $dateAfter);
 
-        $manager->persist($object);
+        $dateAfter = new \DateTime('+2 days');
+        $this->createSchedule($manager, $coach1, $dateAfter);
 
+        $dateAfter = new \DateTime('+3 days');
+        $this->createSchedule($manager, $coach1, $dateAfter);
 
-        $object = (new Schedule())
-            ->setCoach($coach2)
-            ->setStartDate(new \DateTime('2021-01-01 10:00:00'))
-            ->setEndDate(new \DateTime('2021-01-01 11:00:00'));
-
-        $manager->persist($object);
-
-        //Lundi
-        $object = (new Schedule())
-            ->setCoach($coach2)
-            ->setStartDate(new \DateTime('2023-11-13 08:00:00'))
-            ->setEndDate(new \DateTime('2023-11-13 18:00:00'));
-
-        $manager->persist($object);
-        //mardi
-        $object = (new Schedule())
-            ->setCoach($coach2)
-            ->setStartDate(new \DateTime('2023-11-14 08:00:00'))
-            ->setEndDate(new \DateTime('2023-11-14 17:00:00'));
-
-        $manager->persist($object);
-        //mercredi
-        $object = (new Schedule())
-            ->setCoach($coach2)
-            ->setStartDate(new \DateTime('2023-11-15 09:00:00'))
-            ->setEndDate(new \DateTime('2023-11-15 15:00:00'));
-
-        $manager->persist($object);
-        //jeudi
-        $object = (new Schedule())
-            ->setCoach($coach2)
-            ->setStartDate(new \DateTime('2023-11-16 08:00:00'))
-            ->setEndDate(new \DateTime('2023-11-16 18:00:00'));
-
-        $manager->persist($object);
-        //vendredi
-        $object = (new Schedule())
-            ->setCoach($coach2)
-            ->setStartDate(new \DateTime('2023-11-17 08:00:00'))
-            ->setEndDate(new \DateTime('2023-11-17 08:00:00'));
-
-        $manager->persist($object);
-        //samedi
-        $object = (new Schedule())
-            ->setCoach($coach2)
-            ->setStartDate(new \DateTime('2023-11-18 08:00:00'))
-            ->setEndDate(new \DateTime('2023-11-18 08:00:00'));
-
-        $manager->persist($object);
-        //dimanche
-        $object = (new Schedule())
-            ->setCoach($coach2)
-            ->setStartDate(new \DateTime('2023-11-12 08:00:00'))
-            ->setEndDate(new \DateTime('2023-11-12 08:00:00'));
-
-        $manager->persist($object);
-
+        // Dans 3 jours
+        $dateAfter = new \DateTime('+4 days');
+        $this->createSchedule($manager, $coach1, $dateAfter);
 
         $manager->flush();
     }
+
+
+    private function createSchedule(ObjectManager $manager, Coach $coach, \DateTime $startDate): void
+    {
+        $endDate = clone $startDate;
+        $endDate->setTime(19, 0, 0); // Fin à 23h00
+
+        $object = (new Schedule())
+            ->setCoach($coach)
+            ->setStartDate($startDate->setTime(8, 0, 0)) // Commence à 8h00
+            ->setEndDate($endDate);
+
+        $manager->persist($object);
+    }
+
     public function getDependencies(): array
     {
         return [

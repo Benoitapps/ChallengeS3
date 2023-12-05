@@ -2,16 +2,15 @@ import React from 'react';
 
 function FilterBar() {
     return (
-        <>
-            <input type="search" />
-            <div>
-                Section filtre: 
-                <span>filtre 1</span>
-                <span>filtre 2</span>
-                <span>filtre 3</span>
-                <span>filtre 4</span>
+        <div>
+            <div style={{margin: "15px 10px"}}>
+                <input type="search" />
+                <button>Search</button>
             </div>
-        </>
+            <div>
+                Section des filtres
+            </div>
+        </div>
     );
 }
 

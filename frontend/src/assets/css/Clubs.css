@@ -1,0 +1,107 @@
+.loading {
+    text-align: center;
+    font-style: italic;
+    color: #555;
+}
+
+.container-club {
+    /* maxWidth: '700px', margin: 'auto', marginTop: '20px' */
+    max-width: 700px;
+    margin: auto;
+    padding: 20px 0;
+}
+
+.club-card {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.club-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.company-name {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.description {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.address {
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.city-zip {
+    color: #555;
+}
+
+.prestations {
+    margin-top: 15px;
+}
+
+.prestation-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.prestation-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.prestation-price {
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.coach-list {
+    margin-top: 10px;
+}
+
+.coach-card {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.coach-name {
+    font-size: 14px;
+    color: #333;
+}
+
+.view-coach-button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.view-coach-button:hover {
+    background-color: var(--primary-hover);
+    color: white;
+}
