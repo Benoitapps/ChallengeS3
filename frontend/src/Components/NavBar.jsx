@@ -42,6 +42,11 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager }) {
                   </Link>
                 </li>
                 <li>
+                  <Link to="/scheduleReservation" className="header__links">
+                   Prendre des cours
+                  </Link>
+                </li>
+                <li>
                   <Link to="/profile" className="header__links">
                     Profil
                   </Link>

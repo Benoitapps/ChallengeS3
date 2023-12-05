@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getCoachDetails } from "../../hook/coach/getCoach.js";
-import { accountService } from '../../services/account.service.js';
+import { addReview } from "../../hook/coach/addReview.js";
+import { getUserId } from "../User/DecodeUser.jsx";
 import '@css/Coach.css';
 
 function CoachDetails() {
@@ -23,24 +24,19 @@ function CoachDetails() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = new FormData(e.target);
-        const user = accountService.getValuesToken();
 
-        const addReview = await fetch(`http://localhost:8888/api/review_coaches`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                coach: `api/coaches/${id}`,
-                client: `api/clients/${user.user_id}`,
-                note: parseInt(data.get('note')),
-            }),
-        });
+        if(
+          data.get('note') > 0 ||
+          data.get('note') < 6
+        ) {
+            const user = await getUserId();
+            const sendReview = await addReview(id, user, parseInt(data.get('note')));
 
-        if (addReview.status === 201) {
-            setSuccess(true);
-        } else {
-            setError('Une erreur est survenue');
+            if (sendReview.status === 201) {
+                setSuccess(true);
+            } else {
+                setError('Une erreur est survenue');
+            }
         }
     };
 
@@ -54,9 +50,9 @@ function CoachDetails() {
                         <div className="coach-card">
                             <div className="coach-card__name">{coach.auth.firstname}</div>
                             <div className="coach-card__note">{
-                                coach.averageRatingCoach === 0
+                                coach.rating === 0
                                     ? 'Pas de note'
-                                    : coach.averageRatingCoach
+                                    : coach.rating
                             }</div>
                         </div>
 
