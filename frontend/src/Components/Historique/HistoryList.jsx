@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import { getSlotsHistory } from "../../hook/Schedule/history.js";
 import HistorySlot from "./HistorySlot.jsx";
 import Pagination from "../Club/Pagination.jsx";
-import {historyGet} from "./getHistory.jsx";
+import {historyGet} from "../../services/getHistory.js";
 
 export default function TaskList() {
 
@@ -16,12 +16,10 @@ export default function TaskList() {
 
     useEffect(() => {
         fetchData();
-        console.log(totalItems)
     }, [currentPage]);
 
     const fetchData = async () => {
         const result = await getSlotsHistory(currentPage);
-        console.log(result)
 
         setSlot(result['hydra:member']);
         setTotalItems(result['hydra:totalItems']);

@@ -1,5 +1,5 @@
 import { addDays,addMinutes, parseISO,isSameDay } from 'date-fns';
-import { getScheduleCoach } from "../../hook/ScheduleReservation/scheduleCoach.js";
+import { getScheduleCoach } from "../hook/ScheduleReservation/scheduleCoach.js";
 
 const transformData = (initialData, date1 , date2) => {
 

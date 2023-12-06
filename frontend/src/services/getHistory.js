@@ -1,4 +1,4 @@
-import { getSlotsHistory } from "../../hook/Schedule/history.js";
+import { getSlotsHistory } from "../hook/Schedule/history.js";
 
 const transformData = (initialData) => {
     return initialData.map((item ) => {
@@ -28,12 +28,9 @@ export const historyGet = async (pagination ) => {
 
     const initialData = await getSlotsHistory(pagination);
 
-    console.log(initialData)
     const transformedData = transformData(initialData['hydra:member']);
     // console.log(transformedData, transformedData)
-    console.log("hydramemeber", initialData['hydra:member'])
 
-    console.log("transformedData",transformedData)
 
     return transformedData;
 };

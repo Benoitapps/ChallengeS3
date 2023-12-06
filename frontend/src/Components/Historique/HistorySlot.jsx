@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {dateStrings} from "./dateStrings.jsx";
+import {dateStrings} from "../../services/dateStrings.js";
 import {useNavigate} from "react-router-dom";
 
 function HistorySlot({ slot }) {
