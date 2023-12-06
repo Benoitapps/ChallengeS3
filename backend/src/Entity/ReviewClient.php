@@ -40,6 +40,7 @@ class ReviewClient
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['coach:read'])]
     private ?int $id = null;
 
     #[Groups(['review-client:read', 'review-client:write' , 'review-client:update'])]
@@ -48,12 +49,12 @@ class ReviewClient
 
     #[ORM\ManyToOne(targetEntity: Client::class ,inversedBy: 'reviewClients')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['review-client:read', 'review-client:write'])]
+    #[Groups(['review-client:read', 'review-client:write', 'coach:read'])]
     private ?Client $client = null;
 
     #[ORM\ManyToOne(inversedBy: 'reviewClients')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['review-client:read', 'review-client:write'])]
+    #[Groups(['review-client:read', 'review-client:write', 'coach:read'])]
     private ?Coach $coach = null;
 
     public function getId(): ?int

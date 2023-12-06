@@ -4,7 +4,7 @@ function CoachProfile({coach}) {
     return (
         <div className="coach-profile-card">
             <div className="coach-profile-card__img">
-                <img src="https://thispersondoesnotexist.com/" alt={coach.firstname}/>
+                <img src="https://thispersondoesnotexist.com/" alt={coach.auth.firstname}/>
             </div>
             <h2 className="coach-profile-card__name">{coach.auth.firstname}</h2>
             <div className="coach-profile-card__note">
