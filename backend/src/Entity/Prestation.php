@@ -33,11 +33,11 @@ class Prestation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[Groups(['slot:read', 'franchise:read', 'coach:read'])]
+    #[Groups(['slot:read', 'franchise:read', 'coach:read','slot:history:read:collection'])]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['slot:read', 'slot:read:collection', 'prestation:write', 'prestation:read', 'coach:read:slots', 'company:read:franchise', 'franchise:read', 'coach:read'])]
+    #[Groups(['slot:read', 'slot:read:collection', 'prestation:write', 'prestation:read', 'coach:read:slots', 'company:read:franchise', 'franchise:read', 'coach:read','slot:history:read:collection'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 

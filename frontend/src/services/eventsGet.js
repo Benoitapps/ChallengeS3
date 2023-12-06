@@ -1,4 +1,4 @@
-import { getSlots } from "../../hook/Schedule/events.js";
+import { getSlots } from "../hook/Schedule/events.js";
 
 const transformData = (initialData) => {
     return initialData.map((item, index) => {

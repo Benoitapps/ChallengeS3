@@ -1,4 +1,4 @@
-import { getSlotDetails } from "../../hook/Schedule/eventDetail.js";
+import { getSlotDetails } from "../hook/Schedule/eventDetail.js";
 
 const transformData = (initialData) => {
     const res = {

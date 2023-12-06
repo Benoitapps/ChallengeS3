@@ -6,10 +6,10 @@ import interactionPlugin from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
 import PopUp from "./Popup.jsx";
 import '@css/Schedule.css';
-import {addslot} from './eventCreate.jsx';
+import {addslot} from '../../services/eventCreate.js';
 import { deleteSlot } from "../../hook/Schedule/eventDelete.js";
-import { eventCoach } from "./eventCoach.jsx";
-import { sheduleCoach } from "./sheduleCoachGet.jsx"
+import { eventCoach } from "../../services/eventCoach.js";
+import { sheduleCoach } from "../../services/sheduleCoachGet.js"
 import {postSlot} from "../../hook/Schedule/eventPost.js";
 import {patchSlot} from "../../hook/Schedule/eventPatch.js";
 import { useNavigate, useParams } from 'react-router-dom';

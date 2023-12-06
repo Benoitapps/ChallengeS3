@@ -53,6 +53,11 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager }) {
                         Profil
                       </Link>
                     </li>
+                    <li>
+                      <Link to="/history" className="header__links">
+                        Historique
+                      </Link>
+                    </li>
                   </>
                 )
                 : <></>

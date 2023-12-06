@@ -1,0 +1,48 @@
+.allPage{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.titlePage{
+    margin-bottom: 40px;
+}
+
+/*.listPage{*/
+/*    background-color: #fff;*/
+/*    border: solid;*/
+/*    padding: 14px 14px 1px 14px;*/
+/*}*/
+/*--------------HistoryList----------*/
+.lineList{
+
+}
+
+
+
+
+/*--------------HistorySlot----------*/
+.allSlot{
+    display: flex;
+    flex-direction: row;
+}
+
+.lineSlot{
+    display: flex;
+    flex-direction: row;
+    border: solid;
+    background-color: #fff;
+    /*padding: 14px 14px 1px 14px;*/
+}
+
+.partSlot{
+    padding: 4px;
+    border-right: 1px solid #000;}
+
+.buttonSlot{
+    width: 20%;
+    height: 70%;
+    background-color: var(--primary);
+    color: white;
+}
+

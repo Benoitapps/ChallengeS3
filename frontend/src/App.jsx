@@ -14,6 +14,7 @@ import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
 import Profile from './Components/Profile.jsx';
 import ClubsPage from './Components/Club/ClubsPage.jsx';
 import ClubDetails from './Components/Club/ClubDetails.jsx';
+import HistoryPage from "./Components/Historique/HistoryPage.jsx";
 import CoachPage from './Components/Coach/CoachPage.jsx';
 
 // Admin
@@ -101,6 +102,8 @@ function App() {
             <Route path="profile" element={ <UserRoute component={Profile} isConnected={isConnected}/> } />
             <Route path="prestation/:prestationId/coach/:coachId/update" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={true} isConnected={isConnected}/> }  />
             <Route path="prestation/:prestationId/coach/:coachId/add" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={false} isConnected={isConnected}/>} />
+            <Route path="history" element={<UserRoute component={HistoryPage}isConnected={isConnected}/>} />
+
 
             {/* Route doesn't exist */}
             <Route path="*" element={<Navigate to="/" />} />

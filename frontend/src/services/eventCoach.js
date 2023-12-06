@@ -1,4 +1,4 @@
-import { getSlotCoach } from "../../hook/ScheduleReservation/eventCoach.js";
+import { getSlotCoach } from "../hook/ScheduleReservation/eventCoach.js";
 
 
 const transformData = (initialData) => {
