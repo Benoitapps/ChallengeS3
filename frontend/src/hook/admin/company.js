@@ -1,6 +1,6 @@
-const getUsers = async () => {
+const getCompanies = async () => {
     try {
-        const result = await fetch("http://localhost:8888/api/users", {
+        const result = await fetch("http://localhost:8888/api/companies", {
             method: "GET",
             headers: {
                 Accept: "application/json",
@@ -18,4 +18,4 @@ const getUsers = async () => {
     }
 };
 
-export { getUsers };
+export { getCompanies };

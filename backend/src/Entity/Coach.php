@@ -56,6 +56,7 @@ class Coach
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['coach:read', 'coach:write'])]
     private ?string $biography = null;
 
     #[Groups(['slot:read', 'coach:read', 'prestation:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection'])]
@@ -80,7 +81,7 @@ class Coach
     private Collection $reviewCoaches;
 
     #[Groups(['coach:read'])]
-    private ?float $averageRatingCoach = null;
+    private ?float $rating = null;
 
     #[Groups(['coach:read'])]
     #[ORM\ManyToMany(targetEntity: Prestation::class, mappedBy: 'coach')]
@@ -236,14 +237,18 @@ class Coach
         return $this;
     }
 
-    public function getAverageRatingCoach(): ?float
+    public function getRating(): ?float
     {
         $sum = 0;
         foreach ($this->reviewCoaches as $reviewCoach) {
             $sum += $reviewCoach->getNote();
         }
-        $this->averageRatingCoach = $sum / count($this->reviewCoaches);
-        return $this->averageRatingCoach;
+        if(count($this->reviewCoaches) === 0){
+            return 0;
+        } else {
+            $this->rating = round($sum / count($this->reviewCoaches), 1);
+            return $this->rating;
+        }
     }
 
     /**

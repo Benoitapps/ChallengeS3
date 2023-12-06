@@ -33,8 +33,8 @@ security:
         - { path: ^/api/franchises, roles: PUBLIC_ACCESS }
         - { path: ^/api/prestations/[\d]+, methods: GET, roles: PUBLIC_ACCESS }
         - { path: ^/api/coaches/[\d]+, methods: GET, roles: PUBLIC_ACCESS }
-        # TODO : A supprimer
-        - { path: ^/api/review_coaches, methods: GET, roles: PUBLIC_ACCESS }
+        - { path: ^/api/review_coaches, methods: [POST, PATCH], roles: ROLE_USER }
+        - { path: ^/api/review_clients, methods: [POST, PATCH], roles: ROLE_COACH }
         - { path: ^/api/users, methods: POST, roles: PUBLIC_ACCESS }
         - { path: ^/api/users, methods: GET, roles: PUBLIC_ACCESS }
         - { path: ^/api/managers, methods: POST, roles: PUBLIC_ACCESS }
