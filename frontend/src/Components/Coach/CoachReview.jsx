@@ -74,9 +74,11 @@ function CoachReview({coach, id}) {
                 if (result.status === 201) {
                     setSuccess(true);
                     setError(false);
+                    removeAlertOnSuccess();
                 } else {
                     setSuccess(false);
                     setError(true);
+                    removeAlertOnError();
                 }
             } else {
                 const result = await updateReview(idReview, note);
@@ -84,22 +86,34 @@ function CoachReview({coach, id}) {
                 if (result.status === 200) {
                     setSuccess(true);
                     setError(false);
+                    removeAlertOnSuccess();
                 } else {
                     setSuccess(false);
                     setError(true);
+                    removeAlertOnError();
                 }
             }
         } else {
             setSuccess(false);
             setError(true);
+            removeAlertOnError();
         }
+    };
 
+    function removeAlertOnSuccess() {
         setTimeout(() => {
             setSuccess(false);
             setError(false);
             window.location.reload();
         }, 3000);
-    };
+    }
+
+    function removeAlertOnError() {
+        setTimeout(() => {
+            setSuccess(false);
+            setError(false);
+        }, 3000);
+    }
 
     return (
         <div className="coach-content__review">
