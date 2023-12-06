@@ -1,12 +1,15 @@
 import {getUserId} from "../User/DecodeUser.jsx";
 import {addReview} from "../../hook/coach/addReview.js";
+import {updateReview} from "../../hook/coach/updateReview.js";
 import {useState} from "react";
 import Alert from "../Alert.jsx";
 
-function CoachAddReview({id}) {
+function CoachReview({coach, id}) {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const [note, setNote] = useState(0);
+    let isNoted = false;
+    let idReview = null;
     const [stars, setStars] = useState([
         {
             id: 1,
@@ -48,19 +51,43 @@ function CoachAddReview({id}) {
         setNote(starId);
     }
 
+    async function verifyReviewIsExist(reviews, userId) {
+        await reviews.forEach((review) => {
+            if (review.client.id === userId) {
+                isNoted = true;
+                idReview = review.id;
+            }
+        });
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if(note > 0 && note <= 5) {
             const userId = await getUserId();
-            const result = await addReview(id, userId, note);
 
-            if (result.status === 201) {
-                setSuccess(true);
-                setError(false);
+            await verifyReviewIsExist(coach.reviewCoaches, userId);
+
+            if (isNoted === false) {
+                const result = await addReview(id, userId, note);
+
+                if (result.status === 201) {
+                    setSuccess(true);
+                    setError(false);
+                } else {
+                    setSuccess(false);
+                    setError(true);
+                }
             } else {
-                setSuccess(false);
-                setError(true);
+                const result = await updateReview(idReview, note);
+
+                if (result.status === 200) {
+                    setSuccess(true);
+                    setError(false);
+                } else {
+                    setSuccess(false);
+                    setError(true);
+                }
             }
         } else {
             setSuccess(false);
@@ -70,6 +97,7 @@ function CoachAddReview({id}) {
         setTimeout(() => {
             setSuccess(false);
             setError(false);
+            window.location.reload();
         }, 3000);
     };
 
@@ -114,4 +142,4 @@ function CoachAddReview({id}) {
     );
 }
 
-export default CoachAddReview;
+export default CoachReview;
