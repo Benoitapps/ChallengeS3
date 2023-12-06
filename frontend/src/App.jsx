@@ -14,7 +14,6 @@ import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
 import Profile from './Components/Profile.jsx';
 import ClubsPage from './Components/Club/ClubsPage.jsx';
 import ClubDetails from './Components/Club/ClubDetails.jsx';
-import CoachDetails from './Components/Coach/CoachDetails.jsx';
 import HistoryPage from "./Components/Historique/HistoryPage.jsx";
 import CoachPage from './Components/Coach/CoachPage.jsx';
 
