@@ -17,24 +17,37 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
-    paginationItemsPerPage: 50,
     operations: [
     new GetCollection(
+        paginationItemsPerPage: 50,
+        security: "is_granted('ROLE_USER')",
         normalizationContext: [
             'groups' => ['slot:read:collection']
         ]
     ),
+    new GetCollection(
+        order: ['startDate' => 'ASC'],
+        paginationItemsPerPage: 10,
+        security: "is_granted('ROLE_USER')",
+        uriTemplate: '/slots/history',
+        normalizationContext: [
+            'groups' => ['slot:history:read:collection']
+        ]
+    ),
     new Get(
+        security: "is_granted('ROLE_USER')",
         normalizationContext: [
             'groups' => ['slot:read']
         ]
     ),
     new Post(
+        security: "is_granted('ROLE_USER')",
         denormalizationContext: [
             'groups' => ['slot:write']
         ]
     ),
     new Patch(
+        security: "is_granted('ROLE_USER')",
         denormalizationContext: [
             'groups' => ['slot:update']
         ]
@@ -54,31 +67,31 @@ class Slot
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['slot:read:collection','slot:read','coach:read:slots'])]
+    #[Groups(['slot:read:collection','slot:read','coach:read:slots','slot:history:read:collection'])]
     private ?int $id = null;
 
     #[ApiFilter(DateFilter::class)]
-    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots','slot:history:read:collection'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $startDate = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots','slot:history:read:collection'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $endDate = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:write','coach:read:slots'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','coach:read:slots','slot:history:read:collection'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Prestation $prestation = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:write','coach:read:slots'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','coach:read:slots','slot:history:read:collection'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?TimeOff $time_off = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:read:collection','slot:write'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','slot:history:read:collection'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Client $client = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:write'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','slot:history:read:collection'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Coach $coach = null;
 
