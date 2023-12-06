@@ -1,24 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {getCompanies} from "../../hook/manager/company.js";
 import {getFranchises} from "../../hook/manager/franchise.js";
 import {Link} from "react-router-dom";
 
 function Home() {
-    const [companies, setCompanies] = useState([]);
-    const [companiesLoading, setCompaniesLoading] = useState(false);
     const [franchises, setFranchises] = useState([]);
     const [franchisesLoading, setFranchisesLoading] = useState(false);
     const [hasCompany, setHasCompany] = useState(true);
 
     useEffect(() => {
         const loadData = async () => {
-            // setCompaniesLoading(true);
-            //
-            // let companies = await getCompanies();
-            //
-            // setCompanies(companies);
-            // setCompaniesLoading(false);
-
             setFranchisesLoading(true);
 
             let franchises = await getFranchises();

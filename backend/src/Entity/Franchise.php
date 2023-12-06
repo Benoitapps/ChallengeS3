@@ -32,6 +32,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
             normalizationContext: ['groups' => ['franchise:read']],
 //            security: "is_granted('ROLE_MANAGER')",
         ),
+        new GetCollection(
+            uriTemplate: 'companies/myCompany/franchises',
+            shortName: 'Company',
+            normalizationContext: ['groups' => ['company:read:franchise']],
+            security: "is_granted('ROLE_MANAGER')",
+            name: 'GetMyCompanyFranchises',
+        ),
         new Get(
             normalizationContext: ['groups' => ['franchise:read']],
 //            security: "is_granted('ROLE_MANAGER')",
@@ -48,20 +55,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 //    normalizationContext: ['groups' => ['franchise:read']],
 //    denormalizationContext: ['groups' => ['franchise:write']],
 //    security: "is_granted('ROLE_ADMIN')",
-)]
-#[ApiResource(
-    uriTemplate: 'companies/myCompany/franchises',
-    shortName: 'Company',
-    operations: [
-        new GetCollection(
-            normalizationContext: ['groups' => ['company:read:franchise']],
-            security: "is_granted('ROLE_MANAGER')",
-            name: 'GetMyCompanyFranchises',
-        ),
-    ],
-//    uriVariables: [
-//        'id' => new Link(toProperty: 'company', fromClass: Company::class)
-//    ]
 )]
 
 #[ORM\Entity(repositoryClass: FranchiseRepository::class)]

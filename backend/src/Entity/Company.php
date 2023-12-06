@@ -23,6 +23,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
             security: "is_granted('ROLE_MANAGER')",
         ),
         new Get(
+            uriTemplate: 'companies/myCompany',
+            normalizationContext: ['groups' => ['company:read:myCompany']],
+            security: "is_granted('ROLE_MANAGER')",
+            name: 'GetMyCompany',
+        ),
+        new Get(
             normalizationContext: ['groups' => ['company:read']],
             security: "is_granted('ROLE_MANAGER')",
         ),
@@ -49,12 +55,12 @@ class Company
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['company:read', 'company:write', 'franchise:read'])]
+    #[Groups(['company:read', 'company:write', 'franchise:read', 'company:read:myCompany'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
 //    #[Groups(['company:read:user-is-logged', 'company:write'])]
-    #[Groups(['company:read', 'company:write'])]
+    #[Groups(['company:read', 'company:write', 'company:read:myCompany'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -63,7 +69,7 @@ class Company
     private ?string $kbis = null;
 
     #[ORM\Column]
-    #[Groups(['company:read', 'company:write'])]
+    #[Groups(['company:read', 'company:write', 'company:read:myCompany'])]
     private ?bool $isVerified = false;
 
     #[ORM\OneToOne(inversedBy: 'company', cascade: ['persist', 'remove'])]
