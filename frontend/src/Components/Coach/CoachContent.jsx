@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import '@css/Coach.css';
 
-function CoachContent({coach}) {
+function CoachContent({id, coach}) {
     return (
         <>
             <div className="coach-content__head">
@@ -24,7 +24,7 @@ function CoachContent({coach}) {
                             coach.prestations.map((prestation, index) => {
                                 return (
                                     <li key={index}>
-                                        <Link to={`/club/${prestation.id}`} className="coach-content__prestations__item">
+                                        <Link to={`/prestation/${prestation.id}/coach/${id}/add`} className="coach-content__prestations__item">
                                             <div className="coach-content__prestations__item__img">
                                                 <img src="https://picsum.photos/300/300" alt={prestation.name} />
                                             </div>

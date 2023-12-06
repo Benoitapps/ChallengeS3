@@ -52,7 +52,7 @@ function CoachPage() {
                     <div className="container-coach">
                         <CoachProfile coach={coach}/>
                         <div className="coach-content">
-                            <CoachContent coach={coach}/>
+                            <CoachContent coach={coach} id={id}/>
 
                             <form className="coach-review" onSubmit={(e) => handleSubmit(e)}>
                                 <input type="number" name="note" min="1" max="5"/>
