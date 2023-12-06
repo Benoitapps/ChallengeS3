@@ -12,7 +12,7 @@ import SignUp from './Components/Authentication/SignUp';
 import Schedule from './Components/Calendar/Schedule.jsx';
 import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
 import Profile from './Components/Profile.jsx';
-import ClubsPage from './Components/Club/ClubsPage.jsx';
+import ClubsPage from './Components/ClubsPage.jsx';
 import ClubDetails from './Components/Club/ClubDetails.jsx';
 import CoachPage from './Components/Coach/CoachPage.jsx';
 
