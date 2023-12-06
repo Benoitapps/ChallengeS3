@@ -52,10 +52,19 @@ function App() {
     }
     return false;
   }
+  const userIsCoach = () => {
+    const token = localStorage.getItem('token');
+    if (token !== null) {
+      return accountService.getValuesToken()
+          .roles.includes('ROLE_COACH');
+    }
+    return false;
+  }
 
   const [isConnected, setIsConnected] = useState(!!localStorage.getItem('token'));
   const [isAdmin, setIsAdmin] = useState(userIsAdmin() || false);
   const [isManager, setIsManager] = useState(userIsManager() || false);
+  const [isCoach, setisCoach] = useState(userIsCoach()|| false);
   const [eventDetail, setEventDetail] = useState(null);
 
 
@@ -70,6 +79,7 @@ function App() {
     setIsConnected(true);
     setIsAdmin(userIsAdmin());
     setIsManager(userIsManager());
+    setisCoach(userIsCoach());
   }
 
   useEffect(() => {
@@ -78,6 +88,7 @@ function App() {
     }
     setIsAdmin(userIsAdmin());
     setIsManager(userIsManager());
+    setisCoach(userIsCoach());
 
     const token = localStorage.getItem('token');
     setIsConnected(token !== null);
@@ -88,7 +99,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Front */}
-          <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} isManager={isManager}/>}>
+          <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} isManager={isManager} isCoach={isCoach}/>}>
             {/* Route for user not connected */}
             <Route index element={<ClubsPage/>} />
             <Route path="club/:id" element={<ClubDetails/>} />
@@ -141,6 +152,7 @@ function App() {
           <Route path="unauthorized" element={<Unauthorize/>} />
         </Routes>
       </BrowserRouter>
+
     </>
   )
 }

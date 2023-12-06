@@ -194,7 +194,7 @@ function Schedule({ onButtonClick, ...otherProps }) {
                         end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                     }
                 }
-                height={"42em"}
+                height={"35em"}
                 locale={"fr"}
                 // dateClick={(e) => handleDateClick(e)}
                 // viewDidMount={handleViewChange}
