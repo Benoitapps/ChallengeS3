@@ -1,6 +1,10 @@
 import '@css/Coach.css';
+import CoachReview from "./CoachReview.jsx";
+import { useParams } from 'react-router-dom';
 
 function CoachProfile({coach}) {
+    const { id } = useParams();
+
     return (
         <div className="coach-profile-card">
             <div className="coach-profile-card__img">
@@ -17,6 +21,7 @@ function CoachProfile({coach}) {
                         : <p>{coach.rating}</p>
                 }
             </div>
+            <CoachReview coach={coach} id={id}/>
         </div>
     )
 }

@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { getCoachDetails } from "../../hook/coach/getCoach.js";
 import CoachProfile from "./CoachProfile";
 import CoachContent from "./CoachContent";
-import CoachReview from "./CoachReview.jsx";
 import '@css/Coach.css';
 
 function CoachPage() {
@@ -31,7 +30,6 @@ function CoachPage() {
                         <CoachProfile coach={coach}/>
                         <div className="coach-content">
                             <CoachContent coach={coach} id={id}/>
-                            <CoachReview coach={coach} id={id}/>
                         </div>
                     </div>
             }
