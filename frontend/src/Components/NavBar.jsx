@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import "@css/NavBar.css";
 import logo from "@img/logo.svg";
+import cloche from "@img/cloche.png";
 
-function NavBar({ isConnected, handleDisconnect, isAdmin, isManager }) {
+
+function NavBar({ isConnected, handleDisconnect, isAdmin, isManager, isCoach }) {
   const [isMenuVisible, setIsMenuVisible] = useState(true);
   const location = useLocation();
   const links = document.querySelectorAll(".header__links");
@@ -53,11 +55,13 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager }) {
                         Profil
                       </Link>
                     </li>
+
+                    {!isManager?
                     <li>
                       <Link to="/history" className="header__links">
                         Historique
                       </Link>
-                    </li>
+                    </li>:null}
                   </>
                 )
                 : <></>
@@ -82,6 +86,7 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager }) {
                         </li>
                     )
                 }
+
                 {isConnected ? (
                   <li>
                     <Link to="/" onClick={handleDisconnect}>

@@ -26,7 +26,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ]
     ),
     new GetCollection(
-        order: ['startDate' => 'ASC'],
+        order: ['startDate' => 'DESC'],
         paginationItemsPerPage: 8,
         security: "is_granted('ROLE_USER')",
         uriTemplate: '/slots/history',
