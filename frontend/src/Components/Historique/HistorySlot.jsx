@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import {dateStrings} from "../../services/dateStrings.js";
 import {useNavigate} from "react-router-dom";
+import '@css/History.css';
+
 
 function HistorySlot({ slot }) {
 
@@ -17,20 +19,22 @@ function HistorySlot({ slot }) {
     }
 
     return (
-                <div style={{display: 'flex'}}>
-                    <div>{slot.prestation.name}</div>
+            <div className="allSlot">
+                <div className="lineSlot" >
+                    <div className="partSlot" id="prestationSlot">{slot.prestation.name}</div>
 
-                   <div>{slot.client.auth.firstname}</div>
-                    <div>{slot.client.auth.lastname}</div>
+                   <div className="partSlot" id="clientFirstnameSlot">{slot.client.auth.firstname}</div>
+                    <div className="partSlot" id="clientLastnameSlot">{slot.client.auth.lastname}</div>
 
-                    <div>{slot.coach.auth.firstname}</div>
-                    <div>{slot.coach.auth.lastname}</div>
+                    <div className="partSlot" id="coachFirstnameSlot">{slot.coach.auth.firstname}</div>
+                    <div className="partSlot" id="coachLastnameSlot">{slot.coach.auth.lastname}</div>
 
                     <div>{dateStart}</div>
                     <div>{dateEnd}</div>
 
-                    <button onClick={() => reschedule( slot.prestation.id, slot.coach.id )}>Reprendre</button>
+                    <button className="buttonSlot" onClick={() => reschedule( slot.prestation.id, slot.coach.id )}>Reprendre</button>
                 </div>
+            </div>
     );
 }
 

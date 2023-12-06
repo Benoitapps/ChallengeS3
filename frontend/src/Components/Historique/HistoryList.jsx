@@ -3,6 +3,9 @@ import { getSlotsHistory } from "../../hook/Schedule/history.js";
 import HistorySlot from "./HistorySlot.jsx";
 import Pagination from "../Club/Pagination.jsx";
 import {historyGet} from "../../services/getHistory.js";
+import '@css/History.css';
+
+
 
 export default function TaskList() {
 
@@ -11,7 +14,7 @@ export default function TaskList() {
     const [totalItems, setTotalItems] = useState(0);
     const [loading, setLoading] = useState(true);
 
-    const ITEM_PER_PAGE = 10;
+    const ITEM_PER_PAGE = 8;
 
 
     useEffect(() => {
@@ -29,6 +32,7 @@ export default function TaskList() {
 
     return (
         <>
+            <div className="lineList">
             {
                 loading
                     ? <div>Chargement...</div>
@@ -36,6 +40,7 @@ export default function TaskList() {
                         <HistorySlot slot={slot} key={index}/>
                     ))
             }
+            </div>
 
             <Pagination totalItems={totalItems} itemsPerPage={ITEM_PER_PAGE} currentPage={currentPage} setCurrentPage={setCurrentPage} setLoading={setLoading} />
         </>
