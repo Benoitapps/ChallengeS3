@@ -88,11 +88,14 @@
   font-size: 2.25rem; /* 36px */
 }
 
-.coach-content__head__prestations h4 {
-  margin-top: 35px;
+.coach-content h4 {
   font-style: normal;
   font-weight: 700;
   font-size: 1.5rem; /* 24px */
+}
+
+.coach-content__head__prestations h4 {
+  margin-top: 35px;
 }
 
 .coach-content__prestations {
@@ -160,4 +163,26 @@
   font-weight: 700;
   color: var(--primary);
   font-size: 2rem; /* 32px */
+}
+
+.coach-content__review {
+  text-align: left;
+}
+
+.coach-content__review h4 {
+  margin-bottom: 30px;
+}
+
+.coach-review__stars {
+  display: flex;
+  gap: 10px;
+}
+
+.coach-review__stars__item {
+  cursor: pointer;
+}
+
+.coach-review__submit {
+  width: 155px;
+  margin-top: 16px;
 }
