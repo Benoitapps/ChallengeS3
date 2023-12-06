@@ -1,5 +1,4 @@
 <?php
-// api/src/Doctrine/CurrentUserExtension.php
 namespace App\Doctrine\Extensions;
 
 use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
@@ -20,17 +19,19 @@ class CurrentUserFranchiseExtension implements QueryCollectionExtensionInterface
     public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []): void
     {
         $user = $this->security->getUser();
-        if (Franchise::class !== $resourceClass || $this->security->isGranted('ROLE_ADMIN') || null === $user) {
+        if (Franchise::class !== $resourceClass) {
             return;
         }
 
-        if ($this->security->isGranted('ROLE_MANAGER')) {
-            $manager = $user->getManager();
-            $company = $manager->getCompany();
-            $rootAlias = $queryBuilder->getRootAliases()[0];
-            $queryBuilder->andWhere(sprintf('%s.company = :current_user_company',$rootAlias));
-            $queryBuilder->setParameter('current_user_company',  $company->getId());
+        if (!($operation->getName() === 'GetMyCompanyFranchises' && $this->security->isGranted('ROLE_MANAGER'))) {
+           return;
         }
+
+        $manager = $user->getManager();
+        $company = $manager->getCompany();
+        $rootAlias = $queryBuilder->getRootAliases()[0];
+        $queryBuilder->andWhere(sprintf('%s.company = :current_user_company',$rootAlias));
+        $queryBuilder->setParameter('current_user_company',  $company->getId());
 
     }
 

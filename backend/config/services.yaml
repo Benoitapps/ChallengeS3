@@ -37,9 +37,9 @@ services:
         tags:
             - { name: api_platform.doctrine.orm.query_extension.collection }
 
-    App\Doctrine\Extensions\CurrentUserFranchiseExtension:
-        tags:
-            - { name: api_platform.doctrine.orm.query_extension.collection }
+#    App\Doctrine\Extensions\CurrentUserFranchiseExtension:
+#        tags:
+#            - { name: api_platform.doctrine.orm.query_extension.collection }
 
 
     App\EventListener\JwtCreatedListener:

@@ -50,16 +50,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
 //    security: "is_granted('ROLE_ADMIN')",
 )]
 #[ApiResource(
-    uriTemplate: 'companies/{id}/franchises',
+    uriTemplate: 'companies/myCompany/franchises',
     shortName: 'Company',
     operations: [
         new GetCollection(
             normalizationContext: ['groups' => ['company:read:franchise']],
+            security: "is_granted('ROLE_MANAGER')",
+            name: 'GetMyCompanyFranchises',
         ),
     ],
-    uriVariables: [
-        'id' => new Link(toProperty: 'company', fromClass: Company::class)
-    ]
+//    uriVariables: [
+//        'id' => new Link(toProperty: 'company', fromClass: Company::class)
+//    ]
 )]
 
 #[ORM\Entity(repositoryClass: FranchiseRepository::class)]
