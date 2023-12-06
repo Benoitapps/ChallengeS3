@@ -69,6 +69,10 @@ class ReviewClient
 
     public function setNote(int $note): static
     {
+        if($note <= 0 || $note > 5){
+            throw new \InvalidArgumentException('The note must be between 1 and 5');
+        }
+
         $this->note = $note;
 
         return $this;
