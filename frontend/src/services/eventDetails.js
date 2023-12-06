@@ -1,4 +1,4 @@
-import { getSlotDetails } from "../../hook/Schedule/eventDetail.js";
+import { getSlotDetails } from "../hook/Schedule/eventDetail.js";
 
 const transformData = (initialData) => {
     const res = {
@@ -17,8 +17,8 @@ const transformData = (initialData) => {
 
 export const eventDetails = async (id) => {
     const initialData = await getSlotDetails(id);
-    console.log(initialData)
+    // console.log(initialData)
     const transformedData = transformData(initialData);
-    console.log(transformedData);
+    // console.log(transformedData);
     return transformedData;
 };

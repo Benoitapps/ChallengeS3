@@ -7,14 +7,12 @@ import interactionPlugin from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
 import PopUp from "./Popup.jsx";
 import '@css/Schedule.css';
-import {tab} from './eventsGet.jsx';
-import {addslot} from './eventCreate.jsx';
-import {eventDetails} from './eventDetails.jsx';
+import {tab} from '../../services/eventsGet.js';
+import {addslot} from '../../services/eventCreate.js';
+import {eventDetails} from '../../services/eventDetails.js';
 import { deleteSlot } from "../../hook/Schedule/eventDelete.js";
 import loadingGIF from "@img/loading.gif";
 import logo from "@img/logo.svg";
-
-
 
 
 function Schedule({ onButtonClick, ...otherProps }) {
@@ -155,8 +153,8 @@ function Schedule({ onButtonClick, ...otherProps }) {
             onButtonClick(eventDetail);
         }
 
-        console.log("changement de page");
-        console.log(eventDetail);
+        // console.log("changement de page");
+        // console.log(eventDetail);
         const route = `/prestation/${eventDetail.idPrestation}/coach/${eventDetail.idCoach}/update`;
 
         navigate(route);

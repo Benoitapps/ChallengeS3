@@ -33,7 +33,7 @@ class Client
     #[ORM\Column(length: 5, nullable: true)]
     private ?string $zip_code = null;
 
-    #[Groups(['slot:read','coach:read'])]
+    #[Groups(['slot:read','coach:read','slot:history:read:collection'])]
     #[ORM\OneToOne(inversedBy: 'client', cascade: ['persist', 'remove'])]
     private ?User $auth = null;
 
@@ -41,7 +41,7 @@ class Client
     private Collection $reviewClients;
 
     #[Groups(['coach:read'])]
-    private ?float $averageRatingClient = null;
+    private ?float $rating = null;
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: ReviewCoach::class)]
     private Collection $reviewCoaches;
@@ -149,14 +149,18 @@ class Client
         return $this;
     }
 
-    public function getAverageRatingClient(): ?float
+    public function getRating(): ?float
     {
         $sum = 0;
         foreach ($this->reviewClients as $reviewClient) {
             $sum += $reviewClient->getNote();
         }
-        $this->averageRatingClient = $sum / count($this->reviewClients);
-        return $this->averageRatingClient;
+        if(count($this->reviewClients) === 0){
+            return 0;
+        } else {
+            $this->rating = round($sum / count($this->reviewClients), 1);
+            return $this->rating;
+        }
     }
 
     /**

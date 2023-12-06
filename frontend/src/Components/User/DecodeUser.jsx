@@ -18,7 +18,7 @@ export const getUserId = async () => {
         // console.log("client",client);
         // console.log("client.client",client.client)
         const idClient = client.client.id;
-        console.log("idClient",idClient)
+        // console.log("idClient",idClient)
 
         return idClient;
     } else {

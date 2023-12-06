@@ -14,12 +14,14 @@ import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
 import Profile from './Components/Profile.jsx';
 import ClubsPage from './Components/Club/ClubsPage.jsx';
 import ClubDetails from './Components/Club/ClubDetails.jsx';
-import CoachDetails from './Components/Coach/CoachDetails.jsx';
+import HistoryPage from "./Components/Historique/HistoryPage.jsx";
+import CoachPage from './Components/Coach/CoachPage.jsx';
 
 // Admin
 import NavBarAdmin from './Components/Admin/NavBar';
 import HomeAdmin from './Components/Admin/Home';
 import UsersList from './Components/Admin/UsersList.jsx';
+import CompaniesList from './Components/Admin/CompaniesList.jsx';
 import AdminRoute from './AdminRoute.jsx';
 
 // Manager
@@ -54,13 +56,8 @@ function App() {
   const [isConnected, setIsConnected] = useState(!!localStorage.getItem('token'));
   const [isAdmin, setIsAdmin] = useState(userIsAdmin() || false);
   const [isManager, setIsManager] = useState(userIsManager() || false);
-
   const [eventDetail, setEventDetail] = useState(null);
 
-
-  const onButtonClick = (detail) => {
-    setEventDetail(detail);
-  };
 
   const handleDisconnect = () => {
     localStorage.removeItem('token');
@@ -76,6 +73,9 @@ function App() {
   }
 
   useEffect(() => {
+    if (localStorage.getItem('token') && accountService.getValuesToken().exp_jwt < Date.now()) {
+      localStorage.removeItem('token');
+    }
     setIsAdmin(userIsAdmin());
     setIsManager(userIsManager());
 
@@ -92,7 +92,7 @@ function App() {
             {/* Route for user not connected */}
             <Route index element={<ClubsPage/>} />
             <Route path="club/:id" element={<ClubDetails/>} />
-            <Route path="coach/:id" element={<CoachDetails/>} />
+            <Route path="coach/:id" element={<CoachPage/>} />
 
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login handleConnect={handleConnect} />} />
@@ -100,12 +100,14 @@ function App() {
             {/* Route for user connected */}
             <Route path="schedule" element={ <UserRoute component={Schedule} onButtonClick={setEventDetail} isConnected={isConnected}/> } />
             <Route path="profile" element={ <UserRoute component={Profile} isConnected={isConnected}/> } />
+            <Route path="prestation/:prestationId/coach/:coachId/update" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={true} isConnected={isConnected}/> }  />
+            <Route path="prestation/:prestationId/coach/:coachId/add" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={false} isConnected={isConnected}/>} />
+            <Route path="history" element={<UserRoute component={HistoryPage}isConnected={isConnected}/>} />
+
 
             {/* Route doesn't exist */}
             <Route path="*" element={<Navigate to="/" />} />
 
-            <Route path="prestation/:prestationId/coach/:coachId/update" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={true} isConnected={isConnected}/> }  />
-            <Route path="prestation/:prestationId/coach/:coachId/add" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={false} isConnected={isConnected}/>} />
 
           </Route>
 
@@ -116,6 +118,7 @@ function App() {
                 <Route path="/" element={<NavBarAdmin isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} />}>
                   <Route index element={<AdminRoute index component={HomeAdmin} isAdmin={isAdmin} />} />
                   <Route path="users" element={<AdminRoute component={UsersList} isAdmin={isAdmin} />} />
+                  <Route path="companies" element={<AdminRoute component={CompaniesList} isAdmin={isAdmin} />} />
                 </Route>
               </Routes>
             )}
@@ -123,15 +126,15 @@ function App() {
 
           {/* Manager route */}
           <Route path="manager/*"
-                 element={(
-                     <Routes>
-                       <Route path="/" element={<NavBarManager isConnected={isConnected} handleDisconnect={handleDisconnect} isManager={isManager} />}>
-                         <Route index element={<ManagerRoute index component={HomeManager} isManager={isManager} />} />
-                         <Route path="company" element={<ManagerRoute component={AddCompany} isManager={isManager}/>} />
-                         <Route path="franchise" element={<ManagerRoute component={AddFranchise} isManager={isManager}/>} />
-                       </Route>
-                     </Routes>
-                 )}
+            element={(
+                <Routes>
+                  <Route path="/" element={<NavBarManager isConnected={isConnected} handleDisconnect={handleDisconnect} isManager={isManager} />}>
+                    <Route index element={<ManagerRoute index component={HomeManager} isManager={isManager} />} />
+                    <Route path="company" element={<ManagerRoute component={AddCompany} isManager={isManager}/>} />
+                    <Route path="franchise" element={<ManagerRoute component={AddFranchise} isManager={isManager}/>} />
+                  </Route>
+                </Routes>
+            )}
           />
 
           {/* Special */}

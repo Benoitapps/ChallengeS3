@@ -1,16 +1,17 @@
 const addReview = async (coachId, clientId, note) => {
-    const result = await fetch(`http://localhost:8888/api/review_coaches`, {
+    return await fetch(`http://localhost:8888/api/review_coaches`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({
-            coach: `path/${coachId}.html`,
-            client: `path/${clientId}.html`,
+            coach: `api/coaches/${coachId}`,
+            client: `api/clients/${clientId}`,
             note: note,
         }),
     });
-    return result.json();
 };
 
 export { addReview };

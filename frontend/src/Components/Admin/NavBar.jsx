@@ -18,6 +18,9 @@ function NavBar({ isAdmin }) {
                                         <li>
                                             <Link to="users">Users</Link>
                                         </li>
+                                        <li>
+                                            <Link to="companies">Companies</Link>
+                                        </li>
                                     </div>
                                 </ul>
                             </nav>

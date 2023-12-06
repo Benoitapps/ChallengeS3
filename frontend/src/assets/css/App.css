@@ -1,8 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 :root {
     /* Colors */
     --primary: #2970FF;
     --primary-hover: #0040C1;
     --primay-selected: #D1E0FF;
+    --error: #DD0000;
+    --error-background: #FFD1D1;
     --background: #F5F8FF;
     --system: #EBEAEF;
     --dark-background: #333333;
@@ -123,4 +127,8 @@ input[type="submit"]:active,
 main {
     margin: 75px auto 0;
     text-align: center;
+}
+
+.error {
+    color: var(--error);
 }

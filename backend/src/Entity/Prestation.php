@@ -33,11 +33,11 @@ class Prestation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[Groups(['slot:read', 'franchise:read'])]
+    #[Groups(['slot:read', 'franchise:read', 'coach:read','slot:history:read:collection'])]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['slot:read', 'slot:read:collection', 'prestation:write', 'prestation:read', 'coach:read:slots', 'company:read:franchise', 'franchise:read'])]
+    #[Groups(['slot:read', 'slot:read:collection', 'prestation:write', 'prestation:read', 'coach:read:slots', 'company:read:franchise', 'franchise:read', 'coach:read','slot:history:read:collection'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -45,7 +45,7 @@ class Prestation
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[Groups(['prestation:write', 'prestation:read', 'franchise:read'])]
+    #[Groups(['prestation:write', 'prestation:read', 'franchise:read', 'coach:read'])]
     #[ORM\Column]
     private ?float $price = null;
 
@@ -53,7 +53,7 @@ class Prestation
     #[ORM\ManyToMany(targetEntity: Coach::class, inversedBy: 'prestations')]
     private Collection $coach; // ! to change to coachs
 
-    #[Groups(['prestation:write'])]
+    #[Groups(['prestation:write', 'coach:read'])]
     #[ORM\ManyToOne(inversedBy: 'prestations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Franchise $franchise = null;

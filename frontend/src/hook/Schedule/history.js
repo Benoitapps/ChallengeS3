@@ -1,14 +1,13 @@
 
-const getSlots = async (filterDateStart =null, filterDateEnd = null) => {
+const getSlotsHistory = async (page) => {
     try {
 
         // console.log("filterDateStart",filterDateStart + "and" + "filterDateEnd",filterDateEnd);
-        const apiUrl = `http://localhost:8888/api/slots?page=1&startDate[before]=${filterDateEnd}&startDate[after]=${filterDateStart}`;
+        const apiUrl = `http://localhost:8888/api/slots/history?page=`+ page;
 
         const result = await fetch(apiUrl, {
             method: "GET",
             headers: {
-                Accept: "application/json",
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         });
@@ -20,4 +19,4 @@ const getSlots = async (filterDateStart =null, filterDateEnd = null) => {
     }
 };
 
-export { getSlots };
+export { getSlotsHistory };

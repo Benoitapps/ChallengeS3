@@ -40,6 +40,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Patch(
             denormalizationContext: ['groups' => ['company:update']],
         ),
+        new Patch(
+            denormalizationContext: ['groups' => ['company:admin:update']],
+            security: "is_granted('ROLE_ADMIN')",
+        ),
     ],
 //    normalizationContext: ['groups' => ['company:read','company:read:user-is-logged']],
 //    denormalizationContext: ['groups' => ['company:write']],
@@ -69,7 +73,7 @@ class Company
     private ?string $kbis = null;
 
     #[ORM\Column]
-    #[Groups(['company:read', 'company:write', 'company:read:myCompany'])]
+    #[Groups(['company:read', 'company:write', 'company:read:myCompany', 'company:admin:update'])]
     private ?bool $isVerified = false;
 
     #[ORM\OneToOne(inversedBy: 'company', cascade: ['persist', 'remove'])]

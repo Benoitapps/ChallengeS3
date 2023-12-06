@@ -20,30 +20,35 @@ function UsersList() {
 
     return (
         <main>
-            {usersLoading && <div>Chargement...</div>}
-            <div>
-                {users.map((user) => (
-                    <div key={user.id} style={{display: 'flex', justifyContent: 'space-evenly', textAlign: 'left'}}>
-                        <span style={{width: '20%'}}>
-                            {user.id}
-                        </span>
-                        <span style={{width: '20%'}}>
-                            {user.email}
-                        </span>
-                        <span style={{width: '20%'}}>
-                            {user.roles.map((role) => {
-                                return role + ' ';
-                            })}
-                        </span>
-                        <span style={{width: '20%'}}>
-                            {user.firstname}
-                        </span>
-                        <span style={{width: '20%'}}>
-                            {user.lastname}
-                        </span>
-                    </div>
-                ))}
-            </div>
+            {
+                usersLoading && <div>Chargement...</div>
+            }
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Email</th>
+                        <th>Rôles</th>
+                        <th>Prénom</th>
+                        <th>Nom</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users.map((user) => (
+                        <tr key={user.id}>
+                            <td>{user.id}</td>
+                            <td>{user.email}</td>
+                            <td>
+                                {user.roles.map((role) => {
+                                    return role + ' ';
+                                })}
+                            </td>
+                            <td>{user.firstname}</td>
+                            <td>{user.lastname}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </main>
     );
 }
