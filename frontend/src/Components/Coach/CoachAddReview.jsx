@@ -1,6 +1,7 @@
 import {getUserId} from "../User/DecodeUser.jsx";
 import {addReview} from "../../hook/coach/addReview.js";
 import {useState} from "react";
+import Alert from "../Alert.jsx";
 
 function CoachAddReview({id}) {
     const [success, setSuccess] = useState(false);
@@ -65,6 +66,11 @@ function CoachAddReview({id}) {
             setSuccess(false);
             setError(true);
         }
+
+        setTimeout(() => {
+            setSuccess(false);
+            setError(false);
+        }, 3000);
     };
 
     return (
@@ -99,10 +105,10 @@ function CoachAddReview({id}) {
                 <input className="coach-review__submit" type="submit" value="Noter"/>
             </form>
             {
-                success && <p className="success">Votre note a bien été prise en compte</p>
+                success && <Alert isVisible={true} type="success" text="Votre avis a bien été pris en compte"/>
             }
             {
-                error && <p className="error">Une erreur est survenue, veuillez réessayer plus tard</p>
+                error && <Alert isVisible={true} type="error" text="Une erreur est survenue"/>
             }
         </div>
     );

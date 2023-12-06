@@ -5,6 +5,8 @@
     --primary: #2970FF;
     --primary-hover: #0040C1;
     --primay-selected: #D1E0FF;
+    --error: #DD0000;
+    --error-background: #FFD1D1;
     --background: #F5F8FF;
     --system: #EBEAEF;
     --dark-background: #333333;
@@ -128,9 +130,5 @@ main {
 }
 
 .error {
-    color: red;
-}
-
-.success {
-    color: green;
+    color: var(--error);
 }
