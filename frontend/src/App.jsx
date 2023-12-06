@@ -14,7 +14,7 @@ import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
 import Profile from './Components/Profile.jsx';
 import ClubsPage from './Components/Club/ClubsPage.jsx';
 import ClubDetails from './Components/Club/ClubDetails.jsx';
-import CoachDetails from './Components/Coach/CoachDetails.jsx';
+import CoachPage from './Components/Coach/CoachPage.jsx';
 
 // Admin
 import NavBarAdmin from './Components/Admin/NavBar';
@@ -91,7 +91,7 @@ function App() {
             {/* Route for user not connected */}
             <Route index element={<ClubsPage/>} />
             <Route path="club/:id" element={<ClubDetails/>} />
-            <Route path="coach/:id" element={<CoachDetails/>} />
+            <Route path="coach/:id" element={<CoachPage/>} />
 
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login handleConnect={handleConnect} />} />

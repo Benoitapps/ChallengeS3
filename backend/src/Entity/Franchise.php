@@ -72,7 +72,7 @@ class Franchise
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'coach:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -80,7 +80,7 @@ class Franchise
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'coach:read'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]

@@ -56,6 +56,7 @@ class Coach
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['coach:read', 'coach:write'])]
     private ?string $biography = null;
 
     #[Groups(['slot:read', 'coach:read', 'prestation:read', 'company:read:franchise', 'franchise:read'])]

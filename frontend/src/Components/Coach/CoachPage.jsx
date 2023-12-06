@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getCoachDetails } from "../../hook/coach/getCoach.js";
 import { addReview } from "../../hook/coach/addReview.js";
 import { getUserId } from "../User/DecodeUser.jsx";
+import CoachProfile from "./CoachProfile";
+import CoachContent from "./CoachContent";
 import '@css/Coach.css';
 
-function CoachDetails() {
+function CoachPage() {
     const { id } = useParams();
     const [coach, setCoach] = useState({});
     const [loading, setLoading] = useState(true);
@@ -13,12 +15,13 @@ function CoachDetails() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const result = await getCoachDetails(id);
-            setCoach(result);
+        const getCoach = async () => {
+            const coachResult = await getCoachDetails(id);
+
+            setCoach(coachResult);
             setLoading(false);
         };
-        fetchData();
+        getCoach();
     }, []);
 
     const handleSubmit = async (e) => {
@@ -47,29 +50,25 @@ function CoachDetails() {
                     ? <div className="loading">Chargement...</div>
                     :
                     <div className="container-coach">
-                        <div className="coach-card">
-                            <div className="coach-card__name">{coach.auth.firstname}</div>
-                            <div className="coach-card__note">{
-                                coach.rating === 0
-                                    ? 'Pas de note'
-                                    : coach.rating
-                            }</div>
-                        </div>
+                        <CoachProfile coach={coach}/>
+                        <div className="coach-content">
+                            <CoachContent coach={coach}/>
 
-                        <form className="coach-review" onSubmit={(e) => handleSubmit(e)}>
-                            <input type="number" name="note" min="1" max="5"/>
-                            <input type="submit" value="Noter"/>
-                        </form>
-                        {
-                            success && <p className="success">Votre note a bien été prise en compte</p>
-                        }
-                        {
-                            error && <p className="error">{error}</p>
-                        }
+                            <form className="coach-review" onSubmit={(e) => handleSubmit(e)}>
+                                <input type="number" name="note" min="1" max="5"/>
+                                <input type="submit" value="Noter"/>
+                            </form>
+                            {
+                                success && <p className="success">Votre note a bien été prise en compte</p>
+                            }
+                            {
+                                error && <p className="error">{error}</p>
+                            }
+                        </div>
                     </div>
             }
         </main>
     );
 }
 
-export default CoachDetails;
+export default CoachPage;
