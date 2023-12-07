@@ -5,9 +5,7 @@ import {
     useAdvancedMarkerRef,
 } from "@vis.gl/react-google-maps";
 
-const env = import.meta.env;
-
-export const MarkerWithInfowindow = ({coordinates}) => {
+export const MarkerWithInfowindow = ({ club }) => {
     const [infowindowOpen, setInfowindowOpen] = useState(false);
     const [markerRef, marker] = useAdvancedMarkerRef();
 
@@ -16,7 +14,7 @@ export const MarkerWithInfowindow = ({coordinates}) => {
             <AdvancedMarker
                 ref={markerRef}
                 onClick={() => setInfowindowOpen(true)}
-                position={{ lat: coordinates.lat, lng: coordinates.lng }}
+                position={{ lat: club.lat, lng: club.lng }}
                 title={"AdvancedMarker that opens an Infowindow when clicked."}
             />
             {infowindowOpen && (
@@ -25,9 +23,10 @@ export const MarkerWithInfowindow = ({coordinates}) => {
                     maxWidth={200}
                     onCloseClick={() => setInfowindowOpen(false)}
                 >
-                    This is an example for the{" "}
-                    <code style={{ whiteSpace: "nowrap" }}>&lt;AdvancedMarker /&gt;</code>{" "}
-                    combined with an Infowindow.
+                    <div>
+                        <h3>{club.name}</h3>
+                        <>{club.address}, {club.city}, {club.zipCode}</>
+                    </div>
                 </InfoWindow>
             )}
         </>
