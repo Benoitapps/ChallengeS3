@@ -43,8 +43,10 @@ function Login({ handleConnect }) {
         }
     };
 
+
     return (
         <>
+
             <main className="authentification">
                 <div className="login-signup">
                     <svg className="login-signup__svg" xmlns="http://www.w3.org/2000/svg" width="220" height="48" viewBox="0 0 220 48" fill="none">

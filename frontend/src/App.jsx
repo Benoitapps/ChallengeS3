@@ -1,8 +1,8 @@
 import './assets/css/App.css';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
-
 import { accountService } from './services/account.service.js';
+
 
 // Front
 import UserRoute from './UserRoute.jsx';
@@ -33,6 +33,8 @@ import AddFranchise from "./Components/Manager/AddFranchise.jsx";
 
 // Special
 import Unauthorize from './Components/Unauthorize.jsx';
+import i18next from "./i18n.js";
+import {useTranslation, Trans} from "react-i18next";
 
 function App() {
   const userIsAdmin = () => {
@@ -94,8 +96,20 @@ function App() {
     setIsConnected(token !== null);
   }, []);
 
+  const{ t, i18n  } = useTranslation();
+
+  const changeLanguage = lng => {
+    i18n.changeLanguage(lng);
+  };
+
+
   return (
     <>
+      <button onClick={() => changeLanguage("fr")}>de</button>
+      <button onClick={() => changeLanguage("en")}>en</button>
+       {t('welcome')}
+
+
       <BrowserRouter>
         <Routes>
           {/* Front */}

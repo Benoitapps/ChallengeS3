@@ -28,10 +28,11 @@ class Traduction
     public function __construct(
         protected string $id = '',
         protected string $name = '',
+        protected string $traduction = '',
 
     ) {}
 
-    #[Groups(['trad:read'])]
+
     #[ApiProperty(writable: false, identifier: false)]
     public function getId(): string
     {
@@ -54,5 +55,19 @@ class Traduction
     {
         $this->name = $name;
     }
+
+    #[Groups(['trad:read'])]
+    public function getTraduction(): string
+    {
+        return $this->traduction;
+    }
+
+    #[Groups(['trad:write'])]
+    public function setTraduction(string $traduction): void
+    {
+        $this->traduction = $traduction;
+    }
+
+
 
 }

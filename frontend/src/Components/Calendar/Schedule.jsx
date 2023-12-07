@@ -13,9 +13,12 @@ import {eventDetails} from '../../services/eventDetails.js';
 import { deleteSlot } from "../../hook/Schedule/eventDelete.js";
 import loadingGIF from "@img/loading.gif";
 import logo from "@img/logo.svg";
+import {useTranslation, Trans} from "react-i18next";
 
 
 function Schedule({ onButtonClick, ...otherProps }) {
+
+    const{ t, i18n  } = useTranslation();
 
     //attente avant de charger les evenements
     const [loading, setLoading] = useState(true);
@@ -171,12 +174,10 @@ function Schedule({ onButtonClick, ...otherProps }) {
         <main>
             <div className="schedule">
 
-
             {loading?  <div className="fondLoader"></div> : null}
             {loading? <img className="loader" src={loadingGIF}  alt="Chargement..."/> : null}
 
-
-            <h1>Mes Reservations</h1>
+                {t('test')}
 
             <FullCalendar
                 ref={calendarRef}

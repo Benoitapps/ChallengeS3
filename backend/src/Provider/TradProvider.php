@@ -37,8 +37,8 @@ class TradProvider implements ProviderInterface
         $file = fopen($filePath, 'rb');
         while (($line = fgetcsv($file)) !== FALSE) {
             $result[] = new Traduction(
-                id: $line[0],
-                name: $line[1],
+                name: $line[0],
+                traduction: $line[1],
 
             );
         }
