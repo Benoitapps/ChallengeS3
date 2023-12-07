@@ -105,10 +105,12 @@ class Franchise
     private Collection $prestations;
     
     #[ORM\Column]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['franchise:read'])]
     private ?float $lat = null;
     
     #[ORM\Column]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['franchise:read'])]
     private ?float $lng = null;
 
