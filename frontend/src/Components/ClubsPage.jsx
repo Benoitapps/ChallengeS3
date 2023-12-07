@@ -1,18 +1,19 @@
-import React from 'react';
-import ClubsList from './ClubsList';
-import FilterBar from './FilterBar';
-import map from "@img/map.png";
+import React, { useState } from 'react';
+import ClubsList from './Club/ClubsList';
+import FilterBar from './Club/FilterBar';
+import MapContainer from './Map/MapContainer';
 
 function ClubsPage() {
+    const [clubs, setClubs] = useState([]);
     return (
         <main>
             <div style={{display: 'flex'}}>
                 <div style={{width: '50%', minHeight: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
                     <FilterBar/>
-                    <ClubsList/>
+                    <ClubsList clubs={clubs} setClubs={setClubs}/>
                 </div>
                 <div style={{width: '50%', borderLeft: '1px solid black'}}>
-                    <img src={map} alt="map" style={{width: '100%', height: '100%'}} />
+                    <MapContainer clubs={clubs}/>
                 </div>
             </div>
         </main>

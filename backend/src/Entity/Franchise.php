@@ -98,6 +98,16 @@ class Franchise
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Prestation::class)]
     #[Groups(['franchise:read', 'company:read:franchise'])]
     private Collection $prestations;
+    
+    #[ORM\Column]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['franchise:read'])]
+    private ?float $lat = null;
+    
+    #[ORM\Column]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['franchise:read'])]
+    private ?float $lng = null;
 
     public function __construct()
     {
@@ -238,6 +248,30 @@ class Franchise
                 $prestation->setFranchise(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLat(): ?float
+    {
+        return $this->lat;
+    }
+
+    public function setLat(float $lat): static
+    {
+        $this->lat = $lat;
+
+        return $this;
+    }
+
+    public function getLng(): ?float
+    {
+        return $this->lng;
+    }
+
+    public function setLng(float $lng): static
+    {
+        $this->lng = $lng;
 
         return $this;
     }

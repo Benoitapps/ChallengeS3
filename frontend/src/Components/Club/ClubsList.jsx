@@ -5,8 +5,7 @@ import Pagination from './Pagination';
 
 const ITEM_PER_PAGE = 4;
 
-function ClubsList() {
-    const [clubs, setClubs] = useState([]);
+function ClubsList({clubs, setClubs}) {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [loading, setLoading] = useState(true);
