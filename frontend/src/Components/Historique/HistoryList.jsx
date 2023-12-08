@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from "react";
-import { getSlotsHistory } from "../../hook/Schedule/history.js";
+import { getSlotsHistory } from "../../hook/History/history.js";
 import HistorySlot from "./HistorySlot.jsx";
 import Pagination from "../Club/Pagination.jsx";
 import {historyGet} from "../../services/getHistory.js";
 import '@css/History.css';
-
 
 
 export default function TaskList() {
@@ -23,7 +22,6 @@ export default function TaskList() {
 
     const fetchData = async () => {
         const result = await getSlotsHistory(currentPage);
-
         setSlot(result['hydra:member']);
         setTotalItems(result['hydra:totalItems']);
         setLoading(false);

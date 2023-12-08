@@ -1,8 +1,8 @@
 import './assets/css/App.css';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
-
 import { accountService } from './services/account.service.js';
+
 
 // Front
 import UserRoute from './UserRoute.jsx';
@@ -33,6 +33,8 @@ import AddFranchise from "./Components/Manager/AddFranchise.jsx";
 
 // Special
 import Unauthorize from './Components/Unauthorize.jsx';
+import i18next from "./i18n.js";
+import {useTranslation, Trans} from "react-i18next";
 
 function App() {
   const userIsAdmin = () => {
