@@ -1,9 +1,22 @@
-const getTrad = async () => {
-    const result = await fetch(`http://localhost:8888/api/traductions`, {
+const getTradFR = async () => {
+    const result = await fetch(`http://localhost:8888/api/traductions/fr`, {
         method: 'GET',
+        headers: {
+            Accept: "application/json",
+        },
     });
-    console.log("result", result)
     return result.json();
 };
 
-export { getTrad };
+
+const getTradEN = async () => {
+    const result = await fetch(`http://localhost:8888/api/traductions/en`, {
+        method: 'GET',
+        headers: {
+            Accept: "application/json",
+        },
+    });
+    return result.json();
+};
+
+export { getTradFR, getTradEN };

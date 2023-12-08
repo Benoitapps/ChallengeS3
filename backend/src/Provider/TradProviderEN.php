@@ -10,9 +10,9 @@ use ApiPlatform\State\ProviderInterface;
 use App\ValueObject\Traduction;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class TradProvider implements ProviderInterface
+class TradProviderEN implements ProviderInterface
 {
-    public const TRAD_CSV_PATH = '/src/Assets/traductionFr.csv';
+    public const TRAD_CSV_PATH = '/src/Assets/traductionEN.csv';
 
     public function __construct(
         protected KernelInterface $kernel,

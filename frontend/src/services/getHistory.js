@@ -1,4 +1,4 @@
-import { getSlotsHistory } from "../hook/Schedule/history.js";
+import { getSlotsHistory } from "../hook/History/history.js";
 
 const transformData = (initialData) => {
     return initialData.map((item ) => {

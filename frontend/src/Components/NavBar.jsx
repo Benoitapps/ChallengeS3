@@ -5,8 +5,6 @@ import logo from "@img/logo.svg";
 import france from "@img/France.png";
 import states from "@img/States.png";
 import {useTranslation, Trans} from "react-i18next";
-import {getTrad} from "../hook/traduction/getTrad.js";
-
 
 
 function NavBar({ isConnected, handleDisconnect, isAdmin, isManager, isCoach }) {
@@ -14,17 +12,6 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager, isCoach }) 
   const location = useLocation();
   const links = document.querySelectorAll(".header__links");
   const [language, setlanguage] = useState(false);
-
-  useEffect(() => {
-    async function fetchData() {
-      let trad = await getTrad();
-      console.log(trad);
-    }
-    if (isConnected) {
-      fetchData();
-    }
-
-  }, [language]);
 
 
   useEffect(() => {
@@ -111,8 +98,10 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager, isCoach }) 
                     )
                 }
                 <li>
-                  <button className="buttonDrap" onClick={() => changeLanguage("fr")}> <img src={france} alt="Francais" /></button>
-                  <button className="buttonDrap" onClick={() => changeLanguage("en")}> <img src={states} alt="English" /></button>
+                   <img src={france} alt="Francais" onClick={() => changeLanguage("fr")} />
+                  </li>
+                <li>
+                  <img src={states} alt="English" onClick={() => changeLanguage("en")}/>
                 </li>
                 {isConnected ? (
                   <li>

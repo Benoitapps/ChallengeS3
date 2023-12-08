@@ -10,15 +10,20 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 //use App\Processor\ColorStateProcessor;
-use App\Provider\TradProvider;
+use App\Provider\TradProviderFR;
+use App\Provider\TradProviderEN;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
-    provider: TradProvider::class,
+    paginationItemsPerPage: 100,
     normalizationContext: ['groups' => ['trad:read']],
     denormalizationContext: ['groups' => ['trad:write']],
     operations: [
-        new GetCollection(),
+        new GetCollection(provider: TradProviderFR::class, uriTemplate: '/traductions/fr'),
+        new GetCollection(
+            provider: TradProviderEN::class,
+            uriTemplate: '/traductions/en'
+        ),
         new Get(),
         new Post(),
     ]

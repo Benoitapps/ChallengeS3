@@ -8,17 +8,18 @@ import listPlugin from '@fullcalendar/list'
 import PopUp from "./Popup.jsx";
 import '@css/Schedule.css';
 import {tab} from '../../services/eventsGet.js';
-import {addslot} from '../../services/eventCreate.js';
 import {eventDetails} from '../../services/eventDetails.js';
 import { deleteSlot } from "../../hook/Schedule/eventDelete.js";
 import loadingGIF from "@img/loading.gif";
-import logo from "@img/logo.svg";
 import {useTranslation, Trans} from "react-i18next";
+import frLocale from '@fullcalendar/core/locales/fr';
 
 
 function Schedule({ onButtonClick, ...otherProps }) {
 
     const{ t, i18n  } = useTranslation();
+    const lang = i18n.language;
+
 
     //attente avant de charger les evenements
     const [loading, setLoading] = useState(true);
@@ -106,10 +107,10 @@ function Schedule({ onButtonClick, ...otherProps }) {
             const modalContentInfo = (
                 <div className="popup__content__texts">
 
-                    <h2>Vous avez reserver un Cours :</h2>
-                    <p>Prestation : {eventDetail.title}</p>
-                    <p>Coach : {eventDetail.coach} </p>
-                    <p>Client : {eventDetail.client}</p>
+                    <h2>{t("SheduleTitlePopUpPerso")}</h2>
+                    <p>{t("ShedulePrestation")} : {eventDetail.title}</p>
+                    <p>{t("SheduleCoach")} : {eventDetail.coach} </p>
+                    <p>{t("SheduleClient")} : {eventDetail.client}</p>
 
                     <ul className="popup__content__texts__datetime">
                         <li>
@@ -174,13 +175,14 @@ function Schedule({ onButtonClick, ...otherProps }) {
         <main>
             <div className="schedule">
 
+            <h1>{t("SheduleTitleMyCourses")}</h1>
+
             {loading?  <div className="fondLoader"></div> : null}
             {loading? <img className="loader" src={loadingGIF}  alt="Chargement..."/> : null}
 
-                {t('test')}
-
             <FullCalendar
                 ref={calendarRef}
+                locale={lang === "fr" ? frLocale : "en"}
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
                 initialView={'timeGridWeek'}
                 slotDuration="01:00:00"
@@ -196,7 +198,6 @@ function Schedule({ onButtonClick, ...otherProps }) {
                     }
                 }
                 height={"35em"}
-                locale={"fr"}
                 // dateClick={(e) => handleDateClick(e)}
                 // viewDidMount={handleViewChange}
                 datesSet={handleDateChange}
@@ -207,7 +208,7 @@ function Schedule({ onButtonClick, ...otherProps }) {
                 {modalContent}
             </PopUp>
             <PopUp show={isModalOpenDetail} showButton={true} showButton1={true} onClose={() => closeModal()} button1={() => updateModal()} button2={() => deleteSlotbyID()}
-                   nameButton1={"Modifier"} nameButton2={"Supprimer"} annuler={"Annuler"}>
+                   nameButton1={t("Update")} nameButton2={t("Delete")} annuler={t("Cancel")}>
                 {modalContent}
             </PopUp>
             </div>

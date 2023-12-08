@@ -96,20 +96,8 @@ function App() {
     setIsConnected(token !== null);
   }, []);
 
-  const{ t, i18n  } = useTranslation();
-
-  const changeLanguage = lng => {
-    i18n.changeLanguage(lng);
-  };
-
-
   return (
     <>
-      <button onClick={() => changeLanguage("fr")}>de</button>
-      <button onClick={() => changeLanguage("en")}>en</button>
-       {t('welcome')}
-
-
       <BrowserRouter>
         <Routes>
           {/* Front */}
