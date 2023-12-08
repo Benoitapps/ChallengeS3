@@ -32,6 +32,7 @@ function CoachReview({coach, id}) {
             selected: false
         }
     ]);
+    const [isLoading, setIsLoading] = useState(false);
 
     function handleStarClick(starId) {
         const newStars = stars.map((star) => {
@@ -62,10 +63,10 @@ function CoachReview({coach, id}) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         if(note > 0 && note <= 5) {
             const userId = await getUserId();
-
             await verifyReviewIsExist(coach.reviewCoaches, userId);
 
             if (isNoted === false) {
@@ -98,6 +99,8 @@ function CoachReview({coach, id}) {
             setError(true);
             removeAlertOnError();
         }
+
+        setIsLoading(false);
     };
 
     function removeAlertOnSuccess() {
@@ -117,7 +120,6 @@ function CoachReview({coach, id}) {
 
     return (
         <div className="coach-content__review">
-            <h4>Donner votre avis</h4>
             <form className="coach-review" onSubmit={(e) => handleSubmit(e)}>
                 <ul className="coach-review__stars">
                     {
@@ -144,7 +146,13 @@ function CoachReview({coach, id}) {
                         })
                     }
                 </ul>
-                <input className="coach-review__submit" type="submit" value="Noter"/>
+                <button className="coach-review__submit primary-button" type="submit">
+                    {
+                        isLoading
+                            ? 'En cours d\'envoi...'
+                            : 'Envoyer'
+                    }
+                </button>
             </form>
             {
                 success && <Alert isVisible={true} type="success" text="Votre avis a bien été pris en compte"/>
