@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 //use App\Processor\ColorStateProcessor;
 use App\Provider\TradProviderFR;
+use App\Provider\TradProvider;
 use App\Provider\TradProviderEN;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -19,10 +20,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['trad:read']],
     denormalizationContext: ['groups' => ['trad:write']],
     operations: [
-        new GetCollection(provider: TradProviderFR::class, uriTemplate: '/traductions/fr'),
         new GetCollection(
-            provider: TradProviderEN::class,
-            uriTemplate: '/traductions/en'
+            provider: TradProvider::class,
+            uriTemplate: '/traductions/fr',
+            normalizationContext: ['groups' => ['trad:read:fr']],
+            ),
+
+        new GetCollection(
+            provider: TradProvider::class,
+            uriTemplate: '/traductions/en',
+            normalizationContext: ['groups' => ['trad:read:en']],
         ),
         new Get(),
         new Post(),
@@ -33,7 +40,8 @@ class Traduction
     public function __construct(
         protected string $id = '',
         protected string $name = '',
-        protected string $traduction = '',
+        protected string $traductionEN = '',
+        protected string $traductionFR = '',
 
     ) {}
 
@@ -49,7 +57,7 @@ class Traduction
         $this->id = $id;
     }
 
-    #[Groups(['trad:read'])]
+    #[Groups(['trad:read:fr', 'trad:read:en'])]
     public function getName(): string
     {
         return $this->name;
@@ -61,16 +69,28 @@ class Traduction
         $this->name = $name;
     }
 
-    #[Groups(['trad:read'])]
-    public function getTraduction(): string
+    #[Groups(['trad:read:en'])]
+    public function getTraductionEN(): string
     {
-        return $this->traduction;
+        return $this->traductionEN;
     }
 
     #[Groups(['trad:write'])]
-    public function setTraduction(string $traduction): void
+    public function setTraductionEN(string $traductionEN): void
     {
-        $this->traduction = $traduction;
+        $this->traductionEN = $traductionEN;
+    }
+
+    #[Groups(['trad:read:fr'])]
+    public function getTraductionFR(): string
+    {
+        return $this->traductionFR;
+    }
+
+    #[Groups(['trad:write'])]
+    public function setTraductionFR(string $traductionFR): void
+    {
+        $this->traductionFR = $traductionFR;
     }
 
 

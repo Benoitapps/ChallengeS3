@@ -10,9 +10,9 @@ use ApiPlatform\State\ProviderInterface;
 use App\ValueObject\Traduction;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class TradProviderEN implements ProviderInterface
+class TradProvider implements ProviderInterface
 {
-    public const TRAD_CSV_PATH = '/src/Assets/traductionEN.csv';
+    public const TRAD_CSV_PATH = '/src/Assets/traduction.csv';
 
     public function __construct(
         protected KernelInterface $kernel,
@@ -38,7 +38,8 @@ class TradProviderEN implements ProviderInterface
         while (($line = fgetcsv($file)) !== FALSE) {
             $result[] = new Traduction(
                 name: $line[0],
-                traduction: $line[1],
+                traductionEN: $line[1],
+                traductionFR: $line[2],
 
             );
         }
