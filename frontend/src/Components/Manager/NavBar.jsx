@@ -16,6 +16,9 @@ function NavBar({ isManager }) {
                                     </li>
                                     <div className="header__center">
                                         <li>
+                                            <Link to="dashboard">Dashboard</Link>
+                                        </li>
+                                        <li>
                                             <Link to="company">Ajouter mon entreprise</Link>
                                         </li>
                                         <li>
