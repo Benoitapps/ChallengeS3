@@ -1,4 +1,4 @@
-import {getCoachPrestation} from "../../hook/Stats/getStatAllPrestation.js"
+import {getFranchisePrice} from "../../hook/Stats/getStatAllFranchisePrice.js"
 import {forEach} from "lodash";
 import {accountService} from "../account.service.js";
 import {getIdClient} from "../../hook/user/idClientUser.js";
@@ -13,22 +13,22 @@ const transformData = (initialData) => {
         tab.push(item);
     });
     forEach(tab[0], (item) => {
-        item.prestations?.length>0?tab2.push(item.prestations):null;
+        // console.log("item",item)
+        item.prestations?.length>0?tab2.push(item):null;
     });
-
     forEach(tab2, (items) => {
-        forEach(items, (item) => {
-            item.slots?.length>0?tab3.push([{name:item.name},{nombre:item.slots?.length}]):null;
+        forEach(items.prestations, (item) => {
+            item.slots.length>0?tab3.push([{name:items.name},{price:item.slots?.length*item.price}]):null;
         });
-     });
+    });
 
     return tab3;
 };
 
 
-const statPrestation = async () => {
+const statFranchisePrice = async () => {
     const manager = await idManager();
-    const initialData = await getCoachPrestation(manager.id);
+    const initialData = await getFranchisePrice(manager.id);
 
     const transformedData = transformData(initialData);
     return transformedData;
@@ -42,4 +42,4 @@ const idManager = async () => {
 }
 
 
-export {statPrestation};
+export {statFranchisePrice};

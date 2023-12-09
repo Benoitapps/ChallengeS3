@@ -5,6 +5,7 @@ import DashboardGraphCol from "./DashboardGraphCol.jsx";
 import DashboardGraphCam from "./DashboardGraphCam.jsx";
 import DashboardGraphLine from "./DashboardGraphLine.jsx";
 import DashboardGraphAu from "./DashboardGraphAu.jsx";
+import DashboardGraphBi from "./DashboardGraphBi.jsx";
 import '@css/Dashboard.css';
 
 
@@ -20,7 +21,7 @@ function Dashboard() {
 
             <div className="row">
                <div className="cube"> <DashboardGraphCol/></div>
-                <div className="cube"> <DashboardGraphLine/></div>
+                <div className="cube"> <DashboardGraphBi/></div>
             </div>
             <div className="row">
                 <div className="cube">  <DashboardGraphCam/></div>

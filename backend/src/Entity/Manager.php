@@ -30,6 +30,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
             uriTemplate: '/managers/{id}/stats/reservation',
             normalizationContext: ['groups' => ['stat:reservation:read']],
         ),
+        new Get(
+            uriTemplate: '/managers/{id}/stats/money',
+            normalizationContext: ['groups' => ['stat:money:read']],
+        ),
         new Post(
             denormalizationContext: ['groups' => ['manager:write']],
         ),
@@ -54,7 +58,7 @@ class Manager
     #[Groups(['company:read', 'manager:write'])]
     private ?User $auth = null;
 
-    #[Groups(['stat:coach:read','stat:prestation:read','stat:reservation:read'])]
+    #[Groups(['stat:coach:read','stat:prestation:read','stat:reservation:read','stat:money:read'])]
     #[ORM\OneToOne(mappedBy: 'manager', cascade: ['persist', 'remove'])]
     private ?Company $company = null;
 
