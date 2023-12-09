@@ -1,4 +1,4 @@
-import {getCoachNotes} from "../../hook/Stats/getStatAllCoachNote.js"
+import {getCoachReservation} from "../../hook/Stats/getStatAllReservByCoach.js"
 import {forEach} from "lodash";
 import {accountService} from "../account.service.js";
 import {getIdClient} from "../../hook/user/idClientUser.js";
@@ -18,31 +18,20 @@ const transformData = (initialData) => {
     });
     forEach(tab2, (item) => {
         forEach(item, (item2) => {
-            forEach(item2.reviewCoaches, (itemNote) => {
-                tabNote.push(itemNote.note);
-            });
-            item2?tab3.push([item2.auth.firstname, item2.auth.lastname,calculateAverage(tabNote)]):null;
+            item2.slots?.length>0?tab3.push([item2.auth.firstname, item2.auth.lastname,item2.slots.length]):null;
         });
-    });
 
+    });
     return tab3;
 };
 
 
-function calculateAverage(notes) {
-    if (notes.length === 0) {
-        return 0;
-    }
-    const sum = notes.reduce((acc, note) => acc + note, 0);
-    return sum / notes.length;
-}
-
-
- const statCoachNote = async (id) => {
+const statCoachReservation = async (id) => {
     const manager = await idManager();
-    const initialData = await getCoachNotes(manager.id);
+    const initialData = await getCoachReservation(manager.id);
 
     const transformedData = transformData(initialData);
+    // console.log(transformedData)
 
     return transformedData;
 };
@@ -55,4 +44,4 @@ const idManager = async () => {
 }
 
 
-export {statCoachNote};
+export {statCoachReservation};

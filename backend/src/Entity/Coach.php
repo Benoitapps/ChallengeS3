@@ -59,7 +59,7 @@ class Coach
     #[Groups(['coach:read', 'coach:write'])]
     private ?string $biography = null;
 
-    #[Groups(['slot:read', 'coach:read', 'prestation:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read'])]
+    #[Groups(['slot:read', 'coach:read', 'prestation:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read'])]
     #[ORM\OneToOne(inversedBy: 'coach', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $auth = null;
@@ -92,7 +92,7 @@ class Coach
     private Collection $timeOffs;
 
 
-    #[Groups(['coach:read','coach:read:slots'])]
+    #[Groups(['coach:read','coach:read:slots','stat:reservation:read'])]
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Slot::class)]
     private Collection $slots;
 
