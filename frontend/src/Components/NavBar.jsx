@@ -32,8 +32,16 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager, isCoach }) 
 
   const{ t, i18n } = useTranslation();
 
-  const changeLanguage = lng => {
+  const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
+    const languages = document.querySelectorAll(".flag-country img");
+    languages.forEach((language) => {
+      if (language.id === lng) {
+        language.classList.add("active");
+      } else {
+        language.classList.remove("active");
+      }
+    });
   };
 
   return (
@@ -97,11 +105,9 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager, isCoach }) 
                         </li>
                     )
                 }
-                <li>
-                   <img src={france} alt="Francais" onClick={() => changeLanguage("fr")} />
-                  </li>
-                <li>
-                  <img src={states} alt="English" onClick={() => changeLanguage("en")}/>
+                <li className="flag-country">
+                  <img id="fr" src={france} alt="Francais" onClick={() => changeLanguage("fr")} />
+                  <img id="en" src={states} alt="English" onClick={() => changeLanguage("en")} />
                 </li>
                 {isConnected ? (
                   <li>

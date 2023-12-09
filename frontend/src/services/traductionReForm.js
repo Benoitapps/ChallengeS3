@@ -1,6 +1,4 @@
-import {getTradFR} from "../hook/traduction/getTrad.js";
-import {getTradEN} from "../hook/traduction/getTrad.js";
-
+import { getTradFR, getTradEN } from "../hook/Traduction/getTrad.js";
 
 const transformData = (initialData,langue) => {
     let nouvelObjet = {};
