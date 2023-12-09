@@ -5,7 +5,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
 import PopUp from "./Popup.jsx";
-import '@css/Schedule.css';
+import '@css/SheduleReservation.css';
 import {addslot} from '../../services/eventCreate.js';
 import { deleteSlot } from "../../hook/Schedule/eventDelete.js";
 import { eventCoach } from "../../services/eventCoach.js";
@@ -264,6 +264,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
                 {loading? <img className="loader" src={loadingGIF}  alt="Chargement..."/> : null}
 
             <h1>{t("SheduleTitleCoachCourses")}</h1>
+                <div className="calendar">
 
             <FullCalendar
                 ref={calendarRef}
@@ -290,6 +291,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
                 datesSet={handleDateChange}
                 eventClick={false}
             />
+                </div>
             <PopUp show={isModalOpen} showButton1={true} onClose={() => closeModal()} button1={() => reserveModal()} nameButton1={t("Book")} annuler={t("Cancel")}>
                 {modalContent}
             </PopUp>

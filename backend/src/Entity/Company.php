@@ -83,7 +83,7 @@ class Company
     private ?Manager $manager = null;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Franchise::class, orphanRemoval: true)]
-    #[Groups(['company:read'])]
+    #[Groups(['company:read','stat:coach:read','stat:prestation:read','stat:reservation:read','stat:money:read'])]
     private Collection $franchises;
 
     public function __construct()

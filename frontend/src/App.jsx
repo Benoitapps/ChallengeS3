@@ -16,6 +16,7 @@ import ClubsPage from './Components/ClubsPage.jsx';
 import ClubDetails from './Components/Club/ClubDetails.jsx';
 import HistoryPage from "./Components/Historique/HistoryPage.jsx";
 import CoachPage from './Components/Coach/CoachPage.jsx';
+import Dashboard from './Components/DashBoard/DashboardPage.jsx';
 
 // Admin
 import NavBarAdmin from './Components/Admin/NavBar';
@@ -142,7 +143,8 @@ function App() {
             element={(
                 <Routes>
                   <Route path="/" element={<NavBarManager isConnected={isConnected} handleDisconnect={handleDisconnect} isManager={isManager} />}>
-                    <Route index element={<ManagerRoute index component={HomeManager} isManager={isManager} />} />
+                    <Route path="home" element={<ManagerRoute component={HomeManager} isManager={isManager} />} />
+                    <Route  index element={<ManagerRoute index component={Dashboard} isManager={isManager} />} />
                     <Route path="company" element={<ManagerRoute component={AddCompany} isManager={isManager}/>} />
                     <Route path="franchise" element={<ManagerRoute component={AddFranchise} isManager={isManager}/>} />
                   </Route>
