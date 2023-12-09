@@ -9,7 +9,6 @@ function DashboardGraphCam() {
     const chartRef = useRef();
 
     useEffect(() => {
-        console.log(chartRef)
 
         // chartRef.current.canvas.$chartjs.initial.height = 400;
         // chartRef.current.canvas.$chartjs.initial.width = 700;

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -8,38 +8,59 @@ import {
     Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import {getCoachNotes} from "../../hook/Stats/getStatAllCoachNote.js"
+import {statCoachNote} from "../../services/StatServices/statNoteCoach.js"
+import {forEach} from "lodash";
+
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 function DashboardGraphCol() {
 
     const chartRef = useRef();
+    const [tab, setTab] = useState([]);
+    const [label, setLabel] = useState([]);
+    const [note, setNote] = useState([]);
+
+    const fetchData = async () => {
+        let res = await statCoachNote(1);
+        setTab(res);
+        return res;
+    }
 
     useEffect(() => {
-        console.log(chartRef)
+        let res = [];
+        let res2 = [];
+        tab.forEach(tab => {
+            res.push(tab[0] + " " + tab[1]);
+            res2.push(tab[2]);
+        });
+        setLabel(res);
+        setNote(res2);
+    }, [tab]);
 
+
+
+    useEffect(() => {
+        fetchData();
 
         chartRef.current.canvas.$chartjs.initial.height = 300;
         chartRef.current.canvas.$chartjs.initial.width = 600;
     }, []);
 
     const data = {
-        labels: ['Catégorie A', 'Catégorie B', 'Catégorie C', 'Catégorie D'],
+        labels:label,
         datasets: [
             {
-                label: 'Nombre de joueurs',
-                data: [300, 200, 100, 50],
+                label: 'Note moyenne par Coach',
+                data: note,
                 backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#66ff99'],
                 hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#66ff99'],
             },
-            {
-                label: 'Nombre de joueurs',
-                data: [300, 200, 100, 50],
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#66ff99'],
-                hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#66ff99'],
-            },
+
         ],
     };
+
 
     const options = {
         plugins: {

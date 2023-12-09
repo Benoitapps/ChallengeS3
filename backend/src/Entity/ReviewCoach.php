@@ -44,7 +44,7 @@ class ReviewCoach
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(['review-coach:read', 'review-coach:write' , 'review-coach:update'])]
+    #[Groups(['review-coach:read', 'review-coach:write' , 'review-coach:update','stat:coach:read'])]
     private ?int $note = null;
 
     #[ORM\ManyToOne(inversedBy: 'reviewCoaches')]

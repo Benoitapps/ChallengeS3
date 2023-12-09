@@ -92,7 +92,7 @@ class Franchise
     private ?Company $company = null;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Coach::class)]
-    #[Groups(['franchise:read', 'company:read:franchise'])]
+    #[Groups(['franchise:read', 'company:read:franchise','stat:coach:read'])]
     private Collection $coachs;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Prestation::class)]

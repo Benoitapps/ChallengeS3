@@ -18,6 +18,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Get(
             normalizationContext: ['groups' => ['company:read']],
         ),
+        new Get(
+            uriTemplate: '/managers/{id}/stats/coach',
+            normalizationContext: ['groups' => ['stat:coach:read']],
+        ),
         new Post(
             denormalizationContext: ['groups' => ['manager:write']],
         ),
@@ -41,6 +45,7 @@ class Manager
     #[Groups(['company:read', 'manager:write'])]
     private ?User $auth = null;
 
+    #[Groups(['stat:coach:read'])]
     #[ORM\OneToOne(mappedBy: 'manager', cascade: ['persist', 'remove'])]
     private ?Company $company = null;
 
