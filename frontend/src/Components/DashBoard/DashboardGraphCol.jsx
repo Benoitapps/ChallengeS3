@@ -23,7 +23,7 @@ function DashboardGraphCol() {
     const [note, setNote] = useState([]);
 
     const fetchData = async () => {
-        let res = await statCoachNote(1);
+        let res = await statCoachNote();
         setTab(res);
         return res;
     }
@@ -66,7 +66,7 @@ function DashboardGraphCol() {
         plugins: {
             title: {
                 display: true,
-                text: 'Line Chart Example',
+                text: 'Note moyenne par Coach',
                 font: {
                     size: 16,
                 },

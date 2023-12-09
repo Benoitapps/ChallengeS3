@@ -68,7 +68,7 @@ const data = {
     return (
         <div>
 
-            <Line ref={chartRef} options={options} data={data} />;
+            <Line ref={chartRef} options={options} data={data} />
 
         </div>
     );

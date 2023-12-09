@@ -37,7 +37,7 @@ class Prestation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['slot:read', 'slot:read:collection', 'prestation:write', 'prestation:read', 'coach:read:slots', 'company:read:franchise', 'franchise:read', 'coach:read','slot:history:read:collection'])]
+    #[Groups(['slot:read', 'slot:read:collection', 'prestation:write', 'prestation:read', 'coach:read:slots', 'company:read:franchise', 'franchise:read', 'coach:read','slot:history:read:collection','stat:prestation:read'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -58,7 +58,7 @@ class Prestation
     #[ORM\JoinColumn(nullable: false)]
     private ?Franchise $franchise = null;
 
-    #[Groups(['prestation:write'])]
+    #[Groups(['prestation:write','stat:prestation:read'])]
     #[ORM\OneToMany(mappedBy: 'prestation', targetEntity: Slot::class)]
     private Collection $slots;
 

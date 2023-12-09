@@ -1,6 +1,8 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
+import {statPrestation} from "../../services/StatServices/statNbSlotByPrestation.js"
+
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -8,7 +10,29 @@ function DashboardGraphCam() {
 
     const chartRef = useRef();
 
+    const [tab, setTab] = useState([]);
+    const [label, setLabel] = useState([]);
+    const [nombre, setnombre] = useState([]);
+
+    const fetchData = async () => {
+        let res = await statPrestation();
+        setTab(res);
+        return res;
+    }
+
     useEffect(() => {
+        let res = [];
+        let res2 = [];
+        tab.forEach(tab => {
+            res.push(tab[0].name);
+            res2.push(tab[1].nombre);
+        });
+        setLabel(res);
+        setnombre(res2);
+    }, [tab]);
+
+    useEffect(() => {
+        fetchData();
 
         // chartRef.current.canvas.$chartjs.initial.height = 400;
         // chartRef.current.canvas.$chartjs.initial.width = 700;
@@ -16,11 +40,11 @@ function DashboardGraphCam() {
 
 
     const data = {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: label,
         datasets: [
             {
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                label: 'nb de reservation pour cette prestation',
+                data: nombre,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -46,7 +70,7 @@ function DashboardGraphCam() {
         plugins: {
             title: {
                 display: true,
-                text: 'Line Chart Example',
+                text: 'Nombre de reservation par prestation',
                 font: {
                     size: 16,
                 },
