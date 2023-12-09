@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -13,6 +13,16 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 function DashboardGraphAu() {
 
+    const chartRef = useRef();
+
+    useEffect(() => {
+        console.log(chartRef)
+
+        chartRef.current.canvas.$chartjs.initial.height = 300;
+        chartRef.current.canvas.$chartjs.initial.width = 600;
+    }, []);
+
+
     const data = {
         labels: ['Catégorie A', 'Catégorie B', 'Catégorie C', 'Catégorie D'],
         datasets: [
@@ -21,30 +31,43 @@ function DashboardGraphAu() {
                 data: [300, 200, 100, 50],
                 backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#66ff99'],
                 hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#66ff99'],
+                barPercentage: 1, // Ajustez cette valeur en fonction de votre préférence
+
             },
             {
                 label: 'Nombre de joueurs',
                 data: [300, 200, 100, 50],
                 backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#66ff99'],
                 hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#66ff99'],
+                barPercentage: 1, // Ajustez cette valeur en fonction de votre préférence
+
             },
         ],
     };
 
     const options = {
-
+        maintainAspectRatio: true,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Line Chart Example',
+                font: {
+                    size: 16,
+                },
+            },
+        },
     }
 
 
     return (
-        <main>
+        <div>
 
-            <Bar
+            <Bar ref={chartRef}
                 data={data}
                 options={options}
             ></Bar>
 
-        </main>
+        </div>
     );
 }
 

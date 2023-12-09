@@ -15,15 +15,17 @@ function Dashboard() {
 
     return (
         <main>
-          <h1>Dashboard</h1>
+            <h1>Dashboard</h1>
+            <div className="column">
+
             <div className="row">
-                <DashboardGraphCol/>
-                <DashboardGraphLine/>
+               <div className="cube"> <DashboardGraphCol/></div>
+                <div className="cube"> <DashboardGraphLine/></div>
             </div>
             <div className="row">
-                <DashboardGraphCam/>
-                <DashboardGraphAu/>
-
+                <div className="cube">  <DashboardGraphCam/></div>
+                    <div className="cube"> <DashboardGraphAu/></div>
+            </div>
             </div>
 
         </main>

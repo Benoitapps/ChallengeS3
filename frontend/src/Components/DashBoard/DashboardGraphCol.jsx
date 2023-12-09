@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -12,6 +12,16 @@ import { Bar } from 'react-chartjs-2';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 function DashboardGraphCol() {
+
+    const chartRef = useRef();
+
+    useEffect(() => {
+        console.log(chartRef)
+
+
+        chartRef.current.canvas.$chartjs.initial.height = 300;
+        chartRef.current.canvas.$chartjs.initial.width = 600;
+    }, []);
 
     const data = {
         labels: ['Catégorie A', 'Catégorie B', 'Catégorie C', 'Catégorie D'],
@@ -32,19 +42,28 @@ function DashboardGraphCol() {
     };
 
     const options = {
-
+        plugins: {
+            title: {
+                display: true,
+                text: 'Line Chart Example',
+                font: {
+                    size: 16,
+                },
+            },
+        },
     }
 
 
     return (
-        <main>
+        <div>
 
             <Bar
+                ref={chartRef}
                 data={data}
                 options={options}
             ></Bar>
 
-        </main>
+        </div>
     );
 }
 

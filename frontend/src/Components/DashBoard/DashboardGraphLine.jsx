@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -23,8 +23,27 @@ ChartJS.register(
 
 function DashboardGraphLine() {
 
-    const options = {
+    const chartRef = useRef();
 
+    useEffect(() => {
+        console.log(chartRef)
+
+
+        chartRef.current.canvas.$chartjs.initial.height = 300;
+        chartRef.current.canvas.$chartjs.initial.width = 600;
+    }, []);
+
+
+    const options = {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Line Chart Example',
+                font: {
+                    size: 16,
+                },
+            },
+        },
     };
 
 
@@ -49,11 +68,11 @@ const data = {
 };
 
     return (
-        <main>
+        <div>
 
-            <Line options={options} data={data} />;
+            <Line ref={chartRef} options={options} data={data} />;
 
-        </main>
+        </div>
     );
 }
 

@@ -1,10 +1,20 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function DashboardGraphCam() {
+
+    const chartRef = useRef();
+
+    useEffect(() => {
+        console.log(chartRef)
+
+        // chartRef.current.canvas.$chartjs.initial.height = 400;
+        // chartRef.current.canvas.$chartjs.initial.width = 700;
+    }, []);
+
 
     const data = {
         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
@@ -33,12 +43,26 @@ function DashboardGraphCam() {
         ],
     };
 
+    const options = {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Line Chart Example',
+                font: {
+                    size: 16,
+                },
+            },
+        },
+    }
+
+
+
 
     return (
-        <main>
+        <div>
 
-            <Pie data={data} />
-        </main>
+            <Pie ref={chartRef} data={data} options={options} />
+        </div>
     );
 }
 
