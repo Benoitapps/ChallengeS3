@@ -40,20 +40,21 @@ class ReviewCoach
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['coach:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(['review-coach:read', 'review-coach:write' , 'review-coach:update'])]
+    #[Groups(['review-coach:read', 'review-coach:write' , 'review-coach:update','stat:coach:read'])]
     private ?int $note = null;
 
     #[ORM\ManyToOne(inversedBy: 'reviewCoaches')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['review-coach:read', 'review-coach:write'])]
+    #[Groups(['review-coach:read', 'review-coach:write', 'coach:read'])]
     private ?Client $client = null;
 
     #[ORM\ManyToOne(targetEntity: Coach::class, inversedBy: 'reviewCoaches')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['review-coach:read', 'review-coach:write'])]
+    #[Groups(['review-coach:read', 'review-coach:write', 'coach:read'])]
     private ?Coach $coach = null;
 
     public function getId(): ?int
@@ -68,6 +69,9 @@ class ReviewCoach
 
     public function setNote(int $note): static
     {
+        if($note <= 0 || $note > 5){
+            throw new \InvalidArgumentException('The note must be between 1 and 5');
+        }
         $this->note = $note;
 
         return $this;

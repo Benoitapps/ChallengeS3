@@ -20,7 +20,7 @@ class Client
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[Groups(['slot:read','client:read','user:read'])]
+    #[Groups(['slot:read','client:read','user:read','coach:read'])]
     #[ORM\Column]
     private ?int $id = null;
 
@@ -33,7 +33,7 @@ class Client
     #[ORM\Column(length: 5, nullable: true)]
     private ?string $zip_code = null;
 
-    #[Groups(['slot:read','coach:read'])]
+    #[Groups(['slot:read','coach:read','slot:history:read:collection'])]
     #[ORM\OneToOne(inversedBy: 'client', cascade: ['persist', 'remove'])]
     private ?User $auth = null;
 

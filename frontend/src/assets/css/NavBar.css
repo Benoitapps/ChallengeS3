@@ -57,3 +57,13 @@
 .header__right .signup:hover {
     background-color: var(--primary-hover);
 }
+
+.flag-country {
+    display: flex;
+    align-items: center;
+    gap: 0.725rem;
+    cursor: pointer;
+}
+.flag-country .active {
+    box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.939);
+}

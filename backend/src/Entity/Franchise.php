@@ -32,6 +32,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
             normalizationContext: ['groups' => ['franchise:read']],
 //            security: "is_granted('ROLE_MANAGER')",
         ),
+        new GetCollection(
+            uriTemplate: 'companies/myCompany/franchises',
+            shortName: 'Company',
+            normalizationContext: ['groups' => ['company:read:franchise']],
+            security: "is_granted('ROLE_MANAGER')",
+            name: 'GetMyCompanyFranchises',
+        ),
         new Get(
             normalizationContext: ['groups' => ['franchise:read']],
 //            security: "is_granted('ROLE_MANAGER')",
@@ -49,18 +56,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 //    denormalizationContext: ['groups' => ['franchise:write']],
 //    security: "is_granted('ROLE_ADMIN')",
 )]
-#[ApiResource(
-    uriTemplate: 'companies/{id}/franchises',
-    shortName: 'Company',
-    operations: [
-        new GetCollection(
-            normalizationContext: ['groups' => ['company:read:franchise']],
-        ),
-    ],
-    uriVariables: [
-        'id' => new Link(toProperty: 'company', fromClass: Company::class)
-    ]
-)]
 
 #[ORM\Entity(repositoryClass: FranchiseRepository::class)]
 class Franchise
@@ -72,7 +67,7 @@ class Franchise
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'coach:read','stat:money:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -80,7 +75,7 @@ class Franchise
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'coach:read'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
@@ -97,12 +92,22 @@ class Franchise
     private ?Company $company = null;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Coach::class)]
-    #[Groups(['franchise:read', 'company:read:franchise'])]
+    #[Groups(['franchise:read', 'company:read:franchise','stat:coach:read','stat:reservation:read'])]
     private Collection $coachs;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Prestation::class)]
-    #[Groups(['franchise:read', 'company:read:franchise'])]
+    #[Groups(['franchise:read', 'company:read:franchise','stat:prestation:read','stat:money:read'])]
     private Collection $prestations;
+    
+    #[ORM\Column]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['franchise:read'])]
+    private ?float $lat = null;
+    
+    #[ORM\Column]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['franchise:read'])]
+    private ?float $lng = null;
 
     public function __construct()
     {
@@ -243,6 +248,30 @@ class Franchise
                 $prestation->setFranchise(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLat(): ?float
+    {
+        return $this->lat;
+    }
+
+    public function setLat(float $lat): static
+    {
+        $this->lat = $lat;
+
+        return $this;
+    }
+
+    public function getLng(): ?float
+    {
+        return $this->lng;
+    }
+
+    public function setLng(float $lng): static
+    {
+        $this->lng = $lng;
 
         return $this;
     }

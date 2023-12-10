@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import "@css/NavBar.css";
 import logo from "@img/logo.svg";
+import france from "@img/France.png";
+import states from "@img/States.png";
+import { useTranslation } from "react-i18next";
 
-function NavBar({ isConnected, handleDisconnect, isAdmin, isManager }) {
+function NavBar({ isConnected, handleDisconnect, isAdmin, isManager, isCoach }) {
   const [isMenuVisible, setIsMenuVisible] = useState(true);
   const location = useLocation();
   const links = document.querySelectorAll(".header__links");
@@ -24,6 +27,32 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager }) {
     });
   }, [location]);
 
+  const{ t, i18n } = useTranslation();
+
+  useEffect(() => {
+    const languages = document.querySelectorAll(".flag-country img");
+    languages.forEach((language) => {
+      if (language.id === i18n.language) {
+        language.classList.add("active");
+      } else {
+        language.classList.remove("active");
+      }
+    });
+  }, [t]);
+
+  const changeLanguage = lng => {
+    i18n.changeLanguage(lng);
+
+    const languages = document.querySelectorAll(".flag-country img");
+    languages.forEach((language) => {
+      if (language.id === lng) {
+        language.classList.add("active");
+      } else {
+        language.classList.remove("active");
+      }
+    });
+  };
+
   return (
     <>
       {isMenuVisible && (
@@ -38,21 +67,28 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager }) {
               <div className="header__center">
                 <li>
                   <Link to="/scheduleReservation" className="header__links">
-                    Clubs
+                    {t("HeaderClubs")}
                   </Link>
                 </li>
                 {isConnected ? (
                   <>
                     <li>
                       <Link to="/schedule" className="header__links">
-                        Mes cours
+                        {t("HeaderCours")}
                       </Link>
                     </li>
                     <li>
                       <Link to="/profile" className="header__links">
-                        Profil
+                        {t("HeaderProfil")}
                       </Link>
                     </li>
+
+                    {!isManager?
+                    <li>
+                      <Link to="/history" className="header__links">
+                        {t("HeaderHistory")}
+                      </Link>
+                    </li>:null}
                   </>
                 )
                 : <></>
@@ -77,10 +113,14 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager }) {
                         </li>
                     )
                 }
+                <li className="flag-country">
+                  <img id="fr" src={france} alt="Francais" onClick={() => changeLanguage("fr")} />
+                  <img id="en" src={states} alt="English" onClick={() => changeLanguage("en")} />
+                </li>
                 {isConnected ? (
                   <li>
                     <Link to="/" onClick={handleDisconnect}>
-                      Déconnexion
+                      {t("HeaderDeconnexion")}
                     </Link>
                   </li>
                 ) : (

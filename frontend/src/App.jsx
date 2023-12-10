@@ -1,8 +1,8 @@
 import './assets/css/App.css';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
-
 import { accountService } from './services/account.service.js';
+
 
 // Front
 import UserRoute from './UserRoute.jsx';
@@ -12,9 +12,11 @@ import SignUp from './Components/Authentication/SignUp';
 import Schedule from './Components/Calendar/Schedule.jsx';
 import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
 import Profile from './Components/Profile.jsx';
-import ClubsPage from './Components/Club/ClubsPage.jsx';
+import ClubsPage from './Components/ClubsPage.jsx';
 import ClubDetails from './Components/Club/ClubDetails.jsx';
-import CoachDetails from './Components/Coach/CoachDetails.jsx';
+import HistoryPage from "./Components/Historique/HistoryPage.jsx";
+import CoachPage from './Components/Coach/CoachPage.jsx';
+import Dashboard from './Components/DashBoard/DashboardPage.jsx';
 
 // Admin
 import NavBarAdmin from './Components/Admin/NavBar';
@@ -32,6 +34,8 @@ import AddFranchise from "./Components/Manager/AddFranchise.jsx";
 
 // Special
 import Unauthorize from './Components/Unauthorize.jsx';
+import i18next from "./i18n.js";
+import {useTranslation, Trans} from "react-i18next";
 
 function App() {
   const userIsAdmin = () => {
@@ -51,10 +55,19 @@ function App() {
     }
     return false;
   }
+  const userIsCoach = () => {
+    const token = localStorage.getItem('token');
+    if (token !== null) {
+      return accountService.getValuesToken()
+          .roles.includes('ROLE_COACH');
+    }
+    return false;
+  }
 
   const [isConnected, setIsConnected] = useState(!!localStorage.getItem('token'));
   const [isAdmin, setIsAdmin] = useState(userIsAdmin() || false);
   const [isManager, setIsManager] = useState(userIsManager() || false);
+  const [isCoach, setisCoach] = useState(userIsCoach()|| false);
   const [eventDetail, setEventDetail] = useState(null);
 
 
@@ -69,6 +82,7 @@ function App() {
     setIsConnected(true);
     setIsAdmin(userIsAdmin());
     setIsManager(userIsManager());
+    setisCoach(userIsCoach());
   }
 
   useEffect(() => {
@@ -77,6 +91,7 @@ function App() {
     }
     setIsAdmin(userIsAdmin());
     setIsManager(userIsManager());
+    setisCoach(userIsCoach());
 
     const token = localStorage.getItem('token');
     setIsConnected(token !== null);
@@ -87,11 +102,11 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Front */}
-          <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} isManager={isManager}/>}>
+          <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} isManager={isManager} isCoach={isCoach}/>}>
             {/* Route for user not connected */}
             <Route index element={<ClubsPage/>} />
             <Route path="club/:id" element={<ClubDetails/>} />
-            <Route path="coach/:id" element={<CoachDetails/>} />
+            <Route path="coach/:id" element={<CoachPage/>} />
 
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login handleConnect={handleConnect} />} />
@@ -101,6 +116,8 @@ function App() {
             <Route path="profile" element={ <UserRoute component={Profile} isConnected={isConnected}/> } />
             <Route path="prestation/:prestationId/coach/:coachId/update" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={true} isConnected={isConnected}/> }  />
             <Route path="prestation/:prestationId/coach/:coachId/add" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={false} isConnected={isConnected}/>} />
+            <Route path="history" element={<UserRoute component={HistoryPage}isConnected={isConnected}/>} />
+
 
             {/* Route doesn't exist */}
             <Route path="*" element={<Navigate to="/" />} />
@@ -126,7 +143,8 @@ function App() {
             element={(
                 <Routes>
                   <Route path="/" element={<NavBarManager isConnected={isConnected} handleDisconnect={handleDisconnect} isManager={isManager} />}>
-                    <Route index element={<ManagerRoute index component={HomeManager} isManager={isManager} />} />
+                    <Route path="home" element={<ManagerRoute component={HomeManager} isManager={isManager} />} />
+                    <Route  index element={<ManagerRoute index component={Dashboard} isManager={isManager} />} />
                     <Route path="company" element={<ManagerRoute component={AddCompany} isManager={isManager}/>} />
                     <Route path="franchise" element={<ManagerRoute component={AddFranchise} isManager={isManager}/>} />
                   </Route>
@@ -138,6 +156,7 @@ function App() {
           <Route path="unauthorized" element={<Unauthorize/>} />
         </Routes>
       </BrowserRouter>
+
     </>
   )
 }

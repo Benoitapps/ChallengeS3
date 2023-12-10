@@ -13,4 +13,7 @@ export default defineConfig({
       '@img': '/src/assets/img',
     },
   },
+  build: {
+    target: 'esnext'
+  }
 })

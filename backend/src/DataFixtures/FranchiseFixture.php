@@ -22,6 +22,8 @@ class FranchiseFixture extends Fixture implements DependentFixtureInterface
             ->setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget aliquam lacinia, nunc nisl aliquet nunc, quis aliquam nisl nisl")
             ->setAddress("Rue de la paix")
             ->setCity("Paris")
+            ->setLat(48.84917076352597)
+            ->setLng(2.3897329073928284)
             ->setZipCode("75011");
         
         $manager->persist($object);
@@ -32,6 +34,8 @@ class FranchiseFixture extends Fixture implements DependentFixtureInterface
             ->setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget aliquam lacinia, nunc nisl aliquet nunc, quis aliquam nisl nisl")
             ->setAddress("Rue de la Joie")
             ->setCity("Lyon")
+            ->setLat(45.764043)
+            ->setLng(4.835659)
             ->setZipCode("69001");
         
         $manager->persist($object2);
@@ -42,6 +46,8 @@ class FranchiseFixture extends Fixture implements DependentFixtureInterface
             ->setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget aliquam lacinia, nunc nisl aliquet nunc, quis aliquam nisl nisl")
             ->setAddress("Rue de Provence")
             ->setCity("Marseille")
+            ->setLat(43.296482)
+            ->setLng(5.36978)
             ->setZipCode("13001");
 
         $manager->persist($object3);
@@ -52,6 +58,8 @@ class FranchiseFixture extends Fixture implements DependentFixtureInterface
             ->setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget aliquam lacinia, nunc nisl aliquet nunc, quis aliquam nisl nisl")
             ->setAddress("Rue de la Garonne")
             ->setCity("Bordeaux")
+            ->setLat(44.837789)
+            ->setLng(-0.57918)
             ->setZipCode("33000");
 
         $manager->persist($object4);
@@ -63,6 +71,8 @@ class FranchiseFixture extends Fixture implements DependentFixtureInterface
                 ->setDescription("Description" . $i)
                 ->setAddress("address" . $i)
                 ->setCity("city" . $i)
+                ->setLat(48.84 + (.1 * $i))
+                ->setLng(2.38 + (.1 * $i))
                 ->setZipCode("75001");
 
             $manager->persist($fakeObject);

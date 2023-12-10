@@ -1,7 +1,7 @@
-import { getSlotCoach } from "../../hook/ScheduleReservation/eventCoach.js";
+import { getSlotCoach } from "../hook/ScheduleReservation/eventCoach.js";
 
 
-const transformData = (initialData) => {
+const transformData = (initialData,lang) => {
     return initialData.slots.map((item, index) => {
         const startDate = new Date(item.startDate);
         const endDate = new Date(item.endDate);
@@ -12,7 +12,7 @@ const transformData = (initialData) => {
 
         return {
             id: item.id,
-            title: "Reservé",
+            title: lang === "fr" ? "Indisponible" : "Unavailable",
             start: startDate,
             end: endDate,
             backgroundColor: item.prestation ? "#000000" : "#646464",
@@ -30,11 +30,11 @@ const transformData = (initialData) => {
     // }
 
 
-export const eventCoach = async (id) => {
+export const eventCoach = async (id,lang) => {
     const initialData = await getSlotCoach(id);
     // console.log("initialdata", initialData);
     // const res = transHorraire(initialData)
-    const transformedData = transformData(initialData);
+    const transformedData = transformData(initialData,lang);
     // console.log("transform",transformedData);
 
     return transformedData;

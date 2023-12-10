@@ -5,19 +5,24 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
 import PopUp from "./Popup.jsx";
-import '@css/Schedule.css';
-import {addslot} from './eventCreate.jsx';
+import '@css/SheduleReservation.css';
+import {addslot} from '../../services/eventCreate.js';
 import { deleteSlot } from "../../hook/Schedule/eventDelete.js";
-import { eventCoach } from "./eventCoach.jsx";
-import { sheduleCoach } from "./sheduleCoachGet.jsx"
+import { eventCoach } from "../../services/eventCoach.js";
+import { sheduleCoach } from "../../services/sheduleCoachGet.js"
 import {postSlot} from "../../hook/Schedule/eventPost.js";
 import {patchSlot} from "../../hook/Schedule/eventPatch.js";
 import { useNavigate, useParams } from 'react-router-dom';
 import {getUserId} from "../User/DecodeUser.jsx";
 import loadingGIF from "@img/loading.gif";
-
+import {useTranslation, Trans} from "react-i18next";
+import frLocale from '@fullcalendar/core/locales/fr';
 
 function ScheduleReservation({ eventDetail, isUpdate, }) {
+
+    const{ t, i18n  } = useTranslation();
+    const lang = i18n.language;
+
     const { coachId, prestationId } = useParams();
     const [loading, setLoading] = useState(true);
 
@@ -50,7 +55,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
     //recuperation des evenement et des horraires du coach
     async function fetchData() {
         let tabHorraire = await sheduleCoach(idCoach, calendarFilterStart, calendarFilterEnd);
-        let eventCoaches = await eventCoach(idCoach);
+        let eventCoaches = await eventCoach(idCoach,lang);
         let idClient = await getUserId();
 
         if (calendarRef && calendarRef.current.getApi()) {
@@ -72,7 +77,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
             fetchData();
 
         }
-    }, [calendarFilterStart]);
+    }, [calendarFilterStart,lang]);
 
 
     const formatReadableDate = (dateString) => {
@@ -152,9 +157,9 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
                 <div className="popup__content__texts">
 
                     {isUpdate ? (
-                        <h2>Remplacer le créneau de :</h2>
+                        <h2>{t("SheduleCoachReplace")}</h2>
                     ) : (
-                        <h2>Reserver le créneau de : </h2>
+                        <h2>{t("SheduleCoachAdd")} </h2>
                     )}
 
                     <ul className="popup__content__texts__datetime">
@@ -185,7 +190,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
             const modalContentreserve = (
                 <div className="popup__content__texts">
 
-                    <h2>Le Coach ne travail pas durant ces horraires ou l'horraire selectionner est deja passer</h2>
+                    <h2>{t("SheduleCoachNotAvailable")}</h2>
 
                 </div>
             );
@@ -255,11 +260,11 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
             <div className="schedule">
 
-
                 {loading?  <div className="fondLoader"></div> : null}
                 {loading? <img className="loader" src={loadingGIF}  alt="Chargement..."/> : null}
 
-            <h1>Calendrier du Coach</h1>
+            <h1>{t("SheduleTitleCoachCourses")}</h1>
+                <div className="calendar">
 
             <FullCalendar
                 ref={calendarRef}
@@ -281,21 +286,21 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
                 }
 
                 height={"36em"}
-                locale={"fr"}
+                locale={lang === "fr" ? frLocale : "en"}
                 dateClick={(e) => handleDateClick(e)}
                 datesSet={handleDateChange}
                 eventClick={false}
             />
-            <PopUp show={isModalOpen} showButton1={true} onClose={() => closeModal()} button1={() => reserveModal()} nameButton1={"Réserver"}
-                   annuler={"Annuler"}>
+                </div>
+            <PopUp show={isModalOpen} showButton1={true} onClose={() => closeModal()} button1={() => reserveModal()} nameButton1={t("Book")} annuler={t("Cancel")}>
                 {modalContent}
             </PopUp>
             <PopUp show={isModalOpenDetail} showButton={true} onClose={() => closeModal()} button1={() => reserveModal()} button2={() => deleteSlotbyID()}
-                   nameButton1={"Modifier"} nameButton2={"Supprimer"} annuler={"Annuler"}>
+                   nameButton1={t("Update")} nameButton2={t("Delete")} annuler={t("Cancel")}>
                 {modalContent}
             </PopUp>
             <PopUp show={isModalOpenErreur}  onClose={() => closeModal()}
-                   annuler={"Retour"}>
+                   annuler={t("Cancel")}>
                 {modalContent}
             </PopUp>
             </div>
