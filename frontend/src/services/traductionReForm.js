@@ -7,28 +7,22 @@ const transformData = (initialData,langue) => {
         initialData.forEach(objet => {
             nouvelObjet[objet.name] = objet.traductionFR;
         });
-    }
-    if(langue === "en") {
+    } else if(langue === "en") {
         initialData.forEach(objet => {
             nouvelObjet[objet.name] = objet.traductionEN;
         });
     }
-
-    let resultatJSON = JSON.stringify(nouvelObjet);
-    return resultatJSON;
+    return JSON.stringify(nouvelObjet);
 };
 
 
 
-export const translate= async (langue) => {
+export const translate = async (langue) => {
     if(langue === "fr") {
         const initialData = await getTradFR();
-        const transformedData = transformData(initialData,langue);
-        return transformedData;
-    }else{
+        return transformData(initialData, langue);
+    } else if(langue === "en") {
         const initialData = await getTradEN();
-        const transformedData = transformData(initialData,langue);
-        return transformedData;
+        return transformData(initialData, langue);
     }
-
 };

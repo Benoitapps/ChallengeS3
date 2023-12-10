@@ -8,8 +8,7 @@ const chargerTraductions = async (langue) => {
         const traductions = await translate(langue);
 
         let res = JSON.parse(traductions);
-        // console.log("traductions", typeof res, res);
-        return res ;
+        return res;
     } catch (error) {
         console.error("Error loading translations", error);
         return { translations: {} };
@@ -26,7 +25,7 @@ i18n
         resources: {
             en: {
                 translations: tradEN,
-            }, // Resolve the promise here
+            },
             fr: {
                 translations: tradFR
             }
@@ -40,6 +39,5 @@ i18n
             escapeValue: false
         }
     });
-
 
 export default i18n;
