@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
-
     operations: [
         new Post(
             denormalizationContext: ['groups' => ['coach:write']],
@@ -43,8 +42,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
             ]
         ),
     ]
-
-
 )]
 #[ORM\Entity(repositoryClass: CoachRepository::class)]
 class Coach

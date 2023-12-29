@@ -53,6 +53,20 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager, isCoach }) 
     });
   };
 
+  const sendMail = () => {
+    fetch("http://localhost:8000/api/send-mail", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        to: "test.test@test.fr",
+        subject: "Test",
+        text: "Test",
+      }),
+    })
+  };
+
   return (
     <>
       {isMenuVisible && (
@@ -65,6 +79,9 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager, isCoach }) 
                 </Link>
               </li>
               <div className="header__center">
+                <li>
+                  <button onClick={() => sendMail()}>Send mail</button>
+                </li>
                 <li>
                   <Link to="/scheduleReservation" className="header__links">
                     {t("HeaderClubs")}

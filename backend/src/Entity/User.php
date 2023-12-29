@@ -17,6 +17,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\State\UserPasswordHasher;
 use App\Controller\UserController;
+use App\Controller\MailController;
 
 #[ApiResource(
     operations: [
@@ -63,6 +64,20 @@ use App\Controller\UserController;
                     'user:read',
                 ],
             ]
+        ),
+        new Get(
+            uriTemplate: '/send-mail',
+            controller: MailController::class,
+            denormalizationContext: [
+                'groups' => [
+                    'user:mail',
+                ],
+            ],
+            normalizationContext: [
+                'groups' => [
+                    'user:mail',
+                ],
+            ] 
         ),
     ],
 )]
