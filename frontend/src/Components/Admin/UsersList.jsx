@@ -8,6 +8,8 @@ function UsersList() {
     const [beingEdited, setBeingEdited] = useState(false);
     const [currentUserId, setCurrentUserId] = useState(null);
 
+    const [beingAdded, setBeingAdded] = useState(false);
+
     useEffect(() => {
         const loadData = async () => {
             setUsersLoading(true);
@@ -20,6 +22,30 @@ function UsersList() {
 
         loadData();
     }, []);
+
+    const onAdd = () => {
+        setBeingAdded(!beingAdded);
+    };
+
+    const addNewUser = async () => {
+        let newUser = {};
+        let userInputs = document.querySelectorAll('#newUserEmail, #newUserRoles, #newUserFirstname, #newUserLastname');
+        
+        userInputs.forEach(input => newUser[input.name] = input.value);
+
+        // add plain password
+        newUser.plainPassword = 'password' + Math.floor(Math.random() * 1000);
+
+        alert('New user will be created with password: ' + newUser.plainPassword);
+
+        fetch('http://localhost:8888/api/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newUser)
+        });
+    };
 
     const onEdit = (user) => {
         setBeingEdited(!beingEdited);
@@ -63,7 +89,6 @@ function UsersList() {
 
         let userModifiedJson = JSON.stringify(userModified);
 
-        // TODO fetch data doesn't work
         let result = await fetch('http://localhost:8888/api/users/' + user.id, {
             method: 'PATCH',
             headers: {
@@ -82,6 +107,15 @@ function UsersList() {
             {
                 usersLoading && <div>Chargement...</div>
             }
+            {
+                !beingAdded && 
+                <div style={{display: 'flex', justifyContent: 'end'}}>
+                    <button onClick={() => onAdd()}>
+                        Add new user
+                    </button>
+                </div>
+            }
+
             <table style={{width: "100%"}}>
                 <thead>
                     <tr>
@@ -94,6 +128,38 @@ function UsersList() {
                     </tr>
                 </thead>
                 <tbody>
+                    {
+                        beingAdded && (
+                            <tr>
+                                <td>
+                                    Id will be generated
+                                </td>
+                                <td>
+                                    <input id="newUserEmail" type="text" name="email" />
+                                </td>
+                                <td>
+                                    <select name="roles" id="newUserRoles">
+                                        <option value="ROLE_USER" selected>ROLE_USER</option>
+                                        <option value="ROLE_CLIENT">ROLE_CLIENT</option>
+                                        <option value="ROLE_COACH">ROLE_COACH</option>
+                                        <option value="ROLE_MANAGER">ROLE_MANAGER</option>
+                                        <option value="ROLE_ADMIN">ROLE_ADMIN</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input id="newUserFirstname" type="text" name="firstname" />
+                                </td>
+                                <td>
+                                    <input id="newUserLastname" type="text" name="lastname" />
+                                </td>
+                                <td>
+                                    <button onClick={() => addNewUser()}>
+                                        Add
+                                    </button>
+                                </td>
+                            </tr>
+                        )
+                    }
                     {users.map((user) => (
                         <tr key={user.id} id={user.id}>
                             <td>

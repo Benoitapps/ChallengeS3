@@ -57,21 +57,23 @@ use App\Controller\UserController;
                 ],
             ]
         ),
-        new Patch(
-            denormalizationContext: [
-                'groups' => [
-                    'user:update',
-                    'user:admin:update',
-                ],
-            ],
-            normalizationContext: [
-                'groups' => [
-                    'user:read',
-                    'user:admin:read',
-                ],
-            ],
-            security: "is_granted('ROLE_ADMIN') or user.getId() == id"
-        ),
+        // TODO faire un custom patch et custom post pour les admins 
+        // ! sinon voter voir si la personne connecté est un admin et ajouter les groupes admin
+        // new Patch(
+        //     denormalizationContext: [
+        //         'groups' => [
+        //             'user:update',
+        //             'user:admin:update',
+        //         ],
+        //     ],
+        //     normalizationContext: [
+        //         'groups' => [
+        //             'user:read',
+        //             'user:admin:read',
+        //         ],
+        //     ],
+        //     security: "is_granted('ROLE_ADMIN') or user.getId() == id"
+        // ),
         new Delete(
             security: "is_granted('ROLE_ADMIN')"
         ),
