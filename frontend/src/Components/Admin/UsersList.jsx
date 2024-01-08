@@ -35,19 +35,23 @@ function UsersList() {
 
         // get values from inputs
         let userModified = {};
-        // userModified.id = user.id;
         inputsUser.forEach(input => userModified[input.name] = input.value);
+
+        // Add role string to roles array
+        if (userModified.roles) {
+            userModified.roles = userModified.roles.split(',');
+        } 
 
         // actualize user in users list
         let indexUser = users.findIndex(previousUser => previousUser.id === user.id);
         users[indexUser] = userModified;
+        users[indexUser].id = user.id;
         setUsers(users);
 
         let userModifiedJson = JSON.stringify(userModified);
-        console.log(userModifiedJson)
 
         // TODO fetch data doesn't work
-        let result = await fetch('http://localhost:3000/api/users/' + user.id, {
+        let result = await fetch('http://localhost:8888/api/users/' + user.id, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/merge-patch+json',

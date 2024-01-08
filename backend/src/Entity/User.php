@@ -24,7 +24,7 @@ use App\Controller\UserController;
         new GetCollection(
             normalizationContext: [
                 'groups' => [
-                    'user:read',
+                    'user:admin:read',
                 ],
             ],
             security: "is_granted('ROLE_ADMIN')"
@@ -52,18 +52,19 @@ use App\Controller\UserController;
             ]
         ),
         new Patch(
-            processor: UserPasswordHasher::class,
             denormalizationContext: [
                 'groups' => [
-                    'user:update',
+                    'user:update'
                     'user:admin:update'
                 ],
             ],
             normalizationContext: [
                 'groups' => [
                     'user:read',
+                    'user:admin:read',
                 ],
-            ]
+            ],
+            security: "is_granted('ROLE_ADMIN') or user.getId() == id"
         ),
     ],
 )]
@@ -78,7 +79,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:admin:read'])]
     private ?int $id = null;
     
-    #[Groups(['user:read', 'user:write', 'user:update', 'user:admin:write', 'user:admin:update'])]
+    #[Groups(['user:read', 'user:write', 'user:update', 'user:admin:write', 'user:admin:update', 'user:admin:read'])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
     
@@ -96,23 +97,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
     
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:write','slot:read','coach:read', 'user:admin:write', 'user:admin:update', 'prestation:read', 'company:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read'])]
+    #[Groups(['user:read', 'user:write','slot:read','coach:read', 'user:admin:write', 'user:admin:update', 'prestation:read', 'company:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read', 'user:admin:read'])]
     private ?string $firstname = null;
     
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update', 'prestation:read', 'company:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read'])]
+    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update', 'prestation:read', 'company:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read', 'user:admin:read'])]
     private ?string $lastname = null;
     
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update'])]
+    #[Groups(['user:read', 'user:write', 'user:admin:write'])]
     private ?Client $client = null;
 
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update'])]
+    #[Groups(['user:read', 'user:write', 'user:admin:write'])]
     private ?Coach $coach = null;
     
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update'])]
+    #[Groups(['user:read', 'user:write', 'user:admin:write'])]
     private ?Manager $manager = null;
 
     public function getId(): ?int
