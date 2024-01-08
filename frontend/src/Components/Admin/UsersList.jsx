@@ -26,6 +26,19 @@ function UsersList() {
         setCurrentUserId(user.id);
     };
 
+    const onDelete = (user) => {
+        fetch('http://localhost:8888/api/users/' + user.id, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            },
+        });
+
+        let indexUser = users.findIndex(previousUser => previousUser.id === user.id);
+        users.splice(indexUser, 1);
+        setUsers([...users]);
+    };
+
     const onSave = async (user) => {
         setBeingEdited(!beingEdited);
         setCurrentUserId(null);
@@ -124,7 +137,9 @@ function UsersList() {
                                             Modifier
                                         </button>
                                 }
-                                <button>Supprimer</button>
+                                <button onClick={() => onDelete(user)}>
+                                    Supprimer
+                                </button>
                             </td>
                         </tr>
                     ))}

@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -20,6 +21,11 @@ use App\State\UserPasswordHasher;
 use App\Controller\UserController;
 
 #[ApiResource(
+    normalizationContext: [
+        'groups' => [
+            'user:read',
+        ],
+    ],
     operations: [
         new GetCollection(
             normalizationContext: [
@@ -54,8 +60,8 @@ use App\Controller\UserController;
         new Patch(
             denormalizationContext: [
                 'groups' => [
-                    'user:update'
-                    'user:admin:update'
+                    'user:update',
+                    'user:admin:update',
                 ],
             ],
             normalizationContext: [
@@ -65,6 +71,9 @@ use App\Controller\UserController;
                 ],
             ],
             security: "is_granted('ROLE_ADMIN') or user.getId() == id"
+        ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN')"
         ),
     ],
 )]
