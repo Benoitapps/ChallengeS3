@@ -1,9 +1,10 @@
+const env = import.meta.env;
 
 const getIdClient = async (id) => {
 
     try {
 
-        const apiUrl = `http://localhost:8888/api/users/${id}`;
+        const apiUrl = `${env.VITE_URL_BACK}/api/users/${id}`;
 
         const result = await fetch(apiUrl, {
             method: "GET",

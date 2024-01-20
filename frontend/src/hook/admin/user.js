@@ -1,6 +1,8 @@
+const env = import.meta.env;
+
 const getUsers = async () => {
     try {
-        const result = await fetch("http://localhost:8888/api/users", {
+        const result = await fetch(`${env.VITE_URL_BACK}/api/users`, {
             method: "GET",
             headers: {
                 Accept: "application/json",

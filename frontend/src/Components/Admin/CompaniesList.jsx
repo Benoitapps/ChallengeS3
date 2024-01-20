@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getCompanies } from '../../hook/admin/company';
+const env = import.meta.env;
 
 function CompaniesList() {
     const [companies, setCompanies] = useState([]);
@@ -18,7 +19,7 @@ function CompaniesList() {
     }, []);
 
     const handleVerifCompany = async (companyId, verified) => {
-        let result = await fetch('http://localhost:8888/api/companies/' + companyId, {
+        let result = await fetch(`${env.VITE_URL_BACK}/api/companies/` + companyId, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/merge-patch+json',
