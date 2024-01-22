@@ -41,7 +41,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
             denormalizationContext: ['groups' => ['company:update']],
         ),
         new Patch(
-            denormalizationContext: ['groups' => ['company:admin:update']],
+            denormalizationContext: [
+                'groups' => ['company:admin:update']
+            ],
             security: "is_granted('ROLE_ADMIN')",
         ),
     ],
@@ -59,12 +61,12 @@ class Company
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['company:read', 'company:write', 'franchise:read', 'company:read:myCompany'])]
+    #[Groups(['company:read', 'company:write', 'franchise:read', 'company:read:myCompany', 'company:admin:update'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
 //    #[Groups(['company:read:user-is-logged', 'company:write'])]
-    #[Groups(['company:read', 'company:write', 'company:read:myCompany'])]
+    #[Groups(['company:read', 'company:write', 'company:read:myCompany', 'company:admin:update'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::TEXT)]

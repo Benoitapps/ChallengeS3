@@ -19,6 +19,8 @@ function CompaniesList() {
     }, []);
 
     const handleVerifCompany = async (companyId, verified) => {
+        setCompaniesLoading(true);
+
         let result = await fetch(`${env.VITE_URL_BACK}/api/companies/` + companyId, {
             method: 'PATCH',
             headers: {
@@ -30,6 +32,7 @@ function CompaniesList() {
             }),
         });
         result = await result.json();
+        
         if (!result) return alert('Erreur lors de la modification de la company');
 
         setCompanies(
@@ -40,6 +43,7 @@ function CompaniesList() {
                 return company;
             })
         );
+        setCompaniesLoading(false);
     };
 
     return (
@@ -79,6 +83,8 @@ function CompaniesList() {
                                 </td>
                             </tr>
                         ))}
+                        {/* TODO */}
+                        ajouter la possibilité de modifier la description et le nom de la company
                     </tbody>
                 </table>
             }
