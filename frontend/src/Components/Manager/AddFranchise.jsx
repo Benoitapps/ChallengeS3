@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
+const env = import.meta.env;
 
 function AddFranchise() {
     const navigate = useNavigate();
@@ -12,7 +13,7 @@ function AddFranchise() {
         const data = new FormData(e.target);
 
         try {
-            const result = await fetch('http://localhost:8888/api/franchises', {
+            const result = await fetch(`${env.VITE_URL_BACK}/api/franchises`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

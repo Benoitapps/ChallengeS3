@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Link;
 use App\Repository\ReviewCoachRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     uriTemplate: '/coaches/{id}/reviews',
@@ -22,8 +23,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
 )]
 #[ApiResource(
-    normalizationContext: ['groups' => ['review-coach:read']],
-    denormalizationContext: ['groups' => ['review-coach:write']],
     operations: [
         new Post(),
         new Patch(
@@ -45,6 +44,7 @@ class ReviewCoach
 
     #[ORM\Column]
     #[Groups(['review-coach:read', 'review-coach:write' , 'review-coach:update','stat:coach:read'])]
+    #[Assert\Range(min: 1, max: 5)]
     private ?int $note = null;
 
     #[ORM\ManyToOne(inversedBy: 'reviewCoaches')]
@@ -69,9 +69,6 @@ class ReviewCoach
 
     public function setNote(int $note): static
     {
-        if($note <= 0 || $note > 5){
-            throw new \InvalidArgumentException('The note must be between 1 and 5');
-        }
         $this->note = $note;
 
         return $this;

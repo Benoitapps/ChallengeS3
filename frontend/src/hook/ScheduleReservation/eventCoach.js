@@ -1,9 +1,10 @@
+const env = import.meta.env;
 
 const getSlotCoach = async (id) => {
 
     try {
 
-        const apiUrl = `http://localhost:8888/api/coaches/slots/${id}`;
+        const apiUrl = `${env.VITE_URL_BACK}/api/coaches/slots/${id}`;
 
         const result = await fetch(apiUrl, {
             method: "GET",

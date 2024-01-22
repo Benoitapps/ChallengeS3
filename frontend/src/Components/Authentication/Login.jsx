@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '@css/Authentification.css';
 import { Link, useNavigate } from 'react-router-dom';
+const env = import.meta.env;
 
 function Login({ handleConnect }) {
     const navigate = useNavigate();
@@ -13,7 +14,7 @@ function Login({ handleConnect }) {
         const data = new FormData(e.target);
 
         try {
-            const result = await fetch('http://localhost:8888/auth', {
+            const result = await fetch(`${env.VITE_URL_BACK}/auth`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -1,6 +1,8 @@
+const env = import.meta.env;
+
 const patchSlot = async (dateStart, dateEnd, id) => {
     try {
-        const apiUrl = `http://localhost:8888/api/slots/${id}`;
+        const apiUrl = `${env.VITE_URL_BACK}/api/slots/${id}`;
 
         const result = await fetch(apiUrl, {
             method: "PATCH",

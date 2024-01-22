@@ -1,10 +1,8 @@
-
+const env = import.meta.env;
 
 const postSlot = async (dateStart,dateEnd, idPrestation, idCoach, idClient) => {
-
-
     try {
-        const result = await fetch("http://localhost:8888/api/slots", {
+        const result = await fetch(`${env.VITE_URL_BACK}/api/slots`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -1,5 +1,7 @@
+const env = import.meta.env;
+
 const getClubDetails = async (id) => {
-    let result = await fetch(`http://localhost:8888/api/franchises/${id}`);
+    let result = await fetch(`${env.VITE_URL_BACK}/api/franchises/${id}`);
     return result.json();
 };
 

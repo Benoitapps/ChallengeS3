@@ -1,5 +1,7 @@
+const env = import.meta.env;
+
 const addReview = async (coachId, clientId, note) => {
-    return await fetch(`http://localhost:8888/api/review_coaches`, {
+    return await fetch(`${env.VITE_URL_BACK}/api/review_coaches`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
