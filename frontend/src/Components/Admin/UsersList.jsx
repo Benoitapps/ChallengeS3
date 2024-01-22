@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { getUsers } from '../../hook/admin/user';
 
+const env = import.meta.env;
+
 function UsersList() {
     const [users, setUsers] = useState([]);
     const [usersLoading, setUsersLoading] = useState(false);
@@ -38,7 +40,7 @@ function UsersList() {
 
         alert('New user will be created with password: ' + newUser.plainPassword);
 
-        fetch('http://localhost:8888/api/users', {
+        fetch(`${env.VITE_URL_BACK}/api/users/admin`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,7 +55,7 @@ function UsersList() {
     };
 
     const onDelete = (user) => {
-        fetch('http://localhost:8888/api/users/' + user.id, {
+        fetch(`${env.VITE_URL_BACK}/api/users/` + user.id, {
             method: 'DELETE',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token'),
@@ -86,10 +88,13 @@ function UsersList() {
         users[indexUser] = userModified;
         users[indexUser].id = user.id;
         setUsers(users);
+        
+        let userWithoutId = {...userModified};
+        delete userWithoutId.id;
 
-        let userModifiedJson = JSON.stringify(userModified);
-
-        let result = await fetch('http://localhost:8888/api/users/' + user.id, {
+        let userModifiedJson = JSON.stringify(userWithoutId);
+        console.log(userModifiedJson)
+        let result = await fetch(`${env.VITE_URL_BACK}/api/users/` + user.id, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/merge-patch+json',
@@ -110,7 +115,7 @@ function UsersList() {
             {
                 !beingAdded && 
                 <div style={{display: 'flex', justifyContent: 'end'}}>
-                    <button onClick={() => onAdd()}>
+                    <button onClick={() => onAdd()} disabled>
                         Add new user
                     </button>
                 </div>

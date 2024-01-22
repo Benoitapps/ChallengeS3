@@ -39,8 +39,11 @@ use App\Controller\UserController;
             normalizationContext: [
                 'groups' => [
                     'user:read',
+                    'user:admin:read' => "is_granted('ROLE_ADMIN')"
                 ],
-            ]
+            ],
+            security: "is_granted('ROLE_ADMIN') or user.getId() == id"
+
         ),
         new Post(
             processor: UserPasswordHasher::class,
@@ -48,7 +51,6 @@ use App\Controller\UserController;
             denormalizationContext: [
                 'groups' => [
                     'user:write',
-                    'user:admin:write',
                 ],
             ],
             normalizationContext: [
@@ -57,23 +59,35 @@ use App\Controller\UserController;
                 ],
             ]
         ),
-        // TODO faire un custom patch et custom post pour les admins 
-        // ! sinon voter voir si la personne connecté est un admin et ajouter les groupes admin
-        // new Patch(
+        // new Post(
+        //     uriTemplate: '/users/admin',
+        //     processor: UserPasswordHasher::class,
+        //     controller: UserController::class,
         //     denormalizationContext: [
         //         'groups' => [
-        //             'user:update',
-        //             'user:admin:update',
+        //             'user:admin:write',
         //         ],
         //     ],
         //     normalizationContext: [
         //         'groups' => [
-        //             'user:read',
         //             'user:admin:read',
         //         ],
         //     ],
-        //     security: "is_granted('ROLE_ADMIN') or user.getId() == id"
+        //     security: "is_granted('ROLE_ADMIN')"
         // ),
+        new Patch(
+            denormalizationContext: [
+                'groups' => [
+                    'user:admin:update',
+                ],
+            ],
+            normalizationContext: [
+                'groups' => [
+                    'user:admin:read',
+                ],
+            ],
+            security: "is_granted('ROLE_ADMIN')"
+        ),
         new Delete(
             security: "is_granted('ROLE_ADMIN')"
         ),
