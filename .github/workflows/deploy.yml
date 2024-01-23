@@ -2,7 +2,7 @@ on:
   push:
     branches:
       - feature/ci-cd
-
+ 
 name: Publish Website
 jobs:
   web-deploy:
