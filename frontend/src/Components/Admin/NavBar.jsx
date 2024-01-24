@@ -16,6 +16,9 @@ function NavBar({ isAdmin }) {
                                     </li>
                                     <div className="header__center">
                                         <li>
+                                            <Link to="adminDashboard">Dashboard</Link>
+                                        </li>
+                                        <li>
                                             <Link to="users">Users</Link>
                                         </li>
                                         <li>

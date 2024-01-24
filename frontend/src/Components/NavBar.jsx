@@ -4,15 +4,12 @@ import "@css/NavBar.css";
 import logo from "@img/logo.svg";
 import france from "@img/France.png";
 import states from "@img/States.png";
-import {useTranslation, Trans} from "react-i18next";
-
+import { useTranslation } from "react-i18next";
 
 function NavBar({ isConnected, handleDisconnect, isAdmin, isManager, isCoach }) {
   const [isMenuVisible, setIsMenuVisible] = useState(true);
   const location = useLocation();
   const links = document.querySelectorAll(".header__links");
-  const [language, setlanguage] = useState(false);
-
 
   useEffect(() => {
     if (location.pathname === "/login" || location.pathname === "/signup") {
@@ -32,14 +29,33 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager, isCoach }) 
 
   const{ t, i18n } = useTranslation();
 
+  useEffect(() => {
+    const languages = document.querySelectorAll(".flag-country img");
+    languages.forEach((language) => {
+      if (language.id === i18n.language) {
+        language.classList.add("active");
+      } else {
+        language.classList.remove("active");
+      }
+    });
+  }, [t]);
+
   const changeLanguage = lng => {
     i18n.changeLanguage(lng);
+
+    const languages = document.querySelectorAll(".flag-country img");
+    languages.forEach((language) => {
+      if (language.id === lng) {
+        language.classList.add("active");
+      } else {
+        language.classList.remove("active");
+      }
+    });
   };
 
   return (
     <>
       {isMenuVisible && (
-
         <header className="header">
           <nav>
             <ul>
@@ -97,11 +113,9 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager, isCoach }) 
                         </li>
                     )
                 }
-                <li>
-                   <img src={france} alt="Francais" onClick={() => changeLanguage("fr")} />
-                  </li>
-                <li>
-                  <img src={states} alt="English" onClick={() => changeLanguage("en")}/>
+                <li className="flag-country">
+                  <img id="fr" src={france} alt="Francais" onClick={() => changeLanguage("fr")} />
+                  <img id="en" src={states} alt="English" onClick={() => changeLanguage("en")} />
                 </li>
                 {isConnected ? (
                   <li>

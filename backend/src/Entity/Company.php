@@ -59,7 +59,7 @@ class Company
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['company:read', 'company:write', 'franchise:read', 'company:read:myCompany'])]
+    #[Groups(['company:read', 'company:write', 'franchise:read', 'company:read:myCompany','stat:admin:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
