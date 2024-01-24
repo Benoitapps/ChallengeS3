@@ -2,36 +2,63 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
 use App\Repository\PrestationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
+#[ApiResource(
+    operations: [
+        new Post(
+            denormalizationContext: [
+                'groups' => ['prestation:write']
+            ]
+        ),
+        new Get(
+            normalizationContext: [
+                'groups' => [
+                    'prestation:read',
+                ],
+            ],
+        )
+    ]
+)]
 #[ORM\Entity(repositoryClass: PrestationRepository::class)]
 class Prestation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups(['slot:read', 'franchise:read', 'coach:read','slot:history:read:collection'])]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['slot:read', 'slot:read:collection', 'prestation:write', 'prestation:read', 'coach:read:slots', 'company:read:franchise', 'franchise:read', 'coach:read','slot:history:read:collection','stat:prestation:read'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Groups(['prestation:write', 'prestation:read'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[Groups(['prestation:write', 'prestation:read', 'franchise:read', 'coach:read','stat:money:read'])]
     #[ORM\Column]
     private ?float $price = null;
 
+    #[Groups(['prestation:write', 'prestation:read', 'franchise:read'])]
     #[ORM\ManyToMany(targetEntity: Coach::class, inversedBy: 'prestations')]
-    private Collection $coach;
+    private Collection $coach; // ! to change to coachs
 
+    #[Groups(['prestation:write', 'coach:read'])]
     #[ORM\ManyToOne(inversedBy: 'prestations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Franchise $franchise = null;
 
+    #[Groups(['prestation:write','stat:prestation:read','stat:money:read'])]
     #[ORM\OneToMany(mappedBy: 'prestation', targetEntity: Slot::class)]
     private Collection $slots;
 

@@ -26,23 +26,43 @@ services:
     App\State\UserPasswordHasher:
         bind:
             $processor: '@api_platform.doctrine.orm.state.persist_processor'
+    
+    App\Doctrine\Extensions\FindFranchisesExtension:
+        tags:
+            - { name: api_platform.doctrine.orm.query_extension.collection }
+            - { name: api_platform.doctrine.orm.query_extension.item }
+
+
+    App\Doctrine\Extensions\CurrentUserSlotExtension:
+        tags:
+            - { name: api_platform.doctrine.orm.query_extension.collection }
+
+#    App\Doctrine\Extensions\CurrentUserFranchiseExtension:
+#        tags:
+#            - { name: api_platform.doctrine.orm.query_extension.collection }
+
+
+    App\EventListener\JwtCreatedListener:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJwtCreated }
+
 
     # ? Cache
-    api_platform.cache.metadata.property:
-        parent: cache.system
-        tags: [ cache.pool ]
-    api_platform.cache.metadata.resource:
-        parent: cache.system
-        tags: [ cache.pool ]
-    api_platform.cache.metadata.resource_collection:
-        parent: cache.system
-        tags: [ cache.pool ]
-    api_platform.cache.route_name_resolver:
-        parent: cache.system
-        tags: [ cache.pool ]
-    api_platform.cache.identifiers_extractor:
-        parent: cache.system
-        tags: [ cache.pool ]
-    api_platform.elasticsearch.cache.metadata.document:
-        parent: cache.system
-        tags: [ cache.pool ]
+#    api_platform.cache.metadata.property:
+#        parent: cache.system
+#        tags: [ cache.pool ]
+#    api_platform.cache.metadata.resource:
+#        parent: cache.system
+#        tags: [ cache.pool ]
+#    api_platform.cache.metadata.resource_collection:
+#        parent: cache.system
+#        tags: [ cache.pool ]
+#    api_platform.cache.route_name_resolver:
+#        parent: cache.system
+#        tags: [ cache.pool ]
+#    api_platform.cache.identifiers_extractor:
+#        parent: cache.system
+#        tags: [ cache.pool ]
+#    api_platform.elasticsearch.cache.metadata.document:
+#        parent: cache.system
+#        tags: [ cache.pool ]

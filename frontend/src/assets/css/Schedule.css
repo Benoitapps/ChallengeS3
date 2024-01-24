@@ -1,0 +1,111 @@
+.schedule {
+  position: relative;
+  padding: 30px;
+}
+
+.schedule > .fc {
+  position: relative;
+  z-index: 0;
+}
+
+.schedule .fc-scrollgrid-sync-inner {
+  text-align: center;
+}
+
+.schedule .fc-button {
+  border-radius: 15px;
+}
+
+.schedule .fc-button-primary {
+  background-color: var(--primary);
+  border: none;
+  box-shadow: var(--input-shadow);
+  color: var(--text-white);
+}
+
+.schedule .fc-button-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.schedule .fc-button-primary:not(:disabled).fc-button-active,
+.fc-button-primary:not(:disabled):active {
+  background-color: var(--primary-hover);
+  border: none;
+  box-shadow: var(--input-shadow);
+  color: var(--text-white);
+}
+
+.schedule .fc-button-primary:disabled {
+  background-color: var(--dark-border);
+}
+
+.schedule .fc-timegrid-col.fc-day-today {
+  background-color: var(--primay-selected);
+}
+
+.schedule .fc-non-business {
+  background-color: #6c6c6c5c;
+}
+
+.schedule .fc-theme-standard td{
+  border: solid 1px rgba(33, 32, 32, 0.78);
+}
+
+.schedule .fc-scrollgrid-sync-inner {
+  background-color:  var(--primary-hover);;
+}
+
+.schedule  .fc-col-header-cell-cushion {
+  color: white;
+}
+
+.fc-direction-ltr .fc-daygrid-event .fc-event-time {
+  color: white;
+}
+.fc .fc-daygrid-day-number {
+
+  color: white;
+}
+.fc-theme-standard .fc-list-day-cushion {
+  background-color: #0000004d;
+}
+
+.fc-daygrid-dot-event .fc-event-title {
+  flex-grow: 1;
+  flex-shrink: 1;
+  font-weight: 700;
+  min-width: 0px;
+  overflow: hidden;
+  color: white;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 99;
+  width: 10%;
+
+}
+
+.fondLoader{
+  position: absolute;
+  background-color: #00000082;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  z-index: 9;
+}
+
+.dark-background {
+  background-color: rgba(0, 0, 0, 0.5); /* Un fond sombre semi-transparent */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999; /* Assurez-vous que le fond sombre est au-dessus de tout le reste */
+}

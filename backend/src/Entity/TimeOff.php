@@ -2,10 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\TimeOffRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
+#[ApiResource()]
 
 #[ORM\Entity(repositoryClass: TimeOffRepository::class)]
 class TimeOff
@@ -15,6 +19,7 @@ class TimeOff
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['slot:read','slot:read:collection','coach:read:slots'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 

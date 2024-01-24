@@ -6,5 +6,14 @@ export default defineConfig({
   plugins: [react()],
   server: {
     open: true,
+  },
+  resolve: {
+    alias: {
+      '@css': '/src/assets/css',
+      '@img': '/src/assets/img',
+    },
+  },
+  build: {
+    target: 'esnext'
   }
 })

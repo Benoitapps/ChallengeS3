@@ -2,23 +2,64 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\CoachRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
+#[ApiResource(
+
+    operations: [
+        new Post(
+            denormalizationContext: ['groups' => ['coach:write']],
+        ),
+        new Get(
+            normalizationContext: ['groups' => ['coach:read']],
+        ),
+        new GetCollection(
+            normalizationContext: ['groups' => ['coach:read']],
+        ),
+        new Patch(
+            denormalizationContext: ['groups' => ['coach:write']],
+        ),
+
+        new Get(
+            uriTemplate: '/coaches/slots/{id}',
+            normalizationContext: [
+                'groups' => ['coach:read:slots']
+            ]
+        ),
+        new Get(
+            uriTemplate: '/coaches/shedules/{id}',
+            normalizationContext: [
+                'groups' => ['coach:read:shedules']
+            ]
+        ),
+    ]
+
+
+)]
 #[ORM\Entity(repositoryClass: CoachRepository::class)]
 class Coach
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['schedule:read', 'schedule:write','slot:read', 'franchise:read','slot:history:read:collection', 'coach:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['coach:read', 'coach:write'])]
     private ?string $biography = null;
 
+    #[Groups(['slot:read', 'coach:read', 'prestation:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read'])]
     #[ORM\OneToOne(inversedBy: 'coach', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $auth = null;
@@ -27,20 +68,33 @@ class Coach
     #[ORM\JoinColumn(nullable: false)]
     private ?Franchise $franchise = null;
 
+    #[Groups(['coach:read','coach:read:shedules'])]
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Schedule::class)]
     private Collection $schedules;
 
+    #[Groups(['coach:read'])]
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: ReviewClient::class)]
     private Collection $reviewClients;
 
+    #[Groups(['coach:read','stat:coach:read'])]
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: ReviewCoach::class)]
     private Collection $reviewCoaches;
 
+    #[Groups(['coach:read'])]
+    private ?float $rating = null;
+
+    #[Groups(['coach:read'])]
     #[ORM\ManyToMany(targetEntity: Prestation::class, mappedBy: 'coach')]
     private Collection $prestations;
 
+    #[Groups(['coach:read'])]
     #[ORM\ManyToMany(targetEntity: TimeOff::class, mappedBy: 'coachs')]
     private Collection $timeOffs;
+
+
+    #[Groups(['coach:read','coach:read:slots','stat:reservation:read'])]
+    #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Slot::class)]
+    private Collection $slots;
 
     public function __construct()
     {
@@ -49,6 +103,7 @@ class Coach
         $this->reviewCoaches = new ArrayCollection();
         $this->prestations = new ArrayCollection();
         $this->timeOffs = new ArrayCollection();
+        $this->slots = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -182,6 +237,20 @@ class Coach
         return $this;
     }
 
+    public function getRating(): ?float
+    {
+        $sum = 0;
+        foreach ($this->reviewCoaches as $reviewCoach) {
+            $sum += $reviewCoach->getNote();
+        }
+        if(count($this->reviewCoaches) === 0){
+            return 0;
+        } else {
+            $this->rating = round($sum / count($this->reviewCoaches), 1);
+            return $this->rating;
+        }
+    }
+
     /**
      * @return Collection<int, Prestation>
      */
@@ -231,6 +300,36 @@ class Coach
     {
         if ($this->timeOffs->removeElement($timeOff)) {
             $timeOff->removeCoach($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Slot>
+     */
+    public function getSlots(): Collection
+    {
+        return $this->slots;
+    }
+
+    public function addSlot(Slot $slot): static
+    {
+        if (!$this->slots->contains($slot)) {
+            $this->slots->add($slot);
+            $slot->setCoach($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSlot(Slot $slot): static
+    {
+        if ($this->slots->removeElement($slot)) {
+            // set the owning side to null (unless already changed)
+            if ($slot->getCoach() === $this) {
+                $slot->setCoach(null);
+            }
         }
 
         return $this;

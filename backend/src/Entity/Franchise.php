@@ -2,11 +2,60 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\FranchiseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            normalizationContext: [
+                'groups' => [
+                    'franchise:read',
+                ],
+            ],
+            security: "is_granted('ROLE_MANAGER')",
+        ),
+        new GetCollection(
+            uriTemplate: '/franchises/with-prestations',
+            paginationItemsPerPage: 4,
+            normalizationContext: ['groups' => ['franchise:read']],
+//            security: "is_granted('ROLE_MANAGER')",
+        ),
+        new GetCollection(
+            uriTemplate: 'companies/myCompany/franchises',
+            shortName: 'Company',
+            normalizationContext: ['groups' => ['company:read:franchise']],
+            security: "is_granted('ROLE_MANAGER')",
+            name: 'GetMyCompanyFranchises',
+        ),
+        new Get(
+            normalizationContext: ['groups' => ['franchise:read']],
+//            security: "is_granted('ROLE_MANAGER')",
+        ),
+        new Post(
+            denormalizationContext: ['groups' => ['franchise:write']],
+            security: "is_granted('ROLE_MANAGER')",
+        ),
+        new Delete(),
+        new Patch(
+            denormalizationContext: ['groups' => ['franchise:update']],
+        ),
+    ],
+//    normalizationContext: ['groups' => ['franchise:read']],
+//    denormalizationContext: ['groups' => ['franchise:write']],
+//    security: "is_granted('ROLE_ADMIN')",
+)]
 
 #[ORM\Entity(repositoryClass: FranchiseRepository::class)]
 class Franchise
@@ -14,32 +63,51 @@ class Franchise
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['franchise:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'coach:read','stat:money:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'coach:read'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 5)]
-    private ?string $zip_code = null;
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
+    private ?string $zipCode = null;
 
     #[ORM\ManyToOne(inversedBy: 'franchises')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['franchise:read', 'franchise:write'])]
     private ?Company $company = null;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Coach::class)]
+    #[Groups(['franchise:read', 'company:read:franchise','stat:coach:read','stat:reservation:read'])]
     private Collection $coachs;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Prestation::class)]
+    #[Groups(['franchise:read', 'company:read:franchise','stat:prestation:read','stat:money:read'])]
     private Collection $prestations;
+    
+    #[ORM\Column]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['franchise:read'])]
+    private ?float $lat = null;
+    
+    #[ORM\Column]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['franchise:read'])]
+    private ?float $lng = null;
 
     public function __construct()
     {
@@ -102,12 +170,12 @@ class Franchise
 
     public function getZipCode(): ?string
     {
-        return $this->zip_code;
+        return $this->zipCode;
     }
 
-    public function setZipCode(string $zip_code): static
+    public function setZipCode(string $zipCode): static
     {
-        $this->zip_code = $zip_code;
+        $this->zipCode = $zipCode;
 
         return $this;
     }
@@ -180,6 +248,30 @@ class Franchise
                 $prestation->setFranchise(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLat(): ?float
+    {
+        return $this->lat;
+    }
+
+    public function setLat(float $lat): static
+    {
+        $this->lat = $lat;
+
+        return $this;
+    }
+
+    public function getLng(): ?float
+    {
+        return $this->lng;
+    }
+
+    public function setLng(float $lng): static
+    {
+        $this->lng = $lng;
 
         return $this;
     }

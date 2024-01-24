@@ -2,16 +2,25 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
+#[ApiResource(
+
+)]
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups(['slot:read','client:read','user:read','coach:read'])]
     #[ORM\Column]
     private ?int $id = null;
 
@@ -24,11 +33,15 @@ class Client
     #[ORM\Column(length: 5, nullable: true)]
     private ?string $zip_code = null;
 
-    #[ORM\OneToOne(mappedBy: 'client', cascade: ['persist', 'remove'])]
+    #[Groups(['slot:read','coach:read','slot:history:read:collection'])]
+    #[ORM\OneToOne(inversedBy: 'client', cascade: ['persist', 'remove'])]
     private ?User $auth = null;
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: ReviewClient::class)]
     private Collection $reviewClients;
+
+    #[Groups(['coach:read'])]
+    private ?float $rating = null;
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: ReviewCoach::class)]
     private Collection $reviewCoaches;
@@ -134,6 +147,20 @@ class Client
         }
 
         return $this;
+    }
+
+    public function getRating(): ?float
+    {
+        $sum = 0;
+        foreach ($this->reviewClients as $reviewClient) {
+            $sum += $reviewClient->getNote();
+        }
+        if(count($this->reviewClients) === 0){
+            return 0;
+        } else {
+            $this->rating = round($sum / count($this->reviewClients), 1);
+            return $this->rating;
+        }
     }
 
     /**

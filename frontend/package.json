@@ -10,9 +10,31 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fullcalendar/daygrid": "^6.1.9",
+    "@fullcalendar/interaction": "^6.1.9",
+    "@fullcalendar/list": "^6.1.9",
+    "@fullcalendar/react": "^6.1.9",
+    "@fullcalendar/timegrid": "^6.1.9",
+    "@vis.gl/react-google-maps": "^0.4.1",
+    "chart.js": "^4.4.1",
+    "date-fns": "^2.30.0",
+    "echarts-for-react": "^3.0.2",
+    "i18next": "^23.7.8",
+    "i18next-browser-languagedetector": "^7.2.0",
+    "i18next-http-backend": "^2.4.2",
+    "jsonld": "^8.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
+    "react-big-calendar": "^1.8.5",
+    "react-calendar": "^4.6.1",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.17.0"
+    "react-i18next": "^13.5.0",
+    "react-modal": "^3.16.1",
+    "react-router-dom": "^6.17.0",
+    "reactjs-popup": "^2.0.6",
+    "reactstrap": "^9.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
