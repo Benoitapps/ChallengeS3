@@ -35,6 +35,12 @@ use App\Controller\UserController;
                 ],
             ]
         ),
+        new GetCollection(
+            shortName: "StatAdmin",
+            security: "is_granted('ROLE_ADMIN')",
+            uriTemplate: '/admin/stats/franchise',
+            normalizationContext: ['groups' => ['stat:admin:read']],
+        ),
         new Post(
             processor: UserPasswordHasher::class,
             controller: UserController::class,
@@ -111,7 +117,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Coach $coach = null;
     
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update'])]
+    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update','stat:admin:read'])]
     private ?Manager $manager = null;
 
     public function getId(): ?int

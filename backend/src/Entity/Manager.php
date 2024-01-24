@@ -58,7 +58,7 @@ class Manager
     #[Groups(['company:read', 'manager:write'])]
     private ?User $auth = null;
 
-    #[Groups(['stat:coach:read','stat:prestation:read','stat:reservation:read','stat:money:read'])]
+    #[Groups(['stat:coach:read','stat:prestation:read','stat:reservation:read','stat:money:read','stat:admin:read'])]
     #[ORM\OneToOne(mappedBy: 'manager', cascade: ['persist', 'remove'])]
     private ?Company $company = null;
 
