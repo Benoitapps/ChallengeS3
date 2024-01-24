@@ -24,7 +24,7 @@ jobs:
 
     - name: Git pull on server
       run: |
-        ssh -i ~/.ssh/id_rsa debian@5.196.23.210 "cd ~/lab/challengeS3 && git pull"
+        ssh -i ~/.ssh/id_rsa 5.196.23.210 "cd ~/lab/challengeS3 && git pull git@github.com:Benoitapps/ChallengeS3.git"
 
     - name: npm install and build frontend
       run: |
