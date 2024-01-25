@@ -52,7 +52,7 @@ class UserTest extends TestCase
         $user = new User();
         $user->setLastname('Doe');
 
-        $this->assertSame('Do', $user->getLastname());
+        $this->assertSame('Doe', $user->getLastname());
     }
 
     public function testEraseCredentials()
