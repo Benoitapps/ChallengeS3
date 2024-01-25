@@ -1,4 +1,6 @@
 {
+    "name": "challenge/apiplatform",
+    "description": "Challenge API Platform",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
