@@ -52,12 +52,3 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
           args: ${{ job.status == 'success' && 'Tests passed!' || 'Tests failed!' }}
-
-          
-
-    steps:
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2.2.0
-        env:
-          SLACK_CHANNEL: alert
-          SLACK_COLOR: "${{ job.status == 'success' && 'good' || 'danger' }}"
