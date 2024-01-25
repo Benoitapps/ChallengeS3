@@ -47,4 +47,4 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
-          args: ${{ success() && 'Tests passed!' || 'Tests failed!' }}
+          args: ${{ if(needs.build-test.outcome == 'success', 'Tests passed!', 'Tests failed!') }}
