@@ -16,6 +16,9 @@ jobs:
       run:
         working-directory: ${{ env.working-directory }}
 
+    container:
+      image: php:8.2
+
     steps:
     - uses: actions/checkout@v3
 
