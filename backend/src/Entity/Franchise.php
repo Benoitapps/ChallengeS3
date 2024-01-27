@@ -67,7 +67,7 @@ class Franchise
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'coach:read','stat:money:read'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'coach:read','stat:money:read','stat:admin:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -92,11 +92,11 @@ class Franchise
     private ?Company $company = null;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Coach::class)]
-    #[Groups(['franchise:read', 'company:read:franchise','stat:coach:read','stat:reservation:read'])]
+    #[Groups(['franchise:read', 'company:read:franchise','stat:coach:read','stat:reservation:read',])]
     private Collection $coachs;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Prestation::class)]
-    #[Groups(['franchise:read', 'company:read:franchise','stat:prestation:read','stat:money:read'])]
+    #[Groups(['franchise:read', 'company:read:franchise','stat:prestation:read','stat:money:read','stat:admin:read'])]
     private Collection $prestations;
     
     #[ORM\Column]

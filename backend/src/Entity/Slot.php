@@ -54,16 +54,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ),
     new Delete()
 
-//    new GetCollectionByCoach(
-//        path: '/slots/coach/{id}',
-//        methods: ['GET'],
-//        controller: GetCollectionByCoachAction::class,
-//    )
 ],
 )]
 #[ORM\Entity(repositoryClass: SlotRepository::class)]
 class Slot
 {
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -79,7 +75,7 @@ class Slot
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $endDate = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:write','coach:read:slots','slot:history:read:collection'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','coach:read:slots','slot:history:read:collection','stat:admin:read'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Prestation $prestation = null;
 
