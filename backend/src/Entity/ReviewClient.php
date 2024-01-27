@@ -43,7 +43,7 @@ class ReviewClient
     #[Groups(['coach:read'])]
     private ?int $id = null;
 
-    #[Groups(['review-client:read', 'review-client:write' , 'review-client:update'])]
+    #[Groups(['review-client:read', 'review-client:write' , 'review-client:update','stat:admin:read'])]
     #[ORM\Column]
     private ?int $note = null;
 

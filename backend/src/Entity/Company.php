@@ -44,6 +44,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
             denormalizationContext: ['groups' => ['company:admin:update']],
             security: "is_granted('ROLE_ADMIN')",
         ),
+        new GetCollection(
+            shortName: "StatAdmin",
+            security: "is_granted('ROLE_ADMIN')",
+            uriTemplate: '/admin/stats/all',
+            normalizationContext: ['groups' => ['stat:admin:read']],
+        ),
     ],
 //    normalizationContext: ['groups' => ['company:read','company:read:user-is-logged']],
 //    denormalizationContext: ['groups' => ['company:write']],
@@ -59,7 +65,7 @@ class Company
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['company:read', 'company:write', 'franchise:read', 'company:read:myCompany','stat:admin:read'])]
+    #[Groups(['company:read', 'company:write', 'franchise:read', 'company:read:myCompany','stat:admin:read','stat:admin:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -79,11 +85,11 @@ class Company
     #[ORM\OneToOne(inversedBy: 'company', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
 //    #[Groups(['company:read:user-is-logged', 'company:write'])]
-    #[Groups(['company:read', 'company:write'])]
+    #[Groups(['company:read', 'company:write','stat:admin:read'])]
     private ?Manager $manager = null;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Franchise::class, orphanRemoval: true)]
-    #[Groups(['company:read','stat:coach:read','stat:prestation:read','stat:reservation:read','stat:money:read'])]
+    #[Groups(['company:read','stat:coach:read','stat:prestation:read','stat:reservation:read','stat:money:read','stat:admin:read'])]
     private Collection $franchises;
 
     public function __construct()

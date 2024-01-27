@@ -24,7 +24,7 @@ import HomeAdmin from './Components/Admin/Home';
 import UsersList from './Components/Admin/UsersList.jsx';
 import CompaniesList from './Components/Admin/CompaniesList.jsx';
 import AdminRoute from './AdminRoute.jsx';
-import DashboardAdmin from "./Components/DashBoard/DashboardPageAdmin.jsx";
+import DashboardAdmin from "./Components/DashBoard/DashboardAdmin/DashboardPageAdmin.jsx";
 
 // Manager
 import NavBarManager from './Components/Manager/NavBar';
@@ -37,7 +37,7 @@ import AddFranchise from "./Components/Manager/AddFranchise.jsx";
 import Unauthorize from './Components/Unauthorize.jsx';
 import i18next from "./i18n.js";
 import {useTranslation, Trans} from "react-i18next";
-import DashboardPageAdmin from "./Components/DashBoard/DashboardPageAdmin";
+import DashboardPageAdmin from "./Components/DashBoard/DashboardAdmin/DashboardPageAdmin.jsx";
 
 function App() {
   const userIsAdmin = () => {

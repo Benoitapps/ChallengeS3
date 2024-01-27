@@ -8,52 +8,42 @@ import {
     Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import {getCoachNotes} from "../../hook/Stats/getStatAllCoachNote.js"
-import {statCoachNote} from "../../services/StatServices/statNoteCoach.js"
+import {getCoachNotes} from "../../../hook/Stats/getStatAllCoachNote.js"
+import {statCoachNote} from "../../../services/StatServices/statNoteCoach.js"
 import {forEach} from "lodash";
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-function DashboardGraphColAdmin() {
+function DashboardGraphColAdmin({valueData}) {
 
     const chartRef = useRef();
     const [tab, setTab] = useState([]);
     const [label, setLabel] = useState([]);
-    const [note, setNote] = useState([]);
-
-    const fetchData = async () => {
-        let res = await statCoachNote();
-        setTab(res);
-        return res;
-    }
+    const [nombre, setnombre] = useState([]);
 
     useEffect(() => {
-        let res = [];
-        let res2 = [];
-        tab.forEach(tab => {
-            res.push(tab[0] + " " + tab[1]);
-            res2.push(tab[2]);
-        });
-        setLabel(res);
-        setNote(res2);
-    }, [tab]);
-
-
+        if(valueData !== undefined) {
+            console.log("valueDataFR", valueData)
+            const tabName = valueData.map(objet => objet.name);
+            setLabel(tabName)
+            const tabPrice = valueData.map(objet => objet.nbFranchise);
+            setnombre(tabPrice)
+        }
+    },[valueData]);
 
     useEffect(() => {
-        // fetchData();
 
         chartRef.current.canvas.$chartjs.initial.height = 300;
-        chartRef.current.canvas.$chartjs.initial.width = 1200;
+        chartRef.current.canvas.$chartjs.initial.width = 600;
     }, []);
 
     const data = {
         labels:label,
         datasets: [
             {
-                label: 'Note moyenne par Coach',
-                data: note,
+                label: 'nbFranchise',
+                data: nombre,
                 backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#66ff99'],
                 hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#66ff99'],
             },
@@ -66,7 +56,7 @@ function DashboardGraphColAdmin() {
         plugins: {
             title: {
                 display: true,
-                text: 'Note moyenne par Coach',
+                text: 'Nombre de franchise par Entreprise',
                 font: {
                     size: 16,
                 },
