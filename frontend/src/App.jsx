@@ -43,8 +43,7 @@ function App() {
   const userIsAdmin = () => {
     const token = localStorage.getItem('token');
     if (token !== null) {
-      return accountService.getValuesToken()
-              .roles.includes('ROLE_ADMIN');
+      return accountService.getValuesToken()?.roles?.includes('ROLE_ADMIN') ?? false;
     }
     return false;
   }

@@ -5,7 +5,6 @@ on:
     branches:
       - main
       - dev
-      - ci-cd/send-discord-notification
     paths:
       - 'frontend/**'
       - '.github/workflows/**'
@@ -14,7 +13,6 @@ on:
     branches:
       - main
       - dev
-      - ci-cd/send-discord-notification
     paths:
       - 'frontend/**'
       - '.github/workflows/**'

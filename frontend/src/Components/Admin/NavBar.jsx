@@ -12,7 +12,7 @@ function NavBar({ isAdmin }) {
                             <nav>
                                 <ul>
                                     <li>
-                                        <Link to="">Admin</Link>
+                                        <Link to="/">Home</Link>
                                     </li>
                                     <div className="header__center">
                                         <li>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '@css/Authentification.css';
 import { Link } from 'react-router-dom';
+const env = import.meta.env;
 
 function SignUp() {
     const navigate = useNavigate();
@@ -27,7 +28,7 @@ function SignUp() {
         console.log(userType, e)
 
         try {
-            const result = await fetch('http://localhost:8888/api/users', {
+            const result = await fetch(`${env.VITE_URL_BACK}/api/users`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

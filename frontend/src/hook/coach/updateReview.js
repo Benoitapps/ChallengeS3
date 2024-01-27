@@ -1,5 +1,7 @@
+const env = import.meta.env;
+
 const updateReview = async (reviewId, note) => {
-    return await fetch(`http://localhost:8888/api/review_coaches/${reviewId}`, {
+    return await fetch(`${env.VITE_URL_BACK}/api/review_coaches/${reviewId}`, {
         method: 'PATCH',
         headers: {
             "Content-Type": "application/merge-patch+json",

@@ -10,6 +10,8 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -19,11 +21,16 @@ use App\State\UserPasswordHasher;
 use App\Controller\UserController;
 
 #[ApiResource(
+    normalizationContext: [
+        'groups' => [
+            'user:read',
+        ],
+    ],
     operations: [
         new GetCollection(
             normalizationContext: [
                 'groups' => [
-                    'user:read',
+                    'user:admin:read',
                 ],
             ],
             security: "is_granted('ROLE_ADMIN')"
@@ -32,8 +39,11 @@ use App\Controller\UserController;
             normalizationContext: [
                 'groups' => [
                     'user:read',
+                    'user:admin:read' => "is_granted('ROLE_ADMIN')"
                 ],
-            ]
+            ],
+            security: "is_granted('ROLE_ADMIN') or user.getId() == id"
+
         ),
         new Post(
             processor: UserPasswordHasher::class,
@@ -41,7 +51,6 @@ use App\Controller\UserController;
             denormalizationContext: [
                 'groups' => [
                     'user:write',
-                    'user:admin:write',
                 ],
             ],
             normalizationContext: [
@@ -50,19 +59,37 @@ use App\Controller\UserController;
                 ],
             ]
         ),
+        // new Post(
+        //     uriTemplate: '/users/admin',
+        //     processor: UserPasswordHasher::class,
+        //     controller: UserController::class,
+        //     denormalizationContext: [
+        //         'groups' => [
+        //             'user:admin:write',
+        //         ],
+        //     ],
+        //     normalizationContext: [
+        //         'groups' => [
+        //             'user:admin:read',
+        //         ],
+        //     ],
+        //     security: "is_granted('ROLE_ADMIN')"
+        // ),
         new Patch(
-            processor: UserPasswordHasher::class,
             denormalizationContext: [
                 'groups' => [
-                    'user:update',
-                    'user:admin:update'
+                    'user:admin:update',
                 ],
             ],
             normalizationContext: [
                 'groups' => [
-                    'user:read',
+                    'user:admin:read',
                 ],
-            ]
+            ],
+            security: "is_granted('ROLE_ADMIN')"
+        ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN')"
         ),
     ],
 )]
@@ -77,7 +104,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:admin:read'])]
     private ?int $id = null;
     
-    #[Groups(['user:read', 'user:write', 'user:update', 'user:admin:write', 'user:admin:update','stat:admin:read'])]
+    #[Groups(['user:read', 'user:write', 'user:update', 'user:admin:write', 'user:admin:update','stat:admin:read', 'user:admin:read'])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
     
@@ -95,23 +122,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
     
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:write','slot:read','coach:read', 'user:admin:write', 'user:admin:update', 'prestation:read', 'company:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read'])]
+    #[Groups(['user:read', 'user:write','slot:read','coach:read', 'user:admin:write', 'user:admin:update', 'prestation:read', 'company:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read', 'user:admin:read'])]
     private ?string $firstname = null;
     
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update', 'prestation:read', 'company:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read'])]
+    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update', 'prestation:read', 'company:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read', 'user:admin:read'])]
     private ?string $lastname = null;
     
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update'])]
+    #[Groups(['user:read', 'user:write', 'user:admin:write'])]
     private ?Client $client = null;
 
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update'])]
+    #[Groups(['user:read', 'user:write', 'user:admin:write'])]
     private ?Coach $coach = null;
     
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update'])]
+    #[Groups(['user:read', 'user:write', 'user:admin:write'])]
     private ?Manager $manager = null;
 
     public function getId(): ?int

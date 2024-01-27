@@ -1,9 +1,10 @@
+const env = import.meta.env;
 
 const getScheduleCoach = async (id) => {
 
     try {
 
-        const apiUrl = `http://localhost:8888/api/coaches/shedules/${id}`;
+        const apiUrl = `${env.VITE_URL_BACK}/api/coaches/shedules/${id}`;
 
         const result = await fetch(apiUrl, {
             method: "GET",

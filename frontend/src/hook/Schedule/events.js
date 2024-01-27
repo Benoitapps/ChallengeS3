@@ -1,9 +1,10 @@
+const env = import.meta.env;
 
 const getSlots = async (filterDateStart =null, filterDateEnd = null) => {
     try {
 
         // console.log("filterDateStart",filterDateStart + "and" + "filterDateEnd",filterDateEnd);
-        const apiUrl = `http://localhost:8888/api/slots?page=1&startDate[before]=${filterDateEnd}&startDate[after]=${filterDateStart}`;
+        const apiUrl = `${env.VITE_URL_BACK}/api/slots?page=1&startDate[before]=${filterDateEnd}&startDate[after]=${filterDateStart}`;
 
         const result = await fetch(apiUrl, {
             method: "GET",

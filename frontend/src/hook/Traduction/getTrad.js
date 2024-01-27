@@ -1,5 +1,7 @@
+const env = import.meta.env;
+
 const getTradFR = async () => {
-    const result = await fetch(`http://localhost:8888/api/traductions/fr`, {
+    const result = await fetch(`${env.VITE_URL_BACK}/api/traductions/fr`, {
         method: 'GET',
         headers: {
             Accept: "application/json",
@@ -10,7 +12,7 @@ const getTradFR = async () => {
 
 
 const getTradEN = async () => {
-    const result = await fetch(`http://localhost:8888/api/traductions/en`, {
+    const result = await fetch(`${env.VITE_URL_BACK}/api/traductions/en`, {
         method: 'GET',
         headers: {
             Accept: "application/json",

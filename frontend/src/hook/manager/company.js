@@ -1,6 +1,8 @@
+const env = import.meta.env;
+
 const getCompanies = async () => {
     try {
-        const result = await fetch("http://localhost:8888/api/companies", {
+        const result = await fetch(`${env.VITE_URL_BACK}/api/companies`, {
             method: "GET",
             headers: {
                 Accept: "application/json",

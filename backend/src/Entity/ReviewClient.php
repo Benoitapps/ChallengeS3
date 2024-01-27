@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Post;
 use App\Repository\ReviewClientRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     uriTemplate: '/clients/{id}/reviews',
@@ -45,6 +46,7 @@ class ReviewClient
 
     #[Groups(['review-client:read', 'review-client:write' , 'review-client:update','stat:admin:read'])]
     #[ORM\Column]
+    #[Assert\Range(min: 1, max: 5)]
     private ?int $note = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class ,inversedBy: 'reviewClients')]
