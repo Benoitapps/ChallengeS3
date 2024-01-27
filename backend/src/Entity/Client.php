@@ -20,7 +20,7 @@ class Client
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[Groups(['slot:read','client:read','user:read','coach:read'])]
+    #[Groups(['slot:read','client:read','user:read','coach:read','slot:history:read:collection'])]
     #[ORM\Column]
     private ?int $id = null;
 
