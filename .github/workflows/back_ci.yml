@@ -1,4 +1,4 @@
-name: CI PHPUnit
+name: Test with PHPUnit
 
 on:
   push:

@@ -1,0 +1,38 @@
+name: Test with cypress
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    env:
+      working-directory: ./frontend
+
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
+
+    steps:
+    - uses: actions/checkout@v3
+
+    
+  
+  # notification:
+  #   runs-on: ubuntu-latest
+
+  #   needs: build-test
+  #   if: |
+  #     always() && (needs.build-test.result == 'success' || needs.build-test.result == 'skipped')
+
+  #   steps:
+  #     - name: Discord notification
+  #       uses: Ilshidur/action-discord@0.3.2
+  #       env:
+  #         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+  #       with:
+  #         args: ${{ job.status == 'success' && 'Tests passed!' || 'Tests failed!' }}
