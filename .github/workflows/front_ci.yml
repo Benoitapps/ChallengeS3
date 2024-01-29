@@ -14,15 +14,21 @@ jobs:
     env:
       working-directory: ./frontend
 
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
           build: npm i -D cypress
-          working-directory: ${{ env.working-directory }}
     
 
     
