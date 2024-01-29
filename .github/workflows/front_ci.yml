@@ -5,9 +5,10 @@ on:
     branches:
       - main
       - dev
+      - feature/test-cypress-front
 
 jobs:
-  build-test:
+  cypress-run:
     runs-on: ubuntu-latest
 
     env:
@@ -18,7 +19,12 @@ jobs:
         working-directory: ${{ env.working-directory }}
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+    
 
     
   
