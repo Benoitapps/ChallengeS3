@@ -58,7 +58,7 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
-          args: 'The build of the frontend is ${{ job.status == 'success' && 'passed!' || 'failed!' }}'
+          args: "The build of the frontend is ${{ job.status == 'success' && 'passed!' || 'failed!' }}"
 
   # deploy:
   #   runs-on: ubuntu-latest
