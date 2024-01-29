@@ -24,6 +24,21 @@ jobs:
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm run dev
+          wait-on: 'http://localhost:5173'
+          wait-on-timeout: 60
+          wait-on-timeout-error: 'Timed out waiting for the application to start'
+          wait-on-retry-interval: 5000
+          wait-on-silent: false
+          record: true
+          parallel: true
+          group: 'Cypress Tests'
+          spec: cypress/e2e/**/*.cy.js
+          browser: chrome
+          headless: true
+          config-file: cypress.json
     
 
     
