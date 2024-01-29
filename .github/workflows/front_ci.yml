@@ -29,6 +29,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           build: npm i -D cypress
+          working-directory: ${{ env.working-directory }}
     
 
     
