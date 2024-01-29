@@ -51,4 +51,4 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
-          args: ${{ job.status == 'success' && 'Tests passed!' || 'Tests failed!' }}
+          args: ${{ job.status == 'success' && 'Tests Backend passed!' || 'Tests Backend failed!' }}
