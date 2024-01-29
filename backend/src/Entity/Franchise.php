@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -31,6 +33,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             paginationItemsPerPage: 4,
             normalizationContext: ['groups' => ['franchise:read']],
 //            security: "is_granted('ROLE_MANAGER')",
+
         ),
         new GetCollection(
             uriTemplate: 'companies/myCompany/franchises',
@@ -56,6 +59,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 //    denormalizationContext: ['groups' => ['franchise:write']],
 //    security: "is_granted('ROLE_ADMIN')",
 )]
+
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial', 'whiteList' => ['franchise:read']])]
 
 #[ORM\Entity(repositoryClass: FranchiseRepository::class)]
 class Franchise
