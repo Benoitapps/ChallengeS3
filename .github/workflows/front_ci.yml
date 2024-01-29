@@ -33,8 +33,6 @@ jobs:
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
-        run: |
-          npm run test
         with:
           working-directory: ${{ env.working-directory }}
     
