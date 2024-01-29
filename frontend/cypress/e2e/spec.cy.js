@@ -10,7 +10,7 @@ describe('My First Test !', () => {
 
 describe('Simple test', () => {
     it('Login', () => {
-        cy.visit('http://localhost:4173')
+        cy.visit('http://localhost:5173')
         cy.contains('Se connecter')
         cy.contains('Se connecter').click()
         cy.url().should('include', '/login')
@@ -20,7 +20,7 @@ describe('Simple test', () => {
     })
 
     it('Sign up', () => {
-        cy.visit('http://localhost:4173')
+        cy.visit('http://localhost:5173')
         cy.contains('Inscription')
         cy.contains('Inscription').click()
         cy.url().should('include', '/signup')

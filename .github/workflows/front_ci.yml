@@ -25,20 +25,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Test with curl
+      - name: Run website
         run: |
-          npm run preview &
+          npm run dev &
           sleep 5
-          curl -v http://localhost:4173/ -I
-      
-      # run website vite js in background
-      # - name: Run website
-      #   run: npm run dev &
+          curl -v http://localhost:5173/ -I
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
+        run: |
+          npm run test
         with:
-          build: npm i -D cypress
           working-directory: ${{ env.working-directory }}
     
 
