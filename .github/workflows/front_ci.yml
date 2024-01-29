@@ -24,6 +24,10 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+      
+      # run website vite js in background
+      - name: Run website
+        run: npm run dev &
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
