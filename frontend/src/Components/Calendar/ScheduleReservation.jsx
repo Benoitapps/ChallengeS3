@@ -54,7 +54,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
     //recuperation des evenement et des horraires du coach
     async function fetchData() {
-        let tabHorraire = await sheduleCoach(idCoach, calendarFilterStart, calendarFilterEnd);
+        let tabHorraire = await sheduleCoach(idCoach, calendarFilterStart, calendarFilterEnd,lang);
         let eventCoaches = await eventCoach(idCoach,lang);
         let idClient = await getUserId();
 
@@ -286,7 +286,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
                 }
 
                 height={"36em"}
-                locale={lang === "fr" ? frLocale : "en"}
+                locale={lang === "fr" ? "fr" : "en"}
                 dateClick={(e) => handleDateClick(e)}
                 datesSet={handleDateChange}
                 eventClick={false}
