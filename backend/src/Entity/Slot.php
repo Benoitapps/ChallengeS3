@@ -15,7 +15,14 @@ use App\Filter\CustomSlotDateFilter;
 use App\Repository\SlotRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Coach;
+use App\Entity\Schedule;
+use App\Validator\ContainsSlot as ContainsSlotConstraint;
+
+
 
 #[ApiResource(
     operations: [
@@ -58,9 +65,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 ],
 )]
 #[ORM\Entity(repositoryClass: SlotRepository::class)]
+#[UniqueEntity(fields: ['startDate','endDate','coach'], message: 'Ce créneau est déjà pris')]
 class Slot
 {
-    
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -70,6 +78,8 @@ class Slot
     #[ApiFilter(DateFilter::class)]
     #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots','slot:history:read:collection'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\GreaterThan('today')]
+//    #[ContainsSlotConstraint]
     private ?\DateTimeInterface $startDate = null;
 
     #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots','slot:history:read:collection'])]
