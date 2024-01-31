@@ -1,5 +1,7 @@
+const env = import.meta.env;
+
 const getCoachNotes = async (id) => {
-    const result = await fetch(`http://localhost:8888/api/managers/${id}/stats/coach`, {
+    const result = await fetch(`${env.VITE_URL_BACK}/api/managers/${id}/stats/coach`, {
         method: 'GET',
         headers: {
             Accept: "application/json",
