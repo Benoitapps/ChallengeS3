@@ -14,7 +14,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     operations: [
-        new GetCollection(),
+        new GetCollection(
+            uriTemplate: '/managers-without-company',
+            normalizationContext: ['groups' => ['manager:admin:read']],
+            security: 'is_granted("ROLE_ADMIN")',
+        ),
         new Get(
             normalizationContext: ['groups' => ['company:read']],
         ),
@@ -50,7 +54,7 @@ class Manager
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'manager:admin:read'])]
     private ?int $id = null;
 
     #[ORM\OneToOne(inversedBy: 'manager', cascade: ['persist', 'remove'])]
@@ -58,7 +62,7 @@ class Manager
     #[Groups(['company:read', 'manager:write','stat:admin:read'])]
     private ?User $auth = null;
 
-    #[Groups(['stat:coach:read','stat:prestation:read','stat:reservation:read','stat:money:read','stat:admin:read'])]
+    #[Groups(['stat:coach:read','stat:prestation:read','stat:reservation:read','stat:money:read','stat:admin:read', 'manager:admin:read'])]
     #[ORM\OneToOne(mappedBy: 'manager', cascade: ['persist', 'remove'])]
     private ?Company $company = null;
 
