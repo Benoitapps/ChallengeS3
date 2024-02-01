@@ -86,7 +86,7 @@ class Slot
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $endDate = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:write','coach:read:slots','slot:history:read:collection','stat:admin:read'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','coach:read:slots','slot:history:read:collection'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Prestation $prestation = null;
 

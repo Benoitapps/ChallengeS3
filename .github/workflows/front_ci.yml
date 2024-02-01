@@ -5,6 +5,9 @@ on:
     branches:
       - main
       - dev
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/**'
 
 jobs:
   cypress-run:
@@ -40,7 +43,7 @@ jobs:
 
     needs: cypress-run
     if: |
-      always() && (needs.build-test.result == 'success' || needs.build-test.result == 'skipped')
+      always() && (needs.cypress-run.result == 'success' || needs.cypress-run.result == 'skipped')
 
     steps:
       - name: Discord notification
