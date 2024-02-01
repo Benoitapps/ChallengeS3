@@ -72,7 +72,7 @@ class Coach
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Schedule::class)]
     private Collection $schedules;
 
-    #[Groups(['coach:read'])]
+    #[Groups(['coach:read','stat:admin:read'])]
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: ReviewClient::class)]
     private Collection $reviewClients;
 
@@ -92,7 +92,7 @@ class Coach
     private Collection $timeOffs;
 
 
-    #[Groups(['coach:read','coach:read:slots','stat:reservation:read'])]
+    #[Groups(['coach:read','coach:read:slots','stat:reservation:read','stat:admin:read'])]
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Slot::class)]
     private Collection $slots;
 

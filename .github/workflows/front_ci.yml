@@ -1,0 +1,54 @@
+name: Test with cypress
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/**'
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    env:
+      working-directory: ./frontend
+
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run website
+        run: |
+          npm run dev &
+          sleep 5
+          curl -v http://localhost:5173/ -I
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: ${{ env.working-directory }}
+    
+  notification:
+    runs-on: ubuntu-latest
+
+    needs: cypress-run
+    if: |
+      always() && (needs.cypress-run.result == 'success' || needs.cypress-run.result == 'skipped')
+
+    steps:
+      - name: Discord notification
+        uses: Ilshidur/action-discord@0.3.2
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        with:
+          args: ${{ job.status == 'success' && 'Tests Frontend passed!' || 'Tests Frontend failed!' }}

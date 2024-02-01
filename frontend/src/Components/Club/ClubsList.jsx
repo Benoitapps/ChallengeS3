@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
+    import React, { useEffect, useState } from 'react';
 import { getClubs } from '../../hook/clubs/getClubs';
 import ClubItem from './ClubItem';
 import Pagination from './Pagination';
 
 const ITEM_PER_PAGE = 4;
 
-function ClubsList({clubs, setClubs}) {
+function ClubsList({clubs, setClubs, filter}) {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchData();
-    }, [currentPage]);
+    }, [currentPage, filter]);
 
     const fetchData = async () => {
-        const result = await getClubs(currentPage);
+        const result = await getClubs(currentPage,filter);
         setClubs(result['hydra:member']);
         setTotalItems(result['hydra:totalItems']);
         setLoading(false);
