@@ -87,7 +87,7 @@ class Company
     #[ORM\OneToOne(inversedBy: 'company', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
 //    #[Groups(['company:read:user-is-logged', 'company:write'])]
-    #[Groups(['company:read', 'company:write','stat:admin:read'])]
+    #[Groups(['company:read', 'company:write'])]
     private ?Manager $manager = null;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Franchise::class, orphanRemoval: true)]
