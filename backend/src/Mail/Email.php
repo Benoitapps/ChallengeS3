@@ -33,16 +33,7 @@ class Email
         protected string $message = '',
     ) {
     }
-    #[Groups(['email:read'])]
-    public function getName(): string
-    {
-        return $this->name;
-    }
-    #[Groups(['email:write'])]
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
+
 
     #[Groups(['email:read'])]
     public function getEmail(): string

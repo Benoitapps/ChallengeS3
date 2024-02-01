@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Controller;
 
 use App\Mail\Email;
@@ -20,14 +21,14 @@ class SendEmailAction extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         // Use the Email object properties to construct the email content
-        $resend = Resend::client('re_V795pJfN_Gsb5uF7bVN36jvUEcw74Pj2R');
+        $resend = Resend::client('re_FVip7GLa_4AGNShHcF8QdPdWTHNs7b1my');
 
         try {
             $resend->emails->send([
-                'from' => 'onboarding@resend.dev',
-                'to' => 'benoitdecarli77@gmail.com',
-                'subject' => 'hello world',
-                'html' => '<p>Congrats on sending your <strong>first email</strong>!</p>'
+                'from' => 'mycoach@resend.dev',
+                'to' => $data['email'],
+                'subject' => $data['subject'],
+                'html' => $data['message'],
             ]);
 
             // You can add additional logic here if needed
