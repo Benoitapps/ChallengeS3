@@ -16,6 +16,7 @@ import ClubsPage from './Components/ClubsPage.jsx';
 import ClubDetails from './Components/Club/ClubDetails.jsx';
 import HistoryPage from "./Components/Historique/HistoryPage.jsx";
 import CoachPage from './Components/Coach/CoachPage.jsx';
+import ClientPage from "./Components/Client/ClientPage.jsx";
 import Dashboard from './Components/DashBoard/DashboardPage.jsx';
 
 // Admin
@@ -108,6 +109,7 @@ function App() {
             <Route index element={<ClubsPage/>} />
             <Route path="club/:id" element={<ClubDetails/>} />
             <Route path="coach/:id" element={<CoachPage/>} />
+            <Route path="client/:id" element={<ClientPage/>} />
 
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login handleConnect={handleConnect} />} />
