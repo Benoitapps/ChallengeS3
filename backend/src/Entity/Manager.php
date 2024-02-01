@@ -59,7 +59,7 @@ class Manager
 
     #[ORM\OneToOne(inversedBy: 'manager', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['company:read', 'manager:write','stat:admin:read'])]
+    #[Groups(['company:read', 'manager:write','stat:admin:read', 'manager:admin:read'])]
     private ?User $auth = null;
 
     #[Groups(['stat:coach:read','stat:prestation:read','stat:reservation:read','stat:money:read','stat:admin:read', 'manager:admin:read'])]
