@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 #[AsController]
 class SendEmailAction extends AbstractController
 {
@@ -23,7 +24,7 @@ class SendEmailAction extends AbstractController
 
         try {
             $resend->emails->send([
-                'from' => 'mycoach@resend.dev',
+                'from' => 'mycoach@mycoach.bendc.site',
                 'to' => $data['email'],
                 'subject' => $data['subject'],
                 'html' => $data['message'],

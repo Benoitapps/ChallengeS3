@@ -8,6 +8,7 @@
     "require": {
         "php": ">=8.1",
         "ext-ctype": "*",
+        "ext-curl": "*",
         "ext-iconv": "*",
         "api-platform/core": "^3.1",
         "doctrine/doctrine-bundle": "^2.10",
@@ -15,6 +16,7 @@
         "doctrine/orm": "^2.16",
         "hautelook/alice-bundle": "^2.12",
         "lexik/jwt-authentication-bundle": "^2.19",
+        "mailjet/mailjet-apiv3-php": "^1.6",
         "nelmio/cors-bundle": "^2.3",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.24",
@@ -37,8 +39,7 @@
         "symfony/yaml": "6.3.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0",
-        "webonyx/graphql-php": "^15.6",
-        "ext-curl": "*"
+        "webonyx/graphql-php": "^15.6"
     },
     "config": {
         "allow-plugins": {

@@ -12,8 +12,9 @@ import { eventCoach } from "../../services/eventCoach.js";
 import { sheduleCoach } from "../../services/sheduleCoachGet.js"
 import {postSlot} from "../../hook/Schedule/eventPost.js";
 import {patchSlot} from "../../hook/Schedule/eventPatch.js";
+import {postEmail} from "../../hook/Mail/postEmail.js";
 import { useNavigate, useParams } from 'react-router-dom';
-import {getUserId} from "../User/DecodeUser.jsx";
+import {getUserEmail, getUserId} from "../User/DecodeUser.jsx";
 import loadingGIF from "@img/loading.gif";
 import {useTranslation, Trans} from "react-i18next";
 import frLocale from '@fullcalendar/core/locales/fr';
@@ -30,6 +31,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
     const [idPrestation, setIdPrestation] = useState(prestationId);
     const [idCoach, setIdCoach] = useState(coachId);
     const [idClient, setIdClient] = useState(null);
+    const [emailClient, setEmailClient] = useState(null);
 
     //Horraire du coach ainsi que ces evenements
     const [scheduleHeur, setSheduleHeur] = useState([]);
@@ -57,6 +59,8 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
         let tabHorraire = await sheduleCoach(idCoach, calendarFilterStart, calendarFilterEnd,lang);
         let eventCoaches = await eventCoach(idCoach,lang);
         let idClient = await getUserId();
+        let getemailClient = await getUserEmail();
+        setEmailClient(getemailClient);
 
         if (calendarRef && calendarRef.current.getApi()) {
             const api = calendarRef.current.getApi();
@@ -217,6 +221,8 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
         const addslot = async (dateStart, dateEnd, idPrestation, idCoach, idClient) => {
             const getData = await postSlot(dateStart, dateEnd,idPrestation,idCoach,idClient);
+            await postEmail(emailClient,"Reservation de cours","Votre cours est bien reserver le "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time);
+
             if (getData && getData?.status === 500) {
                 console.log("ya une erreur")
                 const modalContentreserve = (
@@ -226,6 +232,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
                 );
                 setIsModalOpenErreur(true);
                 setModalContent(modalContentreserve);
+
             }else {
             }
 
