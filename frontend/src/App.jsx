@@ -16,6 +16,7 @@ import ClubsPage from './Components/ClubsPage.jsx';
 import ClubDetails from './Components/Club/ClubDetails.jsx';
 import HistoryPage from "./Components/Historique/HistoryPage.jsx";
 import CoachPage from './Components/Coach/CoachPage.jsx';
+import ClientPage from "./Components/Client/ClientPage.jsx";
 import Dashboard from './Components/DashBoard/DashboardPage.jsx';
 
 // Admin
@@ -24,6 +25,7 @@ import HomeAdmin from './Components/Admin/Home';
 import UsersList from './Components/Admin/UsersList.jsx';
 import CompaniesList from './Components/Admin/CompaniesList.jsx';
 import AdminRoute from './AdminRoute.jsx';
+import DashboardAdmin from "./Components/DashBoard/DashboardAdmin/DashboardPageAdmin.jsx";
 
 // Manager
 import NavBarManager from './Components/Manager/NavBar';
@@ -36,6 +38,7 @@ import AddFranchise from "./Components/Manager/AddFranchise.jsx";
 import Unauthorize from './Components/Unauthorize.jsx';
 import i18next from "./i18n.js";
 import {useTranslation, Trans} from "react-i18next";
+import DashboardPageAdmin from "./Components/DashBoard/DashboardAdmin/DashboardPageAdmin.jsx";
 
 function App() {
   const userIsAdmin = () => {
@@ -106,6 +109,7 @@ function App() {
             <Route index element={<ClubsPage/>} />
             <Route path="club/:id" element={<ClubDetails/>} />
             <Route path="coach/:id" element={<CoachPage/>} />
+            <Route path="client/:id" element={<ClientPage/>} />
 
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login handleConnect={handleConnect} />} />
@@ -130,6 +134,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<NavBarAdmin isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} />}>
                   <Route index element={<AdminRoute index component={HomeAdmin} isAdmin={isAdmin} />} />
+                  <Route path="adminDashboard" element={<AdminRoute component={DashboardAdmin} isAdmin={isAdmin} />} />
                   <Route path="users" element={<AdminRoute component={UsersList} isAdmin={isAdmin} />} />
                   <Route path="companies" element={<AdminRoute component={CompaniesList} isAdmin={isAdmin} />} />
                 </Route>
