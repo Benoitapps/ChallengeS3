@@ -17,10 +17,8 @@ class SendEmailAction extends AbstractController
     #[Route('/send-email', methods: ['POST'])]
     public function __invoke(Request $request): Response
     {
-        // Assuming that $request->getContent() contains the JSON payload with email data
         $data = json_decode($request->getContent(), true);
 
-        // Use the Email object properties to construct the email content
         $resend = Resend::client('re_FVip7GLa_4AGNShHcF8QdPdWTHNs7b1my');
 
         try {
@@ -31,15 +29,11 @@ class SendEmailAction extends AbstractController
                 'html' => $data['message'],
             ]);
 
-            // You can add additional logic here if needed
-
-            // Return a success response
             return new Response(
                 json_encode(['success' => true]),
                 Response::HTTP_CREATED
             );
         } catch (\Exception $e) {
-            // Handle the exception appropriately (log it, return an error response, etc.)
             return new Response(
                 json_encode(['error' => $e->getMessage()]),
                 Response::HTTP_INTERNAL_SERVER_ERROR
