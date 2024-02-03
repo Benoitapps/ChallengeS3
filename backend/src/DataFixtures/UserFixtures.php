@@ -24,6 +24,8 @@ class UserFixtures extends Fixture
             ->setRoles([])
             ->setFirstname('user1')
             ->setLastname('lasname')
+            ->setRoles(["ROLE_CLIENT"])
+
         ;
         $manager->persist($object);
 
@@ -33,6 +35,8 @@ class UserFixtures extends Fixture
             ->setRoles([])
             ->setFirstname('user2')
             ->setLastname('lasname')
+            ->setRoles(["ROLE_CLIENT"])
+
         ;
         $manager->persist($object);
 
