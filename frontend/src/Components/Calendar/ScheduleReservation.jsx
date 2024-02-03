@@ -15,6 +15,7 @@ import {patchSlot} from "../../hook/Schedule/eventPatch.js";
 import {postEmail} from "../../hook/Mail/postEmail.js";
 import { useNavigate, useParams } from 'react-router-dom';
 import {getUserEmail, getUserId} from "../User/DecodeUser.jsx";
+import {getCoachEmail} from "../../hook/coach/getCoach.js";
 import loadingGIF from "@img/loading.gif";
 import {useTranslation, Trans} from "react-i18next";
 import frLocale from '@fullcalendar/core/locales/fr';
@@ -221,7 +222,10 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
         const addslot = async (dateStart, dateEnd, idPrestation, idCoach, idClient) => {
             const getData = await postSlot(dateStart, dateEnd,idPrestation,idCoach,idClient);
-            await postEmail(emailClient,"Reservation de cours","Votre cours est bien reserver le "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time);
+            const coachEmail = await getCoachEmail(idCoach);
+            console.log("coachEmail",coachEmail);
+            await postEmail(emailClient,"Reservation de cours","Votre cours est bien reserver le "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le coach "+coachEmail.auth.email;
+            await postEmail(coachEmail.auth.email,"Reservation de cours","Vous avez un cours reservé le "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le client "+emailClient;
 
             if (getData && getData?.status === 500) {
                 console.log("ya une erreur")
