@@ -42,6 +42,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
                 'groups' => ['coach:read:shedules']
             ]
         ),
+        new Get(
+            uriTemplate: '/coaches/email/{id}',
+            normalizationContext: [
+                'groups' => ['coach:read:email']
+            ],
+            security: "is_granted('ROLE_CLIENT')"
+        ),
     ]
 
 
@@ -59,7 +66,7 @@ class Coach
     #[Groups(['coach:read', 'coach:write'])]
     private ?string $biography = null;
 
-    #[Groups(['slot:read', 'coach:read', 'prestation:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read'])]
+    #[Groups(['slot:read', 'coach:read', 'prestation:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read','coach:read:email'])]
     #[ORM\OneToOne(inversedBy: 'coach', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $auth = null;
