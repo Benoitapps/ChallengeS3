@@ -26,3 +26,6 @@ api_platform:
     resource_class_directories:
         - '%kernel.project_dir%/src/ValueObject'
         - '%kernel.project_dir%/src/Mail'
+
+    eager_loading:
+        force_eager: false
