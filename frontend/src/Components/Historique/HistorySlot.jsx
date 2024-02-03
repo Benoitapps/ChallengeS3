@@ -4,7 +4,7 @@ import {useNavigate, Link} from "react-router-dom";
 import '@css/History.css';
 
 
-function HistorySlot({ slot }) {
+function HistorySlot({ slot, isCoach }) {
 
 
    const dateStart = dateStrings(slot.startDate)
@@ -13,7 +13,6 @@ function HistorySlot({ slot }) {
 
 
     const reschedule = (prestationId, coachId) => {
-        console.log(prestationId,coachId)
         const route = `/prestation/${prestationId}/coach/${coachId}/add`;
         navigate(route);
     }
@@ -32,10 +31,9 @@ function HistorySlot({ slot }) {
                     <div>{dateStart}</div>
                     <div>{dateEnd}</div>
 
-                    <button className="buttonSlot" onClick={() => reschedule( slot.prestation.id, slot.coach.id )}>Reprendre</button>
+                    {!isCoach? <button className="buttonSlot" onClick={() => reschedule( slot.prestation.id, slot.coach.id )}>Reprendre</button>: null}
                 </div>
             </div>
     );
 }
-
 export default HistorySlot;

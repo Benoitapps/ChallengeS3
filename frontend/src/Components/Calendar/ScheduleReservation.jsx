@@ -213,17 +213,21 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
     };
 
+
     const reserveModal = (e) => {
 
         const upadateSlot = async (dateStart, dateEnd, slotId) => {
             const getData = await patchSlot(dateStart, dateEnd,slotId);
+            const coachEmail = await getCoachEmail(idCoach);
+            await postEmail(emailClient,"Modification de cours","Votre cours a ete modifier et a maintenant lieu le "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le coach "+coachEmail.auth.email;
+            await postEmail(coachEmail.auth.email,"Modification de cours","Votre cours a ete modifier et a maintenant lieu le"+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le client "+emailClient;
+
             navigate("/schedule");
         }
 
         const addslot = async (dateStart, dateEnd, idPrestation, idCoach, idClient) => {
             const getData = await postSlot(dateStart, dateEnd,idPrestation,idCoach,idClient);
             const coachEmail = await getCoachEmail(idCoach);
-            console.log("coachEmail",coachEmail);
             await postEmail(emailClient,"Reservation de cours","Votre cours est bien reserver le "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le coach "+coachEmail.auth.email;
             await postEmail(coachEmail.auth.email,"Reservation de cours","Vous avez un cours reservé le "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le client "+emailClient;
 
@@ -258,9 +262,15 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
     };
 
-    const deleteSlotbyID = (e) => {
+    const asyncDeleteSlot = async () => {
+        const coachEmail = await getCoachEmail(idCoach);
+        await postEmail(emailClient,"Suppression  de cours","Votre cours du "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le coach "+coachEmail.auth.email+" a ete supprimer";
+        await postEmail(coachEmail.auth.email,"Suppression  de cours","Votre cours du "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le client "+emailClient+" a ete supprimer";
 
+    }
+    const deleteSlotbyID = (e) => {
         deleteSlot(eventId);
+        asyncDeleteSlot();
         fetchData();
         closeModal();
     };
@@ -279,7 +289,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
             <FullCalendar
                 ref={calendarRef}
-                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
+                plugins={[ timeGridPlugin, interactionPlugin, listPlugin]}
                 initialView={'timeGridWeek'}
                 slotDuration="01:00:00"
                 events={events}

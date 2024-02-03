@@ -13,13 +13,14 @@ import { deleteSlot } from "../../hook/Schedule/eventDelete.js";
 import loadingGIF from "@img/loading.gif";
 import {useTranslation, Trans} from "react-i18next";
 import frLocale from '@fullcalendar/core/locales/fr';
+import {getCoachEmail} from "../../hook/coach/getCoach.js";
+import {postEmail} from "../../hook/Mail/postEmail.js";
 
 
-function Schedule({ onButtonClick, ...otherProps }) {
+function Schedule({ onButtonClick, isCoach, ...otherProps }) {
 
     const{ t, i18n  } = useTranslation();
     const lang = i18n.language;
-
 
     //attente avant de charger les evenements
     const [loading, setLoading] = useState(true);
@@ -163,9 +164,17 @@ function Schedule({ onButtonClick, ...otherProps }) {
 
         navigate(route);
     };
+    const asyncDeleteSlot = async () => {
+        if(isCoach) {
+        }else {
+            const coachEmail = await getCoachEmail(idCoach);
+            await postEmail(emailClient, "Suppression  de cours", "Votre cours du " + formatReadableDate(dateStart).date + " de " + formatReadableDate(dateStart).time) + "avec le coach " + coachEmail.auth.email + " a ete supprimer";
+            await postEmail(coachEmail.auth.email, "Suppression  de cours", "Votre cours du " + formatReadableDate(dateStart).date + " de " + formatReadableDate(dateStart).time) + "avec le client " + emailClient + " a ete supprimer";
+        }
+    }
 
     const deleteSlotbyID = (e) => {
-
+        asyncDeleteSlot();
         deleteSlot(eventId);
         fetchData();
         closeModal();
@@ -182,8 +191,8 @@ function Schedule({ onButtonClick, ...otherProps }) {
 
             <FullCalendar
                 ref={calendarRef}
-                locale={lang === "fr" ? frLocale : "en"}
-                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
+                locale={lang === "fr" ? "fr" : "en"}
+                plugins={[timeGridPlugin, interactionPlugin, listPlugin]}
                 initialView={'timeGridWeek'}
                 slotDuration="01:00:00"
                 events={events}
@@ -207,10 +216,15 @@ function Schedule({ onButtonClick, ...otherProps }) {
                    annuler={"Annuler"}>
                 {modalContent}
             </PopUp>
-            <PopUp show={isModalOpenDetail} showButton={true} showButton1={true} onClose={() => closeModal()} button1={() => updateModal()} button2={() => deleteSlotbyID()}
+            <PopUp show={isModalOpenDetail && !isCoach} showButton={true} showButton1={true} onClose={() => closeModal()} button1={() => updateModal()} button2={() => deleteSlotbyID()}
                    nameButton1={t("Update")} nameButton2={t("Delete")} annuler={t("Cancel")}>
                 {modalContent}
             </PopUp>
+            <PopUp show={isModalOpenDetail && isCoach} showButton={true} showButton1={false} onClose={() => closeModal()} button2={() => deleteSlotbyID()}
+                    nameButton2={t("Delete")} annuler={t("Cancel")}>
+                {modalContent}
+            </PopUp>
+
             </div>
         </main>
     );
