@@ -3,35 +3,35 @@ name: Deployment
 on:
   push:
     branches:
-      - main
-      - dev
       - feature/deploy-app
-
-  pull_request:
-    branches:
-      - main
-      - dev
 
 jobs:
   build:
     runs-on: self-hosted
-
-    env:
-      working-directory: ./frontend
-
-    defaults:
-      run:
-        working-directory: ${{ env.working-directory }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd frontend
+          npm install
 
       - name: Build
-        run: npm run build --if-present
+        run: |
+          cd frontend
+          npm run build --if-present
+      
+      - name: Deploy frontend
+        run: |
+          rm -rf ~/lab/prod_front/*
+          cp -r frontend/dist/* ~/lab/prod_front
+      
+      - name: Deploy backend
+        run: |
+          rm -rf ~/lab/prod_back/src/*
+          cp -r backend/src/* ~/lab/prod_back/src
   
   notification:
     runs-on: ubuntu-latest
