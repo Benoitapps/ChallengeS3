@@ -34,7 +34,7 @@ function AddCompany() {
             } else if (!result.ok) {
                 setError('Une erreur est survenue');
             } else {
-                // navigate("/login");
+                navigate("/manager");
             }
         } catch (error) {
             setError('Une erreur est survenue');

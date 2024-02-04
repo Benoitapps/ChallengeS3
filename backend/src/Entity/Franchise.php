@@ -106,12 +106,12 @@ class Franchise
     
     #[ORM\Column]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['franchise:read'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
     private ?float $lat = null;
     
     #[ORM\Column]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['franchise:read'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
     private ?float $lng = null;
 
     public function __construct()
