@@ -10,15 +10,16 @@ function ClientPage() {
     const [client, setClient] = useState({});
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const getClient = async () => {
-            const clientResult = await getClientDetails(id);
+    const getClient = async () => {
+        const clientResult = await getClientDetails(id);
 
-            setClient(clientResult);
-            setLoading(false);
-        };
+        setClient(clientResult);
+        setLoading(false);
+    };
+
+    useEffect(() => {
         getClient();
-    }, []);
+    }, [id]);
 
     return (
         <main>
@@ -27,7 +28,7 @@ function ClientPage() {
                     ? <div className="loading">Chargement...</div>
                     :
                     <div className="container-client">
-                        <ClientProfile client={client}/>
+                        <ClientProfile client={client} getClient={getClient}/>
                         <div className="client-content">
                             <ClientContent client={client} id={id}/>
                         </div>

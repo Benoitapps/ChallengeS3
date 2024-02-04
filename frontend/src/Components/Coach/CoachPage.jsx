@@ -10,15 +10,16 @@ function CoachPage() {
     const [coach, setCoach] = useState({});
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const getCoach = async () => {
-            const coachResult = await getCoachDetails(id);
+    const getCoach = async () => {
+        const coachResult = await getCoachDetails(id);
 
-            setCoach(coachResult);
-            setLoading(false);
-        };
+        setCoach(coachResult);
+        setLoading(false);
+    };
+
+    useEffect(() => {
         getCoach();
-    }, []);
+    }, [id]);
 
     return (
         <main>
@@ -27,7 +28,7 @@ function CoachPage() {
                     ? <div className="loading">Chargement...</div>
                     :
                     <div className="container-coach">
-                        <CoachProfile coach={coach}/>
+                        <CoachProfile coach={coach} getCoach={getCoach}/>
                         <div className="coach-content">
                             <CoachContent coach={coach} id={id}/>
                         </div>

@@ -59,7 +59,7 @@ class Coach
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['schedule:read', 'schedule:write','slot:read', 'franchise:read','slot:history:read:collection', 'coach:read'])]
+    #[Groups(['schedule:read', 'schedule:write','slot:read', 'franchise:read','slot:history:read:collection', 'coach:read', 'user:read', 'client:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

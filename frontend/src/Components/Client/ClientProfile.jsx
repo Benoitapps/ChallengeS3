@@ -2,7 +2,7 @@ import '@css/Client.css';
 import ClientReview from "./ClientReview.jsx";
 import { useParams } from 'react-router-dom';
 
-function ClientProfile({client}) {
+function ClientProfile({client, getClient}) {
     const { id } = useParams();
 
     return (
@@ -21,7 +21,7 @@ function ClientProfile({client}) {
                         : <p>{client.rating}</p>
                 }
             </div>
-            <ClientReview client={client} id={id}/>
+            <ClientReview client={client} id={id} getClient={getClient}/>
         </div>
     )
 }

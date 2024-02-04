@@ -9,7 +9,7 @@ function ClientContent({id, client}) {
                 <h3>Ville:</h3>
                 <p>{client.city}</p>
                 <h3>Code postal:</h3>
-                <p>{client.zipCode}</p>
+                <p>{client.zip_code}</p>
             </div>
         </>
     )
