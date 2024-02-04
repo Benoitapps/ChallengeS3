@@ -4,7 +4,7 @@ import {updateReview} from "../../hook/client/updateReview.js";
 import {useState} from "react";
 import Alert from "../Alert.jsx";
 
-function ClientReview({client, id}) {
+function ClientReview({client, id, getClient}) {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const [note, setNote] = useState(0);
@@ -54,7 +54,7 @@ function ClientReview({client, id}) {
 
     async function verifyReviewIsExist(reviews, userId) {
         await reviews.forEach((review) => {
-            if (review.client.id === userId) {
+            if (review.coach.id === userId) {
                 isNoted = true;
                 idReview = review.id;
             }
@@ -107,7 +107,7 @@ function ClientReview({client, id}) {
         setTimeout(() => {
             setSuccess(false);
             setError(false);
-            window.location.reload();
+            getClient()
         }, 3000);
     }
 
