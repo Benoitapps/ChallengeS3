@@ -12,7 +12,7 @@ const transformData = (initialData,lang) => {
 
         return {
             id: item.id,
-            title: lang === "fr" ? "Indisponible" : "Unavailable",
+            title: lang === "fr"  ? "Indisponible" : "Unavailable",
             start: startDate,
             end: endDate,
             backgroundColor: item.prestation ? "#000000" : "#646464",

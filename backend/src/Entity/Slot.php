@@ -90,10 +90,6 @@ class Slot
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Prestation $prestation = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:write','coach:read:slots','slot:history:read:collection'])]
-    #[ORM\ManyToOne(inversedBy: 'slots')]
-    private ?TimeOff $time_off = null;
-
     #[Groups(['slot:read','slot:read:collection','slot:write','slot:history:read:collection'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Client $client = null;
@@ -101,6 +97,10 @@ class Slot
     #[Groups(['slot:read','slot:read:collection','slot:write','slot:history:read:collection'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Coach $coach = null;
+
+    #[Groups(['slot:read','slot:read:collection'])]
+    #[ORM\Column(type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
+    private ?bool $vacation = null;
 
     public function getId(): ?int
     {
@@ -144,18 +144,6 @@ class Slot
         return $this;
     }
 
-    public function getTimeOff(): ?TimeOff
-    {
-        return $this->time_off;
-    }
-
-    public function setTimeOff(?TimeOff $time_off): static
-    {
-        $this->time_off = $time_off;
-
-        return $this;
-    }
-
     public function getClient(): ?Client
     {
         return $this->client;
@@ -176,6 +164,18 @@ class Slot
     public function setCoach(?Coach $coach): static
     {
         $this->coach = $coach;
+
+        return $this;
+    }
+
+    public function isVacation(): ?bool
+    {
+        return $this->vacation;
+    }
+
+    public function setVacation(?bool $vacation): static
+    {
+        $this->vacation = $vacation;
 
         return $this;
     }

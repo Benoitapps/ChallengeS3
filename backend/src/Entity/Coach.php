@@ -94,11 +94,6 @@ class Coach
     #[ORM\ManyToMany(targetEntity: Prestation::class, mappedBy: 'coach')]
     private Collection $prestations;
 
-    #[Groups(['coach:read'])]
-    #[ORM\ManyToMany(targetEntity: TimeOff::class, mappedBy: 'coachs')]
-    private Collection $timeOffs;
-
-
     #[Groups(['coach:read','coach:read:slots','stat:reservation:read','stat:admin:read'])]
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Slot::class)]
     private Collection $slots;
@@ -285,32 +280,6 @@ class Coach
         return $this;
     }
 
-    /**
-     * @return Collection<int, TimeOff>
-     */
-    public function getTimeOffs(): Collection
-    {
-        return $this->timeOffs;
-    }
-
-    public function addTimeOff(TimeOff $timeOff): static
-    {
-        if (!$this->timeOffs->contains($timeOff)) {
-            $this->timeOffs->add($timeOff);
-            $timeOff->addCoach($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTimeOff(TimeOff $timeOff): static
-    {
-        if ($this->timeOffs->removeElement($timeOff)) {
-            $timeOff->removeCoach($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Slot>
