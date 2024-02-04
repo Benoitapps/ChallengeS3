@@ -15,6 +15,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
 
 #[ApiResource(
     operations: [
@@ -59,6 +61,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
+#[Vich\Uploadable]
 class Company
 {
     #[ORM\Id]
@@ -74,6 +77,9 @@ class Company
 //    #[Groups(['company:read:user-is-logged', 'company:write'])]
     #[Groups(['company:read', 'company:write', 'company:read:myCompany', 'company:admin:update'])]
     private ?string $description = null;
+
+    #[Vich\UploadableField(mapping: 'kbis', fileNameProperty: 'kbis')]
+    private $kbisFile;
 
     #[ORM\Column(type: Types::TEXT)]
 //    #[Groups(['company:read:user-is-logged', 'company:write'])]
@@ -128,16 +134,26 @@ class Company
         return $this;
     }
 
+    public function getKbisFile(): ?File
+    {
+        return $this->kbisFile;
+    }
+
+    public function setKbisFile(?File $kbisFile = null): void
+    {
+        $this->kbisFile = $kbisFile;
+    }
+
     public function getKbis(): ?string
     {
         return $this->kbis;
     }
 
-    public function setKbis(string $kbis): static
+    public function setKbis(?string $kbis): void
     {
         $this->kbis = $kbis;
 
-        return $this;
+        // return $this;
     }
 
     public function isIsVerified(): ?bool

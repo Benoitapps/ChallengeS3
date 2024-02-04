@@ -16,15 +16,10 @@ function AddCompany() {
             const result = await fetch(`${env.VITE_URL_BACK}/api/companies`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
-                body: JSON.stringify({
-                    name: data.get('name'),
-                    description: data.get('description'),
-                    kbis: data.get('kbis'),
-                    isVerified: false,
-                }),
+                body: data,
             });
             console.log(result);
             const body = await result.json();
@@ -56,7 +51,8 @@ function AddCompany() {
                         }
                         <input type="text" id="name" name="name" placeholder="Libellé" autoComplete="name" required></input>
                         <input type="text" id="description" name="description" placeholder="Description" autoComplete="description" required></input>
-                        <input type="text" id="kbis" name="kbis" placeholder="KBis" required></input>
+                        <label htmlFor="kbis">Upload KBIS :</label>
+                        <input type="file" id="kbis" name="kbis" accept=".pdf,image/*" required/>
                         <div className="login-signup__form__submit">
                             <input type="submit" value="Demander" disabled={loading}/>
                         </div>
