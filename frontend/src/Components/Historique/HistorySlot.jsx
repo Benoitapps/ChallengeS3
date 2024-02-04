@@ -22,11 +22,31 @@ function HistorySlot({ slot, isCoach }) {
                 <div className="lineSlot" >
                     <div className="partSlot" id="prestationSlot">{slot.prestation.name}</div>
 
-                    <div className="partSlot" id="clientFirstnameSlot"><Link to={`/client/${slot.client.id}`}>{slot.client.auth.firstname}</Link></div>
-                    <div className="partSlot" id="clientLastnameSlot"><Link to={`/client/${slot.client.id}`}>{slot.client.auth.lastname}</Link></div>
+                    <div className="partSlot" id="clientFirstnameSlot">
+                        {
+                            isCoach? <Link to={`/client/${slot.client.id}`}>{slot.client.auth.firstname}</Link>
+                            : slot.client.auth.firstname
+                        }
+                    </div>
+                    <div className="partSlot" id="clientLastnameSlot">
+                        {
+                            isCoach? <Link to={`/client/${slot.client.id}`}>{slot.client.auth.lastname}</Link>
+                            : slot.client.auth.lastname
+                        }
+                    </div>
 
-                    <div className="partSlot" id="coachFirstnameSlot">{slot.coach.auth.firstname}</div>
-                    <div className="partSlot" id="coachLastnameSlot">{slot.coach.auth.lastname}</div>
+                    <div className="partSlot" id="coachFirstnameSlot">
+                        {
+                            !isCoach? <Link to={`/coach/${slot.coach.id}`}>{slot.coach.auth.firstname}</Link>
+                            : slot.coach.auth.firstname
+                        }
+                    </div>
+                    <div className="partSlot" id="coachLastnameSlot">
+                        {
+                            !isCoach? <Link to={`/coach/${slot.coach.id}`}>{slot.coach.auth.lastname}</Link>
+                            : slot.coach.auth.lastname
+                        }
+                    </div>
 
                     <div>{dateStart}</div>
                     <div>{dateEnd}</div>
