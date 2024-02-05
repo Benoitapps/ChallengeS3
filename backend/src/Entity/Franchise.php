@@ -106,13 +106,17 @@ class Franchise
     
     #[ORM\Column]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['franchise:read'])]
+    #[Groups(['franchise:read','franchise:write'])]
     private ?float $lat = null;
     
     #[ORM\Column]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['franchise:read'])]
+    #[Groups(['franchise:read','franchise:write'])]
     private ?float $lng = null;
+
+    #[Groups(['franchise:read','franchise:write'])]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $image = null;
 
     public function __construct()
     {
@@ -277,6 +281,18 @@ class Franchise
     public function setLng(float $lng): static
     {
         $this->lng = $lng;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }

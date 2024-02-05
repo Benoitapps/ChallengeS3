@@ -17,9 +17,16 @@ function ClubItem({ club }) {
 
     let link = `/club/${club.id}`;
 
+    const getImage = () => {
+        if (club.image) {
+            return club.image;
+        }
+        return 'https://picsum.photos/300/300';
+    }
+
     return (
         <div style={{display: 'flex', borderRadius: '10px', background: '#c4ceeb', margin: '15px', boxShadow: '0px 0px 8px -3px rgba(0,0,0,0.26)'}}>
-            <img src="https://picsum.photos/300/300" alt="sport-image" style={{width: '50%', height: '100%', maxHeight: '200px', borderRadius: '10px 0 0 10px', objectFit: 'cover'}} />
+            <img src={getImage()} alt="sport-image" style={{width: '50%', height: '100%', maxHeight: '200px', borderRadius: '10px 0 0 10px', objectFit: 'cover'}} />
             <div style={{width: '50%', textAlign: 'left', display: 'flex', alignItems: 'stretch', flexDirection: 'column', justifyContent: 'space-between', padding: '10px'}}>
                 <div>
                     <div style={{fontSize: '19px', fontWeight: '600'}}>{club.name}</div>
