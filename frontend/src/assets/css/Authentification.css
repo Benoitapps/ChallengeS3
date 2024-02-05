@@ -4,6 +4,7 @@
   align-items: center;
   min-height: 100vh;
   margin: 0;
+  flex-direction: column;
 }
 
 .login-signup {
@@ -74,4 +75,9 @@
   padding: 6px 12px;
   justify-content: center;
   align-items: center;
+}
+
+.pdf{
+  height: 50em;
+  width: 50em;
 }
