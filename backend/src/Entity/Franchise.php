@@ -68,7 +68,7 @@ class Franchise
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['franchise:read'])]
+    #[Groups(['franchise:read', 'company:read:franchise'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]

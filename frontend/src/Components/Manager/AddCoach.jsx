@@ -1,29 +1,34 @@
 import React, {useState} from 'react';
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams, useLocation} from "react-router-dom";
 const env = import.meta.env;
 
-function AddCompany() {
+function AddCoach() {
     const navigate = useNavigate();
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const { franchiseId } = useParams();
+    const location = useLocation();
+    const franchiseName = location.state ? location.state.franchiseName : 'nom inconnu';
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e, userType) => {
         e.preventDefault();
         setLoading(true);
         const data = new FormData(e.target);
 
         try {
-            const result = await fetch(`${env.VITE_URL_BACK}/api/companies`, {
+            const result = await fetch(`${env.VITE_URL_BACK}/api/users`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
                 body: JSON.stringify({
-                    name: data.get('name'),
-                    description: data.get('description'),
-                    kbis: data.get('kbis'),
-                    isVerified: false,
+                    firstname: data.get('firstname'),
+                    lastname: data.get('lastname'),
+                    email: data.get('email'),
+                    plainPassword: data.get('password'),
+                    userType: 'coach',
+                    franchiseId: franchiseId,
                 }),
             });
             console.log(result);
@@ -48,17 +53,19 @@ function AddCompany() {
             <main className="authentification">
                 <div className="login-signup">
 
-                    <span>Demander l'ajout de votre entreprise :</span>
+                    <span>Ajouter un coach pour la franchise "{franchiseName}" :</span>
 
                     <form className="login-signup__form" onSubmit={handleSubmit}>
                         {
                             error && <p className="error">{error}</p>
                         }
-                        <input type="text" id="name" name="name" placeholder="Libellé" autoComplete="name" required></input>
-                        <input type="text" id="description" name="description" placeholder="Description" autoComplete="description" required></input>
-                        <input type="text" id="kbis" name="kbis" placeholder="KBis" required></input>
+                        <input type="text" id="firstname" name="firstname" placeholder="Prénom" autoComplete="lastname" required></input>
+                        <input type="text" id="lastname" name="lastname" placeholder="Nom" autoComplete="firstname" required></input>
+                        <input type="email" id="email" name="email" placeholder="Email" autoComplete="email" required></input>
+                        <input type="password" id="password" name="password" placeholder="Mot de passe" autoComplete="current-password" required></input>
+                        <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="Confirmation du mot de passe" autoComplete="confirm-password" required></input>
                         <div className="login-signup__form__submit">
-                            <input type="submit" value="Demander" disabled={loading}/>
+                            <input type="submit" value="Créer le compte" disabled={loading}/>
                         </div>
                     </form>
                 </div>
@@ -67,4 +74,4 @@ function AddCompany() {
     );
 }
 
-export default AddCompany;
+export default AddCoach;

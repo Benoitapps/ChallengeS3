@@ -33,6 +33,7 @@ import HomeManager from './Components/Manager/Home';
 import ManagerRoute from './ManagerRoute.jsx';
 import AddCompany from "./Components/Manager/AddCompany.jsx";
 import AddFranchise from "./Components/Manager/AddFranchise.jsx";
+import AddCoach from "./Components/Manager/AddCoach.jsx";
 
 // Special
 import Unauthorize from './Components/Unauthorize.jsx';
@@ -151,6 +152,7 @@ function App() {
                     <Route  index element={<ManagerRoute index component={Dashboard} isManager={isManager} />} />
                     <Route path="company" element={<ManagerRoute component={AddCompany} isManager={isManager}/>} />
                     <Route path="franchise" element={<ManagerRoute component={AddFranchise} isManager={isManager}/>} />
+                    <Route path="addCoach/:franchiseId" element={<ManagerRoute component={AddCoach} isManager={isManager}/>} />
                   </Route>
                 </Routes>
             )}

@@ -44,6 +44,17 @@ function Home() {
                                 <span style={{width: '20%'}}>
                                     {franchise.zipCode}
                                 </span>
+                                <span style={{width: '20%'}}>
+                                    {/* <Link to={`/manager/addCoach/${franchise.id}`}>
+                                        <button>Ajouter un coach</button>
+                                    </Link> */}
+                                    <Link to={{
+                                        pathname: `/manager/addCoach/${franchise.id}`,
+                                        state: { franchiseName: franchise.name }
+                                    }}>
+                                        <button>Ajouter un coach</button>
+                                    </Link>
+                                </span>
                             </div>
                         ))}
                     </div>
