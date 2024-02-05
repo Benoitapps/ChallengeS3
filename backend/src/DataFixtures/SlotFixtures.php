@@ -28,6 +28,7 @@ class SlotFixtures extends Fixture implements DependentFixtureInterface
         $coach1 = $manager->getRepository(Coach::class)->findOneBy(['biography' => "Biography1"]);
         $coach2 = $manager->getRepository(Coach::class)->findOneBy(['biography' => "Biography2"]);
 
+
         $object = (new Slot())
             ->setPrestation($prestation1)
             ->setClient($client1)
@@ -54,6 +55,7 @@ class SlotFixtures extends Fixture implements DependentFixtureInterface
             CoachFixtures::class,
             ClientFixtures::class,
             PrestationFixtures::class,
+
         ];
     }
 }

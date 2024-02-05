@@ -25,6 +25,7 @@ export default function TaskList({isCoach}) {
         setSlot(result['hydra:member']);
         setTotalItems(result['hydra:totalItems']);
         setLoading(false);
+        console.log(result['hydra:member'])
 
     };
 

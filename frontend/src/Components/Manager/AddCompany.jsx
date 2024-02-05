@@ -1,11 +1,64 @@
 import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
+import {Viewer, Worker} from '@react-pdf-viewer/core';
+import {defaultLayoutPlugin} from '@react-pdf-viewer/default-layout';
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+import GetPdf from "./../GetPdf.jsx";
 const env = import.meta.env;
 
 function AddCompany() {
     const navigate = useNavigate();
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [baseFile, setBaseFile] = useState("");
+    const [pdfFile, setPdfFile] = useState(null);
+    const [viewPdf, setViewPdf] = useState(false);
+
+    const fileType = ['application/pdf'];
+    const handleChange = async (e) => {
+
+        const selectedFile = e.target.files[0];
+        console.log("selectedFile",selectedFile)
+        if(selectedFile){
+            if(selectedFile && fileType.includes(selectedFile.type)) {
+                let reader = new FileReader();
+                console.log("reader",reader)
+                reader.readAsDataURL(selectedFile);
+                reader.onloadend = (e) => {
+                    setPdfFile(reader.result);
+                    setViewPdf(true)
+                }
+            }else{
+                setPdfFile(null);
+                alert('Please select a pdf file');
+            }
+        }
+        else{
+            console.log('select your file');
+        }
+    }
+
+    // const convertBase64 = (file) => {
+    //     return new Promise((resolve, reject) => {
+    //         const fileReader = new FileReader();
+    //         fileReader.readAsDataURL(file);
+    //         fileReader.onload = () => {
+    //             resolve(fileReader.result);
+    //             console.log("fileReader.result",fileReader.result)
+    //         };
+    //         fileReader.onerror = (error) => {
+    //             reject(error);
+    //         };
+    //     });
+    // }
+
+    // const decodeBase64 = (base64) => {
+    //     return atob(base64);
+    // }
+    //
+    // const test = decodeBase64(baseFile);
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,7 +75,7 @@ function AddCompany() {
                 body: JSON.stringify({
                     name: data.get('name'),
                     description: data.get('description'),
-                    kbis: data.get('kbis'),
+                    kbis: pdfFile,
                     isVerified: false,
                 }),
             });
@@ -43,6 +96,8 @@ function AddCompany() {
         }
     };
 
+    const newplugin = defaultLayoutPlugin();
+
     return (
         <div>
             <main className="authentification">
@@ -56,12 +111,14 @@ function AddCompany() {
                         }
                         <input type="text" id="name" name="name" placeholder="Libellé" autoComplete="name" required></input>
                         <input type="text" id="description" name="description" placeholder="Description" autoComplete="description" required></input>
-                        <input type="text" id="kbis" name="kbis" placeholder="KBis" required></input>
+                        <input type="file" id="kbis" name="kbis" placeholder="KBis" required onChange={(e)=>handleChange(e)}></input>
                         <div className="login-signup__form__submit">
                             <input type="submit" value="Demander" disabled={loading}/>
                         </div>
                     </form>
                 </div>
+
+                <GetPdf file={pdfFile} viewPdf ={viewPdf} />
             </main>
         </div>
     );

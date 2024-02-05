@@ -20,7 +20,7 @@ function HistorySlot({ slot, isCoach }) {
     return (
             <div className="allSlot">
                 <div className="lineSlot" >
-                    <div className="partSlot" id="prestationSlot">{slot.prestation.name}</div>
+                    <div className="partSlot" id="prestationSlot">{slot.prestation?.name}</div>
 
                     <div className="partSlot" id="clientFirstnameSlot">
                         {
