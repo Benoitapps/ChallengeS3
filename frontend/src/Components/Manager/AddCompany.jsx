@@ -19,11 +19,9 @@ function AddCompany() {
     const handleChange = async (e) => {
 
         const selectedFile = e.target.files[0];
-        console.log("selectedFile",selectedFile)
         if(selectedFile){
             if(selectedFile && fileType.includes(selectedFile.type)) {
                 let reader = new FileReader();
-                console.log("reader",reader)
                 reader.readAsDataURL(selectedFile);
                 reader.onloadend = (e) => {
                     setPdfFile(reader.result);
@@ -79,9 +77,7 @@ function AddCompany() {
                     isVerified: false,
                 }),
             });
-            console.log(result);
             const body = await result.json();
-            console.log(body);
             if (result.status === 422) {
                 setError(body.violations[0].message + ' ' + body.violations[0].propertyPath);
             } else if (!result.ok) {
