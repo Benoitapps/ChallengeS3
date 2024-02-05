@@ -8,10 +8,6 @@ import {
     Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import {getCoachNotes} from "../../../hook/Stats/getStatAllCoachNote.js"
-import {statCoachNote} from "../../../services/StatServices/statNoteCoach.js"
-import {forEach} from "lodash";
-
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
