@@ -3,7 +3,6 @@
 namespace App\Tests\Unit;
 use App\Entity\Slot;
 use App\Entity\Prestation;
-use App\Entity\TimeOff;
 use App\Entity\Client;
 use App\Entity\Coach;
 use Doctrine\DBAL\Types\Types;
@@ -37,16 +36,6 @@ class SlotTest extends TestCase
         $slot->setPrestation($prestation);
 
         $this->assertSame($prestation, $slot->getPrestation());
-    }
-
-    public function testSetAndGetDataTimeOff()
-    {
-        $slot = new Slot();
-        $timeOff = new TimeOff();
-
-        $slot->setTimeOff($timeOff);
-
-        $this->assertSame($timeOff, $slot->getTimeOff());
     }
 
     public function testSetAndGetClient()
