@@ -1,7 +1,9 @@
 import { addDays,addMinutes, parseISO,isSameDay } from 'date-fns';
 import { getScheduleCoach } from "../hook/ScheduleReservation/scheduleCoach.js";
 
-const transformData = (initialData, date1 , date2) => {
+const transformData = (initialData, date1 , date2, lang) => {
+
+
 
     let tab = [];
     for (let i = 0; i < initialData.schedules.length; i++) {
@@ -12,7 +14,7 @@ const transformData = (initialData, date1 , date2) => {
     tab.sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
 
 
-    const datenv = new Date(date1);
+    let datenv = new Date(date1);
     let filtredate1 = addMinutes(datenv,1);
     let filtredate2 = addDays(filtredate1,1);
     let filtredate3 = addDays(filtredate1,2);
@@ -113,9 +115,8 @@ const transformData = (initialData, date1 , date2) => {
 };
 
 
-export const sheduleCoach = async (id, date1, date2) => {
+export const sheduleCoach = async (id, date1, date2,lang) => {
     const initialData = await getScheduleCoach(id);
-
-    const transformedData = transformData(initialData,  date1 ,date2);
+    const transformedData = transformData(initialData,  date1 ,date2,lang);
     return transformedData;
 };

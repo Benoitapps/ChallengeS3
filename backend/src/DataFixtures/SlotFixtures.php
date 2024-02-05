@@ -9,7 +9,6 @@ use App\Entity\Manager;
 use App\Entity\Prestation;
 use App\Entity\Schedule;
 use App\Entity\Slot;
-use App\Entity\TimeOff;
 use App\Entity\User;
 use Container0Ff2dKE\SimpleLoaderGhostB8c01d0;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -29,23 +28,21 @@ class SlotFixtures extends Fixture implements DependentFixtureInterface
         $coach1 = $manager->getRepository(Coach::class)->findOneBy(['biography' => "Biography1"]);
         $coach2 = $manager->getRepository(Coach::class)->findOneBy(['biography' => "Biography2"]);
 
-
-        $timeoff1 = $manager->getRepository(TimeOff::class)->findOneBy(['name' => "Vacances1"]);
-
         $object = (new Slot())
             ->setPrestation($prestation1)
             ->setClient($client1)
             ->setStartDate((new \DateTime('now'))->modify('+3 hours'))
             ->setEndDate((new \DateTime('now'))->modify('+4 hours'))
-            ->setCoach($coach1);
+            ->setCoach($coach1)
+            ->setVacation(false);
 
         $manager->persist($object);
 
         $object = (new Slot())
-            ->setTimeOff($timeoff1)
             ->setStartDate((new \DateTime('now'))->modify('+7 hours'))
             ->setEndDate((new \DateTime('now'))->modify('+8 hours'))
-            ->setCoach($coach2);
+            ->setCoach($coach2)
+            ->setVacation(false);
 
         $manager->persist($object);
 
@@ -57,8 +54,6 @@ class SlotFixtures extends Fixture implements DependentFixtureInterface
             CoachFixtures::class,
             ClientFixtures::class,
             PrestationFixtures::class,
-            TimeoffFixtures::class
-
         ];
     }
 }

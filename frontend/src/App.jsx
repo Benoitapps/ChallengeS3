@@ -16,6 +16,7 @@ import ClubsPage from './Components/ClubsPage.jsx';
 import ClubDetails from './Components/Club/ClubDetails.jsx';
 import HistoryPage from "./Components/Historique/HistoryPage.jsx";
 import CoachPage from './Components/Coach/CoachPage.jsx';
+import ClientPage from "./Components/Client/ClientPage.jsx";
 import Dashboard from './Components/DashBoard/DashboardPage.jsx';
 
 // Admin
@@ -106,18 +107,19 @@ function App() {
           <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} isManager={isManager} isCoach={isCoach}/>}>
             {/* Route for user not connected */}
             <Route index element={<ClubsPage/>} />
-            <Route path="club/:id" element={<ClubDetails/>} />
+            <Route path="club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected}/>} />
             <Route path="coach/:id" element={<CoachPage/>} />
+            <Route path="client/:id" element={<ClientPage/>} />
 
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login handleConnect={handleConnect} />} />
 
             {/* Route for user connected */}
-            <Route path="schedule" element={ <UserRoute component={Schedule} onButtonClick={setEventDetail} isConnected={isConnected}/> } />
+            <Route path="schedule" element={ <UserRoute component={Schedule} onButtonClick={setEventDetail} isConnected={isConnected} isCoach={isCoach}/> } />
             <Route path="profile" element={ <UserRoute component={Profile} isConnected={isConnected}/> } />
             <Route path="prestation/:prestationId/coach/:coachId/update" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={true} isConnected={isConnected}/> }  />
             <Route path="prestation/:prestationId/coach/:coachId/add" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={false} isConnected={isConnected}/>} />
-            <Route path="history" element={<UserRoute component={HistoryPage}isConnected={isConnected}/>} />
+            <Route path="history" element={<UserRoute component={HistoryPage}isConnected={isConnected} isCoach={isCoach}/>} />
 
 
             {/* Route doesn't exist */}

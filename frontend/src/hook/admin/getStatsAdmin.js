@@ -1,6 +1,8 @@
+const env = import.meta.env;
+
 const getStatsAdmin = async () => {
     try {
-        const result = await fetch("http://localhost:8888/api/admin/stats/all", {
+        const result = await fetch(`${env.VITE_URL_BACK}/api/admin/stats/all`, {
             method: "GET",
             headers: {
                 Accept: "application/json",

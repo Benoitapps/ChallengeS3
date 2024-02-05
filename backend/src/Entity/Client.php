@@ -10,9 +10,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\GetCollection;
 
 #[ApiResource(
-
+    operations: [
+        new GetCollection(
+            normalizationContext: ['groups' => ['client:read:collection']],
+            security: "is_granted('ROLE_ADMIN')",
+        ),
+        new Get(
+            normalizationContext: ['groups' => ['client:read']],
+            security: "is_granted('ROLE_COACH')"
+        ),
+    ],
 )]
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
@@ -20,27 +30,31 @@ class Client
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[Groups(['slot:read','client:read','user:read','coach:read'])]
+    #[Groups(['slot:read','user:read','coach:read','slot:history:read:collection', 'client:read:collection'])]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['client:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $address = null;
 
+    #[Groups(['client:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;
 
+    #[Groups(['client:read'])]
     #[ORM\Column(length: 5, nullable: true)]
     private ?string $zip_code = null;
 
-    #[Groups(['slot:read','coach:read','slot:history:read:collection'])]
+    #[Groups(['slot:read','coach:read', 'client:read', 'slot:history:read:collection'])]
     #[ORM\OneToOne(inversedBy: 'client', cascade: ['persist', 'remove'])]
     private ?User $auth = null;
 
+    #[Groups(['client:read'])]
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: ReviewClient::class)]
     private Collection $reviewClients;
 
-    #[Groups(['coach:read'])]
+    #[Groups(['coach:read', 'client:read'])]
     private ?float $rating = null;
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: ReviewCoach::class)]
