@@ -44,7 +44,7 @@
   height: 100%;
 }
 
-.user-content__head__name {
+.user-content__head input {
   width: 100%;
   min-height: 50px;
 }
