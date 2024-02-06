@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,8 +19,10 @@ use ApiPlatform\Metadata\GetCollection;
             security: "is_granted('ROLE_ADMIN')",
         ),
         new Get(
-            normalizationContext: ['groups' => ['client:read']],
-            security: "is_granted('ROLE_COACH')"
+            normalizationContext: ['groups' => ['client:read']]
+        ),
+        new Patch(
+            denormalizationContext: ['groups' => ['client:write']]
         ),
     ],
 )]
@@ -30,23 +32,23 @@ class Client
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[Groups(['slot:read','user:read','coach:read','slot:history:read:collection', 'client:read:collection'])]
+    #[Groups(['slot:read','user:read','client:read', 'coach:read','slot:history:read:collection', 'client:read:collection'])]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['client:read'])]
+    #[Groups(['client:read', 'client:write'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $address = null;
 
-    #[Groups(['client:read'])]
+    #[Groups(['client:read', 'client:write'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;
 
-    #[Groups(['client:read'])]
+    #[Groups(['client:read', 'client:write'])]
     #[ORM\Column(length: 5, nullable: true)]
     private ?string $zip_code = null;
 
-    #[Groups(['slot:read','coach:read', 'client:read', 'slot:history:read:collection'])]
+    #[Groups(['slot:read','coach:read', 'client:write', 'client:read', 'slot:history:read:collection'])]
     #[ORM\OneToOne(inversedBy: 'client', cascade: ['persist', 'remove'])]
     private ?User $auth = null;
 

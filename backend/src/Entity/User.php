@@ -122,11 +122,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
     
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:write','slot:read','coach:read', 'coach:write', 'client:read', 'user:admin:write', 'user:admin:update', 'prestation:read', 'company:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read', 'user:admin:read', 'manager:admin:read'])]
+    #[Groups(['user:read', 'user:write','slot:read','coach:read', 'coach:write', 'client:read', 'user:admin:write', 'user:admin:update', 'prestation:read', 'company:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read', 'user:admin:read', 'manager:admin:read', 'client:write'])]
     private ?string $firstname = null;
     
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update', 'prestation:read', 'company:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read', 'user:admin:read', 'manager:admin:read', 'client:read', 'coach:read', 'coach:write'])]
+    #[Groups(['user:read', 'user:write', 'user:admin:write', 'user:admin:update', 'prestation:read', 'company:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read', 'user:admin:read', 'manager:admin:read', 'client:read', 'coach:read', 'coach:write', 'client:write'])]
     private ?string $lastname = null;
     
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
