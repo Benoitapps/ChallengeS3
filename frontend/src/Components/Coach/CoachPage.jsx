@@ -35,12 +35,6 @@ function CoachPage({ isConnected }) {
                         </div>
                     </div>
             }
-            {
-                success && <Alert isVisible={true} type="success" text="Votre avis a bien été pris en compte"/>
-            }
-            {
-                error && <Alert isVisible={true} type="error" text="Une erreur est survenue"/>
-            }
         </main>
     );
 }
