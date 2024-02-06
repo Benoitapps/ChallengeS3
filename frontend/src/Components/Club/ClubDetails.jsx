@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { getClubDetails } from '../../hook/clubs/getClub';
 import '@css/Clubs.css';
 
-function ClubDetails({isCoach,isManager,isConnected}) {
+function ClubDetails({isCoach,isManager,isConnected,isAdmin}) {
 
     const { id } = useParams();
     const [club, setClub] = useState({});
@@ -51,7 +51,7 @@ function ClubDetails({isCoach,isManager,isConnected}) {
                                                                         <Link to={"/coach/" + coach.id} className="view-coach-button">
                                                                             Voir coach
                                                                         </Link>
-                                                                        {isConnected&&!isManager&&!isCoach?<Link to={"/prestation/" + prestation.id + "/coach/" + coach.id + "/add"} className="view-coach-button">
+                                                                        {isConnected&&!isManager&&!isCoach&&!isAdmin?<Link to={"/prestation/" + prestation.id + "/coach/" + coach.id + "/add"} className="view-coach-button">
                                                                             Réserver un créneau
                                                                         </Link>:null}
                                                                     </div>

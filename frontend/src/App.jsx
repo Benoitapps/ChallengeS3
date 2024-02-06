@@ -107,7 +107,7 @@ function App() {
           <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} isManager={isManager} isCoach={isCoach}/>}>
             {/* Route for user not connected */}
             <Route index element={<ClubsPage/>} />
-            <Route path="club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected}/>} />
+            <Route path="club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected} isAdmin={isAdmin}/>} />
             <Route path="coach/:id" element={<CoachPage isConnected={isConnected}/> } />
             <Route path="client/:id" element={<ClientPage/>} />
 
