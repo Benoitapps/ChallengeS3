@@ -4,8 +4,9 @@ import { getCoachDetails } from "../../hook/coach/getCoach.js";
 import CoachProfile from "./CoachProfile";
 import CoachContent from "./CoachContent";
 import '@css/Coach.css';
+import Alert from "../Alert.jsx";
 
-function CoachPage() {
+function CoachPage({ isConnected }) {
     const { id } = useParams();
     const [coach, setCoach] = useState({});
     const [loading, setLoading] = useState(true);
@@ -28,11 +29,17 @@ function CoachPage() {
                     ? <div className="loading">Chargement...</div>
                     :
                     <div className="container-coach">
-                        <CoachProfile coach={coach} getCoach={getCoach}/>
+                        <CoachProfile coach={coach} getCoach={getCoach} isConnected={isConnected}/>
                         <div className="coach-content">
                             <CoachContent coach={coach} id={id}/>
                         </div>
                     </div>
+            }
+            {
+                success && <Alert isVisible={true} type="success" text="Votre avis a bien été pris en compte"/>
+            }
+            {
+                error && <Alert isVisible={true} type="error" text="Une erreur est survenue"/>
             }
         </main>
     );

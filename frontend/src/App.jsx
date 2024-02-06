@@ -11,7 +11,7 @@ import Login from './Components/Authentication/Login';
 import SignUp from './Components/Authentication/SignUp';
 import Schedule from './Components/Calendar/Schedule.jsx';
 import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
-import Profile from './Components/Profile.jsx';
+import Profile from './Components/Profile/Profile.jsx';
 import ClubsPage from './Components/ClubsPage.jsx';
 import ClubDetails from './Components/Club/ClubDetails.jsx';
 import HistoryPage from "./Components/Historique/HistoryPage.jsx";
@@ -108,7 +108,7 @@ function App() {
             {/* Route for user not connected */}
             <Route index element={<ClubsPage/>} />
             <Route path="club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected}/>} />
-            <Route path="coach/:id" element={<CoachPage/>} />
+            <Route path="coach/:id" element={<CoachPage isConnected={isConnected}/> } />
             <Route path="client/:id" element={<ClientPage/>} />
 
             <Route path="signup" element={<SignUp />} />
@@ -116,7 +116,7 @@ function App() {
 
             {/* Route for user connected */}
             <Route path="schedule" element={ <UserRoute component={Schedule} onButtonClick={setEventDetail} isConnected={isConnected} isCoach={isCoach}/> } />
-            <Route path="profile" element={ <UserRoute component={Profile} isConnected={isConnected}/> } />
+            <Route path="profile" element={ <UserRoute component={Profile} isConnected={isConnected} isCoach={isCoach} isManager={isManager}/> } />
             <Route path="prestation/:prestationId/coach/:coachId/update" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={true} isConnected={isConnected}/> }  />
             <Route path="prestation/:prestationId/coach/:coachId/add" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={false} isConnected={isConnected}/>} />
             <Route path="history" element={<UserRoute component={HistoryPage}isConnected={isConnected} isCoach={isCoach}/>} />

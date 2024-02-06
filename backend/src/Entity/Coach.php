@@ -28,6 +28,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ),
         new Patch(
             denormalizationContext: ['groups' => ['coach:write']],
+            security: "is_granted('ROLE_COACH') or is_granted('ROLE_ADMIN')",
         ),
 
         new Get(
@@ -66,7 +67,7 @@ class Coach
     #[Groups(['coach:read', 'coach:write'])]
     private ?string $biography = null;
 
-    #[Groups(['slot:read', 'coach:read', 'prestation:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read','coach:read:email'])]
+    #[Groups(['slot:read', 'coach:read', 'coach:write', 'prestation:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read','coach:read:email'])]
     #[ORM\OneToOne(inversedBy: 'coach', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $auth = null;

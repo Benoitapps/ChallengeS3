@@ -2,7 +2,7 @@ import '@css/Coach.css';
 import CoachReview from "./CoachReview.jsx";
 import { useParams } from 'react-router-dom';
 
-function CoachProfile({coach, getCoach}) {
+function CoachProfile({coach, getCoach, isConnected}) {
     const { id } = useParams();
 
     return (
@@ -21,7 +21,10 @@ function CoachProfile({coach, getCoach}) {
                         : <p>{coach.rating}</p>
                 }
             </div>
-            <CoachReview coach={coach} id={id} getCoach={getCoach}/>
+            {
+                isConnected ? <CoachReview coach={coach} id={id} getCoach={getCoach}/>
+                    : null
+            }
         </div>
     )
 }
