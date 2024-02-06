@@ -25,6 +25,25 @@ const transformData = (initialData) => {
     return tab3;
 };
 
+// console.log(initialData.company)
+// initialData.company.forEach(function (item) {
+//     tab.push(item);
+// });
+// tab[0].forEach(function (item) {
+//     if (item.prestations?.length > 0) {
+//         tab2.push(item);
+//     }
+// });
+// tab2.forEach(function (items) {
+//     items.prestations.forEach(function (item) {
+//         if (item.slots.length > 0) {
+//             tab3.push([{name: items.name}, {price: item.slots?.length * item.price}]);
+//         }
+//     });
+// });
+// return tab3;
+// };
+
 
 const statFranchisePrice = async () => {
     const manager = await idManager();
