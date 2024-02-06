@@ -10,7 +10,7 @@ function PrestaManagerItem({ club,reload }) {
     const [error, setError] = useState(null);
 
 
-    // let link = `/club/${club.id}`;
+     let link = `/home/club/:id/${club.id}`;
 
     const getImage = () => {
         if (club.image) {
@@ -52,9 +52,9 @@ function PrestaManagerItem({ club,reload }) {
                 </div>
                     <button style={{ backgroundColor: 'green' }} onClick={() =>handleClick(club)}>Modifier</button>
 
-                    {/*<Link to={link}>*/}
-                    {/*    <button>Voir Franchise</button>*/}
-                    {/*</Link>*/}
+                    <Link to={`club/${club.id}`}>
+                        <button>Voir Franchise</button>
+                    </Link>
             </div>
             <PopUp show={isModalOpenDetail}  onClose={() => closeModal()}
                    annuler={"Cancel"}>

@@ -107,7 +107,7 @@ function App() {
           <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} isManager={isManager} isCoach={isCoach}/>}>
             {/* Route for user not connected */}
             <Route index element={<ClubsPage/>} />
-            <Route path="club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected} isAdmin={isAdmin}/>} />
+            <Route path="club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected} isAdmin={isAdmin} update={false}/>} />
             <Route path="coach/:id" element={<CoachPage isConnected={isConnected}/> } />
             <Route path="client/:id" element={<ClientPage/>} />
 
@@ -151,6 +151,8 @@ function App() {
                     <Route  index element={<ManagerRoute index component={Dashboard} isManager={isManager} />} />
                     <Route path="company" element={<ManagerRoute component={AddCompany} isManager={isManager}/>} />
                     <Route path="franchise" element={<ManagerRoute component={AddFranchise} isManager={isManager}/>} />
+                    <Route path="home/club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected} isAdmin={isAdmin} update={true}/>} />
+
                   </Route>
                 </Routes>
             )}
