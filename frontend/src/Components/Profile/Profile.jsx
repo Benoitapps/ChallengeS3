@@ -2,8 +2,10 @@ import {useState, useEffect} from "react";
 import {getUserId} from "../User/DecodeUser.jsx";
 import {getCoachDetails} from "../../hook/coach/getCoach.js";
 import {getClientDetails} from "../../hook/client/getClient.js";
+import {getManagerDetails} from "../../hook/manager/getManager.js";
 import {updateCoachProfile} from "../../hook/coach/updateCoachProfile.js";
 import {updateClientProfile} from "../../hook/client/updateClientProfile.js";
+import {updateManagerProfile} from "../../hook/manager/updateManagerProfile.js";
 import ProfileCard from "./ProfileCard.jsx";
 import ProfileContent from "./ProfileContent.jsx";
 import '@css/Profile.css';
@@ -36,7 +38,22 @@ export default function Profile({isManager, isCoach}) {
               setError(true);
               removeAlertOnError();
           }
-      } else {
+      } else if(isManager) {
+          setIsLoading(true);
+          const result = await updateManagerProfile(user.id, userProfile);
+          setIsLoading(false);
+
+          if (result.status === 200) {
+              setSuccess(true);
+              setError(false);
+              removeAlertOnSuccess();
+          } else {
+              setSuccess(false);
+              setError(true);
+              removeAlertOnError();
+          }
+      }
+      else {
             setIsLoading(true);
             const result = await updateClientProfile(user.id, userProfile);
             setIsLoading(false);
@@ -74,6 +91,9 @@ export default function Profile({isManager, isCoach}) {
           if(isCoach) {
              setUser(await getCoachDetails(userId));
              setLoading(false);
+          } else if(isManager) {
+            setUser(await getManagerDetails(userId));
+            setLoading(false);
           } else {
               setUser(await getClientDetails(userId));
               setLoading(false);
