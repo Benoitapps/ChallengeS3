@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import {useNavigate} from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 const env = import.meta.env;
 
-function AddCompany() {
+function AddCompany({ companyStatus, setCompanyStatus }) {
     const navigate = useNavigate();
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -34,7 +34,8 @@ function AddCompany() {
             } else if (!result.ok) {
                 setError('Une erreur est survenue');
             } else {
-                navigate("/manager");
+                setCompanyStatus('pending');
+                // navigate("/manager");
             }
         } catch (error) {
             setError('Une erreur est survenue');
@@ -43,27 +44,56 @@ function AddCompany() {
         }
     };
 
+    // return (
+    //     <div>
+    //         <main className="authentification">
+    //             <div className="login-signup">
+
+    //                 <span>Demander l'ajout de votre entreprise :</span>
+
+    //                 <form className="login-signup__form" onSubmit={handleSubmit}>
+    //                     {
+    //                         error && <p className="error">{error}</p>
+    //                     }
+    //                     <input type="text" id="name" name="name" placeholder="Libellé" autoComplete="name" required></input>
+    //                     <input type="text" id="description" name="description" placeholder="Description" autoComplete="description" required></input>
+    //                     <input type="text" id="kbis" name="kbis" placeholder="KBis" required></input>
+    //                     <div className="login-signup__form__submit">
+    //                         <input type="submit" value="Demander" disabled={loading}/>
+    //                     </div>
+    //                 </form>
+    //             </div>
+    //         </main>
+    //     </div>
+    // );
     return (
-        <div>
-            <main className="authentification">
-                <div className="login-signup">
+            <div>
+                <main className="authentification">
+                    <div className="login-signup">
 
-                    <span>Demander l'ajout de votre entreprise :</span>
-
-                    <form className="login-signup__form" onSubmit={handleSubmit}>
-                        {
-                            error && <p className="error">{error}</p>
-                        }
-                        <input type="text" id="name" name="name" placeholder="Libellé" autoComplete="name" required></input>
-                        <input type="text" id="description" name="description" placeholder="Description" autoComplete="description" required></input>
-                        <input type="text" id="kbis" name="kbis" placeholder="KBis" required></input>
-                        <div className="login-signup__form__submit">
-                            <input type="submit" value="Demander" disabled={loading}/>
-                        </div>
-                    </form>
-                </div>
-            </main>
-        </div>
+                    {companyStatus === 'none' && (
+                        <>
+                        <span>Demander l'ajout de votre entreprise :</span>
+                        <form className="login-signup__form" onSubmit={handleSubmit}>
+                            {error && <p className="error">{error}</p>}
+                            <input type="text" id="name" name="name" placeholder="Libellé" autoComplete="name" required></input>
+                            <input type="text" id="description" name="description" placeholder="Description" autoComplete="description" required></input>
+                            <input type="text" id="kbis" name="kbis" placeholder="KBis" required></input>
+                            <div className="login-signup__form__submit">
+                                <input type="submit" value="Demander" disabled={loading} />
+                            </div>
+                        </form>
+                        </>
+                    )}
+                    {companyStatus === 'pending' && (
+                        <p>Votre demande a bien été prise en compte et sera traitée dans les meilleurs délais.</p>
+                    )}
+                    {companyStatus === 'accepted' && (
+                        <p>Votre demande a déjà été approuvée.</p>
+                    )}
+                    </div>
+                </main>
+            </div>
     );
 }
 

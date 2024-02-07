@@ -30,7 +30,11 @@ class UserController extends AbstractController
         $user->setFirstName($userData['firstname']);
         $user->setLastName($userData['lastname']);
 
-        $franchise = $franchiseRepository->find($userData['franchiseId']);
+        if (isset($userData['franchiseId'])) {
+            $franchise = $franchiseRepository->find($userData['franchiseId']);
+        }
+
+//        $franchise = $franchiseRepository->find($userData['franchiseId']);
 
         $userType = $userData['userType'];
 

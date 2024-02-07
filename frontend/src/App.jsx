@@ -54,7 +54,6 @@ function App() {
   const userIsManager = () => {
     const token = localStorage.getItem('token');
     if (token !== null) {
-      console.log('console log du futuuuuur', accountService.getValuesToken().roles.includes('ROLE_MANAGER'));
       if (accountService.getValuesToken().roles.includes('ROLE_MANAGER') === true)
         checkCompany();
       return accountService.getValuesToken()
@@ -108,7 +107,6 @@ function App() {
   const [isCoach, setisCoach] = useState(userIsCoach()|| false);
   const [eventDetail, setEventDetail] = useState(null);
   const [companyStatus, setCompanyStatus] = useState('none');
-  const [testState, setTestState] = useState('none');
 
 
   const handleDisconnect = () => {
@@ -185,11 +183,11 @@ function App() {
             element={(
                 <Routes>
                   <Route path="/" element={<NavBarManager isConnected={isConnected} handleDisconnect={handleDisconnect} isManager={isManager} companyStatus={companyStatus} />}>
-                    <Route path="home" element={<ManagerRoute component={HomeManager} isManager={isManager} companyStatus={companyStatus} testState={testState} />} />
+                    <Route path="home" element={<ManagerRoute component={HomeManager} isManager={isManager} companyStatus={companyStatus} />} />
                     <Route index element={<ManagerRoute index component={Dashboard} isManager={isManager} companyStatus={companyStatus} />} />
-                    <Route path="company" element={<ManagerRoute component={AddCompany} isManager={isManager}/>} />
-                    <Route path="franchise" element={<ManagerRoute component={AddFranchise} isManager={isManager}/>} />
-                    <Route path="addCoach/:franchiseId" element={<ManagerRoute component={AddCoach} isManager={isManager}/>} />
+                    <Route path="company" element={<ManagerRoute component={AddCompany} isManager={isManager} companyStatus={companyStatus} setCompanyStatus={setCompanyStatus} />} />
+                    <Route path="franchise" element={<ManagerRoute component={AddFranchise} isManager={isManager} companyStatus={companyStatus} />} />
+                    <Route path="addCoach/:franchiseId" element={<ManagerRoute component={AddCoach} isManager={isManager} companyStatus={companyStatus} />} />
                   </Route>
                 </Routes>
             )}
