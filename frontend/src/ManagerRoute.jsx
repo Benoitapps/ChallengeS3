@@ -9,8 +9,11 @@ function ManagerRoute({ component: Component, isManager, ...props}) {
   console.log('location', location.pathname);
   console.log('companyStatus', props.companyStatus);
 
+
   if (location.pathname !== '/manager/company' && (props.companyStatus === 'none' || props.companyStatus === 'pending')) {
     return <Navigate to="/manager/company" />;
+  } else if (location.pathname === '/manager/company' && props.companyStatus === 'accepted') {
+    return <Navigate to="/manager" />;
   }
   return (
     <>
