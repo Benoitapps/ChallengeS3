@@ -2,9 +2,12 @@ import React from 'react';
 import { Outlet, Link, Navigate } from "react-router-dom";
 import '@css/NavBar.css';
 import logo from "@img/logo.svg";
+import {useTranslation} from "react-i18next";
 
 
-function NavBar({ isManager }) {
+function NavBar({ isManager, companyStatus }) {
+    const{ t, i18n } = useTranslation();
+
     return (
         <>
             {
@@ -17,22 +20,38 @@ function NavBar({ isManager }) {
                                         <img src={logo} alt="Logo My Coach" />
                                     </li>
                                     <div className="header__center">
+                                    {companyStatus === 'accepted' ? (
+                                        <>
                                         <li>
-                                            <Link to="">Dashboard</Link>
+                                            <Link to="">
+                                                Dashboard
+                                            </Link>
                                         </li>
                                         <li>
-                                            <Link to="home">Mes Franchises</Link>
+                                            <Link to="home">
+                                                {t("HeaderFranchises")}
+                                            </Link>
                                         </li>
+                                        
                                         <li>
-                                            <Link to="company">Ajouter mon entreprise</Link>
+                                            <Link to="franchise">
+                                                {t("HeaderAddFranchise")}
+                                            </Link>
                                         </li>
-                                        <li>
-                                            <Link to="franchise">Ajouter une franchise</Link>
+                                        </>
+                                        ) : (
+                                            <li>
+                                            <Link to="company">
+                                                {t("HeaderAddCompany")}
+                                            </Link>
                                         </li>
+                                        )}
                                     </div>
                                     <div className="header__right">
                                         <li>
-                                            <Link to="/">Retour</Link>
+                                            <Link to="/">
+                                                {t("Back")}
+                                            </Link>
                                         </li>
                                     </div>
                                 </ul>
