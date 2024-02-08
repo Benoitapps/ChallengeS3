@@ -13,6 +13,15 @@ function AddFranchise() {
         const data = new FormData(e.target);
 
         try {
+            const address = data.get('address');
+            const city = data.get('city');
+            const zipCode = data.get('zip_code');
+
+            const response = await fetch(`https://nominatim.openstreetmap.org/search?street=${address}&city=${city}&postalcode=${zipCode}&format=json`);
+            const location = await response.json();
+            const lat = location[0].lat;
+            const lng = location[0].lon;
+
             const result = await fetch(`${env.VITE_URL_BACK}/api/franchises`, {
                 method: 'POST',
                 headers: {
@@ -25,8 +34,10 @@ function AddFranchise() {
                     address: data.get('address'),
                     city: data.get('city'),
                     zipCode: data.get('zip_code'),
-                    lat: parseFloat(data.get('latitude')),
-                    lng: parseFloat(data.get('longitude')),
+                    // lat: parseFloat(data.get('latitude')),
+                    // lng: parseFloat(data.get('longitude')),
+                    lat: parseFloat(lat),
+                    lng: parseFloat(lng),
                 }),
             });
             console.log(result);
@@ -62,8 +73,8 @@ function AddFranchise() {
                         <input type="text" id="address" name="address" placeholder="Adresse" required></input>
                         <input type="text" id="city" name="city" placeholder="Ville" required></input>
                         <input type="number" id="zip_code" name="zip_code" placeholder="Code postal" required></input>
-                        <input type="number" step="any" id="latitude" name="latitude" placeholder="Latitude" required></input>
-                        <input type="number" step="any" id="longitude" name="longitude" placeholder="Longitude" required></input>
+                        {/*<input type="number" step="any" id="latitude" name="latitude" placeholder="Latitude" required></input>*/}
+                        {/*<input type="number" step="any" id="longitude" name="longitude" placeholder="Longitude" required></input>*/}
                         <div className="login-signup__form__submit">
                             <input type="submit" value="Ajouter" disabled={loading}/>
                         </div>
