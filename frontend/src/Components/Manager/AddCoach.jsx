@@ -39,7 +39,35 @@ function AddCoach() {
             } else if (!result.ok) {
                 setError('Une erreur est survenue');
             } else {
-                // navigate("/login");
+                try {
+                    const result = await fetch(`${env.VITE_URL_BACK}/api/email`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        },
+                        body: JSON.stringify({
+                            email: data.get('email'),
+                            subject: 'Bienvenue chez MyCoach',
+                            message: `Bonjour ${data.get('firstname')} ${data.get('lastname')},\n\nVotre entreprise vient de créer votre compte MyCoach. \n\nVous pouvez vous connecter à l'application MyCoach avec l'adresse email suivante : ${data.get('email')}\n\nVotre mot de passe provisoire est le suivant : ${data.get('password')}\n\nVeuillez le changer dès votre 1ère connexion dans votre profil.\n\nA bientôt sur MyCoach !\n\nCe message vous a été envoyé via une adresse mail n'acceptant pas les réponses. Pour toute question, veuillez contacter votre entreprise.`,
+                        }),
+                    });
+                    console.log(result);
+                    const body = await result.json();
+                    console.log(body);
+                    if (result.status === 422) {
+                        setError(body.violations[0].message + ' ' + body.violations[0].propertyPath);
+                    } else if (!result.ok) {
+                        setError('Une erreur est survenue');
+                    } else {
+                        //success mail
+                        navigate("/manager/home");
+                    }
+                } catch (error) {
+                    setError('Une erreur est survenue');
+                } finally {
+                    setLoading(false);
+                }
             }
         } catch (error) {
             setError('Une erreur est survenue');

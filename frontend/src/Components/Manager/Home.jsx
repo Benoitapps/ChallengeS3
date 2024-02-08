@@ -4,50 +4,12 @@ import {getCompanies} from "../../hook/manager/company.js";
 import {Link} from "react-router-dom";
 const env = import.meta.env;
 
-function Home({ isManager, companyStatus, testState }) {
+function Home({ isManager, companyStatus }) {
     const [franchises, setFranchises] = useState([]);
     const [franchisesLoading, setFranchisesLoading] = useState(false);
-    const [hasCompany, setHasCompany] = useState(true);
-    // const [companyStatus, setCompanyStatus] = useState('none');
+
 
     useEffect(() => {
-
-        // const loadComapnies = async () => {
-        //     let company = await getCompanies();
-        // };
-        // loadComapnies();
-        // const checkCompany = async () => {
-        //     let result = await fetch(`${env.VITE_URL_BACK}/api/companies/myCompany`, {
-        //         method: 'GET',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             Authorization: `Bearer ${localStorage.getItem("token")}`,
-        //         },
-        //     });
-        //     let body = await result.json();
-        //     console.log(body);
-        //
-        //     if (!body.name) {
-        //         console.log('no company');
-        //         setHasCompany(false);
-        //         const newStatus = 'none';
-        //         console.log('newstatus', newStatus);
-        //         setCompanyStatus(newStatus);
-        //         console.log('state company status', companyStatus);
-        //     } else {
-        //         console.log('company found');
-        //         if (body.isVerified === false) {
-        //             console.log('company not verified');
-        //             const newStatus = 'pending';
-        //             setCompanyStatus(newStatus);
-        //         } else {
-        //             console.log('company verified');
-        //             const newStatus = 'accepted';
-        //             setCompanyStatus(newStatus);
-        //         }
-        //     }
-        // };
-        // checkCompany();
         const loadData = async () => {
             setFranchisesLoading(true);
 
@@ -70,34 +32,36 @@ function Home({ isManager, companyStatus, testState }) {
                     <div>Chargement...</div>
                 ) : (
                     franchises.length === 0 ? (
-                        <div>Vous n'avez pas encore de franchises.</div>
+                        <div>
+                            Vous n'avez pas encore de franchises.<br/>
+                            <Link to="/manager/franchise"> Cliquez ici pour ajouter votre 1ère franchise</Link>
+                        </div>
                     ) : (
                         <div>
                             {franchises.map((franchise) => (
-                                <div key={franchise.name} style={{display: 'flex', justifyContent: 'space-evenly', textAlign: 'left'}}>
-                                    <span style={{width: '20%'}}>
-                                        {franchise.name}
-                                    </span>
-                                    <span style={{width: '20%'}}>
-                                        {franchise.description}
-                                    </span>
-                                    <span style={{width: '20%'}}>
-                                        {franchise.address}
-                                    </span>
-                                    <span style={{width: '20%'}}>
-                                        {franchise.city}
-                                    </span>
-                                    <span style={{width: '20%'}}>
-                                        {franchise.zipCode}
-                                    </span>
-                                    <span style={{width: '20%'}}>
-                                        <Link to={{
-                                            pathname: `/manager/addCoach/${franchise.id}`,
-                                            state: { franchiseName: franchise.name }
-                                        }}>
-                                            <button>Ajouter un coach</button>
-                                        </Link>
-                                    </span>
+                                <div key={franchise.name}>
+                                    <h2>{franchise.name}</h2>
+                                    <p>{franchise.description}</p>
+                                    <p>{franchise.address}</p>
+                                    <p>{franchise.city}</p>
+                                    <p>{franchise.zipCode}</p>
+                                    <h3>Coachs :</h3>
+                                    {franchise.coachs.length === 0 ? (
+                                        <div>Il n'y a pas encore de coachs pour cette franchise.</div>
+                                    ) : (
+                                        franchise.coachs.map((coach) => (
+                                            <div key={coach.auth.email} style={{ marginBottom: '20px' }}>
+                                                <p>Nom : {coach.auth.firstname} {coach.auth.lastname}</p>
+                                                <p>Email : {coach.auth.email}</p>
+                                            </div>
+                                        ))
+                                    )}
+                                    <Link to={{
+                                        pathname: `/manager/addCoach/${franchise.id}`,
+                                        state: { franchiseName: franchise.name }
+                                    }}>
+                                        <button>Ajouter un coach</button>
+                                    </Link>
                                 </div>
                             ))}
                         </div>
