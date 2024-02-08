@@ -57,102 +57,54 @@ function Home({ isManager, companyStatus, testState }) {
             setFranchisesLoading(false);
         };
 
-        // loadData();
+        loadData();
     }, []);
 
     return (
         <main>
-            {companyStatus === 'none' && (
-                <div>
-                            <p>Vous n'avez pas encore demandé la création de votre entreprise.</p>
-                            <Link to="/manager/company">
-                                <button>Ajouter mon entreprise</button>
-                            </Link>
-                        </div>
-            )}
-            {companyStatus === 'pending' && (
-                <div>Votre entreprise est en attente de vérification.</div>
-            )}
             {companyStatus === 'accepted' && (
-                <>
-                    <div>Votre entreprise a été vérifiée et acceptée.</div>
+            <>
+                {/* <div>Votre entreprise a été vérifiée et acceptée.</div> */}
                 <h1>Mes franchises :</h1>
-            {franchisesLoading && <div>Chargement...</div>}
-            <div>
-                {franchises.map((franchise) => (
-                    <div key={franchise.name} style={{display: 'flex', justifyContent: 'space-evenly', textAlign: 'left'}}>
-                                <span style={{width: '20%'}}>
-                                    {franchise.name}
-                                </span>
-                        <span style={{width: '20%'}}>
-                                    {franchise.description}
-                                </span>
-                        <span style={{width: '20%'}}>
-                                    {franchise.address}
-                                </span>
-                        <span style={{width: '20%'}}>
-                                    {franchise.city}
-                                </span>
-                        <span style={{width: '20%'}}>
-                                    {franchise.zipCode}
-                                </span>
-                        <span style={{width: '20%'}}>
-                                    <Link to={{
-                                        pathname: `/manager/addCoach/${franchise.id}`,
-                                        state: { franchiseName: franchise.name }
-                                    }}>
-                                        <button>Ajouter un coach</button>
-                                    </Link>
-                                </span>
-                    </div>
-                ))}
-            </div>
-        </>
+                {franchisesLoading ? (
+                    <div>Chargement...</div>
+                ) : (
+                    franchises.length === 0 ? (
+                        <div>Vous n'avez pas encore de franchises.</div>
+                    ) : (
+                        <div>
+                            {franchises.map((franchise) => (
+                                <div key={franchise.name} style={{display: 'flex', justifyContent: 'space-evenly', textAlign: 'left'}}>
+                                    <span style={{width: '20%'}}>
+                                        {franchise.name}
+                                    </span>
+                                    <span style={{width: '20%'}}>
+                                        {franchise.description}
+                                    </span>
+                                    <span style={{width: '20%'}}>
+                                        {franchise.address}
+                                    </span>
+                                    <span style={{width: '20%'}}>
+                                        {franchise.city}
+                                    </span>
+                                    <span style={{width: '20%'}}>
+                                        {franchise.zipCode}
+                                    </span>
+                                    <span style={{width: '20%'}}>
+                                        <Link to={{
+                                            pathname: `/manager/addCoach/${franchise.id}`,
+                                            state: { franchiseName: franchise.name }
+                                        }}>
+                                            <button>Ajouter un coach</button>
+                                        </Link>
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    )
+                )}
+            </>
             )}
-            {/*    <>*/}
-            {/*        <h1>Mes franchises :</h1>*/}
-            {/*        {franchisesLoading && <div>Chargement...</div>}*/}
-            {/*        <div>*/}
-            {/*            {franchises.map((franchise) => (*/}
-            {/*                <div key={franchise.name} style={{display: 'flex', justifyContent: 'space-evenly', textAlign: 'left'}}>*/}
-            {/*                    <span style={{width: '20%'}}>*/}
-            {/*                        {franchise.name}*/}
-            {/*                    </span>*/}
-            {/*                    <span style={{width: '20%'}}>*/}
-            {/*                        {franchise.description}*/}
-            {/*                    </span>*/}
-            {/*                    <span style={{width: '20%'}}>*/}
-            {/*                        {franchise.address}*/}
-            {/*                    </span>*/}
-            {/*                    <span style={{width: '20%'}}>*/}
-            {/*                        {franchise.city}*/}
-            {/*                    </span>*/}
-            {/*                    <span style={{width: '20%'}}>*/}
-            {/*                        {franchise.zipCode}*/}
-            {/*                    </span>*/}
-            {/*                    <span style={{width: '20%'}}>*/}
-            {/*                        /!* <Link to={`/manager/addCoach/${franchise.id}`}>*/}
-            {/*                            <button>Ajouter un coach</button>*/}
-            {/*                        </Link> *!/*/}
-            {/*                        <Link to={{*/}
-            {/*                            pathname: `/manager/addCoach/${franchise.id}`,*/}
-            {/*                            state: { franchiseName: franchise.name }*/}
-            {/*                        }}>*/}
-            {/*                            <button>Ajouter un coach</button>*/}
-            {/*                        </Link>*/}
-            {/*                    </span>*/}
-            {/*                </div>*/}
-            {/*            ))}*/}
-            {/*        </div>*/}
-            {/*    </>*/}
-            {/*) : (*/}
-            {/*    <div>*/}
-            {/*        <p>Vous n'avez pas encore demandé la création de votre entreprise.</p>*/}
-            {/*        <Link to="/manager/company">*/}
-            {/*            <button>Ajouter mon entreprise</button>*/}
-            {/*        </Link>*/}
-            {/*    </div>*/}
-            {/*)}*/}
         </main>
     );
 }

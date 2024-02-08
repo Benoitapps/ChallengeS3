@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import {useTranslation} from "react-i18next";
 const env = import.meta.env;
 
 function AddCompany({ companyStatus, setCompanyStatus }) {
     const navigate = useNavigate();
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+
+    const{ t, i18n } = useTranslation();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -73,7 +76,7 @@ function AddCompany({ companyStatus, setCompanyStatus }) {
 
                     {companyStatus === 'none' && (
                         <>
-                        <span>Demander l'ajout de votre entreprise :</span>
+                        <span>{t("RequestAddCompany")}</span>
                         <form className="login-signup__form" onSubmit={handleSubmit}>
                             {error && <p className="error">{error}</p>}
                             <input type="text" id="name" name="name" placeholder="Libellé" autoComplete="name" required></input>
@@ -86,10 +89,10 @@ function AddCompany({ companyStatus, setCompanyStatus }) {
                         </>
                     )}
                     {companyStatus === 'pending' && (
-                        <p>Votre demande a bien été prise en compte et sera traitée dans les meilleurs délais.</p>
+                        <p>{t("PendingCompany")}</p>
                     )}
                     {companyStatus === 'accepted' && (
-                        <p>Votre demande a déjà été approuvée.</p>
+                        <p>{t("AcceptedCompany")}</p>
                     )}
                     </div>
                 </main>
