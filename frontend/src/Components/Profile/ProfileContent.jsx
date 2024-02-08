@@ -13,6 +13,9 @@ export default function ProfileContent({user, isManager, isCoach, updateProfile}
             setFirstname(user.auth.firstname);
             setLastname(user.auth.lastname);
             setBiography(user.biography);
+        } else if(isManager) {
+            setFirstname(user.auth.firstname);
+            setLastname(user.auth.lastname);
         } else {
             setFirstname(user.auth.firstname);
             setLastname(user.auth.lastname);
@@ -31,9 +34,8 @@ export default function ProfileContent({user, isManager, isCoach, updateProfile}
                                    onInput={
                                         (e) => {
                                             setFirstname(e.target.value);
-                                            updateProfile({firstname: e.target.value
-                                        });
-                                    }
+                                            updateProfile({firstname: e.target.value});
+                                        }
                                 }
                             />
                             <input type="text" className="user-content__head__name" placeholder="Nom" value={lastname}
@@ -45,12 +47,35 @@ export default function ProfileContent({user, isManager, isCoach, updateProfile}
                                    }
                             />
                             <textarea className="user-content__head__biography" placeholder="Description" value={biography}
-                                      onInput={
-                                          (e) => {
-                                              setBiography(e.target.value);
-                                              updateProfile({biography: e.target.value});
-                                          }
+                                  onInput={
+                                      (e) => {
+                                          setBiography(e.target.value);
+                                          updateProfile({biography: e.target.value});
                                       }
+                                  }
+                            />
+                        </>
+                    )
+                    : null
+            }
+            {
+                isManager ? (
+                        <>
+                            <input type="text" className="user-content__head__name" placeholder="Prénom" value={firstname}
+                                   onInput={
+                                       (e) => {
+                                           setFirstname(e.target.value);
+                                           updateProfile({firstname: e.target.value});
+                                       }
+                                   }
+                            />
+                            <input type="text" className="user-content__head__name" placeholder="Nom" value={lastname}
+                                   onInput={
+                                       (e) => {
+                                           setLastname(e.target.value);
+                                           updateProfile({lastname: e.target.value});
+                                       }
+                                   }
                             />
                         </>
                     )
@@ -63,8 +88,7 @@ export default function ProfileContent({user, isManager, isCoach, updateProfile}
                                    onInput={
                                        (e) => {
                                            setFirstname(e.target.value);
-                                           updateProfile({firstname: e.target.value
-                                           });
+                                           updateProfile({firstname: e.target.value});
                                        }
                                    }
                             />

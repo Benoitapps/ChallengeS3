@@ -16,8 +16,14 @@ const getUserId = async () => {
 
         if(user.client) {
             idUser = user.client.id;
-        } else {
+        } else if(user.coach) {
             idUser = user.coach.id;
+        } else if(user.manager) {
+            idUser = user.manager.id;
+        } else if(user.admin) {
+            idUser = user.admin.id;
+        } else {
+            console.log('No value found in local storage for the specified key');
         }
 
         return idUser;
