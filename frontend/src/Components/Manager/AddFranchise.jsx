@@ -6,6 +6,7 @@ function AddFranchise() {
     const navigate = useNavigate();
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [imageFile, setImageFile] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -38,11 +39,10 @@ function AddFranchise() {
                     // lng: parseFloat(data.get('longitude')),
                     lat: parseFloat(lat),
                     lng: parseFloat(lng),
+                    image: imageFile,
                 }),
             });
-            console.log(result);
             const body = await result.json();
-            console.log(body);
             if (result.status === 422) {
                 setError(body.violations[0].message + ' ' + body.violations[0].propertyPath);
             } else if (!result.ok) {
@@ -56,6 +56,27 @@ function AddFranchise() {
             setLoading(false);
         }
     };
+
+    const fileType = ['image/png', 'image/jpeg', 'image/jpg']
+    const handleChange = async (e) => {
+
+        const selectedFile = e.target.files[0];
+        if(selectedFile){
+            if(selectedFile && fileType.includes(selectedFile.type)) {
+                let reader = new FileReader();
+                reader.readAsDataURL(selectedFile);
+                reader.onloadend = (e) => {
+                    setImageFile(reader.result);
+                }
+            }else{
+                setImageFile(null);
+                alert('Please select a pdf file');
+            }
+        }
+        else{
+            console.log('select your file');
+        }
+    }
 
     return (
         <div>
@@ -75,6 +96,7 @@ function AddFranchise() {
                         <input type="number" id="zip_code" name="zip_code" placeholder="Code postal" required></input>
                         {/*<input type="number" step="any" id="latitude" name="latitude" placeholder="Latitude" required></input>*/}
                         {/*<input type="number" step="any" id="longitude" name="longitude" placeholder="Longitude" required></input>*/}
+                        <input type="file" onChange={handleChange}/>
                         <div className="login-signup__form__submit">
                             <input type="submit" value="Ajouter" disabled={loading}/>
                         </div>

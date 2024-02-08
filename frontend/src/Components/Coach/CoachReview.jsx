@@ -4,7 +4,7 @@ import {updateReview} from "../../hook/coach/updateReview.js";
 import {useState} from "react";
 import Alert from "../Alert.jsx";
 
-function CoachReview({coach, id}) {
+function CoachReview({coach, id, getCoach}) {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const [note, setNote] = useState(0);
@@ -107,7 +107,7 @@ function CoachReview({coach, id}) {
         setTimeout(() => {
             setSuccess(false);
             setError(false);
-            window.location.reload();
+            getCoach();
         }, 3000);
     }
 

@@ -9,8 +9,8 @@ const addReview = async (clientId, coachId, note) => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({
-            coach: `api/clients/${clientId}`,
-            client: `api/coaches/${coachId}`,
+            coach: `api/coaches/${coachId}`,
+            client: `api/clients/${clientId}`,
             note: note,
         }),
     });

@@ -1,12 +1,63 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import {useTranslation} from "react-i18next";
+import {Viewer, Worker} from '@react-pdf-viewer/core';
+import {defaultLayoutPlugin} from '@react-pdf-viewer/default-layout';
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+import GetPdf from "./../GetPdf.jsx";
 const env = import.meta.env;
 
 function AddCompany({ companyStatus, setCompanyStatus }) {
     const navigate = useNavigate();
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [baseFile, setBaseFile] = useState("");
+    const [pdfFile, setPdfFile] = useState(null);
+    const [viewPdf, setViewPdf] = useState(false);
+
+    const fileType = ['application/pdf'];
+    const handleChange = async (e) => {
+
+        const selectedFile = e.target.files[0];
+        if(selectedFile){
+            if(selectedFile && fileType.includes(selectedFile.type)) {
+                let reader = new FileReader();
+                reader.readAsDataURL(selectedFile);
+                reader.onloadend = (e) => {
+                    setPdfFile(reader.result);
+                    setViewPdf(true)
+                }
+            }else{
+                setPdfFile(null);
+                alert('Please select a pdf file');
+            }
+        }
+        else{
+            console.log('select your file');
+        }
+    }
+
+    // const convertBase64 = (file) => {
+    //     return new Promise((resolve, reject) => {
+    //         const fileReader = new FileReader();
+    //         fileReader.readAsDataURL(file);
+    //         fileReader.onload = () => {
+    //             resolve(fileReader.result);
+    //             console.log("fileReader.result",fileReader.result)
+    //         };
+    //         fileReader.onerror = (error) => {
+    //             reject(error);
+    //         };
+    //     });
+    // }
+
+    // const decodeBase64 = (base64) => {
+    //     return atob(base64);
+    // }
+    //
+    // const test = decodeBase64(baseFile);
+
 
     const{ t, i18n } = useTranslation();
 
@@ -25,13 +76,11 @@ function AddCompany({ companyStatus, setCompanyStatus }) {
                 body: JSON.stringify({
                     name: data.get('name'),
                     description: data.get('description'),
-                    kbis: data.get('kbis'),
+                    kbis: pdfFile,
                     isVerified: false,
                 }),
             });
-            console.log(result);
             const body = await result.json();
-            console.log(body);
             if (result.status === 422) {
                 setError(body.violations[0].message + ' ' + body.violations[0].propertyPath);
             } else if (!result.ok) {
@@ -46,6 +95,8 @@ function AddCompany({ companyStatus, setCompanyStatus }) {
             setLoading(false);
         }
     };
+
+    const newplugin = defaultLayoutPlugin();
 
     // return (
     //     <div>
@@ -81,7 +132,7 @@ function AddCompany({ companyStatus, setCompanyStatus }) {
                             {error && <p className="error">{error}</p>}
                             <input type="text" id="name" name="name" placeholder="Libellé" autoComplete="name" required></input>
                             <input type="text" id="description" name="description" placeholder="Description" autoComplete="description" required></input>
-                            <input type="text" id="kbis" name="kbis" placeholder="KBis" required></input>
+                            <input type="file" id="kbis" name="kbis" placeholder="KBis" required onChange={(e)=>handleChange(e)}></input>
                             <div className="login-signup__form__submit">
                                 <input type="submit" value="Demander" disabled={loading} />
                             </div>
@@ -95,6 +146,7 @@ function AddCompany({ companyStatus, setCompanyStatus }) {
                         <p>{t("AcceptedCompany")}</p>
                     )}
                     </div>
+                    <GetPdf file={pdfFile} viewPdf ={viewPdf} />
                 </main>
             </div>
     );

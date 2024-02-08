@@ -73,9 +73,10 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager, isCoach }) 
                 {isConnected ? (
                   <>
                     <li>
+                      {!isManager && !isAdmin ?
                       <Link to="/schedule" className="header__links">
                         {t("HeaderCours")}
-                      </Link>
+                      </Link>:null}
                     </li>
                     <li>
                       <Link to="/profile" className="header__links">
@@ -83,7 +84,7 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager, isCoach }) 
                       </Link>
                     </li>
 
-                    {!isManager?
+                    {!isManager && !isAdmin?
                     <li>
                       <Link to="/history" className="header__links">
                         {t("HeaderHistory")}

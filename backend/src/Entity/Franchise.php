@@ -53,6 +53,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Delete(),
         new Patch(
             denormalizationContext: ['groups' => ['franchise:update']],
+            security: "is_granted('ROLE_MANAGER')",
         ),
     ],
 //    normalizationContext: ['groups' => ['franchise:read']],
@@ -72,23 +73,23 @@ class Franchise
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'coach:read','stat:money:read','stat:admin:read'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'coach:read','stat:money:read','stat:admin:read','franchise:update'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write','franchise:update'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'coach:read'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'coach:read','franchise:update'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write','franchise:update'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 5)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write','franchise:update'])]
     private ?string $zipCode = null;
 
     #[ORM\ManyToOne(inversedBy: 'franchises')]
@@ -97,7 +98,7 @@ class Franchise
     private ?Company $company = null;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Coach::class)]
-    #[Groups(['franchise:read', 'company:read:franchise','stat:coach:read','stat:reservation:read',])]
+    #[Groups(['franchise:read', 'company:read:franchise','stat:coach:read','stat:reservation:read'])]
     private Collection $coachs;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Prestation::class)]
@@ -106,13 +107,17 @@ class Franchise
     
     #[ORM\Column]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'franchise:update'])]
     private ?float $lat = null;
     
     #[ORM\Column]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'franchise:update'])]
     private ?float $lng = null;
+
+    #[Groups(['franchise:read','franchise:write'])]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $image = null;
 
     public function __construct()
     {
@@ -277,6 +282,18 @@ class Franchise
     public function setLng(float $lng): static
     {
         $this->lng = $lng;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }

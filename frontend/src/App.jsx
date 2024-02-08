@@ -11,7 +11,7 @@ import Login from './Components/Authentication/Login';
 import SignUp from './Components/Authentication/SignUp';
 import Schedule from './Components/Calendar/Schedule.jsx';
 import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
-import Profile from './Components/Profile.jsx';
+import Profile from './Components/Profile/Profile.jsx';
 import ClubsPage from './Components/ClubsPage.jsx';
 import ClubDetails from './Components/Club/ClubDetails.jsx';
 import HistoryPage from "./Components/Historique/HistoryPage.jsx";
@@ -143,8 +143,8 @@ function App() {
           <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} isManager={isManager} isCoach={isCoach} />}>
             {/* Route for user not connected */}
             <Route index element={<ClubsPage/>} />
-            <Route path="club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected}/>} />
-            <Route path="coach/:id" element={<CoachPage/>} />
+            <Route path="club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected} isAdmin={isAdmin} update={false}/>} />
+            <Route path="coach/:id" element={<CoachPage isConnected={isConnected}/> } />
             <Route path="client/:id" element={<ClientPage/>} />
 
             <Route path="signup" element={<SignUp />} />
@@ -152,7 +152,7 @@ function App() {
 
             {/* Route for user connected */}
             <Route path="schedule" element={ <UserRoute component={Schedule} onButtonClick={setEventDetail} isConnected={isConnected} isCoach={isCoach}/> } />
-            <Route path="profile" element={ <UserRoute component={Profile} isConnected={isConnected}/> } />
+            <Route path="profile" element={ <UserRoute component={Profile} isConnected={isConnected} isCoach={isCoach} isManager={isManager}/> } />
             <Route path="prestation/:prestationId/coach/:coachId/update" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={true} isConnected={isConnected}/> }  />
             <Route path="prestation/:prestationId/coach/:coachId/add" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={false} isConnected={isConnected}/>} />
             <Route path="history" element={<UserRoute component={HistoryPage}isConnected={isConnected} isCoach={isCoach}/>} />
@@ -187,12 +187,12 @@ function App() {
                     <Route index element={<ManagerRoute index component={Dashboard} isManager={isManager} companyStatus={companyStatus} />} />
                     <Route path="company" element={<ManagerRoute component={AddCompany} isManager={isManager} companyStatus={companyStatus} setCompanyStatus={setCompanyStatus} />} />
                     <Route path="franchise" element={<ManagerRoute component={AddFranchise} isManager={isManager} companyStatus={companyStatus} />} />
-                    <Route path="addCoach/:franchiseId" element={<ManagerRoute component={AddCoach} isManager={isManager} companyStatus={companyStatus} />} />
+                    <Route path="addCoach/:franchiseId" element={<ManagerRoute component={AddCoach} isManager={isManager} companyStatus={companyStatus} />} /><Route path="home/club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected} isAdmin={isAdmin} update={true}/>} />
                   </Route>
                 </Routes>
             )}
           />
-cd
+
           {/* Special */}
           <Route path="unauthorized" element={<Unauthorize/>} />
         </Routes>

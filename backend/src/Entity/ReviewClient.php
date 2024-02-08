@@ -41,22 +41,22 @@ class ReviewClient
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['coach:read'])]
+    #[Groups(['coach:read', 'client:read'])]
     private ?int $id = null;
 
-    #[Groups(['review-client:read', 'review-client:write' , 'review-client:update','stat:admin:read'])]
+    #[Groups(['review-client:read', 'review-client:write' , 'review-client:update','stat:admin:read', 'client:read'])]
     #[ORM\Column]
     #[Assert\Range(min: 1, max: 5)]
     private ?int $note = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class ,inversedBy: 'reviewClients')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['review-client:read', 'review-client:write', 'coach:read'])]
+    #[Groups(['review-client:read', 'review-client:write', 'coach:read', 'client:read'])]
     private ?Client $client = null;
 
     #[ORM\ManyToOne(inversedBy: 'reviewClients')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['review-client:read', 'review-client:write', 'coach:read'])]
+    #[Groups(['review-client:read', 'review-client:write', 'coach:read', 'client:read'])]
     private ?Coach $coach = null;
 
     public function getId(): ?int

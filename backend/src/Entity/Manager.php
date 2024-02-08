@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             security: 'is_granted("ROLE_ADMIN")',
         ),
         new Get(
-            normalizationContext: ['groups' => ['company:read']],
+            normalizationContext: ['groups' => ['manager:read']],
         ),
         new Get(
             uriTemplate: '/managers/{id}/stats/coach',
@@ -43,23 +43,22 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ),
         new Delete(),
         new Patch(
-            denormalizationContext: ['groups' => ['company:update']],
+            denormalizationContext: ['groups' => ['manager:update']],
         ),
     ],
 )]
-
 #[ORM\Entity(repositoryClass: ManagerRepository::class)]
 class Manager
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read', 'manager:admin:read'])]
+    #[Groups(['user:read', 'manager:admin:read', 'manager:read'])]
     private ?int $id = null;
 
     #[ORM\OneToOne(inversedBy: 'manager', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['company:read', 'manager:write','stat:admin:read', 'manager:admin:read'])]
+    #[Groups(['company:read', 'manager:write','stat:admin:read', 'manager:admin:read', 'manager:update', 'manager:read'])]
     private ?User $auth = null;
 
     #[Groups(['stat:coach:read','stat:prestation:read','stat:reservation:read','stat:money:read','stat:admin:read', 'manager:admin:read'])]

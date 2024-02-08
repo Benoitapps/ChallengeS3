@@ -1,6 +1,8 @@
 import { getSlots } from "../hook/Schedule/events.js";
 
 const transformData = (initialData) => {
+    console.log("initialData",initialData);
+
     return initialData.map((item, index) => {
         const startDate = new Date(item.startDate);
         const endDate = new Date(item.endDate);
@@ -11,7 +13,7 @@ const transformData = (initialData) => {
 
         return {
             id: item.id,
-            title: (item.prestation && item.prestation.name) || (item.time_off && item.time_off.name),
+            title: item.vacation == false ?(item.prestation && item.prestation.name): "Vacation",
             start: startDate,
             end: endDate,
             backgroundColor: item.prestation ? "#2970FF" : "#646464",

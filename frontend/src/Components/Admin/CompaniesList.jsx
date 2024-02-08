@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { getCompanies, getManagers } from '../../hook/admin/company';
+import Popup from "../Calendar/Popup.jsx";
+import GetPdf from "../GetPdf.jsx";
 const env = import.meta.env;
 
 function CompaniesList() {
     const [companies, setCompanies] = useState([]);
     const [companiesLoading, setCompaniesLoading] = useState(false);
+    const [statePopUp, setStatePopUp] = useState(false);
 
     const [beingEdited, setBeingEdited] = useState(false);
     const [currentCompanyId, setCurrentCompanyId] = useState(null);
 
     const [managers, setManagers] = useState([]);
+    const[kbis, setKbis] = useState(null)
 
     useEffect(() => {
         const loadData = async () => {
             setCompaniesLoading(true);
 
             let companies = await getCompanies();
+            console.log(companies)
             setCompanies(companies);
             setCompaniesLoading(false);
 
@@ -121,6 +126,11 @@ function CompaniesList() {
         setCompaniesLoading(false);
     };
 
+   const handlePopup = (getKbis) => {
+         setStatePopUp(true);
+         setKbis(getKbis)
+   }
+
     return (
         <main>
             {
@@ -168,6 +178,7 @@ function CompaniesList() {
                             <th>Nom de la company</th>
                             <th>Description</th>
                             <th>Actions</th>
+                            <th>KBIS</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -212,11 +223,24 @@ function CompaniesList() {
                                             </button>
                                     }
                                 </td>
+                                <td>
+                                    {<button onClick={() => handlePopup(company.kbis)}>
+                                        ViewKBIS
+                                    </button>}
+                                        <Popup show={statePopUp} onClose={() => setStatePopUp(false)} button1={() => setStatePopUp(false)} nameButton1={"Fermer"} annuler={"Annuler"}>
+                                            <div>
+                                                <h1>KBIS</h1>
+                                                <GetPdf file={kbis} viewPdf={true}/>
+                                            </div>
+                                        </Popup>
+
+                                </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             }
+
         </main>
     );
 }

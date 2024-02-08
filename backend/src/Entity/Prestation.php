@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Repository\PrestationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -25,6 +26,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
                     'prestation:read',
                 ],
             ],
+        ),
+        new Patch(
+            denormalizationContext: [
+                'groups' => ['prestation:update']
+            ],
+            security: "is_granted('ROLE_MANAGER')",
         )
     ]
 )]
@@ -37,15 +44,15 @@ class Prestation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['slot:read', 'slot:read:collection', 'prestation:write', 'prestation:read', 'coach:read:slots', 'company:read:franchise', 'franchise:read', 'coach:read','slot:history:read:collection','stat:prestation:read'])]
+    #[Groups(['slot:read', 'slot:read:collection', 'prestation:write', 'prestation:read', 'coach:read:slots', 'company:read:franchise', 'franchise:read', 'coach:read','slot:history:read:collection','stat:prestation:read','prestation:update'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[Groups(['prestation:write', 'prestation:read'])]
+    #[Groups(['prestation:write', 'prestation:read','prestation:update'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[Groups(['prestation:write', 'prestation:read', 'franchise:read', 'coach:read','stat:money:read','stat:admin:read'])]
+    #[Groups(['prestation:write', 'prestation:read', 'franchise:read', 'coach:read','stat:money:read','stat:admin:read','prestation:update'])]
     #[ORM\Column]
     private ?float $price = null;
 

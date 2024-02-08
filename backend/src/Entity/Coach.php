@@ -28,6 +28,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ),
         new Patch(
             denormalizationContext: ['groups' => ['coach:write']],
+            security: "is_granted('ROLE_COACH') or is_granted('ROLE_ADMIN')",
         ),
 
         new Get(
@@ -59,14 +60,14 @@ class Coach
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['schedule:read', 'schedule:write','slot:read', 'franchise:read','slot:history:read:collection', 'coach:read'])]
+    #[Groups(['schedule:read', 'schedule:write','slot:read', 'franchise:read','slot:history:read:collection', 'coach:read', 'user:read', 'client:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['coach:read', 'coach:write'])]
     private ?string $biography = null;
 
-    #[Groups(['slot:read', 'coach:read', 'prestation:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read','coach:read:email'])]
+    #[Groups(['slot:read', 'coach:read', 'coach:write', 'prestation:read', 'company:read:franchise', 'franchise:read','slot:history:read:collection','stat:coach:read','stat:reservation:read','coach:read:email'])]
     #[ORM\OneToOne(inversedBy: 'coach', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $auth = null;
@@ -93,11 +94,6 @@ class Coach
     #[Groups(['coach:read'])]
     #[ORM\ManyToMany(targetEntity: Prestation::class, mappedBy: 'coach')]
     private Collection $prestations;
-
-    #[Groups(['coach:read'])]
-    #[ORM\ManyToMany(targetEntity: TimeOff::class, mappedBy: 'coachs')]
-    private Collection $timeOffs;
-
 
     #[Groups(['coach:read','coach:read:slots','stat:reservation:read','stat:admin:read'])]
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Slot::class)]
@@ -285,32 +281,6 @@ class Coach
         return $this;
     }
 
-    /**
-     * @return Collection<int, TimeOff>
-     */
-    public function getTimeOffs(): Collection
-    {
-        return $this->timeOffs;
-    }
-
-    public function addTimeOff(TimeOff $timeOff): static
-    {
-        if (!$this->timeOffs->contains($timeOff)) {
-            $this->timeOffs->add($timeOff);
-            $timeOff->addCoach($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTimeOff(TimeOff $timeOff): static
-    {
-        if ($this->timeOffs->removeElement($timeOff)) {
-            $timeOff->removeCoach($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Slot>
