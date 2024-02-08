@@ -137,6 +137,7 @@ function AddCompany({ companyStatus, setCompanyStatus }) {
                                 <input type="submit" value="Demander" disabled={loading} />
                             </div>
                         </form>
+                            <GetPdf file={pdfFile} viewPdf ={viewPdf} />
                         </>
                     )}
                     {companyStatus === 'pending' && (
@@ -146,7 +147,6 @@ function AddCompany({ companyStatus, setCompanyStatus }) {
                         <p>{t("AcceptedCompany")}</p>
                     )}
                     </div>
-                    <GetPdf file={pdfFile} viewPdf ={viewPdf} />
                 </main>
             </div>
     );
