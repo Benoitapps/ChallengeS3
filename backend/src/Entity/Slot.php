@@ -98,7 +98,7 @@ class Slot
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Coach $coach = null;
 
-    #[Groups(['slot:read','slot:read:collection'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write'])]
     #[ORM\Column(type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
     private ?bool $vacation = null;
 

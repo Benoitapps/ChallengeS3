@@ -15,7 +15,8 @@ const postSlot = async (dateStart,dateEnd, idPrestation, idCoach, idClient) => {
                     "endDate": dateEnd,
                     "prestation": "api/prestations/"+idPrestation,
                     "client": "api/clients/"+idClient,
-                    "coach": "api/coaches/"+idCoach
+                    "coach": "api/coaches/"+idCoach,
+                    "vacation":false
                 }
             ),
 
