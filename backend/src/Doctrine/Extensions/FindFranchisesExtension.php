@@ -30,11 +30,11 @@ final class FindFranchisesExtension implements QueryCollectionExtensionInterface
     
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (Franchise::class !== $resourceClass) {
-            return;
-        }
-        $rootAlias = $queryBuilder->getRootAliases()[0];
-        // min one relation with prestations
-        $queryBuilder->andWhere("$rootAlias.prestations IS NOT EMPTY");
+//        if (Franchise::class !== $resourceClass) {
+//            return;
+//        }
+//        $rootAlias = $queryBuilder->getRootAliases()[0];
+//        // min one relation with prestations
+//        $queryBuilder->andWhere("$rootAlias.prestations IS NOT EMPTY");
     }
 }

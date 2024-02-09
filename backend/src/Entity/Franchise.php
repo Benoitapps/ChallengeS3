@@ -53,7 +53,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Delete(),
         new Patch(
             denormalizationContext: ['groups' => ['franchise:update']],
-            security: "is_granted('ROLE_MANAGER')",
+            security: "is_granted('ROLE_MANAGER') and object.getCompany().getManager().getAuth().getId() === user.getId()",
         ),
     ],
 //    normalizationContext: ['groups' => ['franchise:read']],
