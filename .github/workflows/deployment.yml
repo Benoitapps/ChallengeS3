@@ -46,6 +46,7 @@ jobs:
       - name: Build
         run: |
           cd frontend
+          cp ~/lab/.env.front .env.local
           npm run build
       
       - name: Deploy frontend
@@ -77,7 +78,7 @@ jobs:
         run: |
           rm -rf ~/lab/prod_back/.env
           cp -r backend/.env ~/lab/prod_back/.env
-          cp -r ~/lab/.env.local ~/lab/prod_back/.env.local
+          cp -r ~/lab/.env.back ~/lab/prod_back/.env.local
 
       - name: Update composer.json file
         run: |
