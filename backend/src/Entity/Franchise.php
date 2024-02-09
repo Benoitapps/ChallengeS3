@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -31,6 +33,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             paginationItemsPerPage: 4,
             normalizationContext: ['groups' => ['franchise:read']],
 //            security: "is_granted('ROLE_MANAGER')",
+
         ),
         new GetCollection(
             uriTemplate: 'companies/myCompany/franchises',
@@ -50,6 +53,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Delete(),
         new Patch(
             denormalizationContext: ['groups' => ['franchise:update']],
+            security: "is_granted('ROLE_MANAGER') and object.getCompany().getManager().getAuth().getId() === user.getId()",
         ),
     ],
 //    normalizationContext: ['groups' => ['franchise:read']],
@@ -57,33 +61,35 @@ use Symfony\Component\Serializer\Annotation\Groups;
 //    security: "is_granted('ROLE_ADMIN')",
 )]
 
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial', 'whiteList' => ['franchise:read']])]
+
 #[ORM\Entity(repositoryClass: FranchiseRepository::class)]
 class Franchise
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['franchise:read'])]
+    #[Groups(['franchise:read','company:read:franchise'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'coach:read','stat:money:read'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'coach:read','stat:money:read','stat:admin:read','franchise:update'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write','franchise:update'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'coach:read'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'coach:read','franchise:update'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write','franchise:update'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 5)]
-    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write','franchise:update'])]
     private ?string $zipCode = null;
 
     #[ORM\ManyToOne(inversedBy: 'franchises')]
@@ -96,18 +102,22 @@ class Franchise
     private Collection $coachs;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Prestation::class)]
-    #[Groups(['franchise:read', 'company:read:franchise','stat:prestation:read','stat:money:read'])]
+    #[Groups(['franchise:read', 'company:read:franchise','stat:prestation:read','stat:money:read','stat:admin:read'])]
     private Collection $prestations;
     
     #[ORM\Column]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['franchise:read'])]
+    #[Groups(['franchise:read','franchise:write','company:read:franchise','franchise:update'])]
     private ?float $lat = null;
     
     #[ORM\Column]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['franchise:read'])]
+    #[Groups(['franchise:read','franchise:write','company:read:franchise','franchise:update'])]
     private ?float $lng = null;
+
+    #[Groups(['franchise:read','franchise:write'])]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $image = null;
 
     public function __construct()
     {
@@ -272,6 +282,18 @@ class Franchise
     public function setLng(float $lng): static
     {
         $this->lng = $lng;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }

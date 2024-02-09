@@ -1,0 +1,124 @@
+name: Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      working-directory: ./frontend
+
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run website
+        run: |
+          npm run dev &
+          sleep 5
+          curl -v http://localhost:5173/ -I
+
+  deploy:
+    runs-on: self-hosted
+
+    needs: build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Build
+        run: |
+          cd frontend
+          npm run build
+      
+      - name: Deploy frontend
+        run: |
+          rm -rf ~/lab/prod_front/*
+          cp -r frontend/dist/* ~/lab/prod_front
+      
+      - name: Update src folder
+        run: |
+          rm -rf ~/lab/prod_back/src/*
+          cp -r backend/src/* ~/lab/prod_back/src
+
+      - name: Update public folder
+        run: |
+          sudo rm -rf ~/lab/prod_back/public/*
+          cp -r backend/public/* ~/lab/prod_back/public
+
+      - name: Update config folder
+        run: |
+          sudo rm -rf ~/lab/prod_back/config/*
+          cp -r backend/config/* ~/lab/prod_back/config
+
+      - name: Update migrations folder
+        run: |
+          mkdir -p ~/lab/prod_back/migrations
+          sudo rm -rf ~/lab/prod_back/migrations/*
+
+      - name: Update .env file
+        run: |
+          rm -rf ~/lab/prod_back/.env
+          cp -r backend/.env ~/lab/prod_back/.env
+          cp -r ~/lab/.env.local ~/lab/prod_back/.env.local
+
+      - name: Update composer.json file
+        run: |
+          rm -rf ~/lab/prod_back/composer.json
+          cp -r backend/composer.json ~/lab/prod_back/composer.json
+
+      - name: Update composer.lock file
+        run: |
+          rm -rf ~/lab/prod_back/composer.lock
+          cp -r backend/composer.lock ~/lab/prod_back/composer.lock
+
+      - name: Update dependencies
+        run: |
+          cd ~/lab/prod_back
+          docker compose exec php composer install
+
+      - name: Update certificates
+        run: |
+          cd ~/lab/prod_back
+          docker compose exec php php bin/console lexik:jwt:generate-keypair -n --overwrite
+
+      # - name: Migrations
+      #   run: |
+      #     cd ~/lab/prod_back
+      #     docker compose exec php rm -r migrations
+      #     docker compose exec php mkdir migrations
+      #     docker compose exec php php bin/console make:migration -n
+      #     docker compose exec php php bin/console d:m:m -n
+      #     docker compose exec php php bin/console d:f:l -n
+
+  notification:
+    runs-on: ubuntu-latest
+
+    needs: deploy
+
+    steps:
+      - name: Discord notification
+        uses: Ilshidur/action-discord@0.3.2
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_USERNAME: BOT ChallengeS3
+          DISCORD_AVATAR: https://resize.programme-television.ladmedia.fr/r/670,670/img/var/premiere/storage/images/tele-7-jours/news-tv/oss-117-le-caire-nid-d-espions-c8-le-show-de-jean-dujardin-4484285/90175763-1-fre-FR/OSS-117-Le-Caire-nid-d-espions-C8-Le-show-de-Jean-Dujardin.jpg
+        with:
+          args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed.'

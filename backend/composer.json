@@ -1,11 +1,14 @@
 {
+    "name": "challenge/apiplatform",
+    "description": "Challenge API Platform",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.1",
         "ext-ctype": "*",
+        "ext-curl": "*",
         "ext-iconv": "*",
         "api-platform/core": "^3.1",
         "doctrine/doctrine-bundle": "^2.10",
@@ -13,9 +16,11 @@
         "doctrine/orm": "^2.16",
         "hautelook/alice-bundle": "^2.12",
         "lexik/jwt-authentication-bundle": "^2.19",
+        "mailjet/mailjet-apiv3-php": "^1.6",
         "nelmio/cors-bundle": "^2.3",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.24",
+        "resend/resend-php": "^0.10.1",
         "symfony/asset": "6.3.*",
         "symfony/console": "6.3.*",
         "symfony/dotenv": "6.3.*",
@@ -64,6 +69,7 @@
         "symfony/polyfill-php81": "*"
     },
     "scripts": {
+        "test": "vendor/bin/phpunit",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
@@ -86,6 +92,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "phpunit/phpunit": "^10.5",
         "symfony/debug-bundle": "6.3.*",
         "symfony/maker-bundle": "^1.50",
         "symfony/stopwatch": "6.3.*",

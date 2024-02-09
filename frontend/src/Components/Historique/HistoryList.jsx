@@ -6,7 +6,7 @@ import {historyGet} from "../../services/getHistory.js";
 import '@css/History.css';
 
 
-export default function TaskList() {
+export default function TaskList({isCoach}) {
 
     const [slots, setSlot] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -25,6 +25,7 @@ export default function TaskList() {
         setSlot(result['hydra:member']);
         setTotalItems(result['hydra:totalItems']);
         setLoading(false);
+        console.log(result['hydra:member'])
 
     };
 
@@ -35,7 +36,7 @@ export default function TaskList() {
                 loading
                     ? <div>Chargement...</div>
                     : slots.map((slot, index) => (
-                        <HistorySlot slot={slot} key={index}/>
+                        <HistorySlot slot={slot} key={index} isCoach={isCoach}/>
                     ))
             }
             </div>

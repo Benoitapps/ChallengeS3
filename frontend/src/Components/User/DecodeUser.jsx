@@ -3,26 +3,49 @@ import { jwtDecode } from "jwt-decode";
 import { getIdClient } from "../../hook/user/idClientUser.js";
 
 
-export const getUserId = async () => {
+const getUserId = async () => {
 
 
     const storedValue = localStorage.getItem('token');
 
     if (storedValue) {
-        // console.log('Retrieved value from local storage:', storedValue);
         const decodedToken = jwtDecode(storedValue);
-        // console.log(decodedToken);
-        // console.log(decodedToken.user_id);
 
-        const client = await getIdClient(decodedToken.user_id);
-        // console.log("client",client);
-        // console.log("client.client",client.client)
-        const idClient = client.client.id;
-        // console.log("idClient",idClient)
+        const user = await getIdClient(decodedToken.user_id);
+        let idUser;
 
-        return idClient;
+        if(user.client) {
+            idUser = user.client.id;
+        } else if(user.coach) {
+            idUser = user.coach.id;
+        } else if(user.manager) {
+            idUser = user.manager.id;
+        } else if(user.admin) {
+            idUser = user.admin.id;
+        } else {
+            console.log('No value found in local storage for the specified key');
+        }
+
+        return idUser;
     } else {
         console.log('No value found in local storage for the specified key');
     }
 
 };
+
+const getUserEmail = async () => {
+
+    const storedValue = localStorage.getItem('token');
+
+    if (storedValue) {
+        const decodedToken = jwtDecode(storedValue);
+        const emailClient = decodedToken.username;
+
+        return emailClient;
+    } else {
+        console.log('No value found in local storage for the specified key');
+    }
+
+};
+
+export { getUserId,getUserEmail};

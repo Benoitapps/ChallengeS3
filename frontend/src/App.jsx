@@ -11,11 +11,12 @@ import Login from './Components/Authentication/Login';
 import SignUp from './Components/Authentication/SignUp';
 import Schedule from './Components/Calendar/Schedule.jsx';
 import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
-import Profile from './Components/Profile.jsx';
+import Profile from './Components/Profile/Profile.jsx';
 import ClubsPage from './Components/ClubsPage.jsx';
 import ClubDetails from './Components/Club/ClubDetails.jsx';
 import HistoryPage from "./Components/Historique/HistoryPage.jsx";
 import CoachPage from './Components/Coach/CoachPage.jsx';
+import ClientPage from "./Components/Client/ClientPage.jsx";
 import Dashboard from './Components/DashBoard/DashboardPage.jsx';
 
 // Admin
@@ -24,6 +25,7 @@ import HomeAdmin from './Components/Admin/Home';
 import UsersList from './Components/Admin/UsersList.jsx';
 import CompaniesList from './Components/Admin/CompaniesList.jsx';
 import AdminRoute from './AdminRoute.jsx';
+import DashboardAdmin from "./Components/DashBoard/DashboardAdmin/DashboardPageAdmin.jsx";
 
 // Manager
 import NavBarManager from './Components/Manager/NavBar';
@@ -36,6 +38,7 @@ import AddFranchise from "./Components/Manager/AddFranchise.jsx";
 import Unauthorize from './Components/Unauthorize.jsx';
 import i18next from "./i18n.js";
 import {useTranslation, Trans} from "react-i18next";
+import DashboardPageAdmin from "./Components/DashBoard/DashboardAdmin/DashboardPageAdmin.jsx";
 
 function App() {
   const userIsAdmin = () => {
@@ -104,18 +107,19 @@ function App() {
           <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} isManager={isManager} isCoach={isCoach}/>}>
             {/* Route for user not connected */}
             <Route index element={<ClubsPage/>} />
-            <Route path="club/:id" element={<ClubDetails/>} />
-            <Route path="coach/:id" element={<CoachPage/>} />
+            <Route path="club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected} isAdmin={isAdmin} update={false}/>} />
+            <Route path="coach/:id" element={<CoachPage isConnected={isConnected}/> } />
+            <Route path="client/:id" element={<ClientPage/>} />
 
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login handleConnect={handleConnect} />} />
 
             {/* Route for user connected */}
-            <Route path="schedule" element={ <UserRoute component={Schedule} onButtonClick={setEventDetail} isConnected={isConnected}/> } />
-            <Route path="profile" element={ <UserRoute component={Profile} isConnected={isConnected}/> } />
+            <Route path="schedule" element={ <UserRoute component={Schedule} onButtonClick={setEventDetail} isConnected={isConnected} isCoach={isCoach}/> } />
+            <Route path="profile" element={ <UserRoute component={Profile} isConnected={isConnected} isCoach={isCoach} isManager={isManager}/> } />
             <Route path="prestation/:prestationId/coach/:coachId/update" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={true} isConnected={isConnected}/> }  />
             <Route path="prestation/:prestationId/coach/:coachId/add" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={false} isConnected={isConnected}/>} />
-            <Route path="history" element={<UserRoute component={HistoryPage}isConnected={isConnected}/>} />
+            <Route path="history" element={<UserRoute component={HistoryPage}isConnected={isConnected} isCoach={isCoach}/>} />
 
 
             {/* Route doesn't exist */}
@@ -130,6 +134,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<NavBarAdmin isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} />}>
                   <Route index element={<AdminRoute index component={HomeAdmin} isAdmin={isAdmin} />} />
+                  <Route path="adminDashboard" element={<AdminRoute component={DashboardAdmin} isAdmin={isAdmin} />} />
                   <Route path="users" element={<AdminRoute component={UsersList} isAdmin={isAdmin} />} />
                   <Route path="companies" element={<AdminRoute component={CompaniesList} isAdmin={isAdmin} />} />
                 </Route>
@@ -146,6 +151,8 @@ function App() {
                     <Route  index element={<ManagerRoute index component={Dashboard} isManager={isManager} />} />
                     <Route path="company" element={<ManagerRoute component={AddCompany} isManager={isManager}/>} />
                     <Route path="franchise" element={<ManagerRoute component={AddFranchise} isManager={isManager}/>} />
+                    <Route path="home/club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected} isAdmin={isAdmin} update={true}/>} />
+
                   </Route>
                 </Routes>
             )}

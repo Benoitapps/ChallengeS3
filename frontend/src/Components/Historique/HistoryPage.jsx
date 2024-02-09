@@ -7,8 +7,7 @@ import '@css/History.css';
 
 
 
-function HistoryPage() {
-
+function HistoryPage({isCoach}) {
 
     return (
         <>
@@ -20,6 +19,7 @@ function HistoryPage() {
                 <div className="listPage">
                     <HistoryList
                         container={HistoryList}
+                        isCoach={isCoach}
                         />
                 </div>
             </div>

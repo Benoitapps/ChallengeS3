@@ -12,8 +12,10 @@ import { eventCoach } from "../../services/eventCoach.js";
 import { sheduleCoach } from "../../services/sheduleCoachGet.js"
 import {postSlot} from "../../hook/Schedule/eventPost.js";
 import {patchSlot} from "../../hook/Schedule/eventPatch.js";
+import {postEmail} from "../../hook/Mail/postEmail.js";
 import { useNavigate, useParams } from 'react-router-dom';
-import {getUserId} from "../User/DecodeUser.jsx";
+import {getUserEmail, getUserId} from "../User/DecodeUser.jsx";
+import {getCoachEmail} from "../../hook/coach/getCoach.js";
 import loadingGIF from "@img/loading.gif";
 import {useTranslation, Trans} from "react-i18next";
 import frLocale from '@fullcalendar/core/locales/fr';
@@ -30,6 +32,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
     const [idPrestation, setIdPrestation] = useState(prestationId);
     const [idCoach, setIdCoach] = useState(coachId);
     const [idClient, setIdClient] = useState(null);
+    const [emailClient, setEmailClient] = useState(null);
 
     //Horraire du coach ainsi que ces evenements
     const [scheduleHeur, setSheduleHeur] = useState([]);
@@ -54,9 +57,11 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
     //recuperation des evenement et des horraires du coach
     async function fetchData() {
-        let tabHorraire = await sheduleCoach(idCoach, calendarFilterStart, calendarFilterEnd);
+        let tabHorraire = await sheduleCoach(idCoach, calendarFilterStart, calendarFilterEnd,lang);
         let eventCoaches = await eventCoach(idCoach,lang);
         let idClient = await getUserId();
+        let getemailClient = await getUserEmail();
+        setEmailClient(getemailClient);
 
         if (calendarRef && calendarRef.current.getApi()) {
             const api = calendarRef.current.getApi();
@@ -208,6 +213,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
     };
 
+
     const reserveModal = (e) => {
 
         const upadateSlot = async (dateStart, dateEnd, slotId) => {
@@ -217,6 +223,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
         const addslot = async (dateStart, dateEnd, idPrestation, idCoach, idClient) => {
             const getData = await postSlot(dateStart, dateEnd,idPrestation,idCoach,idClient);
+
             if (getData && getData?.status === 500) {
                 console.log("ya une erreur")
                 const modalContentreserve = (
@@ -226,6 +233,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
                 );
                 setIsModalOpenErreur(true);
                 setModalContent(modalContentreserve);
+
             }else {
             }
 
@@ -247,9 +255,15 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
     };
 
-    const deleteSlotbyID = (e) => {
+    const asyncDeleteSlot = async () => {
+        const coachEmail = await getCoachEmail(idCoach);
+        await postEmail(emailClient,"Suppression  de cours","Votre cours du "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le coach "+coachEmail.auth.email+" a ete supprimer";
+        await postEmail(coachEmail.auth.email,"Suppression  de cours","Votre cours du "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le client "+emailClient+" a ete supprimer";
 
+    }
+    const deleteSlotbyID = (e) => {
         deleteSlot(eventId);
+        asyncDeleteSlot();
         fetchData();
         closeModal();
     };
@@ -268,7 +282,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
             <FullCalendar
                 ref={calendarRef}
-                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
+                plugins={[ timeGridPlugin, interactionPlugin, listPlugin]}
                 initialView={'timeGridWeek'}
                 slotDuration="01:00:00"
                 events={events}
@@ -286,7 +300,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
                 }
 
                 height={"36em"}
-                locale={lang === "fr" ? frLocale : "en"}
+                locale={lang === "fr" ? "fr" : "en"}
                 dateClick={(e) => handleDateClick(e)}
                 datesSet={handleDateChange}
                 eventClick={false}
