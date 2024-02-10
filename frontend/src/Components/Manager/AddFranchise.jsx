@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
+import '@css/Franchise.css';
 const env = import.meta.env;
 
 function AddFranchise() {
@@ -20,6 +21,11 @@ function AddFranchise() {
 
             const response = await fetch(`https://nominatim.openstreetmap.org/search?street=${address}&city=${city}&postalcode=${zipCode}&format=json`);
             const location = await response.json();
+
+            if (location.length === 0) {
+                throw new Error("L'adresse saisie semble invalide, veuillez vérifier les informations");
+            }
+
             const lat = location[0].lat;
             const lng = location[0].lon;
 
@@ -35,8 +41,6 @@ function AddFranchise() {
                     address: data.get('address'),
                     city: data.get('city'),
                     zipCode: data.get('zip_code'),
-                    // lat: parseFloat(data.get('latitude')),
-                    // lng: parseFloat(data.get('longitude')),
                     lat: parseFloat(lat),
                     lng: parseFloat(lng),
                     image: imageFile,
@@ -51,9 +55,18 @@ function AddFranchise() {
                 navigate("/manager");
             }
         } catch (error) {
-            setError('Une erreur est survenue');
+            if (error.message === "L'adresse saisie semble invalide, veuillez vérifier les informations") {
+                setError(error.message);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 2000);
+            } else {
+                setError('Une erreur est survenue');
+                setLoading(false);
+            }
+            // setLoading(false);
         } finally {
-            setLoading(false);
+            // setLoading(false);
         }
     };
 
@@ -98,7 +111,7 @@ function AddFranchise() {
                         {/*<input type="number" step="any" id="longitude" name="longitude" placeholder="Longitude" required></input>*/}
                         <input type="file" onChange={handleChange}/>
                         <div className="login-signup__form__submit">
-                            <input type="submit" value="Ajouter" disabled={loading}/>
+                            <input type="submit" value={loading ? 'Veuillez patienter...' : 'Ajouter'} disabled={loading}/>
                         </div>
                     </form>
                 </div>
