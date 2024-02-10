@@ -7,8 +7,8 @@ const transformData = (initialData,lang) => {
         const endDate = new Date(item.endDate);
 
         // Soustraire une heure
-        startDate.setHours(startDate.getHours() - 1);
-        endDate.setHours(endDate.getHours() - 1);
+        // startDate.setHours(startDate.getHours() - 1);
+        //         // endDate.setHours(endDate.getHours() - 1);
 
         return {
             id: item.id,
