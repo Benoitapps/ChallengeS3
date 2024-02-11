@@ -70,6 +70,22 @@ function Home({ isManager, companyStatus }) {
                                     }}>
                                         <button>Ajouter un coach</button>
                                     </Link>
+                                    <h3>Prestations :</h3>
+                                    {franchise.prestations.length === 0 ? (
+                                        <div>Il n'y a pas encore de prestations pour cette franchise.</div>
+                                    ) : (
+                                        franchise.prestations.map((prestation) => (
+                                            <div key={prestation.id}>
+                                                <p>Nom : {prestation.name}</p>
+                                            </div>
+                                        ))
+                                    )}
+                                    <Link to={{
+                                        pathname: `/manager/addPrestation/${franchise.id}`,
+                                        state: { franchiseName: franchise.name }
+                                    }}>
+                                        <button>Ajouter une prestation</button>
+                                    </Link>
                                 </div>
                             ))}
                         </div>

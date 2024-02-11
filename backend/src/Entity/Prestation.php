@@ -18,7 +18,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Post(
             denormalizationContext: [
                 'groups' => ['prestation:write']
-            ]
+            ],
+            security: "is_granted('ROLE_MANAGER')",
         ),
         new Get(
             normalizationContext: [

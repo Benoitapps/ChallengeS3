@@ -34,6 +34,7 @@ import ManagerRoute from './ManagerRoute.jsx';
 import AddCompany from "./Components/Manager/AddCompany.jsx";
 import AddFranchise from "./Components/Manager/AddFranchise.jsx";
 import AddCoach from "./Components/Manager/AddCoach.jsx";
+import AddPrestation from "./Components/Manager/AddPrestation.jsx";
 
 // Special
 import Unauthorize from './Components/Unauthorize.jsx';
@@ -187,7 +188,9 @@ function App() {
                     <Route index element={<ManagerRoute index component={Dashboard} isManager={isManager} companyStatus={companyStatus} />} />
                     <Route path="company" element={<ManagerRoute component={AddCompany} isManager={isManager} companyStatus={companyStatus} setCompanyStatus={setCompanyStatus} />} />
                     <Route path="franchise" element={<ManagerRoute component={AddFranchise} isManager={isManager} companyStatus={companyStatus} />} />
-                    <Route path="addCoach/:franchiseId" element={<ManagerRoute component={AddCoach} isManager={isManager} companyStatus={companyStatus} />} /><Route path="home/club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected} isAdmin={isAdmin} update={true}/>} />
+                    <Route path="addCoach/:franchiseId" element={<ManagerRoute component={AddCoach} isManager={isManager} companyStatus={companyStatus} />} />
+                    <Route path="home/club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected} isAdmin={isAdmin} update={true}/>} />
+                    <Route path="addPrestation/:franchiseId" element={<ManagerRoute component={AddPrestation} isManager={isManager} companyStatus={companyStatus} />} />
                   </Route>
                 </Routes>
             )}
