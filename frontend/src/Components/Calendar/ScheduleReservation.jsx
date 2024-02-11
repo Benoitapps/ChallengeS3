@@ -218,18 +218,11 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
         const upadateSlot = async (dateStart, dateEnd, slotId) => {
             const getData = await patchSlot(dateStart, dateEnd,slotId);
-            const coachEmail = await getCoachEmail(idCoach);
-            await postEmail(emailClient,"Modification de cours","Votre cours a ete modifier et a maintenant lieu le "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le coach "+coachEmail.auth.email;
-            await postEmail(coachEmail.auth.email,"Modification de cours","Votre cours a ete modifier et a maintenant lieu le"+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le client "+emailClient;
-
             navigate("/schedule");
         }
 
         const addslot = async (dateStart, dateEnd, idPrestation, idCoach, idClient) => {
             const getData = await postSlot(dateStart, dateEnd,idPrestation,idCoach,idClient);
-            const coachEmail = await getCoachEmail(idCoach);
-            await postEmail(emailClient,"Reservation de cours","Votre cours est bien reserver le "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le coach "+coachEmail.auth.email;
-            await postEmail(coachEmail.auth.email,"Reservation de cours","Vous avez un cours reservé le "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le client "+emailClient;
 
             if (getData && getData?.status === 500) {
                 console.log("ya une erreur")

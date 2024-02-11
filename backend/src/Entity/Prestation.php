@@ -31,7 +31,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             denormalizationContext: [
                 'groups' => ['prestation:update']
             ],
-            security: "is_granted('ROLE_MANAGER')",
+            security: "is_granted('ROLE_MANAGER') and object.getFranchise().getCompany().getManager().getAuth().getId() === user.getId()",
         )
     ]
 )]

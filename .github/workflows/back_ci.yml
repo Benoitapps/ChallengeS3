@@ -5,9 +5,12 @@ on:
     branches:
       - main
       - dev
+    paths:
+      - 'backend/**'
+      - '.github/workflows/**'
 
 jobs:
-  build-test:
+  php-unit-test:
     runs-on: ubuntu-latest
 
     env:
@@ -41,9 +44,9 @@ jobs:
   notification:
     runs-on: ubuntu-latest
 
-    needs: build-test
+    needs: php-unit-test
     if: |
-      always() && (needs.build-test.result == 'success' || needs.build-test.result == 'skipped')
+      always() && (needs.php-unit-test.result == 'success' || needs.php-unit-test.result == 'skipped')
 
     steps:
       - name: Discord notification
