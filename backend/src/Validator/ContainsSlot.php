@@ -6,6 +6,7 @@ use App\Entity\Schedule;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
@@ -15,10 +16,8 @@ class ContainsSlot extends ConstraintValidator
 
 {
     private EntityManagerInterface $entityManager;
-    private LoggerInterface $logger;
 
 
-    // Inject the EntityManagerInterface through the constructor
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -30,18 +29,23 @@ class ContainsSlot extends ConstraintValidator
             return;
         }
 
-        // Perform a database query to check if the value exists
-        $repository = $this->entityManager->getRepository(Schedule::class); // Replace YourEntity with your actual entity class
-        $result = $repository->findOneBy(['start_date' => $value]);
-        $this->logger->info('The value is: ' . $value);
+        $dateValue = new Date($value['start_date']);
 
-        if ($result !== null) {
-            return; // Value exists in the database, validation passed
+        $repository = $this->entityManager->getRepository(Schedule::class);
+        $sheduleCoach= $repository->findOneBy(['start_date' => $dateValue] AND ['coach' => $value['coach']]);
+
+        if(!$sheduleCoach) {
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $value)
+                ->addViolation();
         }
 
-        // The value was not found in the database, add a validation error
-        $this->context->buildViolation($constraint->message)
-            ->setParameter('{{ string }}', $value)
-            ->addViolation();
+        if ($sheduleCoach->getStart_date() > $value['start_date'] || $sheduleCoach->getEnd_date() < $value['end_date']) {
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $value)
+                ->addViolation();
+        }
+
+
     }
 }
