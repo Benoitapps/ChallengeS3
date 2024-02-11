@@ -104,8 +104,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:admin:read'])]
     private ?int $id = null;
     
-    #[Groups(['user:read', 'user:write', 'user:update', 'user:admin:write', 'user:admin:update', 'user:admin:read','coach:read:email'])]
-    #[ORM\Column(length: 180, unique: true)]
+    #[Groups(['user:read', 'user:write', 'user:update', 'user:admin:write', 'user:admin:update', 'user:admin:read','coach:read:email', 'client:read', 'client:write', 'coach:read', 'coach:write', 'manager:read', 'manager:update'])]
+    #[ORM\Column(length: 180, unique: true, nullable: false)]
     private ?string $email = null;
     
     #[ORM\Column]
@@ -113,6 +113,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     #[Groups(['user:write', 'user:update'])]
+//    #[Groups(['user:write', 'user:update', 'client:write', 'coach:write'])]
     private ?string $plainPassword = null;
     
     /**
