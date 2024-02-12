@@ -1,16 +1,13 @@
-import React, { useEffect } from 'react';
 import {dateStrings} from "../../services/dateStrings.js";
 import {useNavigate, Link} from "react-router-dom";
 import '@css/History.css';
-
+import {useTranslation} from "react-i18next";
 
 function HistorySlot({ slot, isCoach }) {
-
-
    const dateStart = dateStrings(slot.startDate)
     const dateEnd = dateStrings(slot.endDate)
     const navigate = useNavigate();
-
+    const {t} = useTranslation();
 
     const reschedule = (prestationId, coachId) => {
         const route = `/prestation/${prestationId}/coach/${coachId}/add`;
@@ -52,7 +49,7 @@ function HistorySlot({ slot, isCoach }) {
 
             {!isCoach ? <td className="partSlot noPadding">
                 <button className="buttonSlot"
-                        onClick={() => reschedule(slot.prestation.id, slot.coach.id)}>Reprendre
+                        onClick={() => reschedule(slot.prestation.id, slot.coach.id)}>{t('Reschedule')}
                 </button>
             </td> : null}
         </tr>

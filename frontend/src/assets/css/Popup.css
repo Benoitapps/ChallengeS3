@@ -1,7 +1,7 @@
 .popup {
   position: absolute;
   z-index: 3;
-  top: 50%;
+  top: calc(50% + 32.5px);
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: var(--background);

@@ -14,7 +14,7 @@ function ClubsPage() {
     return (
         <main>
             <div style={{display: 'flex'}}>
-                <div style={{width: '50%', minHeight: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
+                <div style={{width: '50%', minHeight: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '20px', padding: '0 50px'}}>
                     <FilterBar addFilter={addFilter}/>
                     <ClubsList clubs={clubs} setClubs={setClubs} filter={filters}/>
                 </div>

@@ -2,9 +2,11 @@ import React from 'react';
 import { Outlet, Link, Navigate } from "react-router-dom";
 import '@css/NavBar.css';
 import logo from "@img/logo.svg";
-
+import { useTranslation } from 'react-i18next';
 
 function NavBar({ isManager }) {
+    const { t } = useTranslation();
+
     return (
         <>
             {
@@ -21,18 +23,18 @@ function NavBar({ isManager }) {
                                             <Link to="">Dashboard</Link>
                                         </li>
                                         <li>
-                                            <Link to="home">Mes Franchises</Link>
+                                            <Link to="home">{t('MyFranchises')}</Link>
                                         </li>
                                         <li>
-                                            <Link to="company">Ajouter mon entreprise</Link>
+                                            <Link to="company">{t('AddCompany')}</Link>
                                         </li>
                                         <li>
-                                            <Link to="franchise">Ajouter une franchise</Link>
+                                            <Link to="franchise">{t('AddFranchise')}</Link>
                                         </li>
                                     </div>
                                     <div className="header__right">
                                         <li>
-                                            <Link to="/">Retour</Link>
+                                            <Link to="/">{t('Back')}</Link>
                                         </li>
                                     </div>
                                 </ul>

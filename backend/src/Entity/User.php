@@ -19,6 +19,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\State\UserPasswordHasher;
 use App\Controller\UserController;
+use App\Controller\ForgotPasswordController;
 
 #[ApiResource(
     normalizationContext: [
@@ -91,6 +92,16 @@ use App\Controller\UserController;
         new Delete(
             security: "is_granted('ROLE_ADMIN')"
         ),
+        new Post(
+            controller: ForgotPasswordController::class,
+            uriTemplate: '/forgot-password',
+            normalizationContext: [
+                'groups' => [],
+            ],
+            denormalizationContext: [
+                'groups' => [],
+            ],
+        )
     ],
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -141,6 +152,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
     #[Groups(['user:read', 'user:write', 'user:admin:write'])]
     private ?Manager $manager = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $token = null;
 
     public function getId(): ?int
     {
@@ -289,6 +303,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->manager = $manager;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): static
+    {
+        $this->token = $token;
 
         return $this;
     }

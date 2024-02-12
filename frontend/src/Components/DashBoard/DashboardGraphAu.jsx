@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -9,15 +9,16 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import {statCoachReservation} from "../../services/StatServices/statReservByCoach.js";
+import {useTranslation} from "react-i18next";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 function DashboardGraphAu() {
-
     const chartRef = useRef();
     const [tab, setTab] = useState([]);
     const [label, setLabel] = useState([]);
     const [note, setNote] = useState([]);
+    const {t} = useTranslation();
 
     const fetchData = async () => {
         let res = await statCoachReservation();
@@ -50,7 +51,7 @@ function DashboardGraphAu() {
         labels:label,
         datasets: [
             {
-                label: 'Nomvbre de réservation',
+                label: t('NumberBooking'),
                 data:note,
                 backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#66ff99'],
                 hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#66ff99'],
@@ -65,7 +66,7 @@ function DashboardGraphAu() {
         plugins: {
             title: {
                 display: true,
-                text: 'Nombre de réservation par coach',
+                text: t('NumberBookingByCoach'),
                 font: {
                     size: 16,
                 },

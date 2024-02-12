@@ -1,5 +1,4 @@
 <?php
-// api/src/EventSubscriber/BookMailSubscriber.php
 
 namespace App\EventSubscriber;
 
@@ -18,25 +17,17 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class EventMail implements EventSubscriberInterface
 {
-
-    private EntityManagerInterface $entityManager;
-    private RouterInterface $router;
-
-
-
-    public function __construct(EntityManagerInterface $entityManager , RouterInterface $router)
-    {
-        $this->entityManager = $entityManager;
-        $this->router = $router;
-
-
+    public function __construct(
+        protected EntityManagerInterface $entityManager ,
+        protected RouterInterface $router,
+        protected string $secret
+    ) {
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::VIEW => ['sendMail', EventPriorities::POST_WRITE],
-
         ];
     }
 
@@ -55,7 +46,7 @@ final class EventMail implements EventSubscriberInterface
 
             $requestData = json_decode($event->getRequest()->getContent(), true);
 
-            $resend = Resend::client('re_FVip7GLa_4AGNShHcF8QdPdWTHNs7b1my');
+            $resend = Resend::client($this->secret);
 
             if ($requestData['coach'] !== null) {
                 $providedCoachId = basename($requestData['coach']);
@@ -92,7 +83,7 @@ final class EventMail implements EventSubscriberInterface
             $uri = $event->getRequest()->getRequestUri();
             $slotId = $this->extractSlotIdFromUri($uri);
 
-            $resend = Resend::client('re_FVip7GLa_4AGNShHcF8QdPdWTHNs7b1my');
+            $resend = Resend::client($this->secret);
 
             if ($slotId !== null) {
 
@@ -126,7 +117,7 @@ final class EventMail implements EventSubscriberInterface
             $uri = $event->getRequest()->getRequestUri();
             $slotId = $this->extractSlotIdFromUri($uri);
 
-            $resend = Resend::client('re_FVip7GLa_4AGNShHcF8QdPdWTHNs7b1my');
+            $resend = Resend::client($this->secret);
 
             if ($slotId !== null) {
 
@@ -153,9 +144,6 @@ final class EventMail implements EventSubscriberInterface
                 ]);
             }
         }
-
-
-
 
     }
     private function extractSlotIdFromUri(string $uri): ?int

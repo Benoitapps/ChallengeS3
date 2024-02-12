@@ -1,0 +1,45 @@
+.user-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+}
+
+.user-list__table {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    border-radius: var(--radius-picture);
+    overflow: hidden;
+    box-shadow: var(--input-shadow);
+}
+
+.user-list__table__head th,
+.user-list__table__body__line__column {
+    text-align: left;
+    padding: 15px 20px;
+}
+
+.user-list__table__head {
+    background-color: var(--dark-background);
+    color: var(--text-white);
+}
+
+.user-list__table__body__line:nth-child(odd) {
+    background-color: var(--background-table)
+}
+
+.user-list__table__body__line__column:last-child {
+    display: flex;
+}
+
+.user-list__button {
+    color: var(--primary);
+    background: none;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+}
