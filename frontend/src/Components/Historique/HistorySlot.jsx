@@ -18,42 +18,42 @@ function HistorySlot({ slot, isCoach }) {
     }
 
     return (
-            <div className="allSlot">
-                <div className="lineSlot" >
-                    <div className="partSlot" id="prestationSlot">{slot.prestation?.name}</div>
+        <tr className="lineSlot">
+            <td className="partSlot" id="prestationSlot">{slot.prestation?.name}</td>
 
-                    <div className="partSlot" id="clientFirstnameSlot">
-                        {
-                            isCoach? <Link to={`/client/${slot.client.id}`}>{slot.client.auth.firstname}</Link>
-                            : slot.client.auth.firstname
-                        }
-                    </div>
-                    <div className="partSlot" id="clientLastnameSlot">
-                        {
-                            isCoach? <Link to={`/client/${slot.client.id}`}>{slot.client.auth.lastname}</Link>
-                            : slot.client.auth.lastname
-                        }
-                    </div>
+            <td className="partSlot" id="clientFirstnameSlot">
+                {
+                    isCoach ? <Link to={`/client/${slot.client.id}`}>{slot.client.auth.firstname}</Link>
+                        : slot.client.auth.firstname
+                }
+            </td>
+            <td className="partSlot" id="clientLastnameSlot">
+                {
+                    isCoach ? <Link to={`/client/${slot.client.id}`}>{slot.client.auth.lastname}</Link>
+                        : slot.client.auth.lastname
+                }
+            </td>
 
-                    <div className="partSlot" id="coachFirstnameSlot">
-                        {
-                            !isCoach? <Link to={`/coach/${slot.coach.id}`}>{slot.coach.auth.firstname}</Link>
-                            : slot.coach.auth.firstname
-                        }
-                    </div>
-                    <div className="partSlot" id="coachLastnameSlot">
-                        {
-                            !isCoach? <Link to={`/coach/${slot.coach.id}`}>{slot.coach.auth.lastname}</Link>
-                            : slot.coach.auth.lastname
-                        }
-                    </div>
+            <td className="partSlot" id="coachFirstnameSlot">
+                {
+                    !isCoach ? <Link to={`/coach/${slot.coach.id}`}>{slot.coach.auth.firstname}</Link>
+                        : slot.coach.auth.firstname
+                }
+            </td>
+            <td className="partSlot" id="coachLastnameSlot">
+                {
+                    !isCoach ? <Link to={`/coach/${slot.coach.id}`}>{slot.coach.auth.lastname}</Link>
+                        : slot.coach.auth.lastname
+                }
+            </td>
 
-                    <div>{dateStart}</div>
-                    <div>{dateEnd}</div>
+            <td className="partSlot">{dateStart}</td>
+            <td className="partSlot">{dateEnd}</td>
 
-                    {!isCoach? <button className="buttonSlot" onClick={() => reschedule( slot.prestation.id, slot.coach.id )}>Reprendre</button>: null}
-                </div>
-            </div>
+            {!isCoach ? <button className="buttonSlot"
+                                onClick={() => reschedule(slot.prestation.id, slot.coach.id)}>Reprendre</button> : null}
+        </tr>
     );
 }
+
 export default HistorySlot;
