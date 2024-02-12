@@ -9,17 +9,16 @@ function CoachDetails() {
     const [error, setError] = useState(null);
     const [coachLoading, setCoachLoading] = useState(false);
     const { coachId } = useParams();
-    const location = useLocation();
-    const franchiseName = location.state ? location.state.franchiseName : 'nom inconnu';
     const [coach, setCoach] = useState([]);
     const [prestations, setPrestations] = useState([]);
     const [selectedPrestation, setSelectedPrestation] = useState(null);
+    const [reload, setReload] = useState(false);
 
     useEffect(() => {
         const loadData = async () => {
             setCoachLoading(true);
 
-            let coach = await getCoachDetails(coachId);
+            const coach = await getCoachDetails(coachId);
 
             setCoach(coach);
             
@@ -30,11 +29,14 @@ function CoachDetails() {
             // let availablePrestations = franchisePrestations.filter(prestation => !coach.prestations.includes(prestation));
             let availablePrestations = franchisePrestations.filter(prestation => !coach.prestations.map(p => p.id).includes(prestation.id));
             setPrestations(availablePrestations);
+            if (availablePrestations.length > 0) {
+                setSelectedPrestation(availablePrestations[0].id);
+            }
             setCoachLoading(false);
         };
 
         loadData();
-    }, []);
+    }, [reload]);
 
     const handleSave = async () => {
         await saveCoachPrestation(coachId, selectedPrestation);
@@ -53,6 +55,8 @@ function CoachDetails() {
     
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
+        } else {
+            setReload(!reload);
         }
     
         const data = await response.json();
@@ -93,7 +97,7 @@ function CoachDetails() {
                     <button onClick={handleSave}>Sauvegarder</button> */}
                     {prestations.length > 0 ? (
                     <>
-                        <select value={selectedPrestation || ''} onChange={e => setSelectedPrestation(e.target.value)}>
+                        <select value={selectedPrestation || ''} onChange={e => setSelectedPrestation(Number(e.target.value))}>
                             {prestations.map(prestation => (
                                 <option key={prestation.id} value={prestation.id}>{prestation.name} - {prestation.price} €</option>
                             ))}
