@@ -34,9 +34,12 @@ function ClubItem({ club }) {
             </div>
             <div className="home-club-card__content">
                 <div className="home-club-card__content__details">
-                    <p className="home-club-card__content__details__prestation">
-                        {club.prestations[0].name}
-                    </p>
+                    <div className="home-club-card__content__details__prestations">
+                        {club.prestations.map((prestation, index) => (
+                            <p className="home-club-card__content__details__prestations__prestation"
+                               key={index}>{prestation.name}</p>
+                        ))}
+                    </div>
                     <h3 className="home-club-card__content__details__club">{club.name}</h3>
                     <p className="home-club-card__content__details__address">{club.address}, {club.city} {club.zip_code}</p>
                 </div>

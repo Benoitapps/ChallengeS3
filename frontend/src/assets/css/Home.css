@@ -39,11 +39,16 @@ a:hover {
     text-align: left;
 }
 
-.home-club-card__content__details__prestation {
+.home-club-card__content__details__prestations {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.home-club-card__content__details__prestations__prestation {
     font-weight: 500;
     color: var(--primary);
     font-size: 1rem; /* 16px */
-    margin-bottom: 10px;
 }
 
 .home-club-card__content__details__club {

@@ -73,3 +73,36 @@ a:hover {
 .franchise-card__content button {
     width: 100%;
 }
+
+.franchise-card .popup {
+    width: 800px !important;
+}
+
+.franchise-card .login-signup {
+    width: 100%;
+    max-width: initial;
+    padding: 0;
+}
+
+.franchise-card .login-signup .form-title {
+    font-size: 2rem; /* 32px */
+    font-weight: 700;
+}
+
+.franchise-card .login-signup__form {
+    flex-direction: initial;
+    flex-wrap: wrap;
+}
+
+.franchise-card .login-signup__form input {
+    width: calc(50% - 10px) !important;
+}
+
+.franchise-card .login-signup__form__submit,
+.franchise-card .login-signup__form__submit input {
+    width: 100% !important;
+}
+
+.franchise-card .login-signup__form__submit {
+    margin: 25px 0 18px;
+}
