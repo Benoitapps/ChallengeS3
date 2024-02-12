@@ -2,17 +2,16 @@ import React, {useEffect, useRef, useState} from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import {statFranchisePrice} from "../../services/StatServices/statFranchisePrice.js"
-
+import {useTranslation} from "react-i18next";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function DashboardGraphBi() {
-
     const chartRef = useRef();
-
     const [tab, setTab] = useState([]);
     const [label, setLabel] = useState([]);
     const [nombre, setnombre] = useState([]);
+    const {t} = useTranslation();
 
     const fetchData = async () => {
         let res = await statFranchisePrice();
@@ -43,7 +42,7 @@ function DashboardGraphBi() {
         labels: label,
         datasets: [
             {
-                label: 'La franchise a gagné ',
+                label: `${t('FranchiseWon')} `,
                 data: nombre,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -70,7 +69,7 @@ function DashboardGraphBi() {
         plugins: {
             title: {
                 display: true,
-                text: "Argent gagné par chaque franchise",
+                text: t('MoneyEarned'),
                 font: {
                     size: 16,
                 },
