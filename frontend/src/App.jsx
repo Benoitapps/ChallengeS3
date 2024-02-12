@@ -108,7 +108,7 @@ function App() {
   const [isManager, setIsManager] = useState(userIsManager() || false);
   const [isCoach, setisCoach] = useState(userIsCoach()|| false);
   const [eventDetail, setEventDetail] = useState(null);
-  const [companyStatus, setCompanyStatus] = useState('none');
+  const [companyStatus, setCompanyStatus] = useState('null');
 
 
   const handleDisconnect = () => {

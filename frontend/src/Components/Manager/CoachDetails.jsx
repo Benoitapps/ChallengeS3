@@ -85,12 +85,24 @@ function CoachDetails() {
                         )}
 
                     <h3>Ajouter une prestation :</h3>
-                    <select value={selectedPrestation} onChange={e => setSelectedPrestation(e.target.value)}>
+                    {/* <select value={selectedPrestation} onChange={e => setSelectedPrestation(e.target.value)}>
                         {prestations.map(prestation => (
                             <option key={prestation.id} value={prestation.id}>{prestation.name} - {prestation.price} €</option>
                         ))}
                     </select>
-                    <button onClick={handleSave}>Sauvegarder</button>
+                    <button onClick={handleSave}>Sauvegarder</button> */}
+                    {prestations.length > 0 ? (
+                    <>
+                        <select value={selectedPrestation || ''} onChange={e => setSelectedPrestation(e.target.value)}>
+                            {prestations.map(prestation => (
+                                <option key={prestation.id} value={prestation.id}>{prestation.name} - {prestation.price} €</option>
+                            ))}
+                        </select>
+                        <button onClick={handleSave}>Sauvegarder</button>
+                    </>
+                ) : (
+                    <p>Vous avez déjà ajouté à ce coach toutes les prestations de votre franchise.</p>
+                )}
 
                     </div>
                     )}
