@@ -6,6 +6,7 @@ use App\Entity\Client;
 use App\Entity\Coach;
 use App\Entity\Manager;
 use App\Entity\User;
+use Resend;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
 #[AsController]
 class UserController extends AbstractController
 {
-    public function __construct(private readonly UserPasswordHasherInterface $passwordHasher) {}
+    public function __construct(private readonly UserPasswordHasherInterface $passwordHasher, protected string $secret ) {}
 
     public function __invoke(Request $request, ManagerRegistry $doctrine)
     {
@@ -63,6 +64,8 @@ class UserController extends AbstractController
             $manager->setAuth($user);
             $entityManager->persist($manager);
             $entityManager->flush();
+            $this->sendEmail($userData['email'],"Inscription","Votre compte a bien ete cree");
+
         }
 
 //        if ($this->isCoach($userType)) {
@@ -77,6 +80,7 @@ class UserController extends AbstractController
             $client->setAuth($user);
             $entityManager->persist($client);
             $entityManager->flush();
+            $this->sendEmail($userData['email'],"Inscription","Votre compte a bien ete cree");
         }
 
         $userData = [
@@ -87,10 +91,24 @@ class UserController extends AbstractController
             // 'roles' => $user->getRoles(),
         ];
 
+
+
         return new Response(
             json_encode($userData),
             Response::HTTP_CREATED
         );
+    }
+
+    private function sendEmail($mail,$title,$text){
+
+        $resend = Resend::client($this->secret);
+
+        $resend->emails->send([
+            'from' => 'mycoach@mycoach.bendc.site',
+            'to' => $mail,
+            'subject' => $title,
+            'html' => $text,
+        ]);
     }
 
     private function isClient($userType)
@@ -107,4 +125,6 @@ class UserController extends AbstractController
     {
         return isset($userType) && strtolower($userType) == 'manager';
     }
+
+
 }
