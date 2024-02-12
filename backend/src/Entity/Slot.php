@@ -66,6 +66,7 @@ use App\Validator\ContainsSlot as ContainsSlotConstraint;
 )]
 #[ORM\Entity(repositoryClass: SlotRepository::class)]
 #[UniqueEntity(fields: ['startDate','endDate','coach'], message: 'Ce créneau est déjà pris')]
+#[ContainsSlotConstraint]
 class Slot
 {
 
@@ -79,7 +80,6 @@ class Slot
     #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots','slot:history:read:collection'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\GreaterThan('today')]
-//    #[ContainsSlotConstraint]
     private ?\DateTimeInterface $startDate = null;
 
     #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots','slot:history:read:collection'])]
@@ -101,6 +101,10 @@ class Slot
     #[Groups(['slot:read','slot:read:collection','slot:write'])]
     #[ORM\Column(type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
     private ?bool $vacation = null;
+
+    #[Groups(['slot:read','slot:write'])]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $date = null;
 
     public function getId(): ?int
     {
@@ -176,6 +180,18 @@ class Slot
     public function setVacation(?bool $vacation): static
     {
         $this->vacation = $vacation;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): static
+    {
+        $this->date = $date;
 
         return $this;
     }
