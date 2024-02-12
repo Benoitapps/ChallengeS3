@@ -52,13 +52,13 @@ function PrestaManagerItem({ club,reload }) {
                     <p className="franchise-card__content__details__lat-lng"><span>Lat</span> {club.lat}</p>
                     <p className="franchise-card__content__details__lat-lng"><span>Lng</span> {club.lng}</p>
                 </Link>
-                <button className="primary-button" onClick={() => handleClick(club)}>{t('Modify')}</button>
+                <button className="primary-button" onClick={() => handleClick(club)}>{t('Update')}</button>
             </div>
             <PopUp show={isModalOpenDetail} onClose={() => closeModal()}
                    annuler={t("Cancel")}>
                 {<div className="login-signup">
 
-                    <p className="form-title">{t('ModifyFranchise')}</p>
+                    <p className="form-title">{t('UpdateFranchise')}</p>
 
                     <form className="login-signup__form" onSubmit={handleSubmit}>
                         {
