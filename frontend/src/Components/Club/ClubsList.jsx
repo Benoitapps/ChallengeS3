@@ -1,4 +1,4 @@
-    import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getClubs } from '../../hook/clubs/getClubs';
 import ClubItem from './ClubItem';
 import Pagination from './Pagination';

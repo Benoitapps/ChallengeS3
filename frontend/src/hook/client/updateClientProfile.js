@@ -12,6 +12,8 @@ const updateClientProfile = async (clientId, client) => {
             "city": client.city,
             "zip_code": client.zip_code,
             "auth": {
+                "email": client.email,
+                // "plainPassword": client.password,
                 "firstname": client.firstname,
                 "lastname": client.lastname
             }

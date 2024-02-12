@@ -90,6 +90,9 @@ function App() {
   useEffect(() => {
     if (localStorage.getItem('token') && accountService.getValuesToken().exp_jwt < Date.now()) {
       localStorage.removeItem('token');
+      setIsConnected(false);
+      setIsAdmin(false);
+      setIsManager(false);
     }
     setIsAdmin(userIsAdmin());
     setIsManager(userIsManager());
@@ -116,7 +119,7 @@ function App() {
 
             {/* Route for user connected */}
             <Route path="schedule" element={ <UserRoute component={Schedule} onButtonClick={setEventDetail} isConnected={isConnected} isCoach={isCoach}/> } />
-            <Route path="profile" element={ <UserRoute component={Profile} isConnected={isConnected} isCoach={isCoach} isManager={isManager}/> } />
+            <Route path="profile" element={ <UserRoute component={Profile} isConnected={isConnected} isCoach={isCoach} isManager={isManager} handleDisconnect={handleDisconnect}/> } />
             <Route path="prestation/:prestationId/coach/:coachId/update" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={true} isConnected={isConnected}/> }  />
             <Route path="prestation/:prestationId/coach/:coachId/add" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={false} isConnected={isConnected}/>} />
             <Route path="history" element={<UserRoute component={HistoryPage}isConnected={isConnected} isCoach={isCoach}/>} />

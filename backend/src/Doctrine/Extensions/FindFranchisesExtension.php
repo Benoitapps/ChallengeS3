@@ -17,7 +17,7 @@ final class FindFranchisesExtension implements QueryCollectionExtensionInterface
 
     public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []): void
     {
-        if ($operation->getUriTemplate() !== '/franchises/with-prestations') {
+        if (Franchise::class !== $resourceClass || $operation->getUriTemplate() !== '/franchises/with-prestations') {
             return;
         }
         $this->addWhere($queryBuilder, $resourceClass);
@@ -25,16 +25,16 @@ final class FindFranchisesExtension implements QueryCollectionExtensionInterface
 
     public function applyToItem(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, array $identifiers, Operation $operation = null, array $context = []): void
     {
+        if (Franchise::class !== $resourceClass || $operation->getUriTemplate() !== '/franchises/with-prestations') {
+            return;
+        }
         $this->addWhere($queryBuilder, $resourceClass);
     }
     
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-//        if (Franchise::class !== $resourceClass) {
-//            return;
-//        }
-//        $rootAlias = $queryBuilder->getRootAliases()[0];
-//        // min one relation with prestations
-//        $queryBuilder->andWhere("$rootAlias.prestations IS NOT EMPTY");
+        $rootAlias = $queryBuilder->getRootAliases()[0];
+        // min one relation with prestations
+        $queryBuilder->andWhere("$rootAlias.prestations IS NOT EMPTY");
     }
 }

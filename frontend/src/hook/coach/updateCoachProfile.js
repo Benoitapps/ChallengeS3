@@ -10,6 +10,8 @@ const updateCoachProfile = async (coachId, coach) => {
         body: JSON.stringify({
             "biography": coach.biography,
             "auth": {
+                "email": coach.email,
+                // "plainPassword": coach.password,
                 "firstname": coach.firstname,
                 "lastname": coach.lastname
             }

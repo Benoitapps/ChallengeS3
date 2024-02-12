@@ -34,13 +34,11 @@ function Home() {
             {hasCompany ? (
                 <>
                     <h1>Mes franchises :</h1>
-                    <div style={{ width: '100%', display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+                    <div style={{ width: '100%', display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px', marginTop: '20px'}}>
                     {franchisesLoading && <div>Chargement...</div>}
-                    <div>
                         {franchises.map((franchise, index) => (
                             <PrestaManagerItem club={franchise} key={index} reload={reload}/>
                         ))}
-                    </div>
                     </div>
                 </>
             ) : (

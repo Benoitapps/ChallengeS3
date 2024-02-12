@@ -10,20 +10,38 @@ import ProfileCard from "./ProfileCard.jsx";
 import ProfileContent from "./ProfileContent.jsx";
 import '@css/Profile.css';
 import Alert from "../Alert.jsx";
+import {useNavigate} from "react-router-dom";
 
-export default function Profile({isManager, isCoach}) {
+export default function Profile({isManager, isCoach, handleDisconnect}) {
   const [user, setUser] = useState({});
   const [userProfile, setUserProfile] = useState({});
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   function updateProfile(data) {
       setUserProfile({...userProfile, ...data});
   }
 
   async function submitProfile() {
+      /*if(userProfile.password === '') {
+        delete userProfile.password;
+      }*/
+
+      if(userProfile.email === '') {
+        delete userProfile.email;
+      }
+
+      if(userProfile.firstname === '') {
+        delete userProfile.firstname;
+      }
+
+      if(userProfile.lastname === '') {
+        delete userProfile.lastname;
+      }
+
       if(isCoach) {
         setIsLoading(true);
         const result = await updateCoachProfile(user.id, userProfile);
@@ -71,6 +89,11 @@ export default function Profile({isManager, isCoach}) {
   }
 
     function removeAlertOnSuccess() {
+        if(userProfile.email) {
+            handleDisconnect();
+            navigate('/login');
+        }
+
         setTimeout(() => {
             setSuccess(false);
             setError(false);
