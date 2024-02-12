@@ -31,7 +31,6 @@ security:
         - { path: ^/api$, roles: PUBLIC_ACCESS } # Autorise uniquement l'accès à la racine de l'API
         - { path: ^/auth, roles: PUBLIC_ACCESS }
         - { path: ^/api/traductions, roles: PUBLIC_ACCESS }
-        - { path: ^/api/email, roles: PUBLIC_ACCESS }
         - { path: ^/api/franchises, roles: PUBLIC_ACCESS }
         - { path: ^/api/prestations/[\d]+, methods: GET, roles: PUBLIC_ACCESS }
         - { path: ^/api/coaches/[\d]+, methods: GET, roles: PUBLIC_ACCESS }
