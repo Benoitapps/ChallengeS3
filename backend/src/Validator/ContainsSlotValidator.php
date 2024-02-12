@@ -45,6 +45,13 @@ class ContainsSlotValidator extends ConstraintValidator
 
         ]);
 
+    dump($schedules);
+
+    if($schedules == []){
+        $this->context->buildViolation("La plage horaire n'est pas disponible.")
+            ->atPath('start_date') // ajustez le chemin si nécessaire
+            ->addViolation();
+    }
 
         foreach ($schedules as $schedule) {
             if ($schedule->getStartDate() > $value->getStartDate() || $schedule->getEndDate() < $value->getEndDate()) {
