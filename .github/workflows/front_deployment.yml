@@ -1,0 +1,79 @@
+name: Deployment Frontend
+
+on:
+  push:
+    branches:
+      - main
+      - improvement/ci-cd
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      working-directory: ./frontend
+
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run website
+        run: |
+          npm run dev &
+          sleep 5
+          curl -v http://localhost:5173/ -I
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: ${{ env.working-directory }}
+      
+      - if: failure()
+        uses: Ilshidur/action-discord@0.3.2
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_USERNAME: BOT ChallengeS3
+          DISCORD_AVATAR: https://resize.programme-television.ladmedia.fr/r/670,670/img/var/premiere/storage/images/tele-7-jours/news-tv/oss-117-le-caire-nid-d-espions-c8-le-show-de-jean-dujardin-4484285/90175763-1-fre-FR/OSS-117-Le-Caire-nid-d-espions-C8-Le-show-de-Jean-Dujardin.jpg
+        with:
+          args: 'Tests before deployment of the Frontend failed!'
+
+  deploy:
+    runs-on: self-hosted
+
+    needs: build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Build
+        run: |
+          cd frontend
+          cp ~/lab/.env.front .env.local
+          npm run build
+      
+      - name: Deploy frontend
+        run: |
+          rm -rf ~/lab/prod_front/*
+          cp -r frontend/dist/* ~/lab/prod_front
+      
+      - if: ${{failure() || success()}}
+        uses: Ilshidur/action-discord@0.3.2
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_USERNAME: BOT ChallengeS3
+          DISCORD_AVATAR: https://resize.programme-television.ladmedia.fr/r/670,670/img/var/premiere/storage/images/tele-7-jours/news-tv/oss-117-le-caire-nid-d-espions-c8-le-show-de-jean-dujardin-4484285/90175763-1-fre-FR/OSS-117-Le-Caire-nid-d-espions-C8-Le-show-de-Jean-Dujardin.jpg
+        with:
+          args: ${{ job.status == 'success' && 'Success ! The frontend has been deployed.' || 'Error ! The frontend has been not deployed.' }}

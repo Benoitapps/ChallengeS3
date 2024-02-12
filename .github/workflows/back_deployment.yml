@@ -1,33 +1,51 @@
-name: Deployment
+name: Deployment Backend
 
 on:
   push:
     branches:
       - main
+      - improvement/ci-cd
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     env:
-      working-directory: ./frontend
+      working-directory: ./backend
 
     defaults:
       run:
         working-directory: ${{ env.working-directory }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    - uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: npm install
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
 
-      - name: Run website
-        run: |
-          npm run dev &
-          sleep 5
-          curl -v http://localhost:5173/ -I
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --ignore-platform-reqs
+
+    - name: Run test suite
+      run: composer run-script test
+
+    - if: failure()
+      uses: Ilshidur/action-discord@0.3.2
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        DISCORD_USERNAME: BOT ChallengeS3
+        DISCORD_AVATAR: https://resize.programme-television.ladmedia.fr/r/670,670/img/var/premiere/storage/images/tele-7-jours/news-tv/oss-117-le-caire-nid-d-espions-c8-le-show-de-jean-dujardin-4484285/90175763-1-fre-FR/OSS-117-Le-Caire-nid-d-espions-C8-Le-show-de-Jean-Dujardin.jpg
+      with:
+        args: 'Tests before deployment of the Backend failed!'
 
   deploy:
     runs-on: self-hosted
@@ -38,22 +56,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: |
-          cd frontend
-          npm install
-
-      - name: Build
-        run: |
-          cd frontend
-          cp ~/lab/.env.front .env.local
-          npm run build
-      
-      - name: Deploy frontend
-        run: |
-          rm -rf ~/lab/prod_front/*
-          cp -r frontend/dist/* ~/lab/prod_front
-      
       - name: Update src folder
         run: |
           rm -rf ~/lab/prod_back/src/*
@@ -109,17 +111,11 @@ jobs:
       #     docker compose exec php php bin/console d:m:m -n
       #     docker compose exec php php bin/console d:f:l -n
 
-  notification:
-    runs-on: ubuntu-latest
-
-    needs: deploy
-
-    steps:
-      - name: Discord notification
+      - if: ${{failure() || success()}}
         uses: Ilshidur/action-discord@0.3.2
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           DISCORD_USERNAME: BOT ChallengeS3
           DISCORD_AVATAR: https://resize.programme-television.ladmedia.fr/r/670,670/img/var/premiere/storage/images/tele-7-jours/news-tv/oss-117-le-caire-nid-d-espions-c8-le-show-de-jean-dujardin-4484285/90175763-1-fre-FR/OSS-117-Le-Caire-nid-d-espions-C8-Le-show-de-Jean-Dujardin.jpg
         with:
-          args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed.'
+          args: ${{ job.status == 'success' && 'Success ! The backend has been deployed.' || 'Error ! The backend has been not deployed.' }}
