@@ -62,6 +62,7 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager, isCoach }) 
               <li>
                 <Link to="/">
                   <img src={logo} alt="Logo My Coach" />
+                  <div style={{color: "white"}}>Div created by github action</div>
                 </Link>
               </li>
               <div className="header__center">
