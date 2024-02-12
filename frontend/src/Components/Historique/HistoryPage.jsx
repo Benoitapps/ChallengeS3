@@ -1,20 +1,16 @@
-import React, {useEffect, useState} from 'react';
 import HistoryList from './HistoryList.jsx'
-import {Link} from "react-router-dom";
-import {useNavigate} from 'react-router-dom';
-// import HistorySlot from './HistorySlot.jsx'
 import '@css/History.css';
-
-
+import {useTranslation} from "react-i18next";
 
 function HistoryPage({isCoach}) {
+    const {t} = useTranslation();
 
     return (
         <>
         <main>
             <div className="allPage">
                 <div className="titlePage">
-                    <h1>Mon Historique</h1>
+                    <h1>{t('MyHistory')}</h1>
                 </div>
                 <div className="listPage">
                     <HistoryList

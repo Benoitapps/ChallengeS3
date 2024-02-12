@@ -4,16 +4,15 @@ import HistorySlot from "./HistorySlot.jsx";
 import Pagination from "../Club/Pagination.jsx";
 import {historyGet} from "../../services/getHistory.js";
 import '@css/History.css';
-
+import {useTranslation} from "react-i18next";
 
 export default function TaskList({isCoach}) {
-
     const [slots, setSlot] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [loading, setLoading] = useState(true);
-
     const ITEM_PER_PAGE = 8;
+    const {t} = useTranslation();
 
 
     useEffect(() => {
@@ -25,8 +24,6 @@ export default function TaskList({isCoach}) {
         setSlot(result['hydra:member']);
         setTotalItems(result['hydra:totalItems']);
         setLoading(false);
-        console.log(result['hydra:member'])
-
     };
 
     return (
@@ -34,13 +31,13 @@ export default function TaskList({isCoach}) {
             <table className="lineList">
                 <thead className="history-head">
                     <tr>
-                        <th>Prestation</th>
-                        <th>Prénom du client</th>
-                        <th>Nom du client</th>
-                        <th>Prénom du coach</th>
-                        <th>Nom du coach</th>
-                        <th>Début de la prestation</th>
-                        <th>Fin de la prestation</th>
+                        <th>{t('Service')}</th>
+                        <th>{t('ClientFirstName')}</th>
+                        <th>{t('ClientLastName')}</th>
+                        <th>{t('CoachFirstName')}</th>
+                        <th>{t('CoachLastName')}</th>
+                        <th>{t('StartOfService')}</th>
+                        <th>{t('EndOfService')}</th>
                         {!isCoach ? <th></th> : null}
                     </tr>
                 </thead>

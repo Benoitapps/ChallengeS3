@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '@css/Home.css';
+import { useTranslation } from "react-i18next";
 
 function ClubItem({ club }) {
     const [minPrice, setMinPrice] = useState(0);
+    const { t } = useTranslation();
 
     useEffect(() => {
         setMinPrice(getMinPricePrestations());
@@ -40,8 +42,8 @@ function ClubItem({ club }) {
                 </div>
                 {
                     minPrice >= 0 ? <p className="home-club-card__content__price">
-                        <span>{minPrice}€</span> / séance
-                    </p> : <p className="home-club-card__content__price">Pas de prestation</p>
+                        <span>{minPrice}€</span> / {t('session')}
+                    </p> : <p className="home-club-card__content__price">{t('NoService')}</p>
                 }
             </div>
         </Link>
