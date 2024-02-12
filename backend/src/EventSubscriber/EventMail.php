@@ -93,7 +93,7 @@ final class EventMail implements EventSubscriberInterface
 
                 $resend->emails->send([
                     'from' => 'mycoach@mycoach.bendc.site',
-                    'to' => '' . $resCoach,
+                    'to' => '' . $resClient,
                     'subject' => "Modification de cours",
                     'html' => 'Vous avez modifier la réservation de cours de sport au ' . $requestData['startDate'] . ' au ' . $requestData['endDate'],
                 ]);
@@ -104,7 +104,7 @@ final class EventMail implements EventSubscriberInterface
 
                 $resend->emails->send([
                     'from' => 'mycoach@mycoach.bendc.site',
-                    'to' => '' . $resClient,
+                    'to' => '' . $resCoach,
                     'subject' => "Modification de cours",
                     'html' => 'Votre client a modifier la date de votre cours au : ' . $requestData['startDate'] . ' au ' . $requestData['endDate'] . ' avec le coach ' . $nameCoach,
                 ]);
