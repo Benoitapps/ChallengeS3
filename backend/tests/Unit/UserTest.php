@@ -10,7 +10,7 @@ class UserTest extends TestCase
     public function testGetEmail()
     {
         $user = new User();
-        $user->setEmail('user@user.fr');
+        $user->setEmail('user@uer.fr');
 
         $this->assertSame('user@user.fr', $user->getEmail());
     }
