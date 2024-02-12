@@ -41,6 +41,7 @@ export default function TaskList({isCoach}) {
                         <th>Nom du coach</th>
                         <th>Début de la prestation</th>
                         <th>Fin de la prestation</th>
+                        {!isCoach ? <th></th> : null}
                     </tr>
                 </thead>
                 {

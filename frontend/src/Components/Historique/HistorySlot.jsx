@@ -50,8 +50,11 @@ function HistorySlot({ slot, isCoach }) {
             <td className="partSlot">{dateStart}</td>
             <td className="partSlot">{dateEnd}</td>
 
-            {!isCoach ? <button className="buttonSlot"
-                                onClick={() => reschedule(slot.prestation.id, slot.coach.id)}>Reprendre</button> : null}
+            {!isCoach ? <td className="partSlot noPadding">
+                <button className="buttonSlot"
+                        onClick={() => reschedule(slot.prestation.id, slot.coach.id)}>Reprendre
+                </button>
+            </td> : null}
         </tr>
     );
 }
