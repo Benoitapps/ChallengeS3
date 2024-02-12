@@ -222,8 +222,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
         }
 
         const addslot = async (dateStart, dateEnd, idPrestation, idCoach, idClient ) => {
-            const dateSimple = new Date(dateStart);
-            const getData = await postSlot(dateStart, dateEnd,idPrestation,idCoach,idClient,dateSimple);
+            const getData = await postSlot(dateStart, dateEnd,idPrestation,idCoach,idClient);
 
             if (getData && getData?.status === 500) {
                 console.log("ya une erreur")

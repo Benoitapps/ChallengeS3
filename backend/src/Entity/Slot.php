@@ -102,7 +102,6 @@ class Slot
     #[ORM\Column(type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
     private ?bool $vacation = null;
 
-    #[Groups(['slot:read','slot:write'])]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
@@ -120,6 +119,8 @@ class Slot
     public function setStartDate(\DateTimeInterface $startDate): static
     {
         $this->startDate = $startDate;
+
+        $this->date = $startDate;
 
         return $this;
     }
@@ -187,12 +188,5 @@ class Slot
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): static
-    {
-        $this->date = $date;
-
-        return $this;
     }
 }

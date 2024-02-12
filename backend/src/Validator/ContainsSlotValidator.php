@@ -2,11 +2,15 @@
 
 namespace App\Validator;
 
+use App\Entity\Coach;
+use App\Entity\Schedule;
+use App\Entity\Slot;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use function Symfony\Component\String\s;
 
 class ContainsSlotValidator extends ConstraintValidator
 {
@@ -21,6 +25,8 @@ class ContainsSlotValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint): void
     {
+        /** @var Slot $value */
+
         if (!$constraint instanceof ContainsSlot) {
             throw new UnexpectedTypeException($constraint, ContainsSlot::class);
         }
@@ -31,16 +37,18 @@ class ContainsSlotValidator extends ConstraintValidator
             return;
         }
 
-        $providedCoachId = basename($value['coach']);
-        $coachId = $this->entityManager->getRepository(Coach::class)->find($providedCoachId);
+        $coachId = $value->getCoach()->getId();
 
         $schedules = $this->entityManager->getRepository(Schedule::class)->findBy([
             'coach' => $coachId,
-            'date' => $value['date']
-        ]);
+            'date' => $value->getDate()
 
+        ]);
+        dump($schedules);
+    dump($value->getStartDate());
+    dump($value->getEndDate());
         foreach ($schedules as $schedule) {
-            if ($schedule->getStartDate() > $value['start_date'] || $schedule->getEndDate() < $value['end_date']) {
+            if ($schedule->getStartDate() > $value->getStartDate() || $schedule->getEndDate() < $value->getEndDate()) {
                 $this->context->buildViolation("La plage horaire n'est pas disponible.")
                     ->atPath('start_date') // ajustez le chemin si nécessaire
                     ->addViolation();

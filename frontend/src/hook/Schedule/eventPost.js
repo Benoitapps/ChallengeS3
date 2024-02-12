@@ -1,6 +1,6 @@
 const env = import.meta.env;
 
-const postSlot = async (dateStart,dateEnd, idPrestation, idCoach, idClient,date) => {
+const postSlot = async (dateStart,dateEnd, idPrestation, idCoach, idClient) => {
     try {
         const result = await fetch(`${env.VITE_URL_BACK}/api/slots`, {
             method: "POST",
@@ -17,7 +17,7 @@ const postSlot = async (dateStart,dateEnd, idPrestation, idCoach, idClient,date)
                     "client": "api/clients/"+idClient,
                     "coach": "api/coaches/"+idCoach,
                     "vacation":false,
-                    "date":date
+
                 }
             ),
 
