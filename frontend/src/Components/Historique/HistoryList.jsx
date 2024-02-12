@@ -31,15 +31,27 @@ export default function TaskList({isCoach}) {
 
     return (
         <>
-            <div className="lineList">
-            {
-                loading
-                    ? <div>Chargement...</div>
-                    : slots.map((slot, index) => (
-                        <HistorySlot slot={slot} key={index} isCoach={isCoach}/>
-                    ))
-            }
-            </div>
+            <table className="lineList">
+                <thead className="history-head">
+                    <tr>
+                        <th>Prestation</th>
+                        <th>Prénom du client</th>
+                        <th>Nom du client</th>
+                        <th>Prénom du coach</th>
+                        <th>Nom du coach</th>
+                        <th>Début de la prestation</th>
+                        <th>Fin de la prestation</th>
+                        {!isCoach ? <th></th> : null}
+                    </tr>
+                </thead>
+                {
+                    loading
+                        ? <div>Chargement...</div>
+                        : slots.map((slot, index) => (
+                            <HistorySlot slot={slot} key={index} isCoach={isCoach}/>
+                        ))
+                }
+            </table>
 
             <Pagination totalItems={totalItems} itemsPerPage={ITEM_PER_PAGE} currentPage={currentPage} setCurrentPage={setCurrentPage} setLoading={setLoading} />
         </>

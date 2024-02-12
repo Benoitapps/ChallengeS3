@@ -4,10 +4,11 @@
     /* Colors */
     --primary: #2970FF;
     --primary-hover: #0040C1;
-    --primay-selected: #D1E0FF;
+    --primary-selected: #D1E0FF;
     --error: #DD0000;
     --error-background: #FFD1D1;
     --background: #F5F8FF;
+    --background-table: #E6E6E6;
     --system: #EBEAEF;
     --dark-background: #333333;
     --dark-border: #39393B;
