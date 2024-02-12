@@ -62,6 +62,9 @@ class Schedule
     #[ORM\JoinColumn(nullable: false)]
     private ?Coach $coach = null;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $date = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -99,6 +102,18 @@ class Schedule
     public function setCoach(?Coach $coach): static
     {
         $this->coach = $coach;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): static
+    {
+        $this->date = $date;
 
         return $this;
     }
