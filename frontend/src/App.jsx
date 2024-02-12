@@ -8,6 +8,8 @@ import { accountService } from './services/account.service.js';
 import UserRoute from './UserRoute.jsx';
 import NavBar from './Components/NavBar';
 import Login from './Components/Authentication/Login';
+import ForgotPassword from './Components/Authentication/ForgotPassword';
+import ForgotPasswordEditPassword from './Components/Authentication/ForgotPasswordEditPassword';
 import SignUp from './Components/Authentication/SignUp';
 import Schedule from './Components/Calendar/Schedule.jsx';
 import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
@@ -116,6 +118,8 @@ function App() {
 
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login handleConnect={handleConnect} />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="forgot-password/:token" element={<ForgotPasswordEditPassword />} />
 
             {/* Route for user connected */}
             <Route path="schedule" element={ <UserRoute component={Schedule} onButtonClick={setEventDetail} isConnected={isConnected} isCoach={isCoach}/> } />
