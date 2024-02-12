@@ -31,7 +31,6 @@ class ContainsSlotValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ContainsSlot::class);
         }
 
-        // Vérifier si la requête est de type POST
         $request = $this->requestStack->getCurrentRequest();
         if (!$request || !$request->isMethod('POST')) {
             return;
@@ -44,16 +43,47 @@ class ContainsSlotValidator extends ConstraintValidator
             'date' => $value->getDate()
 
         ]);
+
         dump($schedules);
-    dump($value->getStartDate());
-    dump($value->getEndDate());
+
+        if ($schedules == []) {
+            $this->context->buildViolation("La plage horaire n'est pas disponible.")
+                ->atPath('start_date')
+                ->addViolation();
+        }
+
         foreach ($schedules as $schedule) {
             if ($schedule->getStartDate() > $value->getStartDate() || $schedule->getEndDate() < $value->getEndDate()) {
                 $this->context->buildViolation("La plage horaire n'est pas disponible.")
-                    ->atPath('start_date') // ajustez le chemin si nécessaire
+                    ->atPath('start_date')
                     ->addViolation();
                 break;
             }
+        }
+
+        $dateNow = new \DateTime();
+        if ($value->getStartDate() < $dateNow) {
+            $this->context->buildViolation("Vous ne pas reserver dans le passée")
+                ->atPath('start_date')
+                ->addViolation();
+        }
+
+        if ($value->getStartDate() > $value->getEndDate()) {
+            $this->context->buildViolation("La date de debut ne peut pas etre superieur a la date de fin")
+                ->atPath('start_date')
+                ->addViolation();
+        }
+
+        if ($value->getEndDate()->diff($value->getStartDate())->h > 1) {
+            $this->context->buildViolation("un cours ne peut depasser 1h")
+                ->atPath('start_date')
+                ->addViolation();
+        }
+
+        if ($value->getStartDate()->format('i:s') !== '00:00' || $value->getEndDate()->format('i:s') !== '00:00') {
+            $this->context->buildViolation("un cours ne peut pas etre reserver a cette heur la ")
+                ->atPath('start_date')
+                ->addViolation();
         }
     }
 }
