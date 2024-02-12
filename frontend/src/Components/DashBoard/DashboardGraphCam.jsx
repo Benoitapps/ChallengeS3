@@ -2,17 +2,16 @@ import React, {useEffect, useRef, useState} from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import {statPrestation} from "../../services/StatServices/statNbSlotByPrestation.js"
-
+import {useTranslation} from "react-i18next";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function DashboardGraphCam() {
-
     const chartRef = useRef();
-
     const [tab, setTab] = useState([]);
     const [label, setLabel] = useState([]);
     const [nombre, setnombre] = useState([]);
+    const {t} = useTranslation();
 
     const fetchData = async () => {
         let res = await statPrestation();
@@ -43,7 +42,7 @@ function DashboardGraphCam() {
         labels: label,
         datasets: [
             {
-                label: 'nb de reservation pour cette prestation',
+                label: t('NumberOfBookingForTheService'),
                 data: nombre,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -70,7 +69,7 @@ function DashboardGraphCam() {
         plugins: {
             title: {
                 display: true,
-                text: 'Nombre de reservation par prestation',
+                text: t('NumberBookingByService'),
                 font: {
                     size: 16,
                 },

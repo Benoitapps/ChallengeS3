@@ -41,7 +41,7 @@ class SlotFixtures extends Fixture implements DependentFixtureInterface
             ->setEndDate((new \DateTime('now'))->modify('+4 hours'))
             ->setCoach($coach1)
             ->setVacation(false)
-            ->setDate($date);
+            ->setStartDate($date);
 
         $manager->persist($object);
 
@@ -50,7 +50,7 @@ class SlotFixtures extends Fixture implements DependentFixtureInterface
             ->setEndDate((new \DateTime('now'))->modify('+8 hours'))
             ->setCoach($coach2)
             ->setVacation(false)
-            ->setDate($date);
+            ->setStartDate($date);
 
         $manager->persist($object);
 

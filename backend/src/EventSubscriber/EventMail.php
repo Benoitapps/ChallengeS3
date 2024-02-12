@@ -145,9 +145,6 @@ final class EventMail implements EventSubscriberInterface
             }
         }
 
-
-
-
     }
     private function extractSlotIdFromUri(string $uri): ?int
     {

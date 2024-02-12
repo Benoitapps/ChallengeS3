@@ -25,6 +25,7 @@ use App\Validator\ContainsSlot as ContainsSlotConstraint;
 
 
 #[ApiResource(
+    normalizationContext:['groups' => ['slot:vide']],
     operations: [
     new GetCollection(
         paginationItemsPerPage: 50,
