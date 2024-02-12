@@ -38,6 +38,7 @@ function AddPrestation() {
                 setError('Une erreur est survenue');
             } else {
                 //success add prestation
+                navigate('/manager/home')
             }
         } catch (error) {
             setError('Une erreur est survenue');

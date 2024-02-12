@@ -47,7 +47,7 @@ function Home({ isManager, companyStatus }) {
                     ) : (
                         <div>
                             {franchises.map((franchise) => (
-                                <div key={franchise.name}>
+                                <div key={franchise.id}>
                                     <h2>{franchise.name}</h2>
                                     <p>{franchise.description}</p>
                                     <p>{franchise.address}</p>
@@ -58,9 +58,12 @@ function Home({ isManager, companyStatus }) {
                                         <div>Il n'y a pas encore de coachs pour cette franchise.</div>
                                     ) : (
                                         franchise.coachs.map((coach) => (
-                                            <div key={coach.auth.email} style={{ marginBottom: '20px' }}>
+                                            <div key={coach.id} style={{ marginBottom: '20px' }}>
                                                 <p>Nom : {coach.auth.firstname} {coach.auth.lastname}</p>
                                                 <p>Email : {coach.auth.email}</p>
+                                                <Link to={`/manager/coach/${coach.id}`}>
+                                                    <p>Voir le coach</p>
+                                                </Link>
                                             </div>
                                         ))
                                     )}
@@ -75,8 +78,9 @@ function Home({ isManager, companyStatus }) {
                                         <div>Il n'y a pas encore de prestations pour cette franchise.</div>
                                     ) : (
                                         franchise.prestations.map((prestation) => (
-                                            <div key={prestation.id}>
-                                                <p>Nom : {prestation.name}</p>
+                                            <div key={prestation.id} style={{ marginBottom: '20px' }}>
+                                                <p>Libellé : {prestation.name}</p>
+                                                <p>Prix : {prestation.price} €</p>
                                             </div>
                                         ))
                                     )}

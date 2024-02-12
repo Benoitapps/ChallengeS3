@@ -35,6 +35,7 @@ import AddCompany from "./Components/Manager/AddCompany.jsx";
 import AddFranchise from "./Components/Manager/AddFranchise.jsx";
 import AddCoach from "./Components/Manager/AddCoach.jsx";
 import AddPrestation from "./Components/Manager/AddPrestation.jsx";
+import CoachDetails from "./Components/Manager/CoachDetails.jsx";
 
 // Special
 import Unauthorize from './Components/Unauthorize.jsx';
@@ -191,6 +192,7 @@ function App() {
                     <Route path="addCoach/:franchiseId" element={<ManagerRoute component={AddCoach} isManager={isManager} companyStatus={companyStatus} />} />
                     <Route path="home/club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected} isAdmin={isAdmin} update={true}/>} />
                     <Route path="addPrestation/:franchiseId" element={<ManagerRoute component={AddPrestation} isManager={isManager} companyStatus={companyStatus} />} />
+                    <Route path="coach/:coachId" element={<ManagerRoute component={CoachDetails} isManager={isManager} companyStatus={companyStatus} />} />
                   </Route>
                 </Routes>
             )}

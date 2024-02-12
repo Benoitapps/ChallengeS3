@@ -134,7 +134,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Client $client = null;
 
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read', 'user:write', 'user:admin:write'])]
+    #[Groups(['user:read', 'user:write', 'user:admin:write', 'company:read:franchise'])]
     private ?Coach $coach = null;
     
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
