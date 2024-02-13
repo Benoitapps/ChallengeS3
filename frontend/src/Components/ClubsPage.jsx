@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ClubsList from './Club/ClubsList';
 import FilterBar from './Club/FilterBar';
 import MapContainer from './Map/MapContainer';
+import '@css/Home.css';
 
 function ClubsPage() {
     const [clubs, setClubs] = useState([]);
@@ -12,15 +13,13 @@ function ClubsPage() {
     }
 
     return (
-        <main>
-            <div style={{display: 'flex'}}>
-                <div style={{width: '50%', minHeight: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '20px', padding: '0 50px'}}>
-                    <FilterBar addFilter={addFilter}/>
-                    <ClubsList clubs={clubs} setClubs={setClubs} filter={filters}/>
-                </div>
-                <div style={{width: '50%', borderLeft: '1px solid black', minHeight: "calc(100vh - 75px)"}}>
-                    <MapContainer clubs={clubs}/>
-                </div>
+        <main className="home">
+            <div className="home__club-list">
+                <FilterBar addFilter={addFilter}/>
+                <ClubsList clubs={clubs} setClubs={setClubs} filter={filters}/>
+            </div>
+            <div className="home__map">
+                <MapContainer clubs={clubs}/>
             </div>
         </main>
     );

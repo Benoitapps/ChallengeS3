@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getUsers } from '../../hook/admin/user';
 import '@css/Admin.css';
 import { useTranslation } from 'react-i18next';
+import UserAdd from './UserAdd';
 
 const env = import.meta.env;
 
@@ -43,7 +44,7 @@ function UsersList() {
         setUsers([...users]);
     };
 
-    const onSave = async (user) => {
+    const onSaveEdit = async (user) => {
         setBeingEdited(!beingEdited);
         setCurrentUserId(null);
 
@@ -81,24 +82,28 @@ function UsersList() {
         result = await result.json();
     }
 
-    return (<>
-            {
-                usersLoading && <div>{t('Loading')}...</div>
-            }
-            <main className="user-list">
-                <table className="user-list__table">
-                    <thead className="user-list__table__head">
-                    <tr>
-                        <th>Id</th>
-                        <th>Email</th>
-                        <th>{t('Role')}</th>
-                        <th>{t('FirstName')}</th>
-                        <th>{t('LastName')}</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody className="user-list__table__body">
-                    {users.map((user) => (
+    return (
+        <main className="user-list">
+            <UserAdd setUsers={setUsers} />
+
+            <table className="user-list__table">
+                <thead className="user-list__table__head">
+                <tr>
+                    <th>Id</th>
+                    <th>Email</th>
+                    <th>{t('Role')}</th>
+                    <th>{t('FirstName')}</th>
+                    <th>{t('LastName')}</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody className="user-list__table__body">
+                {
+                    usersLoading 
+                    ? <tr>
+                        <td className="user-list-loading" colSpan="100">{t('Loading')}...</td>
+                    </tr> 
+                    : users.map((user) => (
                         <tr key={user.id} id={user.id} className="user-list__table__body__line">
                             <td className="user-list__table__body__line__column">
                                 {user.id}
@@ -134,7 +139,7 @@ function UsersList() {
                             <td className="user-list__table__body__line__column">
                                 {
                                     beingEdited && currentUserId === user.id
-                                        ? <button className="user-list__button" onClick={() => onSave(user)}>
+                                        ? <button className="user-list__button" onClick={() => onSaveEdit(user)}>
                                             {t('Save')}
                                         </button>
                                         : <button className="user-list__button" onClick={() => onEdit(user)}>
@@ -147,10 +152,9 @@ function UsersList() {
                             </td>
                         </tr>
                     ))}
-                    </tbody>
-                </table>
-            </main>
-    </>
+                </tbody>
+            </table>
+        </main>
     );
 }
 

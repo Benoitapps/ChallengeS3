@@ -63,7 +63,7 @@
 }
 
 .tab button:hover {
-  background-color: var(--primay-selected);
+  background-color: var(--primary-selected);
 }
 
 .tab button.active {
