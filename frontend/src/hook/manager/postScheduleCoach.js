@@ -1,6 +1,6 @@
 const env = import.meta.env;
 
-const postScheduleCoach = async (dateStart,dateEnd, dateStartTime, dateStartEndTime, idCoach) => {
+const postScheduleCoach = async ( dateStartTime, dateStartEndTime,dateStart,dateEnd, idCoach) => {
     try {
         const result = await fetch(`${env.VITE_URL_BACK}/api/perso_schedules`, {
             method: "POST",

@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import {setHours} from "date-fns";
 import {postScheduleCoach} from '../../hook/manager/postScheduleCoach.js'
-import {useParams} from "react-router-dom";
 
 function YourFormComponent({coachId}) {
-
-
-    console.log("coachhhhhhh",coachId)
 
     const postShedule = async (dateStartTime,dateEndTime,dateStartSimple,dateEndSimple) => {
         await postScheduleCoach(dateStartTime,dateEndTime,dateStartSimple,dateEndSimple,coachId)
@@ -39,7 +35,7 @@ function YourFormComponent({coachId}) {
 
     return (
         <>
-            <form className="login-signup__form" onSubmit={handleSubmit}>
+            <form className="login-signup__forme" onSubmit={handleSubmit}>
                     <label>Date de début:</label>
                     <input type="date" name="dateStart"  />
 
