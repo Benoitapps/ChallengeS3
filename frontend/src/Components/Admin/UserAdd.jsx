@@ -58,7 +58,7 @@ function UserAdd({setUsers}) {
                         <div className="add-user">
                             <label htmlFor="roles">{t('Role')}</label>
                             <select name="roles">
-                                <option value="ROLE_USER">ROLE_USER</option>
+                                <option value="ROLE_CLIENT">ROLE_CLIENT</option>
                                 {/* <option value="ROLE_COACH">ROLE_COACH</option> */}
                                 <option value="ROLE_MANAGER">ROLE_MANAGER</option>
                                 <option value="ROLE_ADMIN">ROLE_ADMIN</option>
