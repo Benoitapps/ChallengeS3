@@ -1,8 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {useNavigate, useParams, useLocation, Link} from "react-router-dom";
+import {useEffect, useState} from 'react';
+import {Link, useNavigate, useParams} from "react-router-dom";
 import { getCoachDetails } from "../../hook/coach/getCoach.js";
 import { getFranchisePrestations } from "../../hook/manager/getFranchisePrestations.js";
 import ScheduleEditor from "./ScheduleEditor.jsx";
+import '@css/CoachDetailsManager.css';
+import { useTranslation } from "react-i18next";
+
 const env = import.meta.env;
 
 function CoachDetails() {
@@ -13,7 +16,7 @@ function CoachDetails() {
     const [coach, setCoach] = useState([]);
     const [prestations, setPrestations] = useState([]);
     const [selectedPrestation, setSelectedPrestation] = useState(null);
-    const [reload, setReload] = useState(false);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const loadData = async () => {
@@ -37,7 +40,7 @@ function CoachDetails() {
         };
 
         loadData();
-    }, [reload]);
+    }, [coachId]);
 
     const handleSave = async () => {
         await saveCoachPrestation(coachId, selectedPrestation);
@@ -57,12 +60,13 @@ function CoachDetails() {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         } else {
-            setReload(!reload);
+            const newCoachInfos = await getCoachDetails(coachId);
+
+            setCoach(newCoachInfos);
         }
     
         const data = await response.json();
         return data;
-
     };
 
     const saveSchedule = (schedule) => {
@@ -72,57 +76,82 @@ function CoachDetails() {
                 
 
     return (
-        <div>
-            <main>
-                <div>
-
-                    <span>Détails du coach :</span>
-                    {coachLoading ? (
-                        <div>Chargement...</div>
-                    ) : (
-                    <div key={coach.id}>
-                        {coach.auth && <h2>Nom : {coach.auth.firstname} {coach.auth.lastname}</h2>}
-                        <h3>Prestations :</h3>
-                        {coach.prestations && coach.prestations.length === 0 ? (
-                            <div>Ce coach n'a pas encore de prestations associées</div>
-                        ) : (
-                            coach.prestations && coach.prestations.map((prestation) => (
-                                <div key={prestation.id} style={{ marginBottom: '20px' }}>
-                                    <p>Libellé : {prestation.name}</p>
-                                    <p>Prix : {prestation.price} €</p>
-                                </div>
-                            ))
-                        )}
-
-                    <h3>Ajouter une prestation :</h3>
-                    {/* <select value={selectedPrestation} onChange={e => setSelectedPrestation(e.target.value)}>
-                        {prestations.map(prestation => (
-                            <option key={prestation.id} value={prestation.id}>{prestation.name} - {prestation.price} €</option>
-                        ))}
-                    </select>
-                    <button onClick={handleSave}>Sauvegarder</button> */}
-                    {prestations.length > 0 ? (
-                    <>
-                        <select value={selectedPrestation || ''} onChange={e => setSelectedPrestation(Number(e.target.value))}>
-                            {prestations.map(prestation => (
-                                <option key={prestation.id} value={prestation.id}>{prestation.name} - {prestation.price} €</option>
-                            ))}
-                        </select>
-                        <button onClick={handleSave}>Sauvegarder</button>
-                    </>
-                ) : (
-                    <p>Vous avez déjà ajouté à ce coach toutes les prestations de votre franchise.</p>
-                )}
-
+        <main>
+            {coachLoading ? (
+                <div>{t('Loading')}...</div>
+            ) : (
+                <div className="container-coach" key={coach.id}>
+                    <div className="coach-profile-card">
+                        <div className="coach-profile-card__img">
+                            <img src="https://thispersondoesnotexist.com/"/>
+                        </div>
+                        {
+                            coach.auth &&
+                            <h2 className="coach-profile-card__name">{coach.auth.firstname} {coach.auth.lastname}</h2>
+                        }
                     </div>
-                    )}
+                    <div className="coach-content">
+                        <div className="coach-content__head">
+                            <div className="coach-content__head__add-prestations">
+                                <h3 className="coach-content__head__biography">Ajouter une prestation</h3>
 
+                                {prestations.length > 0 ? (
+                                    <>
+                                        <select value={selectedPrestation || ''}
+                                                onChange={e => setSelectedPrestation(Number(e.target.value))}>
+                                            {prestations.map(prestation => (
+                                                <option key={prestation.id}
+                                                        value={prestation.id}>{prestation.name} - {prestation.price} €</option>
+                                            ))}
+                                        </select>
+                                        <button className="primary-button" onClick={handleSave}>Sauvegarder</button>
+                                    </>
+                                ) : (
+                                    <p>Vous avez déjà ajouté à ce coach toutes les prestations de votre franchise.</p>
+                                )}
+                            </div>
+
+                            <ul className="coach-content__head__prestations">
+                                <h4>Prestations</h4>
+                                {coach.prestations && coach.prestations.length === 0 ? (
+                                    <p>Ce coach n'a pas encore de prestations associées</p>
+                                ) : (
+                                    <ul className="coach-content__prestations">
+                                        {
+                                            coach.prestations && coach.prestations.map((prestation, index) => {
+                                                return (
+                                                    <li key={index}>
+                                                        <Link to={`/prestation/${prestation.id}/coach/${coachId}/add`}
+                                                              className="coach-content__prestations__item">
+                                                            <div className="coach-content__prestations__item__img">
+                                                                <img src="https://picsum.photos/300/300"
+                                                                     alt={prestation.franchise.name}/>
+                                                            </div>
+                                                            <div className="coach-content__prestations__item__content">
+                                                                <div
+                                                                    className="coach-content__prestations__item__content__top">
+                                                                    <h5 className="coach-content__prestations__name">{prestation.name}</h5>
+                                                                    <p className="coach-content__franchises__name">{prestation.franchise.name}</p>
+                                                                    <p className="coach-content__franchises__address">{prestation.franchise.address}</p>
+                                                                </div>
+                                                                <p className="coach-content__prestations__price">
+                                                                    <span>{prestation.price}€</span> / séance</p>
+                                                            </div>
+                                                        </Link>
+                                                    </li>
+                                                )
+                                            })
+                                        }
+                                    </ul>
+                                )}
+                            </ul>
+
+                            <ScheduleEditor onSave={saveSchedule}/>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <ScheduleEditor onSave={saveSchedule} />
-                </div>
-            </main>
-        </div>
+            )}
+        </main>
     );
 }
 
