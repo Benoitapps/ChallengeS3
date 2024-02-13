@@ -35,6 +35,9 @@ import HomeManager from './Components/Manager/Home';
 import ManagerRoute from './ManagerRoute.jsx';
 import AddCompany from "./Components/Manager/AddCompany.jsx";
 import AddFranchise from "./Components/Manager/AddFranchise.jsx";
+import AddCoach from "./Components/Manager/AddCoach.jsx";
+import AddPrestation from "./Components/Manager/AddPrestation.jsx";
+import CoachDetails from "./Components/Manager/CoachDetails.jsx";
 
 // Special
 import Unauthorize from './Components/Unauthorize.jsx';
@@ -42,6 +45,7 @@ import i18next from "./i18n.js";
 import {useTranslation, Trans} from "react-i18next";
 import DashboardPageAdmin from "./Components/DashBoard/DashboardAdmin/DashboardPageAdmin.jsx";
 
+const env = import.meta.env;
 function App() {
   const userIsAdmin = () => {
     const token = localStorage.getItem('token');
@@ -54,6 +58,8 @@ function App() {
   const userIsManager = () => {
     const token = localStorage.getItem('token');
     if (token !== null) {
+      if (accountService.getValuesToken().roles.includes('ROLE_MANAGER') === true)
+        checkCompany();
       return accountService.getValuesToken()
           .roles.includes('ROLE_MANAGER');
     }
@@ -68,11 +74,43 @@ function App() {
     return false;
   }
 
+  const checkCompany = async () => {
+    let result = await fetch(`${env.VITE_URL_BACK}/api/companies/myCompany`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    let body = await result.json();
+    console.log(body);
+
+    if (!body.name) {
+      console.log('no company');
+      const newStatus = 'none';
+      console.log('newstatus', newStatus);
+      setCompanyStatus(newStatus);
+      console.log('state company status', companyStatus);
+    } else {
+      console.log('company found');
+      if (body.isVerified === false) {
+        console.log('company not verified');
+        const newStatus = 'pending';
+        setCompanyStatus(newStatus);
+      } else {
+        console.log('company verified');
+        const newStatus = 'accepted';
+        setCompanyStatus(newStatus);
+      }
+    }
+  };
+
   const [isConnected, setIsConnected] = useState(!!localStorage.getItem('token'));
   const [isAdmin, setIsAdmin] = useState(userIsAdmin() || false);
   const [isManager, setIsManager] = useState(userIsManager() || false);
   const [isCoach, setisCoach] = useState(userIsCoach()|| false);
   const [eventDetail, setEventDetail] = useState(null);
+  const [companyStatus, setCompanyStatus] = useState('null');
 
 
   const handleDisconnect = () => {
@@ -109,7 +147,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Front */}
-          <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} isManager={isManager} isCoach={isCoach}/>}>
+          <Route path="/" element={<NavBar isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} isManager={isManager} isCoach={isCoach} />}>
             {/* Route for user not connected */}
             <Route index element={<ClubsPage/>} />
             <Route path="club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected} isAdmin={isAdmin} update={false}/>} />
@@ -153,13 +191,15 @@ function App() {
           <Route path="manager/*"
             element={(
                 <Routes>
-                  <Route path="/" element={<NavBarManager isConnected={isConnected} handleDisconnect={handleDisconnect} isManager={isManager} />}>
-                    <Route path="home" element={<ManagerRoute component={HomeManager} isManager={isManager} />} />
-                    <Route  index element={<ManagerRoute index component={Dashboard} isManager={isManager} />} />
-                    <Route path="company" element={<ManagerRoute component={AddCompany} isManager={isManager}/>} />
-                    <Route path="franchise" element={<ManagerRoute component={AddFranchise} isManager={isManager}/>} />
+                  <Route path="/" element={<NavBarManager isConnected={isConnected} handleDisconnect={handleDisconnect} isManager={isManager} companyStatus={companyStatus} />}>
+                    <Route path="home" element={<ManagerRoute component={HomeManager} isManager={isManager} companyStatus={companyStatus} />} />
+                    <Route index element={<ManagerRoute index component={Dashboard} isManager={isManager} companyStatus={companyStatus} />} />
+                    <Route path="company" element={<ManagerRoute component={AddCompany} isManager={isManager} companyStatus={companyStatus} setCompanyStatus={setCompanyStatus} />} />
+                    <Route path="franchise" element={<ManagerRoute component={AddFranchise} isManager={isManager} companyStatus={companyStatus} />} />
+                    <Route path="addCoach/:franchiseId" element={<ManagerRoute component={AddCoach} isManager={isManager} companyStatus={companyStatus} />} />
                     <Route path="home/club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected} isAdmin={isAdmin} update={true}/>} />
-
+                    <Route path="addPrestation/:franchiseId" element={<ManagerRoute component={AddPrestation} isManager={isManager} companyStatus={companyStatus} />} />
+                    <Route path="coach/:coachId" element={<ManagerRoute component={CoachDetails} isManager={isManager} companyStatus={companyStatus} />} />
                   </Route>
                 </Routes>
             )}

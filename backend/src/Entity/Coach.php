@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Controller\LinkPrestationController;
 use App\Repository\CoachRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,6 +20,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
     operations: [
         new Post(
             denormalizationContext: ['groups' => ['coach:write']],
+        ),
+        new Post(
+            uriTemplate: '/coaches/coachnew'
+        ),
+        new Post(
+            uriTemplate: '/coaches/{id}/prestations',
+            controller: LinkPrestationController::class,
+            denormalizationContext: ['groups' => ['coach-prestation:link']],
         ),
         new Get(
             normalizationContext: ['groups' => ['coach:read']],
@@ -60,7 +69,7 @@ class Coach
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['schedule:read', 'schedule:write','slot:read', 'franchise:read','slot:history:read:collection', 'coach:read', 'user:read', 'client:read'])]
+    #[Groups(['schedule:read', 'schedule:write','slot:read', 'franchise:read','slot:history:read:collection', 'coach:read', 'user:read', 'client:read', 'company:read:franchise', 'coach-prestation:link'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -72,6 +81,7 @@ class Coach
     #[ORM\JoinColumn(nullable: false)]
     private ?User $auth = null;
 
+    #[Groups(['coach:read', 'coach-prestation:link'])]
     #[ORM\ManyToOne(inversedBy: 'coachs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Franchise $franchise = null;
