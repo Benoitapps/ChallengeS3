@@ -40,7 +40,7 @@
 }
 
 .schedule .fc-timegrid-col.fc-day-today {
-  background-color: var(--primay-selected);
+  background-color: var(--primary-selected);
 }
 
 .schedule .fc-non-business {

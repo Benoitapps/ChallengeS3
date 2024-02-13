@@ -6,6 +6,27 @@ a:hover {
     color: initial;
 }
 
+.home {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    max-height: calc(100vh - 75px);
+}
+
+.home__club-list,
+.home__map {
+    width: 50%;
+}
+
+.home__club-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 100%;
+    overflow-y: auto;
+    padding: 0 50px;
+}
+
 .home-club-card {
     display: flex;
     padding: 13px 15px;

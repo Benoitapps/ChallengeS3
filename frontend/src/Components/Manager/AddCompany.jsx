@@ -116,7 +116,7 @@ function AddCompany() {
                 </form>
             </div>
 
-            <GetPdf file={pdfFile} viewPdf={viewPdf} />
+            <GetPdf file={pdfFile} viewPdf={viewPdf} header={true}/>
         </main>
     );
 }

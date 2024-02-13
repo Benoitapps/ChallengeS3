@@ -1,11 +1,14 @@
-.user-list {
+.user-list,
+.companies-list {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 40px;
+    position: relative;
 }
 
-.user-list__table {
+.user-list__table,
+.companies-list__table {
     width: 100%;
     margin: 0 auto;
     border-collapse: collapse;
@@ -33,25 +36,50 @@
 }
 
 .user-list__table__head th,
-.user-list__table__body__line__column {
+.companies-list__table__head th,
+.user-list__table__body__line__column,
+.companies-list__table__body__line__column {
     text-align: left;
     padding: 15px 20px;
 }
 
-.user-list__table__head {
+.user-list__table__body__line__column,
+.companies-list__table__body__line__column {
+    vertical-align: top;
+}
+
+.user-list__table__head,
+.companies-list__table__head {
     background-color: var(--dark-background);
     color: var(--text-white);
 }
 
-.user-list__table__body__line:nth-child(odd) {
-    background-color: var(--background-table)
+.user-list__table__body__line:nth-child(odd),
+.companies-list__table__body__line:nth-child(odd) {
+    background-color: var(--background-table);
+}
+
+.companies-list__table__head th:nth-child(2) {
+    width: 15%;
 }
 
 .user-list__table__body__line__column:last-child {
     display: flex;
 }
 
-.user-list__button {
+.companies-list__table__body__line__column.verify {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+}
+
+.companies-list__table__body__line__column.description {
+    width: 30%;
+}
+
+.user-list__button,
+.companies-list__button {
     color: var(--primary);
     background: none;
     padding: 0;
@@ -60,4 +88,18 @@
     width: 100%;
     height: 100%;
     text-align: left;
+}
+
+.companies-list textarea {
+    width: 100%;
+    height: 100%;
+    background: var(--background);
+    border: none;
+    box-shadow: var(--input-shadow);
+    font-size: 1rem;
+}
+
+.companies-list .pdf {
+    width: 100%;
+    flex: 1;
 }
