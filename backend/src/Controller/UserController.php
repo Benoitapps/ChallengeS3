@@ -71,8 +71,7 @@ class UserController extends AbstractController
             $manager->setAuth($user);
             $entityManager->persist($manager);
             $entityManager->flush();
-            $this->sendEmail($userData['email'],"Inscription","Votre compte a bien ete cree");
-
+            $this->sendEmail($userData['email'],"Bienvenue chez MyCoach","Bonjour ".$userData['firstname']." ".$userData['lastname'].", Votre compte MyCoach a bien été créé. Vous pouvez vous connecter à l'application MyCoach avec l'adresse email suivante : ".$userData['email'].".A bientôt sur MyCoach ! Ce message vous a été envoyé via une adresse mail n'acceptant pas les réponses.");
         }
 
         if ($this->isCoach($userType)) {
