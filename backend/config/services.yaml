@@ -44,6 +44,10 @@ services:
 #        tags:
 #            - { name: api_platform.doctrine.orm.query_extension.collection }
 
+    App\Doctrine\Extensions\CurrentUserCompanyExtension:
+        tags:
+            - { name: api_platform.doctrine.orm.query_extension.item }
+
 
     App\EventListener\JwtCreatedListener:
         tags:

@@ -6,6 +6,7 @@ use App\Entity\Client;
 use App\Entity\Coach;
 use App\Entity\Manager;
 use App\Entity\User;
+use App\Repository\FranchiseRepository;
 use Resend;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -21,7 +22,7 @@ class UserController extends AbstractController
 {
     public function __construct(private readonly UserPasswordHasherInterface $passwordHasher, protected string $secret ) {}
 
-    public function __invoke(Request $request, ManagerRegistry $doctrine)
+    public function __invoke(Request $request, ManagerRegistry $doctrine, FranchiseRepository $franchiseRepository)
     {
         $userData = json_decode($request->getContent(), true);
 
@@ -30,15 +31,21 @@ class UserController extends AbstractController
         $user->setFirstName($userData['firstname']);
         $user->setLastName($userData['lastname']);
 
+        if (isset($userData['franchiseId'])) {
+            $franchise = $franchiseRepository->find($userData['franchiseId']);
+        }
+
+//        $franchise = $franchiseRepository->find($userData['franchiseId']);
+
         $userType = $userData['userType'];
 
         if ($this->isManager($userType)) {
             $user->setRoles(['ROLE_MANAGER']);
         }
 
-//        if ($this->isCoach($userType)) {
-//            $user->setRoles(['ROLE_COACH']);
-//        }
+        if ($this->isCoach($userType)) {
+            $user->setRoles(['ROLE_COACH']);
+        }
 
         if ($this->isClient($userType)) {
             $user->setRoles(['ROLE_CLIENT']);
@@ -68,12 +75,13 @@ class UserController extends AbstractController
 
         }
 
-//        if ($this->isCoach($userType)) {
-//            $coach = new Coach();
-//            $coach->setAuth($user);
-//            $entityManager->persist($coach);
-//            $entityManager->flush();
-//        }
+        if ($this->isCoach($userType)) {
+            $coach = new Coach();
+            $coach->setAuth($user);
+            $coach->setFranchise($franchise);
+            $entityManager->persist($coach);
+            $entityManager->flush();
+        }
 
         if ($this->isClient($userType)) {
             $client = new Client();
@@ -116,10 +124,10 @@ class UserController extends AbstractController
         return isset($userType) && strtolower($userType) == 'client';
     }
 
-//    private function isCoach($userType)
-//    {
-//        return isset($userType) && strtolower($userType) == 'coach';
-//    }
+    private function isCoach($userType)
+    {
+        return isset($userType) && strtolower($userType) == 'coach';
+    }
 
     private function isManager($userType)
     {
