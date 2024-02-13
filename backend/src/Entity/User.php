@@ -115,7 +115,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:admin:read'])]
     private ?int $id = null;
     
-    #[Groups(['user:read', 'user:write', 'user:update', 'user:admin:write', 'user:admin:update', 'user:admin:read','coach:read:email', 'company:read:franchise', 'client:read', 'client:write', 'coach:read', 'coach:write', 'manager:read', 'manager:update'])]
+    #[Groups(['user:read', 'user:write', 'user:update', 'user:admin:write', 'user:admin:update', 'user:admin:read','coach:read:email', 'company:read:franchise', 'client:read', 'client:write', 'coach:read', 'coach:write', 'manager:read', 'manager:update', 'franchise:read'])]
     #[ORM\Column(length: 180, unique: true, nullable: false)]
     private ?string $email = null;
     

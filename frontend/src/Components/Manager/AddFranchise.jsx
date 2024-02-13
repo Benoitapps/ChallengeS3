@@ -94,63 +94,33 @@ function AddFranchise() {
     }
 
     return (
-        <div>
-            <main className="authentification">
+        <main className="add-franchise">
+            <div className="franchise-card">
                 <div className="login-signup">
 
-                    <span>Ajouter une franchise :</span>
+                    <p className="form-title">{t('AddFranchise')}&nbsp;:</p>
 
                     <form className="login-signup__form" onSubmit={handleSubmit}>
                         {
                             error && <p className="error">{error}</p>
                         }
-                        <input type="text" id="name" name="name" placeholder="Libellé" autoComplete="name" required></input>
-                        <input type="text" id="description" name="description" placeholder="Description" autoComplete="description" required></input>
-                        <input type="text" id="address" name="address" placeholder="Adresse" required></input>
-                        <input type="text" id="city" name="city" placeholder="Ville" required></input>
-                        <input type="number" id="zip_code" name="zip_code" placeholder="Code postal" required></input>
-                        {/*<input type="number" step="any" id="latitude" name="latitude" placeholder="Latitude" required></input>*/}
-                        {/*<input type="number" step="any" id="longitude" name="longitude" placeholder="Longitude" required></input>*/}
+                        <input type="text" id="name" name="name" placeholder={t('CompanyName')} autoComplete="name"
+                               required></input>
+                        <input type="text" id="description" name="description" placeholder="Description"
+                               autoComplete="description" required></input>
+                        <input type="text" id="address" name="address" placeholder={t('Adress')} required></input>
+                        <input type="text" id="city" name="city" placeholder={t('City')} required></input>
+                        <input type="number" id="zip_code" name="zip_code" placeholder={t('ZipCode')} required></input>
                         <input type="file" onChange={handleChange}/>
                         <div className="login-signup__form__submit">
-                            <input type="submit" value={loading ? 'Veuillez patienter...' : 'Ajouter'} disabled={loading}/>
+                            <input type="submit" value={loading ? 'Veuillez patienter...' : t('Add')} disabled={loading}/>
                         </div>
                     </form>
                 </div>
-            </main>
-        </div>
+            </div>
+        </main>
     );
 
-//     return branche dev
-//     return (
-//         <main className="add-franchise">
-//             <div className="franchise-card">
-//                 <div className="login-signup">
-//
-//                     <p className="form-title">{t('AddFranchise')}&nbsp;:</p>
-//
-//                     <form className="login-signup__form" onSubmit={handleSubmit}>
-//                         {
-//                             error && <p className="error">{error}</p>
-//                         }
-//                         <input type="text" id="name" name="name" placeholder={t('CompanyName')} autoComplete="name"
-//                                required></input>
-//                         <input type="text" id="description" name="description" placeholder="Description"
-//                                autoComplete="description" required></input>
-//                         <input type="text" id="address" name="address" placeholder={t('Adress')} required></input>
-//                         <input type="text" id="city" name="city" placeholder={t('City')} required></input>
-//                         <input type="number" id="zip_code" name="zip_code" placeholder={t('ZipCode')} required></input>
-//                         <input type="number" id="lng" name="lng" placeholder="lng" required></input>
-//                         <input type="number" id="lat" name="lat" placeholder="lat" required></input>
-//                         <input type="file" onChange={handleChange}/>
-//                         <div className="login-signup__form__submit">
-//                             <input type="submit" value={t('Add')} disabled={loading}/>
-//                         </div>
-//                     </form>
-//                 </div>
-//             </div>
-//         </main>
-//     );
 }
 
 export default AddFranchise;

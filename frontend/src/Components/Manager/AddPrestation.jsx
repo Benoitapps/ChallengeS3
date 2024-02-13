@@ -38,7 +38,7 @@ function AddPrestation() {
                 setError('Une erreur est survenue');
             } else {
                 //success add prestation
-                navigate('/manager/home')
+                navigate('/manager/home/club/'+franchiseId);
             }
         } catch (error) {
             setError('Une erreur est survenue');

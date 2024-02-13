@@ -39,6 +39,7 @@ function AddCoach() {
             } else if (!result.ok) {
                 setError('Une erreur est survenue');
             } else {
+                navigate('/manager/home/club/'+franchiseId);
                 // try {
                 //     const result = await fetch(`${env.VITE_URL_BACK}/api/email`, {
                 //         method: 'POST',
