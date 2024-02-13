@@ -15,6 +15,7 @@ use App\Entity\Coach;
 use App\Provider\TradProvider;
 use DateTimeInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Validator\ContainsSchedulePerso as ContainsSchedulePerso;
 
 #[ApiResource(
     normalizationContext: ['groups' => ['ShedulePerso:read']],
@@ -22,10 +23,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Post(
             controller: ScheduleController::class,
             denormalizationContext: ['groups' => ['ShedulePerso:write']],
+            security: "is_granted('ROLE_MANAGER')"
 
         )
     ]
 )]
+
+#[ContainsSchedulePerso]
 class PersoSchedule
 {
     public function __construct(
