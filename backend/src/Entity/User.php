@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Controller\CoachController;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -75,6 +76,18 @@ use App\Controller\AdminController;
                 ],
             ],
             security: "is_granted('ROLE_ADMIN')"
+        ),
+        new Post(
+            uriTemplate: '/coach/users',
+            controller: CoachController::class,
+            denormalizationContext: [
+                'groups' => [],
+            ],
+            normalizationContext: [
+                'groups' => [],
+            ],
+            security: "is_granted('ROLE_MANAGER')",
+            processor: UserPasswordHasher::class
         ),
         new Patch(
             denormalizationContext: [

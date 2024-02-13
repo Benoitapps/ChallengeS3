@@ -31,11 +31,7 @@ class UserController extends AbstractController
         $user->setFirstName($userData['firstname']);
         $user->setLastName($userData['lastname']);
 
-        if (isset($userData['franchiseId'])) {
-            $franchise = $franchiseRepository->find($userData['franchiseId']);
-        }
 
-//        $franchise = $franchiseRepository->find($userData['franchiseId']);
 
         $userType = $userData['userType'];
 
@@ -43,9 +39,6 @@ class UserController extends AbstractController
             $user->setRoles(['ROLE_MANAGER']);
         }
 
-        if ($this->isCoach($userType)) {
-            $user->setRoles(['ROLE_COACH']);
-        }
 
         if ($this->isClient($userType)) {
             $user->setRoles(['ROLE_CLIENT']);
@@ -71,16 +64,7 @@ class UserController extends AbstractController
             $manager->setAuth($user);
             $entityManager->persist($manager);
             $entityManager->flush();
-            $this->sendEmail($userData['email'],"Inscription","Votre compte a bien ete cree");
-
-        }
-
-        if ($this->isCoach($userType)) {
-            $coach = new Coach();
-            $coach->setAuth($user);
-            $coach->setFranchise($franchise);
-            $entityManager->persist($coach);
-            $entityManager->flush();
+            $this->sendEmail($userData['email'],"Bienvenue chez MyCoach","Bonjour ".$userData['firstname']." ".$userData['lastname'].", Votre compte MyCoach a bien été créé. Vous pouvez vous connecter à l'application MyCoach avec l'adresse email suivante : ".$userData['email'].".A bientôt sur MyCoach ! Ce message vous a été envoyé via une adresse mail n'acceptant pas les réponses.");
         }
 
         if ($this->isClient($userType)) {
@@ -88,7 +72,7 @@ class UserController extends AbstractController
             $client->setAuth($user);
             $entityManager->persist($client);
             $entityManager->flush();
-            $this->sendEmail($userData['email'],"Inscription","Votre compte a bien ete cree");
+            $this->sendEmail($userData['email'],"Bienvenue chez MyCoach","Bonjour ".$userData['firstname']." ".$userData['lastname'].", Votre compte MyCoach a bien été créé. Vous pouvez vous connecter à l'application MyCoach avec l'adresse email suivante : ".$userData['email'].".A bientôt sur MyCoach ! Ce message vous a été envoyé via une adresse mail n'acceptant pas les réponses.");
         }
 
         $userData = [
@@ -122,11 +106,6 @@ class UserController extends AbstractController
     private function isClient($userType)
     {
         return isset($userType) && strtolower($userType) == 'client';
-    }
-
-    private function isCoach($userType)
-    {
-        return isset($userType) && strtolower($userType) == 'coach';
     }
 
     private function isManager($userType)
