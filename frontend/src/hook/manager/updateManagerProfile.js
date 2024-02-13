@@ -9,6 +9,7 @@ const updateManagerProfile = async (managerId, manager) => {
         },
         body: JSON.stringify({
             "auth": {
+                "email": manager.email,
                 "firstname": manager.firstname,
                 "lastname": manager.lastname
             }

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import '@css/Home.css';
+import { useTranslation } from "react-i18next";
 
 function ClubItem({ club }) {
     const [minPrice, setMinPrice] = useState(0);
+    const { t } = useTranslation();
 
     useEffect(() => {
         setMinPrice(getMinPricePrestations());
@@ -25,29 +28,28 @@ function ClubItem({ club }) {
     }
 
     return (
-        <div style={{display: 'flex', borderRadius: '10px', background: '#c4ceeb', margin: '15px', boxShadow: '0px 0px 8px -3px rgba(0,0,0,0.26)'}}>
-            <img src={getImage()} alt="sport-image" style={{width: '50%', height: '100%', maxHeight: '200px', borderRadius: '10px 0 0 10px', objectFit: 'cover'}} />
-            <div style={{width: '50%', textAlign: 'left', display: 'flex', alignItems: 'stretch', flexDirection: 'column', justifyContent: 'space-between', padding: '10px'}}>
-                <div>
-                    <div style={{fontSize: '19px', fontWeight: '600'}}>{club.name}</div>
-                    {/* <div>{club.company.name}</div>
-                    <div>{club.description}</div> */}
-                    <div style={{display: 'flex', color: '#7b7b7b'}}>
-                        <div style={{marginRight: '5px'}}>{club.address},</div>
-                        <div style={{marginRight: '5px'}}>{club.city}</div>
-                        <div>{club.zip_code}</div>
-                    </div>
-                </div>
-                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                    {
-                        minPrice >= 0 ? <div>A partir de <span style={{color: '#2970FF', fontSize: '19px', fontWeight: '600'}}>{minPrice}€</span> / prestation</div> : <div>Pas de prestation</div>
-                    }
-                    <Link to={link}>
-                        <button>Voir plus</button>
-                    </Link>
-                </div>
+        <Link to={link} className="home-club-card">
+            <div className="home-club-card__visuel">
+                <img src={getImage()} alt="sport-image"/>
             </div>
-        </div>
+            <div className="home-club-card__content">
+                <div className="home-club-card__content__details">
+                    <div className="home-club-card__content__details__prestations">
+                        {club.prestations.map((prestation, index) => (
+                            <p className="home-club-card__content__details__prestations__prestation"
+                               key={index}>{prestation.name}</p>
+                        ))}
+                    </div>
+                    <h3 className="home-club-card__content__details__club">{club.name}</h3>
+                    <p className="home-club-card__content__details__address">{club.address}, {club.city} {club.zip_code}</p>
+                </div>
+                {
+                    minPrice >= 0 ? <p className="home-club-card__content__price">
+                        <span>{minPrice}€</span> / {t('session')}
+                    </p> : <p className="home-club-card__content__price">{t('NoService')}</p>
+                }
+            </div>
+        </Link>
     );
 }
 

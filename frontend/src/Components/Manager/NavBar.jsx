@@ -23,26 +23,23 @@ function NavBar({ isManager, companyStatus }) {
                                     {companyStatus === 'accepted' ? (
                                         <>
                                         <li>
-                                            <Link to="">
-                                                Dashboard
-                                            </Link>
+                                            <Link to="">Dashboard</Link>
                                         </li>
                                         <li>
                                             <Link to="home">
-                                                {t("HeaderFranchises")}
+                                                {t("MyFranchises")}
                                             </Link>
                                         </li>
-                                        
                                         <li>
                                             <Link to="franchise">
-                                                {t("HeaderAddFranchise")}
+                                                {t("AddFranchise")}
                                             </Link>
                                         </li>
                                         </>
                                         ) : (
                                             <li>
                                             <Link to="company">
-                                                {t("HeaderAddCompany")}
+                                                {t("AddCompany")}
                                             </Link>
                                         </li>
                                         )}

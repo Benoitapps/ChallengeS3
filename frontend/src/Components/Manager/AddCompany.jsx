@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {Viewer, Worker} from '@react-pdf-viewer/core';
@@ -6,6 +6,8 @@ import {defaultLayoutPlugin} from '@react-pdf-viewer/default-layout';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import GetPdf from "./../GetPdf.jsx";
+import '@css/Company.css';
+
 const env = import.meta.env;
 
 function AddCompany({ companyStatus, setCompanyStatus }) {
@@ -150,6 +152,28 @@ function AddCompany({ companyStatus, setCompanyStatus }) {
                 </main>
             </div>
     );
+//     return branche dev
+//     return (
+//         <main className="add-company">
+//             <div className="login-signup">
+//                 <p className="form-title">{t('RequestCompany')}&nbsp;:</p>
+//
+//                 <form className="login-signup__form" onSubmit={handleSubmit}>
+//                     {
+//                         error && <p className="error">{error}</p>
+//                     }
+//                     <input type="text" id="name" name="name" placeholder={t('CompanyName')} autoComplete="name" required></input>
+//                     <input type="text" id="description" name="description" placeholder="Description" autoComplete="description" required></input>
+//                     <input type="file" id="kbis" name="kbis" placeholder="KBis" required onChange={(e)=>handleChange(e)}></input>
+//                     <div className="login-signup__form__submit">
+//                         <input type="submit" value={t('Request')} disabled={loading}/>
+//                     </div>
+//                 </form>
+//             </div>
+//
+//             <GetPdf file={pdfFile} viewPdf={viewPdf} />
+//         </main>
+//     );
 }
 
 export default AddCompany;

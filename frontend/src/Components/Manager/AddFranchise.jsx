@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 import '@css/Franchise.css';
 const env = import.meta.env;
 
@@ -8,6 +9,7 @@ function AddFranchise() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [imageFile, setImageFile] = useState(null);
+    const { t } = useTranslation();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -118,6 +120,37 @@ function AddFranchise() {
             </main>
         </div>
     );
+
+//     return branche dev
+//     return (
+//         <main className="add-franchise">
+//             <div className="franchise-card">
+//                 <div className="login-signup">
+//
+//                     <p className="form-title">{t('AddFranchise')}&nbsp;:</p>
+//
+//                     <form className="login-signup__form" onSubmit={handleSubmit}>
+//                         {
+//                             error && <p className="error">{error}</p>
+//                         }
+//                         <input type="text" id="name" name="name" placeholder={t('CompanyName')} autoComplete="name"
+//                                required></input>
+//                         <input type="text" id="description" name="description" placeholder="Description"
+//                                autoComplete="description" required></input>
+//                         <input type="text" id="address" name="address" placeholder={t('Adress')} required></input>
+//                         <input type="text" id="city" name="city" placeholder={t('City')} required></input>
+//                         <input type="number" id="zip_code" name="zip_code" placeholder={t('ZipCode')} required></input>
+//                         <input type="number" id="lng" name="lng" placeholder="lng" required></input>
+//                         <input type="number" id="lat" name="lat" placeholder="lat" required></input>
+//                         <input type="file" onChange={handleChange}/>
+//                         <div className="login-signup__form__submit">
+//                             <input type="submit" value={t('Add')} disabled={loading}/>
+//                         </div>
+//                     </form>
+//                 </div>
+//             </div>
+//         </main>
+//     );
 }
 
 export default AddFranchise;

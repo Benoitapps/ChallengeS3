@@ -1,46 +1,39 @@
-.allPage{
+.user-list {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 40px;
 }
 
-.titlePage{
-    margin-bottom: 40px;
-}
-
-.listPage {
-    width: calc(100% - 40px);
-}
-
-.lineList {
+.user-list__table {
     width: 100%;
+    margin: 0 auto;
     border-collapse: collapse;
     border-radius: var(--radius-picture);
     overflow: hidden;
     box-shadow: var(--input-shadow);
 }
 
-.history-head th,
-.partSlot {
+.user-list__table__head th,
+.user-list__table__body__line__column {
     text-align: left;
     padding: 15px 20px;
 }
 
-.noPadding {
-    padding: 0 !important;
-    width: 150px !important;
-}
-
-.history-head {
+.user-list__table__head {
     background-color: var(--dark-background);
     color: var(--text-white);
 }
 
-.lineSlot:nth-child(odd) {
+.user-list__table__body__line:nth-child(odd) {
     background-color: var(--background-table)
 }
 
-.buttonSlot {
+.user-list__table__body__line__column:last-child {
+    display: flex;
+}
+
+.user-list__button {
     color: var(--primary);
     background: none;
     padding: 0;

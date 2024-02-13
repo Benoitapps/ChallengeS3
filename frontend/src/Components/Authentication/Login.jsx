@@ -66,6 +66,9 @@ function Login({ handleConnect }) {
                             <input type="submit" value={loading ? 'Connexion en cours...' : 'Se connecter'} disabled={loading} />
                             <p>Vous n’avez pas encore de compte ? <Link to="/signup">Inscrivez-vous</Link></p>
                         </div>
+                        <Link to="/forgot-password">
+                            Mot de passe oublié ?
+                        </Link>
                     </form>
                 </div>
             </main>

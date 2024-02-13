@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getUsers } from '../../hook/admin/user';
+import '@css/Admin.css';
+import { useTranslation } from 'react-i18next';
 
 const env = import.meta.env;
 
 function UsersList() {
     const [users, setUsers] = useState([]);
     const [usersLoading, setUsersLoading] = useState(false);
-
     const [beingEdited, setBeingEdited] = useState(false);
     const [currentUserId, setCurrentUserId] = useState(null);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const loadData = async () => {
@@ -67,7 +69,6 @@ function UsersList() {
         delete userWithoutId.id;
 
         let userModifiedJson = JSON.stringify(userWithoutId);
-        console.log(userModifiedJson)
         let result = await fetch(`${env.VITE_URL_BACK}/api/users/` + user.id, {
             method: 'PATCH',
             headers: {
@@ -78,79 +79,78 @@ function UsersList() {
         });
 
         result = await result.json();
-        console.log(result)
     }
 
-    return (
-        <main>
+    return (<>
             {
-                usersLoading && <div>Chargement...</div>
+                usersLoading && <div>{t('Loading')}...</div>
             }
-
-            <table style={{width: "100%"}}>
-                <thead>
+            <main className="user-list">
+                <table className="user-list__table">
+                    <thead className="user-list__table__head">
                     <tr>
                         <th>Id</th>
                         <th>Email</th>
-                        <th>Rôles</th>
-                        <th>Prénom</th>
-                        <th>Nom</th>
+                        <th>{t('Role')}</th>
+                        <th>{t('FirstName')}</th>
+                        <th>{t('LastName')}</th>
                         <th></th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody className="user-list__table__body">
                     {users.map((user) => (
-                        <tr key={user.id} id={user.id}>
-                            <td>
+                        <tr key={user.id} id={user.id} className="user-list__table__body__line">
+                            <td className="user-list__table__body__line__column">
                                 {user.id}
                             </td>
-                            <td>
+                            <td className="user-list__table__body__line__column">
                                 {
                                     beingEdited && currentUserId === user.id
                                         ? <input type="text" name="email" defaultValue={user.email} />
                                         : user.email
                                 }
                             </td>
-                            <td>
+                            <td className="user-list__table__body__line__column">
                                 {
                                     beingEdited && currentUserId === user.id
                                         ? <input type="text" name="roles" defaultValue={user.roles} />
-                                        : user.roles
+                                        : user.roles.join(', ')
                                 }
                             </td>
-                            <td>
+                            <td className="user-list__table__body__line__column">
                                 {
                                     beingEdited && currentUserId === user.id
                                         ? <input type="text" name="firstname" defaultValue={user.firstname} />
                                         : user.firstname
                                 }
                             </td>
-                            <td>
+                            <td className="user-list__table__body__line__column">
                                 {
                                     beingEdited && currentUserId === user.id
                                         ? <input type="text" name="lastname" defaultValue={user.lastname} />
                                         : user.lastname
                                 }
                             </td>
-                            <td>
+                            <td className="user-list__table__body__line__column">
                                 {
                                     beingEdited && currentUserId === user.id
-                                        ? <button onClick={() => onSave(user)}>
-                                            Save
+                                        ? <button className="user-list__button" onClick={() => onSave(user)}>
+                                            {t('Save')}
                                         </button>
-                                        : <button onClick={() => onEdit(user)}>
-                                            Modifier
+                                        : <button className="user-list__button" onClick={() => onEdit(user)}>
+                                            {t('Update')}
                                         </button>
                                 }
-                                <button onClick={() => onDelete(user)}>
-                                    Supprimer
+                                <button className="user-list__button" onClick={() => onDelete(user)}>
+                                    {t('Delete')}
                                 </button>
                             </td>
                         </tr>
                     ))}
-                </tbody>
-            </table>
-        </main>
+                    </tbody>
+                </table>
+            </main>
+    </>
     );
 }
 

@@ -221,7 +221,7 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
             navigate("/schedule");
         }
 
-        const addslot = async (dateStart, dateEnd, idPrestation, idCoach, idClient) => {
+        const addslot = async (dateStart, dateEnd, idPrestation, idCoach, idClient ) => {
             const getData = await postSlot(dateStart, dateEnd,idPrestation,idCoach,idClient);
 
             if (getData && getData?.status === 500) {

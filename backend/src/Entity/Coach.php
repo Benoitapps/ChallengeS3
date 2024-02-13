@@ -37,7 +37,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ),
         new Patch(
             denormalizationContext: ['groups' => ['coach:write']],
-            security: "is_granted('ROLE_COACH') or is_granted('ROLE_ADMIN')",
+            security: "is_granted('ROLE_ADMIN') or object.getAuth() === user",
         ),
 
         new Get(

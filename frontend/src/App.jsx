@@ -8,6 +8,8 @@ import { accountService } from './services/account.service.js';
 import UserRoute from './UserRoute.jsx';
 import NavBar from './Components/NavBar';
 import Login from './Components/Authentication/Login';
+import ForgotPassword from './Components/Authentication/ForgotPassword';
+import ForgotPasswordEditPassword from './Components/Authentication/ForgotPasswordEditPassword';
 import SignUp from './Components/Authentication/SignUp';
 import Schedule from './Components/Calendar/Schedule.jsx';
 import ScheduleReservation from './Components/Calendar/ScheduleReservation.jsx';
@@ -128,6 +130,9 @@ function App() {
   useEffect(() => {
     if (localStorage.getItem('token') && accountService.getValuesToken().exp_jwt < Date.now()) {
       localStorage.removeItem('token');
+      setIsConnected(false);
+      setIsAdmin(false);
+      setIsManager(false);
     }
     setIsAdmin(userIsAdmin());
     setIsManager(userIsManager());
@@ -151,10 +156,12 @@ function App() {
 
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login handleConnect={handleConnect} />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="forgot-password/:token" element={<ForgotPasswordEditPassword />} />
 
             {/* Route for user connected */}
             <Route path="schedule" element={ <UserRoute component={Schedule} onButtonClick={setEventDetail} isConnected={isConnected} isCoach={isCoach}/> } />
-            <Route path="profile" element={ <UserRoute component={Profile} isConnected={isConnected} isCoach={isCoach} isManager={isManager}/> } />
+            <Route path="profile" element={ <UserRoute component={Profile} isConnected={isConnected} isCoach={isCoach} isManager={isManager} handleDisconnect={handleDisconnect}/> } />
             <Route path="prestation/:prestationId/coach/:coachId/update" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={true} isConnected={isConnected}/> }  />
             <Route path="prestation/:prestationId/coach/:coachId/add" element={<UserRoute component={ScheduleReservation} eventDetail={eventDetail} isUpdate={false} isConnected={isConnected}/>} />
             <Route path="history" element={<UserRoute component={HistoryPage}isConnected={isConnected} isCoach={isCoach}/>} />

@@ -44,6 +44,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Delete(),
         new Patch(
             denormalizationContext: ['groups' => ['manager:update']],
+            security: 'is_granted("ROLE_ADMIN") or object.getAuth() === user',
         ),
     ],
 )]

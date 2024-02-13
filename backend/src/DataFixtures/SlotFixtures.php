@@ -11,9 +11,11 @@ use App\Entity\Schedule;
 use App\Entity\Slot;
 use App\Entity\User;
 use Container0Ff2dKE\SimpleLoaderGhostB8c01d0;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+
 
 class SlotFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -28,6 +30,9 @@ class SlotFixtures extends Fixture implements DependentFixtureInterface
         $coach1 = $manager->getRepository(Coach::class)->findOneBy(['biography' => "Biography1"]);
         $coach2 = $manager->getRepository(Coach::class)->findOneBy(['biography' => "Biography2"]);
 
+        $dateTest = new \DateTime('now');
+        $dateString = $dateTest->format('Y-m-d');
+        $date = DateTime::createFromFormat('Y-m-d', $dateString);
 
         $object = (new Slot())
             ->setPrestation($prestation1)
@@ -35,7 +40,8 @@ class SlotFixtures extends Fixture implements DependentFixtureInterface
             ->setStartDate((new \DateTime('now'))->modify('+3 hours'))
             ->setEndDate((new \DateTime('now'))->modify('+4 hours'))
             ->setCoach($coach1)
-            ->setVacation(false);
+            ->setVacation(false)
+            ->setStartDate($date);
 
         $manager->persist($object);
 
@@ -43,7 +49,8 @@ class SlotFixtures extends Fixture implements DependentFixtureInterface
             ->setStartDate((new \DateTime('now'))->modify('+7 hours'))
             ->setEndDate((new \DateTime('now'))->modify('+8 hours'))
             ->setCoach($coach2)
-            ->setVacation(false);
+            ->setVacation(false)
+            ->setStartDate($date);
 
         $manager->persist($object);
 
