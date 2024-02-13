@@ -1,71 +1,73 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import {setHours} from "date-fns";
+import {postScheduleCoach} from '../../hook/manager/postScheduleCoach.js'
+import {useParams} from "react-router-dom";
+
+function YourFormComponent({coachId}) {
 
 
-function ScheduleEditor({onSave}) {
-    const [schedule, setSchedule] = useState([]);
-    const [date, setDate] = useState('');
-    const [working, setWorking] = useState(true);
-    const [startTime, setStartTime] = useState('');
-    const [endTime, setEndTime] = useState('');
+    console.log("coachhhhhhh",coachId)
 
-    const addDayToSchedule = () => {
-        setSchedule(prevSchedule => [...prevSchedule, { date, working, startTime, endTime }]);
-        setDate('');
-        setWorking(true);
-        setStartTime('');
-        setEndTime('');
+    const postShedule = async (dateStartTime,dateEndTime,dateStartSimple,dateEndSimple) => {
+        await postScheduleCoach(dateStartTime,dateEndTime,dateStartSimple,dateEndSimple,coachId)
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        const dateStartSimple = new Date(event.target.dateStart.value)
+        const dateEndSimple = new Date(event.target.dateEnd.value)
+
+        const dateStartRecup = event.target.dateStart.value
+        let dateStartTime = new Date(dateStartRecup);
+
+        const dateEndRecup = event.target.dateEnd.value
+        let dateEndTime = new Date(dateEndRecup);
+
+        const hourStart = event.target.timeStart.value
+        dateStartTime.setHours(hourStart);
+
+        const hourEnd = event.target.timeEnd.value
+        dateEndTime.setHours(hourEnd);
+
+        // console.log(dateStartTime,dateEndTime,dateStartSimple,dateEndSimple)
+        postShedule(dateStartTime,dateEndTime,dateStartSimple,dateEndSimple)
+
     };
 
-    const removeDayFromSchedule = (dayToRemove) => {
-        setSchedule(prevSchedule => prevSchedule.filter(day => day.date !== dayToRemove.date));
-    };
-
-    const renderSchedule = () => {
-        return schedule.map((day, index) => (
-            <div key={index}>
-                <p>Date: {day.date}</p>
-                {day.working ? (
-                    <p>Travail de {day.startTime} à {day.endTime}</p>
-                ) : (
-                    <p>Jour de congé</p>
-                )}
-                <button onClick={() => removeDayFromSchedule(day)}>Supprimer</button>
-            </div>
-        ));
-    };
-
-    const saveScheduleChanges = () => {
-        onSave(schedule);
-    };
+    const hours = Array.from({ length: 24 }, (_, index) => index);
 
     return (
-        <div>
-            <h2>Gestion des horaires de travail</h2>
-            {renderSchedule()}
-            <div>
-                <label>Date:</label>
-                <input type="date" value={date} onChange={e => setDate(e.target.value)} />
-            </div>
-            <div>
-                <label>Heures de travail:</label>
-                <input type="checkbox" checked={working} onChange={() => setWorking(!working)} />
-            </div>
-            {working && (
-                <>
-                    <div>
-                        <label>Heure de début:</label>
-                        <input type="time" value={startTime} onChange={e => setStartTime(e.target.value)} />
-                    </div>
-                    <div>
-                        <label>Heure de fin:</label>
-                        <input type="time" value={endTime} onChange={e => setEndTime(e.target.value)} />
-                    </div>
-                </>
-            )}
-            <button onClick={addDayToSchedule}>Ajouter un jour</button>
-            <button onClick={saveScheduleChanges}>Enregistrer</button>
-        </div>
+        <>
+            <form className="login-signup__form" onSubmit={handleSubmit}>
+                    <label>Date de début:</label>
+                    <input type="date" name="dateStart"  />
+
+                    <label>Date de fin:</label>
+                    <input type="date" name="dateEnd"   />
+
+                    <label>Heure de début:</label>
+                    <select name="timeStart" id="timeStart" >
+                        {hours.map((hour) => (
+                            <option key={hour} value={hour}>
+                                {hour.toString().padStart(2, '0')}h
+                            </option>
+                        ))}
+                    </select>
+
+                    <label>Heure de fin:</label>
+                    <select name="timeEnd" id="timeEnd" >
+                        {hours.map((hour) => (
+                            <option key={hour} value={hour}>
+                                {hour.toString().padStart(2, '0')}h
+                            </option>
+                        ))}
+                    </select>
+
+                <input type="submit" value="Update" />
+            </form>
+        </>
     );
 }
 
-export default ScheduleEditor;
+export default YourFormComponent;

@@ -119,7 +119,7 @@ function CoachDetails() {
 
                 </div>
                 <div>
-                    <ScheduleEditor onSave={saveSchedule} />
+                    <ScheduleEditor coachId={coachId}/>
                 </div>
             </main>
         </div>
