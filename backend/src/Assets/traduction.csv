@@ -53,3 +53,8 @@ NumberOfBookingForTheService, Number of bookings for the service, Nombre de rés
 MoneyEarned, Money earned for each franchise, Argent gagné pour chaque franchise,
 FranchiseWon, The franchise won, La franchise a gagné,
 Role, Role, Rôle,
+Verified, Verified, Vérifié,
+Verify, Verify, Vérifier,
+Unverify, Unverify, Réfuter,
+ViewKBIS, View KBIS, Voir le KBIS,
+ManagerToAssociate, Manager to associate, Manager à associer,

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { getCompanies, getManagers } from '../../hook/admin/company';
 import Popup from "../Calendar/Popup.jsx";
 import GetPdf from "../GetPdf.jsx";
+import {useTranslation} from "react-i18next";
+
 const env = import.meta.env;
 
 function CompaniesList() {
@@ -13,7 +15,8 @@ function CompaniesList() {
     const [currentCompanyId, setCurrentCompanyId] = useState(null);
 
     const [managers, setManagers] = useState([]);
-    const[kbis, setKbis] = useState(null)
+    const[kbis, setKbis] = useState(null);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const loadData = async () => {
@@ -138,7 +141,7 @@ function CompaniesList() {
                 &&
                 <div id='company-form' style={{display: 'flex', justifyContent: 'start', alignContent: 'center'}}>
                     <div style={{display: 'flex', justifyContent: 'start', alignContent: 'center', flexDirection: 'column',}}>
-                        Manager a associer
+                        {t('ManagerToAssociate')}
                         <select name="manager" id="company-manager">
                             {
                                 managers.map((manager) => (
@@ -150,7 +153,7 @@ function CompaniesList() {
                         </select>
                     </div>
                     <div style={{display: 'flex', justifyContent: 'start', alignContent: 'center', flexDirection: 'column',}}>
-                        Nom de la company
+                        {t('CompanyName')}
                         <input type="text" placeholder='nom de la company' name="name"/>
                     </div>
                     <div style={{display: 'flex', justifyContent: 'start', alignContent: 'center', flexDirection: 'column',}}>
@@ -162,20 +165,20 @@ function CompaniesList() {
                         <textarea name="description" id="company-description" cols="20" rows="2"></textarea>
                     </div>
                     <button onClick={() => addCompany()}>
-                        Ajouter
+                        {t('Add')}
                     </button>
                 </div>
             }
             {companiesLoading 
-                ? <div>Chargement...</div> 
+                ? <div>{t('Loading')}</div>
                 : 
                 <table className="companies-list__table">
                     <thead className="companies-list__table__head">
                         <tr>
                             <th>Id</th>
-                            <th>Vérifié</th>
+                            <th>{t('Verified')}</th>
                             <th>Manager id</th>
-                            <th>Nom de la company</th>
+                            <th>{t('CompanyName')}</th>
                             <th>Description</th>
                             <th>Actions</th>
                             <th>KBIS</th>
@@ -196,11 +199,11 @@ function CompaniesList() {
                                         company.isVerified
                                             ? <button className="companies-list__button"
                                                       onClick={() => handleVerifCompany(company.id, company.isVerified)}>
-                                                Réfuter
+                                                {t('Unverify')}
                                             </button>
                                             : <button className="companies-list__button"
                                                       onClick={() => handleVerifCompany(company.id, company.isVerified)}>
-                                                Vérifier
+                                                {t('Verify')}
                                             </button>
                                     }
                                 </td>
@@ -223,16 +226,16 @@ function CompaniesList() {
                                     {
                                         beingEdited && currentCompanyId === company.id
                                             ? <button className="companies-list__button" onClick={() => onSave(company.id)}>
-                                                Enregistrer
+                                                {t('Save')}
                                             </button>
                                             : <button className="companies-list__button" onClick={() => onEdit(company.id)}>
-                                                Modifier
+                                                {t('Update')}
                                             </button>
                                     }
                                 </td>
                                 <td className="companies-list__table__body__line__column">
                                     <button className="companies-list__button" onClick={() => handlePopup(company.kbis)}>
-                                        ViewKBIS
+                                        {t('ViewKBIS')}
                                     </button>
                                 </td>
                             </tr>
