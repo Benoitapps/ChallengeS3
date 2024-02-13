@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getCompanies, getManagers } from '../../hook/admin/company';
 import Popup from "../Calendar/Popup.jsx";
 import GetPdf from "../GetPdf.jsx";
@@ -132,7 +132,7 @@ function CompaniesList() {
    }
 
     return (
-        <main>
+        <main className="companies-list">
             {
                 managers.length > 0 
                 &&
@@ -169,8 +169,8 @@ function CompaniesList() {
             {companiesLoading 
                 ? <div>Chargement...</div> 
                 : 
-                <table>
-                    <thead>
+                <table className="companies-list__table">
+                    <thead className="companies-list__table__head">
                         <tr>
                             <th>Id</th>
                             <th>Vérifié</th>
@@ -184,56 +184,56 @@ function CompaniesList() {
                     <tbody>
                         {companies.map((company) => (
                             <tr key={company.id}>
-                                <td>{company.id}</td>
-                                <td style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                                    <input type="checkbox" name="verified" id="verified" checked={company.isVerified} disabled/>
+                                <td className="companies-list__table__body__line__column">{company.id}</td>
+                                <td className="companies-list__table__body__line__column verify">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960"
+                                         width="24">
+                                        <path
+                                            fill={company.isVerified ? "var(--primary)" : "var(--text-grey)"}
+                                            d="m344-60-76-128-144-32 14-148-98-112 98-112-14-148 144-32 76-128 136 58 136-58 76 128 144 32-14 148 98 112-98 112 14 148-144 32-76 128-136-58-136 58Zm34-102 102-44 104 44 56-96 110-26-10-112 74-84-74-86 10-112-110-24-58-96-102 44-104-44-56 96-110 24 10 112-74 86 74 84-10 114 110 24 58 96Zm102-318Zm-42 142 226-226-56-58-170 170-86-84-56 56 142 142Z"/>
+                                    </svg>
                                     {
-                                        company.isVerified 
-                                            ? <button onClick={() => handleVerifCompany(company.id, company.isVerified)}>
-                                                Réfuté
+                                        company.isVerified
+                                            ? <button className="companies-list__button"
+                                                      onClick={() => handleVerifCompany(company.id, company.isVerified)}>
+                                                Réfuter
                                             </button>
-                                            : <button onClick={() => handleVerifCompany(company.id, company.isVerified)}>
+                                            : <button className="companies-list__button"
+                                                      onClick={() => handleVerifCompany(company.id, company.isVerified)}>
                                                 Vérifier
                                             </button>
                                     }
                                 </td>
-                                <td>{company.manager}</td>
-                                <td>
+                                <td className="companies-list__table__body__line__column">{company.manager}</td>
+                                <td className="companies-list__table__body__line__column">
                                     {
                                         beingEdited && currentCompanyId === company.id
-                                            ? <input type="text" name="name" defaultValue={company.name} />
+                                            ? <input type="text" name="name" defaultValue={company.name}/>
                                             : company.name
                                     }
                                 </td>
-                                <td style={{width: '20%'}}>
+                                <td className="companies-list__table__body__line__column description">
                                     {
                                         beingEdited && currentCompanyId === company.id
-                                        ? <textarea type="text" name="description" defaultValue={company.description} />
+                                        ? <textarea name="description" defaultValue={company.description} />
                                         : company.description
                                     }
                                 </td>
-                                <td>
+                                <td className="companies-list__table__body__line__column">
                                     {
                                         beingEdited && currentCompanyId === company.id
-                                            ? <button onClick={() => onSave(company.id)}>
+                                            ? <button className="companies-list__button" onClick={() => onSave(company.id)}>
                                                 Enregistrer
                                             </button>
-                                            : <button onClick={() => onEdit(company.id)}>
+                                            : <button className="companies-list__button" onClick={() => onEdit(company.id)}>
                                                 Modifier
                                             </button>
                                     }
                                 </td>
-                                <td>
-                                    {<button onClick={() => handlePopup(company.kbis)}>
+                                <td className="companies-list__table__body__line__column">
+                                    <button className="companies-list__button" onClick={() => handlePopup(company.kbis)}>
                                         ViewKBIS
-                                    </button>}
-                                        <Popup show={statePopUp} onClose={() => setStatePopUp(false)} button1={() => setStatePopUp(false)} nameButton1={"Fermer"} annuler={"Annuler"}>
-                                            <div>
-                                                <h1>KBIS</h1>
-                                                <GetPdf file={kbis} viewPdf={true}/>
-                                            </div>
-                                        </Popup>
-
+                                    </button>
                                 </td>
                             </tr>
                         ))}
@@ -241,6 +241,10 @@ function CompaniesList() {
                 </table>
             }
 
+            <Popup show={statePopUp} onClose={() => setStatePopUp(false)} button1={() => setStatePopUp(false)} nameButton1={"Fermer"} annuler={"Annuler"}>
+                <h3>KBIS</h3>
+                <GetPdf file={kbis} viewPdf={true} header={false}/>
+            </Popup>
         </main>
     );
 }
