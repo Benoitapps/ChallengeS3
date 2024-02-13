@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Coach;
 use App\Entity\Schedule;
+use App\ValueObject\PersoSchedule;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -17,41 +18,37 @@ class ScheduleController extends AbstractController
 {
     public function __construct(protected EntityManagerInterface $entityManager ,) {}
 
-    public function __invoke(Request $request, ManagerRegistry $doctrine)
+    public function __invoke(Request $request, ManagerRegistry $doctrine, PersoSchedule $persoSchedule)
     {
-        $userData = json_decode($request->getContent(), true);
 
-        $providedCoachId = basename($userData['coach']);
-        $coach = $this->entityManager->getRepository(Coach::class)->find($providedCoachId);
+        $coach = $persoSchedule->getCoach();
+        $dateStart = $persoSchedule->getDateStart();
+        $dateEnd = $persoSchedule->getDateEnd();
 
-        $dateStartString = $userData['dateStart'];
-        $dateStart = DateTime::createFromFormat('Y-m-d', $dateStartString);
-
-        $dateEndString = $userData['dateEnd'];
-        $dateEnd = DateTime::createFromFormat('Y-m-d', $dateEndString);
-
-        dump($dateStart);
-
-        $dateString = $userData['dateStart'];
-        $date = DateTime::createFromFormat('Y-m-d', $dateString);
-
-        $dateTimeStart = new DateTime($userData['dateTimeStart']);
-        $dateTimeEnd = new DateTime($userData['dateTimeEnd']);
-
+        $dateTimeStart = $persoSchedule->getDateTimeStart();
+        $dateTimeEnd = $persoSchedule->getDateTimeEnd();
 
         if ($dateStart == $dateEnd) {
             $schedule = new Schedule();
 
-            dump($userData);
-
-            $schedule->setDate($date);
+            $schedule->setDate($dateStart);
             $schedule->setStartDate($dateTimeStart);
             $schedule->setEndDate($dateTimeEnd);
             $schedule->setCoach($coach);
 
             $entityManager = $doctrine->getManager();
             $entityManager->persist($schedule);
-            $entityManager->flush();
+
+            $exist = $this->entityManager
+                ->getRepository(Schedule::class)
+                ->findOneBy([
+                    'dateStart' => $dateStart,
+                    'dateEnd' => $dateEnd,
+                    'coach' => $coach->getId()
+                ]);
+            if($exist != []) {
+                $entityManager->flush();
+            }
 
         }elseif($dateStart < $dateEnd){
 
@@ -73,12 +70,25 @@ class ScheduleController extends AbstractController
 
                 $entityManager = $doctrine->getManager();
                 $entityManager->persist($schedule);
-                $entityManager->flush();
+
+                $exist = $this->entityManager
+                    ->getRepository(Schedule::class)
+                    ->findOneBy([
+                        'dateStart' => $dateTimeStartModify,
+                        'dateEnd' => $dateTimeEndModify,
+                        'coach' => $coach->getId()
+                    ]);
+                if($exist != []) {
+                    $entityManager->flush();
+                }
 
                 $dateTimeStartModify->modify('+1 day');
                 $dateTimeEndModify->modify('+1 day');
                 $dateModify->modify('+1 day');
             }
         }
+
+        return $persoSchedule;
     }
+
 }

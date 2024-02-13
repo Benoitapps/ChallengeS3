@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     operations: [
         new Post(
             controller: ScheduleController::class,
-            denormalizationContext: ['groups' => ['ShedulePerso:write']]
+            denormalizationContext: ['groups' => ['ShedulePerso:write']],
 
         )
     ]

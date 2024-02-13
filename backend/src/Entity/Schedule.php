@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Post;
 use App\Repository\ScheduleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
@@ -40,6 +41,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
 )]
 
+#[UniqueEntity(fields: ['startDate','endDate','coach'], message: 'Ces horraires sont deja programer est déjà pris')]
 #[ORM\Entity(repositoryClass: ScheduleRepository::class)]
 class Schedule
 {
@@ -50,11 +52,11 @@ class Schedule
 
     #[Groups(['schedule:read','schedule:write','schedule:update','coach:read:shedules'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $start_date = null;
+    private ?\DateTimeInterface $startDate = null;
 
     #[Groups(['schedule:read','schedule:write','schedule:update','coach:read:shedules'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $end_date = null;
+    private ?\DateTimeInterface $endDate = null;
 
     #[Groups(['schedule:read', 'schedule:write','schedule:update'])]
     #[ORM\ManyToOne(inversedBy: 'schedules')]
@@ -71,24 +73,24 @@ class Schedule
 
     public function getStartDate(): ?\DateTimeInterface
     {
-        return $this->start_date;
+        return $this->startDate;
     }
 
-    public function setStartDate(\DateTimeInterface $start_date): static
+    public function setStartDate(\DateTimeInterface $startDate): static
     {
-        $this->start_date = $start_date;
+        $this->startDate = $startDate;
 
         return $this;
     }
 
     public function getEndDate(): ?\DateTimeInterface
     {
-        return $this->end_date;
+        return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $end_date): static
+    public function setEndDate(\DateTimeInterface $endDate): static
     {
-        $this->end_date = $end_date;
+        $this->endDate = $endDate;
 
         return $this;
     }
