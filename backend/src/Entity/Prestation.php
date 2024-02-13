@@ -18,7 +18,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Post(
             denormalizationContext: [
                 'groups' => ['prestation:write']
-            ]
+            ],
+            security: "is_granted('ROLE_MANAGER')",
         ),
         new Get(
             normalizationContext: [
@@ -40,19 +41,19 @@ class Prestation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[Groups(['slot:read', 'franchise:read', 'coach:read','slot:history:read:collection'])]
+    #[Groups(['slot:read', 'franchise:read', 'coach:read','slot:history:read:collection', 'franchise:prestations-list', 'coach-prestation:link'])]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['slot:read', 'slot:read:collection', 'prestation:write', 'prestation:read', 'coach:read:slots', 'company:read:franchise', 'franchise:read', 'coach:read','slot:history:read:collection','stat:prestation:read','prestation:update'])]
+    #[Groups(['slot:read', 'slot:read:collection', 'prestation:write', 'prestation:read', 'coach:read:slots', 'company:read:franchise', 'franchise:read', 'coach:read','slot:history:read:collection','stat:prestation:read','prestation:update', 'franchise:prestations-list'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[Groups(['prestation:write', 'prestation:read','prestation:update'])]
+    #[Groups(['prestation:write', 'prestation:read','prestation:update', 'franchise:prestations-list'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[Groups(['prestation:write', 'prestation:read', 'franchise:read', 'coach:read','stat:money:read','stat:admin:read','prestation:update'])]
+    #[Groups(['prestation:write', 'prestation:read', 'franchise:read', 'coach:read','stat:money:read','stat:admin:read','prestation:update', 'company:read:franchise', 'franchise:prestations-list'])]
     #[ORM\Column]
     private ?float $price = null;
 

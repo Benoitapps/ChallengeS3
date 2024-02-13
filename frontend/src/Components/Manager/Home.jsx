@@ -1,13 +1,14 @@
 import {useEffect, useState} from 'react';
 import {getFranchises} from "../../hook/manager/franchise.js";
+import {getCompanies} from "../../hook/manager/company.js";
 import {Link} from "react-router-dom";
 import PrestaManagerItem from "./PrestaManagerItem.jsx";
 import {useTranslation} from "react-i18next";
+const env = import.meta.env;
 
-function Home() {
+function Home({ isManager, companyStatus }) {
     const [franchises, setFranchises] = useState([]);
     const [franchisesLoading, setFranchisesLoading] = useState(false);
-    const [hasCompany, setHasCompany] = useState(true);
     const [loading, setLoading] = useState(false);
     const { t } = useTranslation();
 
@@ -32,11 +33,11 @@ function Home() {
     return (
         <main>
             {/*<div style={{width: '50%'}}>*/}
-            {hasCompany ? (
+            {companyStatus === 'accepted' ? (
                 <>
                     <h1>{t('MyFranchises')} :</h1>
                     <div style={{ width: '100%', display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px', marginTop: '20px'}}>
-                    {franchisesLoading && <div>{t('Loading')}...</div>}
+                        {franchisesLoading && <div>{t('Loading')}...</div>}
                         {franchises.map((franchise, index) => (
                             <PrestaManagerItem club={franchise} key={index} reload={reload}/>
                         ))}
@@ -50,9 +51,9 @@ function Home() {
                     </Link>
                 </div>
             )}
-            {/*</div>*/}
         </main>
     );
+
 }
 
 export default Home;

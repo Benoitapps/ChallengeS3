@@ -46,6 +46,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
             normalizationContext: ['groups' => ['franchise:read']],
 //            security: "is_granted('ROLE_MANAGER')",
         ),
+        new Get(
+            uriTemplate: 'franchises/{id}/prestations',
+            normalizationContext: ['groups' => ['franchise:prestations-list']],
+            security: "is_granted('ROLE_MANAGER')",
+        ),
         new Post(
             denormalizationContext: ['groups' => ['franchise:write']],
             security: "is_granted('ROLE_MANAGER')",
@@ -69,7 +74,7 @@ class Franchise
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['franchise:read','company:read:franchise'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'coach:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -102,17 +107,17 @@ class Franchise
     private Collection $coachs;
 
     #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: Prestation::class)]
-    #[Groups(['franchise:read', 'company:read:franchise','stat:prestation:read','stat:money:read','stat:admin:read'])]
+    #[Groups(['franchise:read', 'company:read:franchise','stat:prestation:read','stat:money:read','stat:admin:read', 'franchise:prestations-list'])]
     private Collection $prestations;
     
     #[ORM\Column]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['franchise:read','franchise:write','company:read:franchise','franchise:update'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'franchise:update'])]
     private ?float $lat = null;
     
     #[ORM\Column]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['franchise:read','franchise:write','company:read:franchise','franchise:update'])]
+    #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'franchise:update'])]
     private ?float $lng = null;
 
     #[Groups(['franchise:read','franchise:write'])]

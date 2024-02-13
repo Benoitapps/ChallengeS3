@@ -1,12 +1,27 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
-function ManagerRoute({ component: Component, isManager }, props) {
+// code de base
+// function ManagerRoute({ component: Component, isManager }, props) {
+function ManagerRoute({ component: Component, isManager, ...props}) {
+  const location = useLocation();
+
+  console.log('location', location.pathname);
+  console.log('companyStatus', props.companyStatus);
+
+
+  const locationWantToGo = location.pathname;
+  if (location.pathname !== '/manager/company' && (props.companyStatus === 'none' || props.companyStatus === 'pending')) {
+    return <Navigate to="/manager/company" />;
+  } else if (location.pathname === '/manager/company' && props.companyStatus === 'accepted') {
+    return <Navigate to="/manager" />;
+  }
   return (
     <>
-      {isManager ? <Component {...props} /> : <Navigate to="/unauthorized" />}
+      {isManager ? <Component isManager={isManager} {...props} /> : <Navigate to="/unauthorized" />}
     </>
   );
 }
+
 
 export default ManagerRoute;
