@@ -66,7 +66,7 @@ class ForgotPasswordController extends AbstractController
                 try {
                     $resend->emails->send([
                         'from' => 'mycoach@mycoach.bendc.site',
-                        'to' => $email,
+                        'to' => $_ENV['APP_ENV'] == 'dev' ? $_ENV['MAIL_TO'] : $email,
                         'subject' => 'subject',
                         'html' => '<a href="' . $url_front . '/forgot-password/' . $user->getToken() . '">Modifier votre mot de passe</a>',
                     ]);

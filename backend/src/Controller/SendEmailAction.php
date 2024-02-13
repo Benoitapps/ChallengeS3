@@ -25,7 +25,7 @@ class SendEmailAction extends AbstractController
         try {
             $resend->emails->send([
                 'from' => 'mycoach@mycoach.bendc.site',
-                'to' => $data['email'],
+                'to' => $_ENV['APP_ENV'] == 'dev' ? $_ENV['MAIL_TO'] : $data['email'],
                 'subject' => $data['subject'],
                 'html' => $data['message'],
             ]);

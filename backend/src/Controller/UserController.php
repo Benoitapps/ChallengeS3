@@ -105,7 +105,7 @@ class UserController extends AbstractController
 
         $resend->emails->send([
             'from' => 'mycoach@mycoach.bendc.site',
-            'to' => $mail,
+            'to' => $_ENV['APP_ENV'] == 'dev' ? $_ENV['MAIL_TO'] : $mail,
             'subject' => $title,
             'html' => $text,
         ]);
