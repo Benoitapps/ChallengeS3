@@ -35,6 +35,16 @@
     font-family: "Inter", sans-serif;
 }
 
+*::-webkit-scrollbar {
+    width: 10px;
+    appearance: none;
+    background: var(--system);
+}
+
+*::-webkit-scrollbar-thumb {
+    background: var(--primary);
+}
+
 html {
     height: 100%;
 }
