@@ -15,16 +15,23 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
     {
         $manager1 = $manager->getRepository(Manager::class)->findAll();
 
-
         $object = (new Company())
-           ->setManager($manager1[0])
+            ->setManager($manager1[0])
             ->setName("Fitness Park")
-            ->setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget aliquam lacinia, nunc nisl aliquet nunc, quis aliquam nisl nisl")
-            ->setKbis("Kbis1")
-            ->setIsVerified(false);
+            ->setDescription("Fitness Park est une salle de sport qui propose des cours collectifs, des machines de musculation et de cardio, des espaces de crossfit et de boxe, des saunas et des hammams. Nous proposons également des coachs sportifs pour vous accompagner dans votre progression.")
+            ->setKbis("KBIS de l'entreprise")
+            ->setIsVerified(true);
 
         $manager->persist($object);
 
+        $object = (new Company())
+            ->setManager($manager1[1])
+            ->setName("Keep Cool")
+            ->setDescription("Keep Cool est une salle de sport qui propose des cours collectifs, des machines de musculation et de cardio, des espaces de crossfit et de boxe, des saunas et des hammams. Nous proposons également des coachs sportifs pour vous accompagner dans votre progression.")
+            ->setKbis("KBIS de l'entreprise")
+            ->setIsVerified(true);
+
+        $manager->persist($object);
 
         $manager->flush();
     }

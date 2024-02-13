@@ -19,12 +19,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
     operations: [
         new Post(
-            denormalizationContext: ['groups' => ['coach:write']],
-        ),
-        new Post(
-            uriTemplate: '/coaches/coachnew'
-        ),
-        new Post(
             uriTemplate: '/coaches/{id}/prestations',
             controller: LinkPrestationController::class,
             denormalizationContext: ['groups' => ['coach-prestation:link']],
@@ -34,6 +28,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ),
         new GetCollection(
             normalizationContext: ['groups' => ['coach:read']],
+            security: "is_granted('ROLE_ADMIN')",
         ),
         new Patch(
             denormalizationContext: ['groups' => ['coach:write']],

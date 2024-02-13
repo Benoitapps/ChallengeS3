@@ -1,11 +1,3 @@
-a {
-    color: var(--text-black);
-}
-
-a:hover {
-    color: initial;
-}
-
 .franchise-card {
     display: flex;
     padding: 13px 15px;
@@ -14,6 +6,14 @@ a:hover {
     max-width: 700px;
     background: var(--background);
     border-radius: var(--radius-card);
+}
+
+.franchise-card a {
+    color: var(--text-black);
+}
+
+.franchise-card a:hover {
+    color: initial;
 }
 
 .franchise-card__visuel {

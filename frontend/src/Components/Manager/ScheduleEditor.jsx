@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {setHours} from "date-fns";
 import {postScheduleCoach} from '../../hook/manager/postScheduleCoach.js'
 
-function YourFormComponent({coachId}) {
+function ScheduleEditor({coachId}) {
 
     const postShedule = async (dateStartTime,dateEndTime,dateStartSimple,dateEndSimple) => {
         await postScheduleCoach(dateStartTime,dateEndTime,dateStartSimple,dateEndSimple,coachId)
@@ -66,4 +66,4 @@ function YourFormComponent({coachId}) {
     );
 }
 
-export default YourFormComponent;
+export default ScheduleEditor;
