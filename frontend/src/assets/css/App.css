@@ -67,11 +67,8 @@ li {
 }
 
 a {
-    text-decoration: none;
-}
-
-a {
     color: var(--primary);
+    text-decoration: none;
 }
 
 a:hover {
