@@ -54,12 +54,12 @@ final class EventMail implements EventSubscriberInterface
                 $resCoach = $coach->getAuth()->getEmail();
                 $nameCoach = $coach->getAuth()->getFirstName();
 
-                $resend->emails->send([
-                    'from' => 'mycoach@mycoach.bendc.site',
-                    'to' => '' . $resCoach,
-                    'subject' => "Reservation de cours",
-                    'html' => 'Vous avez une réservation de cours de sport du ' . $requestData['startDate'] . ' au ' . $requestData['endDate'],
-                ]);
+//                $resend->emails->send([
+//                    'from' => 'mycoach@mycoach.bendc.site',
+//                    'to' => '' . $resCoach,
+//                    'subject' => "Reservation de cours",
+//                    'html' => 'Vous avez une réservation de cours de sport du ' . $requestData['startDate'] . ' au ' . $requestData['endDate'],
+//                ]);
             }
 
             if ($requestData['client'] !== null) {
@@ -67,12 +67,12 @@ final class EventMail implements EventSubscriberInterface
                 $client = $this->entityManager->getRepository(Client::class)->find($providedClientId);
                 $resClient = $client->getAuth()->getEmail();
 
-                $resend->emails->send([
-                    'from' => 'mycoach@mycoach.bendc.site',
-                    'to' => '' . $resClient,
-                    'subject' => "Reservation de cours",
-                    'html' => 'Vous avez reserver un cours de cours de sport le ' . $requestData['startDate'] . ' au ' . $requestData['endDate'] . ' avec le coach ' . $nameCoach,
-                ]);
+//                $resend->emails->send([
+//                    'from' => 'mycoach@mycoach.bendc.site',
+//                    'to' => '' . $resClient,
+//                    'subject' => "Reservation de cours",
+//                    'html' => 'Vous avez reserver un cours de cours de sport le ' . $requestData['startDate'] . ' au ' . $requestData['endDate'] . ' avec le coach ' . $nameCoach,
+//                ]);
             }
         }
 
@@ -91,23 +91,23 @@ final class EventMail implements EventSubscriberInterface
                 $resCoach = $coach->getAuth()->getEmail();
                 $nameCoach = $coach->getAuth()->getFirstName();
 
-                $resend->emails->send([
-                    'from' => 'mycoach@mycoach.bendc.site',
-                    'to' => '' . $resClient,
-                    'subject' => "Modification de cours",
-                    'html' => 'Vous avez modifier la réservation de cours de sport au ' . $requestData['startDate'] . ' au ' . $requestData['endDate'],
-                ]);
+//                $resend->emails->send([
+//                    'from' => 'mycoach@mycoach.bendc.site',
+//                    'to' => '' . $resClient,
+//                    'subject' => "Modification de cours",
+//                    'html' => 'Vous avez modifier la réservation de cours de sport au ' . $requestData['startDate'] . ' au ' . $requestData['endDate'],
+//                ]);
 
 
                 $client = $this->entityManager->getRepository(Slot::class)->find($slotId)->getClient();
                 $resClient = $client->getAuth()->getEmail();
 
-                $resend->emails->send([
-                    'from' => 'mycoach@mycoach.bendc.site',
-                    'to' => '' . $resCoach,
-                    'subject' => "Modification de cours",
-                    'html' => 'Votre client a modifier la date de votre cours au : ' . $requestData['startDate'] . ' au ' . $requestData['endDate'] . ' avec le coach ' . $nameCoach,
-                ]);
+//                $resend->emails->send([
+//                    'from' => 'mycoach@mycoach.bendc.site',
+//                    'to' => '' . $resCoach,
+//                    'subject' => "Modification de cours",
+//                    'html' => 'Votre client a modifier la date de votre cours au : ' . $requestData['startDate'] . ' au ' . $requestData['endDate'] . ' avec le coach ' . $nameCoach,
+//                ]);
             }
         }
         //DELETE
@@ -125,23 +125,23 @@ final class EventMail implements EventSubscriberInterface
                 $resCoach = $coach->getAuth()->getEmail();
                 $nameCoach = $coach->getAuth()->getFirstName();
 
-                $resend->emails->send([
-                    'from' => 'mycoach@mycoach.bendc.site',
-                    'to' => '' . $resCoach,
-                    'subject' => "Annulation de cours",
-                    'html' => 'Votre cours du ' . $requestData['startDate'] . ' au ' . $requestData['endDate'] . ' a été annulé',
-                ]);
+//                $resend->emails->send([
+//                    'from' => 'mycoach@mycoach.bendc.site',
+//                    'to' => '' . $resCoach,
+//                    'subject' => "Annulation de cours",
+//                    'html' => 'Votre cours du ' . $requestData['startDate'] . ' au ' . $requestData['endDate'] . ' a été annulé',
+//                ]);
 
 
                 $client = $this->entityManager->getRepository(Slot::class)->find($slotId)->getClient();
                 $resClient = $client->getAuth()->getEmail();
 
-                $resend->emails->send([
-                    'from' => 'mycoach@mycoach.bendc.site',
-                    'to' => '' . $resClient,
-                    'subject' => "Annulation de cours",
-                    'html' => 'Votre cours du ' . $requestData['startDate'] . ' au ' . $requestData['endDate'] . ' a été annulé',
-                ]);
+//                $resend->emails->send([
+//                    'from' => 'mycoach@mycoach.bendc.site',
+//                    'to' => '' . $resClient,
+//                    'subject' => "Annulation de cours",
+//                    'html' => 'Votre cours du ' . $requestData['startDate'] . ' au ' . $requestData['endDate'] . ' a été annulé',
+//                ]);
             }
         }
 
