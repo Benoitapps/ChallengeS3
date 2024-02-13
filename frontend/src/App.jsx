@@ -23,9 +23,10 @@ import Dashboard from './Components/DashBoard/DashboardPage.jsx';
 
 // Admin
 import NavBarAdmin from './Components/Admin/NavBar';
-import HomeAdmin from './Components/Admin/Home';
 import UsersList from './Components/Admin/UsersList.jsx';
 import CompaniesList from './Components/Admin/CompaniesList.jsx';
+import FranchisesList from './Components/Admin/FranchisesList.jsx';
+import CoachesList from './Components/Admin/CoachesList.jsx';
 import AdminRoute from './AdminRoute.jsx';
 import DashboardAdmin from "./Components/DashBoard/DashboardAdmin/DashboardPageAdmin.jsx";
 
@@ -38,9 +39,6 @@ import AddFranchise from "./Components/Manager/AddFranchise.jsx";
 
 // Special
 import Unauthorize from './Components/Unauthorize.jsx';
-import i18next from "./i18n.js";
-import {useTranslation, Trans} from "react-i18next";
-import DashboardPageAdmin from "./Components/DashBoard/DashboardAdmin/DashboardPageAdmin.jsx";
 
 function App() {
   const userIsAdmin = () => {
@@ -140,10 +138,12 @@ function App() {
             element={(
               <Routes>
                 <Route path="/" element={<NavBarAdmin isConnected={isConnected} handleDisconnect={handleDisconnect} isAdmin={isAdmin} />}>
-                  <Route index element={<AdminRoute index component={HomeAdmin} isAdmin={isAdmin} />} />
+                  <Route index element={<AdminRoute index component={UsersList} isAdmin={isAdmin} />} />
                   <Route path="adminDashboard" element={<AdminRoute component={DashboardAdmin} isAdmin={isAdmin} />} />
                   <Route path="users" element={<AdminRoute component={UsersList} isAdmin={isAdmin} />} />
                   <Route path="companies" element={<AdminRoute component={CompaniesList} isAdmin={isAdmin} />} />
+                  <Route path="franchises" element={<AdminRoute component={FranchisesList} isAdmin={isAdmin} />} />
+                  <Route path="coaches" element={<AdminRoute component={CoachesList} isAdmin={isAdmin} />} />
                 </Route>
               </Routes>
             )}

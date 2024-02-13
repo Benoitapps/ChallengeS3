@@ -17,14 +17,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
 
     operations: [
-        new Post(
-            denormalizationContext: ['groups' => ['coach:write']],
-        ),
         new Get(
             normalizationContext: ['groups' => ['coach:read']],
         ),
         new GetCollection(
             normalizationContext: ['groups' => ['coach:read']],
+            security: "is_granted('ROLE_ADMIN')",
         ),
         new Patch(
             denormalizationContext: ['groups' => ['coach:write']],

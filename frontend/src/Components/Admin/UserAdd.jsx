@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 const env = import.meta.env;
 
 function UserAdd({setUsers}) {
-    const [wantToAdd, setWantToAdd] = useState(false)
+    const [wantToAdd, setWantToAdd] = useState(false);
     const { t } = useTranslation();
 
     const saveUser = () => {
