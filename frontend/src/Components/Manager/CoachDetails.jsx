@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams, useLocation, Link} from "react-router-dom";
 import { getCoachDetails } from "../../hook/coach/getCoach.js";
 import { getFranchisePrestations } from "../../hook/manager/getFranchisePrestations.js";
+import ScheduleEditor from "./ScheduleEditor.jsx";
 const env = import.meta.env;
 
 function CoachDetails() {
@@ -63,6 +64,11 @@ function CoachDetails() {
         return data;
 
     };
+
+    const saveSchedule = (schedule) => {
+        // Logique pour sauvegarder les horaires de travail et les jours de congé
+        console.log("Horaires de travail et jours de congé sauvegardés :", schedule);
+    };
                 
 
     return (
@@ -111,6 +117,9 @@ function CoachDetails() {
                     </div>
                     )}
 
+                </div>
+                <div>
+                    <ScheduleEditor onSave={saveSchedule} />
                 </div>
             </main>
         </div>
