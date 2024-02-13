@@ -245,28 +245,14 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
         };
 
         if(isUpdate){
-            // console.log("le update")
             upadateSlot(dateStartModal, dateEndModal,eventDetail.slotId);
         }else{
-            // console.log("le add")
-            // console.log("idClient",idClient);
+
             addslot(dateStartModal, dateEndModal,idPrestation,idCoach,idClient);
         }
 
     };
 
-    const asyncDeleteSlot = async () => {
-        const coachEmail = await getCoachEmail(idCoach);
-        await postEmail(emailClient,"Suppression  de cours","Votre cours du "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le coach "+coachEmail.auth.email+" a ete supprimer";
-        await postEmail(coachEmail.auth.email,"Suppression  de cours","Votre cours du "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le client "+emailClient+" a ete supprimer";
-
-    }
-    const deleteSlotbyID = (e) => {
-        deleteSlot(eventId);
-        asyncDeleteSlot();
-        fetchData();
-        closeModal();
-    };
 
 
     return (
@@ -307,10 +293,6 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
             />
                 </div>
             <PopUp show={isModalOpen} showButton1={true} onClose={() => closeModal()} button1={() => reserveModal()} nameButton1={t("Book")} annuler={t("Cancel")}>
-                {modalContent}
-            </PopUp>
-            <PopUp show={isModalOpenDetail} showButton={true} onClose={() => closeModal()} button1={() => reserveModal()} button2={() => deleteSlotbyID()}
-                   nameButton1={t("Update")} nameButton2={t("Delete")} annuler={t("Cancel")}>
                 {modalContent}
             </PopUp>
             <PopUp show={isModalOpenErreur}  onClose={() => closeModal()}

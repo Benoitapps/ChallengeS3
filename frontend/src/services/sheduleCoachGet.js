@@ -7,11 +7,11 @@ const transformData = (initialData, date1 , date2, lang) => {
 
     let tab = [];
     for (let i = 0; i < initialData.schedules.length; i++) {
-        if (initialData.schedules[i].start_date >= date1 && initialData.schedules[i].start_date <= date2) {
+        if (initialData.schedules[i].startDate >= date1 && initialData.schedules[i].startDate <= date2) {
             tab.push(initialData.schedules[i]);
         }
     }
-    tab.sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
+    tab.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
 
 
     let datenv = new Date(date1);
@@ -28,7 +28,7 @@ const transformData = (initialData, date1 , date2, lang) => {
     for (let i = 0; i < tabfiltre.length; i++) {
         let add = 0;
         for (let j = 0; j < tab.length; j++) {
-            let datenv2 = parseISO(tab[j].start_date);
+            let datenv2 = parseISO(tab[j].startDate);
 
             if (isSameDay(tabfiltre[i], datenv2)) {
                 tabres.push(tab[j]);
@@ -39,15 +39,15 @@ const transformData = (initialData, date1 , date2, lang) => {
             }
         }
         if (add === 0) {
-            tabres.push({start_date: tabfiltre[i], end_date: tabfiltre[i]})
+            tabres.push({startDate: tabfiltre[i], endDate: tabfiltre[i]})
 
         }
 
     }
 
     const heuresEtMinutesUniquement = tabres.map(objet => {
-        const startDate = new Date(objet.start_date);
-        const endDate = new Date(objet.end_date);
+        const startDate = new Date(objet.startDate);
+        const endDate = new Date(objet.endDate);
 
         // Soustraire deux heures aux dates
         startDate.setHours(startDate.getHours() -1);
@@ -55,58 +55,58 @@ const transformData = (initialData, date1 , date2, lang) => {
         endDate.setMinutes(endDate.getMinutes() +1);
 
         return {
-            start_date: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            end_date: endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            startDate: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            endDate: endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         };
     });
 
 
     const dateUniquement = tabres.map(objet => ({
-        formatted_date: new Date(objet.start_date).toISOString().split('T')[0]
+        formatted_date: new Date(objet.startDate).toISOString().split('T')[0]
 
     }));
 
     const tableauAvecIndex = [
         {
             daysOfWeek: [0],
-            startTime: heuresEtMinutesUniquement[0].start_date? heuresEtMinutesUniquement[0].start_date : "00:00",
-            endTime: heuresEtMinutesUniquement[0].end_date? heuresEtMinutesUniquement[0].end_date : "00:00",
+            startTime: heuresEtMinutesUniquement[0].startDate? heuresEtMinutesUniquement[0].startDate : "00:00",
+            endTime: heuresEtMinutesUniquement[0].endDate? heuresEtMinutesUniquement[0].endDate : "00:00",
             date : dateUniquement[0].formatted_date
         },
         {
             daysOfWeek: [1],
-            startTime: heuresEtMinutesUniquement[1].start_date? heuresEtMinutesUniquement[1].start_date : "00:00",
-            endTime: heuresEtMinutesUniquement[1].end_date ? heuresEtMinutesUniquement[1].end_date : "00:00",
+            startTime: heuresEtMinutesUniquement[1].startDate? heuresEtMinutesUniquement[1].startDate : "00:00",
+            endTime: heuresEtMinutesUniquement[1].endDate ? heuresEtMinutesUniquement[1].endDate : "00:00",
             date : dateUniquement[1].formatted_date
         },
         {
             daysOfWeek: [2],
-            startTime: heuresEtMinutesUniquement[2].start_date ? heuresEtMinutesUniquement[2].start_date : "00:00",
-            endTime: heuresEtMinutesUniquement[2].end_date ? heuresEtMinutesUniquement[2].end_date : "00:00",
+            startTime: heuresEtMinutesUniquement[2].startDate ? heuresEtMinutesUniquement[2].startDate : "00:00",
+            endTime: heuresEtMinutesUniquement[2].endDate ? heuresEtMinutesUniquement[2].endDate : "00:00",
             date: dateUniquement[2].formatted_date
         },
         {
             daysOfWeek: [3],
-            startTime: heuresEtMinutesUniquement[3].start_date? heuresEtMinutesUniquement[3].start_date : "00:00",
-            endTime: heuresEtMinutesUniquement[3].end_date?heuresEtMinutesUniquement[3].end_date : "00:00",
+            startTime: heuresEtMinutesUniquement[3].startDate? heuresEtMinutesUniquement[3].startDate : "00:00",
+            endTime: heuresEtMinutesUniquement[3].endDate?heuresEtMinutesUniquement[3].endDate : "00:00",
             date: dateUniquement[3].formatted_date
         },
         {
             daysOfWeek: [4],
-            startTime: heuresEtMinutesUniquement[4].start_date? heuresEtMinutesUniquement[4].start_date : "00:00",
-            endTime: heuresEtMinutesUniquement[4].end_date? heuresEtMinutesUniquement[4].end_date : "00:00",
+            startTime: heuresEtMinutesUniquement[4].startDate? heuresEtMinutesUniquement[4].startDate : "00:00",
+            endTime: heuresEtMinutesUniquement[4].endDate? heuresEtMinutesUniquement[4].endDate : "00:00",
             date: dateUniquement[4].formatted_date
         },
         {
             daysOfWeek: [5],
-            startTime: heuresEtMinutesUniquement[5].start_date? heuresEtMinutesUniquement[5].start_date : "00:00",
-            endTime: heuresEtMinutesUniquement[5].end_date? heuresEtMinutesUniquement[5].end_date : "00:00",
+            startTime: heuresEtMinutesUniquement[5].startDate? heuresEtMinutesUniquement[5].startDate : "00:00",
+            endTime: heuresEtMinutesUniquement[5].endDate? heuresEtMinutesUniquement[5].endDate : "00:00",
             date: dateUniquement[5].formatted_date
         },
         {
             daysOfWeek: [6],
-            startTime: heuresEtMinutesUniquement[6].start_date? heuresEtMinutesUniquement[6].start_date : "00:00",
-            endTime: heuresEtMinutesUniquement[6].end_date? heuresEtMinutesUniquement[6].end_date : "00:00",
+            startTime: heuresEtMinutesUniquement[6].startDate? heuresEtMinutesUniquement[6].startDate : "00:00",
+            endTime: heuresEtMinutesUniquement[6].endDate? heuresEtMinutesUniquement[6].endDate : "00:00",
             date: dateUniquement[6].formatted_date
         },
     ]
@@ -117,6 +117,7 @@ const transformData = (initialData, date1 , date2, lang) => {
 
 export const sheduleCoach = async (id, date1, date2,lang) => {
     const initialData = await getScheduleCoach(id);
+    console.log(initialData);
     const transformedData = transformData(initialData,  date1 ,date2,lang);
     return transformedData;
 };

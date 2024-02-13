@@ -164,17 +164,8 @@ function Schedule({ onButtonClick, isCoach, ...otherProps }) {
 
         navigate(route);
     };
-    const asyncDeleteSlot = async () => {
-        if(isCoach) {
-        }else {
-            const coachEmail = await getCoachEmail(idCoach);
-            await postEmail(emailClient, "Suppression  de cours", "Votre cours du " + formatReadableDate(dateStart).date + " de " + formatReadableDate(dateStart).time) + "avec le coach " + coachEmail.auth.email + " a ete supprimer";
-            await postEmail(coachEmail.auth.email, "Suppression  de cours", "Votre cours du " + formatReadableDate(dateStart).date + " de " + formatReadableDate(dateStart).time) + "avec le client " + emailClient + " a ete supprimer";
-        }
-    }
 
     const deleteSlotbyID = (e) => {
-        asyncDeleteSlot();
         deleteSlot(eventId);
         fetchData();
         closeModal();

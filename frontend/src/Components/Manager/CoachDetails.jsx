@@ -146,7 +146,7 @@ function CoachDetails() {
                                 )}
                             </ul>
 
-                            <ScheduleEditor onSave={saveSchedule}/>
+                            <ScheduleEditor coachId={coachId}/>
                         </div>
                     </div>
                 </div>
