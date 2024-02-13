@@ -18,6 +18,20 @@
     height: 3rem;
 }
 
+.form-add-user {
+    display: flex;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.add-user {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-right: 20px;
+}
+
 .user-list__table__head th,
 .user-list__table__body__line__column {
     text-align: left;

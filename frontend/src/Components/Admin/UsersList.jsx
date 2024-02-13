@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getUsers } from '../../hook/admin/user';
 import '@css/Admin.css';
 import { useTranslation } from 'react-i18next';
+import UserAdd from './UserAdd';
 
 const env = import.meta.env;
 
@@ -83,6 +84,8 @@ function UsersList() {
 
     return (
         <main className="user-list">
+            <UserAdd setUsers={setUsers} />
+
             <table className="user-list__table">
                 <thead className="user-list__table__head">
                 <tr>
@@ -98,7 +101,7 @@ function UsersList() {
                 {
                     usersLoading 
                     ? <tr>
-                        <td className="user-list-loading" colspan="100">{t('Loading')}...</td>
+                        <td className="user-list-loading" colSpan="100">{t('Loading')}...</td>
                     </tr> 
                     : users.map((user) => (
                         <tr key={user.id} id={user.id} className="user-list__table__body__line">
