@@ -11,7 +11,7 @@
 }
 
 .alert__success {
-    background-color: var(--primay-selected);
+    background-color: var(--primary-selected);
     color: var(--primary);
 }
 

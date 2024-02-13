@@ -1,13 +1,16 @@
-import React, {useState} from 'react';
-import {useNavigate} from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import {useTranslation} from "react-i18next";
 import {Viewer, Worker} from '@react-pdf-viewer/core';
 import {defaultLayoutPlugin} from '@react-pdf-viewer/default-layout';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import GetPdf from "./../GetPdf.jsx";
+import '@css/Company.css';
+
 const env = import.meta.env;
 
-function AddCompany() {
+function AddCompany({ companyStatus, setCompanyStatus }) {
     const navigate = useNavigate();
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -58,6 +61,8 @@ function AddCompany() {
     // const test = decodeBase64(baseFile);
 
 
+    const{ t, i18n } = useTranslation();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -83,7 +88,8 @@ function AddCompany() {
             } else if (!result.ok) {
                 setError('Une erreur est survenue');
             } else {
-                // navigate("/login");
+                setCompanyStatus('pending');
+                // navigate("/manager");
             }
         } catch (error) {
             setError('Une erreur est survenue');
@@ -95,29 +101,36 @@ function AddCompany() {
     const newplugin = defaultLayoutPlugin();
 
     return (
-        <div>
-            <main className="authentification">
-                <div className="login-signup">
+        <main className="add-company">
+            <div className="login-signup">
+                {companyStatus === 'none' && (
+                    <>
+                <p className="form-title">{t('RequestCompany')}&nbsp;:</p>
 
-                    <span>Demander l'ajout de votre entreprise :</span>
-
-                    <form className="login-signup__form" onSubmit={handleSubmit}>
-                        {
-                            error && <p className="error">{error}</p>
-                        }
-                        <input type="text" id="name" name="name" placeholder="Libellé" autoComplete="name" required></input>
-                        <input type="text" id="description" name="description" placeholder="Description" autoComplete="description" required></input>
-                        <input type="file" id="kbis" name="kbis" placeholder="KBis" required onChange={(e)=>handleChange(e)}></input>
-                        <div className="login-signup__form__submit">
-                            <input type="submit" value="Demander" disabled={loading}/>
-                        </div>
-                    </form>
-                </div>
-
-                <GetPdf file={pdfFile} viewPdf ={viewPdf} />
-            </main>
-        </div>
+                <form className="login-signup__form" onSubmit={handleSubmit}>
+                    {
+                        error && <p className="error">{error}</p>
+                    }
+                    <input type="text" id="name" name="name" placeholder={t('CompanyName')} autoComplete="name" required></input>
+                    <input type="text" id="description" name="description" placeholder="Description" autoComplete="description" required></input>
+                    <input type="file" id="kbis" name="kbis" placeholder="KBis" required onChange={(e)=>handleChange(e)}></input>
+                    <div className="login-signup__form__submit">
+                        <input type="submit" value={t('Request')} disabled={loading}/>
+                    </div>
+                </form>
+                        <GetPdf file={pdfFile} viewPdf={viewPdf} />
+                    </>
+                )}
+                {companyStatus === 'pending' && (
+                    <p>{t('PendingCompany')}</p>
+                )}
+                {companyStatus === 'accepted' && (
+                    <p>{t('AcceptedCompany')}</p>
+                )}
+            </div>
+        </main>
     );
+
 }
 
 export default AddCompany;

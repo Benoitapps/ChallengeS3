@@ -73,7 +73,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 36px;
-  background-color: var(--primay-selected);
+  background-color: var(--primary-selected);
   color: var(--primary);
   height: 40px;
   padding: 0 17px;

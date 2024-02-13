@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {getFranchises} from "../../hook/manager/franchise.js";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import DashboardGraphCol from "./DashboardGraphCol.jsx";
 import DashboardGraphCam from "./DashboardGraphCam.jsx";
 import DashboardGraphLine from "./DashboardGraphLine.jsx";
@@ -11,7 +11,12 @@ import '@css/Dashboard.css';
 
 import ReactECharts from 'echarts-for-react';
 
-function Dashboard() {
+function Dashboard({ companyStatus }) {
+    const navigate = useNavigate();
+
+    if (companyStatus === 'none' || companyStatus === 'pending') {
+        navigate('/manager/home');
+    }
 
 
     return (

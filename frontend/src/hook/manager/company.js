@@ -2,7 +2,7 @@ const env = import.meta.env;
 
 const getCompanies = async () => {
     try {
-        const result = await fetch(`${env.VITE_URL_BACK}/api/companies`, {
+        const result = await fetch(`${env.VITE_URL_BACK}/api/companies/myCompany`, {
             method: "GET",
             headers: {
                 Accept: "application/json",
@@ -10,6 +10,8 @@ const getCompanies = async () => {
             },
         });
         let data = await result.json();
+        console.log('getCompany');
+        console.log(data);
         if (data?.message){
             throw data;
         }

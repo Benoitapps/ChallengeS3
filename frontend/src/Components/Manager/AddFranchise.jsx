@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next";
+import '@css/Franchise.css';
 const env = import.meta.env;
 
 function AddFranchise() {
@@ -7,6 +9,7 @@ function AddFranchise() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [imageFile, setImageFile] = useState(null);
+    const { t } = useTranslation();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -14,6 +17,20 @@ function AddFranchise() {
         const data = new FormData(e.target);
 
         try {
+            const address = data.get('address');
+            const city = data.get('city');
+            const zipCode = data.get('zip_code');
+
+            const response = await fetch(`https://nominatim.openstreetmap.org/search?street=${address}&city=${city}&postalcode=${zipCode}&format=json`);
+            const location = await response.json();
+
+            if (location.length === 0) {
+                throw new Error("L'adresse saisie semble invalide, veuillez vérifier les informations");
+            }
+
+            const lat = location[0].lat;
+            const lng = location[0].lon;
+
             const result = await fetch(`${env.VITE_URL_BACK}/api/franchises`, {
                 method: 'POST',
                 headers: {
@@ -26,8 +43,8 @@ function AddFranchise() {
                     address: data.get('address'),
                     city: data.get('city'),
                     zipCode: data.get('zip_code'),
-                    lat: parseFloat(data.get('lat')),
-                    lng: parseFloat(data.get('lng')),
+                    lat: parseFloat(lat),
+                    lng: parseFloat(lng),
                     image: imageFile,
                 }),
             });
@@ -37,12 +54,21 @@ function AddFranchise() {
             } else if (!result.ok) {
                 setError('Une erreur est survenue');
             } else {
-                // navigate("/login");
+                navigate("/manager");
             }
         } catch (error) {
-            setError('Une erreur est survenue');
+            if (error.message === "L'adresse saisie semble invalide, veuillez vérifier les informations") {
+                setError(error.message);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 2000);
+            } else {
+                setError('Une erreur est survenue');
+                setLoading(false);
+            }
+            // setLoading(false);
         } finally {
-            setLoading(false);
+            // setLoading(false);
         }
     };
 
@@ -68,32 +94,33 @@ function AddFranchise() {
     }
 
     return (
-        <div>
-            <main className="authentification">
+        <main className="add-franchise">
+            <div className="franchise-card">
                 <div className="login-signup">
 
-                    <span>Ajouter une franchise :</span>
+                    <p className="form-title">{t('AddFranchise')}&nbsp;:</p>
 
                     <form className="login-signup__form" onSubmit={handleSubmit}>
                         {
                             error && <p className="error">{error}</p>
                         }
-                        <input type="text" id="name" name="name" placeholder="Libellé" autoComplete="name" required></input>
-                        <input type="text" id="description" name="description" placeholder="Description" autoComplete="description" required></input>
-                        <input type="text" id="address" name="address" placeholder="Adresse" required></input>
-                        <input type="text" id="city" name="city" placeholder="Ville" required></input>
-                        <input type="number" id="zip_code" name="zip_code" placeholder="Code postal" required></input>
-                        <input type="number" id="lng" name="lng" placeholder="lng" required></input>
-                        <input type="number" id="lat" name="lat" placeholder="lat" required></input>
+                        <input type="text" id="name" name="name" placeholder={t('CompanyName')} autoComplete="name"
+                               required></input>
+                        <input type="text" id="description" name="description" placeholder="Description"
+                               autoComplete="description" required></input>
+                        <input type="text" id="address" name="address" placeholder={t('Adress')} required></input>
+                        <input type="text" id="city" name="city" placeholder={t('City')} required></input>
+                        <input type="number" id="zip_code" name="zip_code" placeholder={t('ZipCode')} required></input>
                         <input type="file" onChange={handleChange}/>
                         <div className="login-signup__form__submit">
-                            <input type="submit" value="Ajouter" disabled={loading}/>
+                            <input type="submit" value={loading ? 'Veuillez patienter...' : t('Add')} disabled={loading}/>
                         </div>
                     </form>
                 </div>
-            </main>
-        </div>
+            </div>
+        </main>
     );
+
 }
 
 export default AddFranchise;
