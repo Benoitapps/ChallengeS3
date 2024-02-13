@@ -131,37 +131,6 @@ function AddCompany({ companyStatus, setCompanyStatus }) {
         </main>
     );
 
-    // return (
-    //         <div>
-    //             <main className="authentification">
-    //                 <div className="login-signup">
-    //
-    //                 {companyStatus === 'none' && (
-    //                     <>
-    //                     <span>{t("RequestAddCompany")}</span>
-    //                     <form className="login-signup__form" onSubmit={handleSubmit}>
-    //                         {error && <p className="error">{error}</p>}
-    //                         <input type="text" id="name" name="name" placeholder="Libellé" autoComplete="name" required></input>
-    //                         <input type="text" id="description" name="description" placeholder="Description" autoComplete="description" required></input>
-    //                         <input type="file" id="kbis" name="kbis" placeholder="KBis" required onChange={(e)=>handleChange(e)}></input>
-    //                         <div className="login-signup__form__submit">
-    //                             <input type="submit" value="Demander" disabled={loading} />
-    //                         </div>
-    //                     </form>
-    //                         <GetPdf file={pdfFile} viewPdf ={viewPdf} />
-    //                     </>
-    //                 )}
-    //                 {companyStatus === 'pending' && (
-    //                     <p>{t("PendingCompany")}</p>
-    //                 )}
-    //                 {companyStatus === 'accepted' && (
-    //                     <p>{t("AcceptedCompany")}</p>
-    //                 )}
-    //                 </div>
-    //             </main>
-    //         </div>
-    // );
-
 }
 
 export default AddCompany;
