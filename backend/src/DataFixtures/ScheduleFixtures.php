@@ -18,11 +18,8 @@ class ScheduleFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $coach1 = $manager->getRepository(Coach::class)->findOneBy(['biography' => "Biography1"]);
-        $coach2 = $manager->getRepository(Coach::class)->findOneBy(['biography' => "Biography2"]);
-
-
-
+        $coach1 = $manager->getRepository(Coach::class)->findAll()[0];
+        $coach2 = $manager->getRepository(Coach::class)->findAll()[1];
 
         $dateBefore = new \DateTime('-2 days');
         $dateString = $dateBefore->format('Y-m-d');
@@ -84,7 +81,6 @@ class ScheduleFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             CoachFixtures::class,
-
         ];
     }
 }
