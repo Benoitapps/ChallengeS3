@@ -5,16 +5,16 @@ namespace App\DataFixtures;
 use App\Entity\Client;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\DataFixtures\UserFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ClientFixtures extends Fixture implements DependentFixtureInterface
+class ClientFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
         $user1 = $manager->getRepository(User::class)->findOneBy(['email' => "user@user.fr"]);
         $user2 = $manager->getRepository(User::class)->findOneBy(['email' => "user2@user.fr"]);
-
 
         $object = (new Client())
             ->setAddress("10 chemin cool")
@@ -24,7 +24,6 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
 
         $manager->persist($object);
 
-
         $object = (new Client())
             ->setAddress("10 chemin triste")
             ->setCity("Montreuil")
@@ -33,13 +32,6 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
 
         $manager->persist($object);
         $manager->flush();
-    }
-    public function getDependencies(): array
-    {
-        return [
-            UserFixtures::class
-
-        ];
     }
 }
 

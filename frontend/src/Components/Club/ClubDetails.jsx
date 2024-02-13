@@ -55,11 +55,46 @@ function ClubDetails({isCoach,isManager,isConnected,isAdmin,update}) {
                             <div className="company-name">{club.company.name}</div>
                             <div className="description">{club.description}</div>
                             <div className="address">
-                                <div className="city-zip">{club.address}, {club.city} - {club.zip_code}</div>
+                                <div className="city-zip">{club.address}, {club.city} - {club.zipCode}</div>
                             </div>
+                            {isConnected&&isManager?<Link to={{
+                                pathname: `/manager/addCoach/${id}`,
+                                // state: { franchiseName: franchise.name }
+                            }}>
+                                <button>Ajouter un coach</button>
+                            </Link>:null}
+                            {isConnected&&isManager?<Link to={{
+                                pathname: `/manager/addPrestation/${id}`,
+                                // state: { franchiseName: franchise.name }
+                            }}>
+                                <button>Ajouter une prestation</button>
+                            </Link>:null}
+                            {isConnected && isManager &&
+                            <div className="coach-list">
+                                {
+
+                                    club.coachs.length === 0
+                                        ? 'Il n\'y a pas encore de coachs pour cette franchise.'
+                                        :
+                                        club.coachs.map((coach, index) => {
+                                            return (
+                                                <div className="coach-card" key={index}>
+                                                    <div className="coach-name">{coach.auth.firstname} {coach.auth.lastname}</div>
+                                                    <div className="coach-name">{coach.auth.email}</div>
+                                                    <Link to={`/manager/coach/${coach.id}`} className="view-coach-button">
+                                                        Voir coach
+                                                    </Link>
+                                                </div>
+                                            )
+                                        })
+                                }
+                            </div>
+                            }
                             <div className="prestations">
                                 {
-                                    club.prestations.map((prestation, index) => {
+                                    club.prestations.length === 0
+                                    ? 'Il n\'y a pas encore de prestations pour cette franchise.'
+                                    : club.prestations.map((prestation, index) => {
                                         return (
                                             <div className="prestation-card" key={index}>
                                                 <div className="prestation-name">{prestation.name}</div>

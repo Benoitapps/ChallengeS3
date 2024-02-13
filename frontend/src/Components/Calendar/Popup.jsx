@@ -4,6 +4,21 @@ import '@css/Popup.css';
 const Popup = ({ show, children, onClose, button1, button2, nameButton1, nameButton2, annuler,showButton,showButton1 }) => {
     if (!show) return null;
 
+    const debounce = (fn, ms) => {
+        let timer;
+
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                fn(...args);
+            }, ms);
+        };
+    };
+
+    const debouncedButton1Click = debounce(button1, 1000);
+    const debouncedButton2Click = debounce(button2, 1000);
+
+
     return (
         <div className="popup">
             <div className="popup__content">
@@ -14,10 +29,10 @@ const Popup = ({ show, children, onClose, button1, button2, nameButton1, nameBut
 
                 <div className="popup__content__buttons">
                     {showButton1 && (
-                        <button onClick={button1} className="primary-button">{nameButton1}</button>
+                        <button onClick={debouncedButton1Click} className="primary-button">{nameButton1}</button>
                     )}
                     {showButton && (
-                        <button onClick={button2} className="primary-button">
+                        <button onClick={debouncedButton2Click} className="primary-button">
                             {nameButton2}
                         </button>
                     )}

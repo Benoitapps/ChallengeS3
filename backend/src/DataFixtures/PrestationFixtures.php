@@ -16,14 +16,57 @@ class PrestationFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i <= 8; $i++) {
+        $franchiseOne = $manager->getRepository(Franchise::class)->findAll()[0];
+
+        $object = (new Prestation())
+            ->setFranchise($franchiseOne)
+            ->setName("Football")
+            ->setDescription("La séance de football est un entraînement complet qui permet de travailler l'endurance, la coordination, la vitesse, la force et la souplesse. C'est un sport collectif qui permet de se défouler et de se dépenser tout en s'amusant.")
+            ->setPrice(rand(10, 100));
+
+        $manager->persist($object);
+
+        $object2 = (new Prestation())
+            ->setFranchise($franchiseOne)
+            ->setName("Basketball")
+            ->setDescription("La séance de basketball est un entraînement complet qui permet de travailler l'endurance, la coordination, la vitesse, la force et la souplesse. C'est un sport collectif qui permet de se défouler et de se dépenser tout en s'amusant.")
+            ->setPrice(rand(10, 100));
+
+        $franchiseTwo = $manager->getRepository(Franchise::class)->findAll()[1];
+
+        $object3 = (new Prestation())
+            ->setFranchise($franchiseTwo)
+            ->setName("Yoga")
+            ->setDescription("Le yoga est une discipline qui permet de travailler la souplesse, la respiration, la concentration et la relaxation. C'est une activité qui permet de se détendre et de se relaxer tout en travaillant son corps et son esprit.")
+            ->setPrice(rand(10, 100));
+
+        $manager->persist($object3);
+
+        $object4 = (new Prestation())
+            ->setFranchise($franchiseTwo)
+            ->setName("Pilates")
+            ->setDescription("Le pilates est une discipline qui permet de travailler la souplesse, la respiration, la concentration et la relaxation. C'est une activité qui permet de se détendre et de se relaxer tout en travaillant son corps et son esprit.")
+            ->setPrice(rand(10, 100));
+
+        $manager->persist($object4);
+
+
+        // get last franchise
+        $lastFranchise = $manager->getRepository(Franchise::class)->findAll()[count($manager->getRepository(Franchise::class)->findAll()) - 1];
+        $object5 = (new Prestation())
+            ->setFranchise($lastFranchise)
+            ->setName("Crossfit")
+            ->setDescription("Le crossfit est une discipline qui permet de travailler la force, la vitesse, l'endurance, la coordination et la souplesse. C'est une activité qui permet de se défouler et de se dépenser tout en s'amusant.")
+            ->setPrice(rand(10, 100));
+
+        for ($i = 2; $i <= 7; $i++) {
             $franchise = $manager->getRepository(Franchise::class)->findAll()[$i];
 
             for ($j=0; $j < 2; $j++) { 
                 $object = (new Prestation())
                     ->setFranchise($franchise)
-                    ->setName("Prestation" . $j)
-                    ->setDescription("Description" . $j)
+                    ->setName("Hockey sur glace" . $j)
+                    ->setDescription("Description de la prestation")
                     ->setPrice(rand(10, 100));
 
                 $manager->persist($object);

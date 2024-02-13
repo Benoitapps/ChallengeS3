@@ -8,33 +8,31 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
         // PWD = test
         $pwd = '$2y$13$FfxqkM/i7SCwlevR3hVD1ucR3X30xf7QZAXeiCu4B6r6x6CnV1.1q';
-        $client1 = $manager->getRepository(Client::class)->findOneBy(['city' => "Paris"]);
-        $client2 = $manager->getRepository(Client::class)->findOneBy(['city' => "Montreuil"]);
-
+        $client1 = $manager->getRepository(Client::class)->findAll()[0];
+        $client2 = $manager->getRepository(Client::class)->findAll()[1];
 
         $object = (new User())
             ->setEmail('user@user.fr')
             ->setPassword($pwd)
             ->setRoles([])
-            ->setFirstname('user1')
-            ->setLastname('lasname')
-            ->setRoles(["ROLE_CLIENT"])
+            ->setFirstname('Michel')
+            ->setLastname('Scoot')
+            ->setRoles(["ROLE_CLIENT"]);
 
-        ;
         $manager->persist($object);
 
         $object = (new User())
             ->setEmail('user2@user.fr')
             ->setPassword($pwd)
             ->setRoles([])
-            ->setFirstname('user2')
-            ->setLastname('lasname')
+            ->setFirstname('Jaqueline')
+            ->setLastname('Joure')
             ->setRoles(["ROLE_CLIENT"])
 
         ;
@@ -44,8 +42,8 @@ class UserFixtures extends Fixture
             ->setEmail('manager@user.fr')
             ->setPassword($pwd)
             ->setRoles(["ROLE_MANAGER"])
-            ->setFirstname('manager1')
-            ->setLastname('lasname')
+            ->setFirstname('Mickael')
+            ->setLastname('Pytre')
         ;
         $manager->persist($object);
 
@@ -53,8 +51,8 @@ class UserFixtures extends Fixture
             ->setEmail('manager2@user.fr')
             ->setPassword($pwd)
             ->setRoles(["ROLE_MANAGER"])
-            ->setFirstname('manager2')
-            ->setLastname('lasname')
+            ->setFirstname('George')
+            ->setLastname('Fouet')
         ;
         $manager->persist($object);
 
@@ -63,8 +61,8 @@ class UserFixtures extends Fixture
             ->setEmail('coach@user.fr')
             ->setPassword($pwd)
             ->setRoles(["ROLE_COACH"])
-            ->setFirstname('coach1')
-            ->setLastname('lasname')
+            ->setFirstname('Tony')
+            ->setLastname('Parker')
         ;
         $manager->persist($object);
 
@@ -72,22 +70,27 @@ class UserFixtures extends Fixture
             ->setEmail('coach2@user.fr')
             ->setPassword($pwd)
             ->setRoles(["ROLE_COACH"])
-            ->setFirstname('coach2')
-            ->setLastname('lasname')
+            ->setFirstname('Pierre')
+            ->setLastname('Afeu')
         ;
         $manager->persist($object);
 
-        // admin@user.fr
         $object = (new User())
             ->setEmail('admin@user.fr')
             ->setPassword($pwd)
             ->setRoles(["ROLE_ADMIN"])
-            ->setFirstname('admin')
-            ->setLastname('lasname')
+            ->setFirstname('Michel')
+            ->setLastname('Dupont')
         ;
         $manager->persist($object);
 
         $manager->flush();
     }
 
+    public function getDependencies(): array
+    {
+        return [
+            ClientFixtures::class,
+        ];
+    }
 }

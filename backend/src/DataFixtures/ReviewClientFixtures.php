@@ -30,6 +30,41 @@ class ReviewClientFixtures extends Fixture implements DependentFixtureInterface
 
         $manager->persist($object);
 
+        $object = (new ReviewClient())
+            ->setClient($clients[0])
+            ->setCoach($coaches[0])
+            ->setNote(3);
+        
+        $manager->persist($object);
+
+        $object = (new ReviewClient())
+            ->setClient($clients[1])
+            ->setCoach($coaches[1])
+            ->setNote(2);
+
+        $manager->persist($object);
+
+        $object = (new ReviewClient())
+            ->setClient($clients[0])
+            ->setCoach($coaches[1])
+            ->setNote(1);
+
+        $manager->persist($object);
+
+        $object = (new ReviewClient())
+            ->setClient($clients[1])
+            ->setCoach($coaches[0])
+            ->setNote(5);
+        
+        $manager->persist($object);
+
+        $object = (new ReviewClient())
+            ->setClient($clients[0])
+            ->setCoach($coaches[0])
+            ->setNote(4);
+        
+        $manager->persist($object);
+
         $manager->flush();
     }
     public function getDependencies(): array

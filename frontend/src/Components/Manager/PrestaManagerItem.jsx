@@ -49,8 +49,8 @@ function PrestaManagerItem({ club,reload }) {
                     </div>
                     <h3 className="franchise-card__content__details__club">{club.name}</h3>
                     <p className="franchise-card__content__details__address">{club.address}, {club.city} {club.zip_code}</p>
-                    <p className="franchise-card__content__details__lat-lng"><span>Lat</span> {club.lat}</p>
-                    <p className="franchise-card__content__details__lat-lng"><span>Lng</span> {club.lng}</p>
+                    {/*<p className="franchise-card__content__details__lat-lng"><span>Lat</span> {club.lat}</p>*/}
+                    {/*<p className="franchise-card__content__details__lat-lng"><span>Lng</span> {club.lng}</p>*/}
                 </Link>
                 <button className="primary-button" onClick={() => handleClick(club)}>{t('Update')}</button>
             </div>

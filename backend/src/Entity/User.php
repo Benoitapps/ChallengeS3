@@ -20,6 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\State\UserPasswordHasher;
 use App\Controller\UserController;
 use App\Controller\ForgotPasswordController;
+use App\Controller\AdminController;
 
 #[ApiResource(
     normalizationContext: [
@@ -60,22 +61,21 @@ use App\Controller\ForgotPasswordController;
                 ],
             ]
         ),
-        // new Post(
-        //     uriTemplate: '/users/admin',
-        //     processor: UserPasswordHasher::class,
-        //     controller: UserController::class,
-        //     denormalizationContext: [
-        //         'groups' => [
-        //             'user:admin:write',
-        //         ],
-        //     ],
-        //     normalizationContext: [
-        //         'groups' => [
-        //             'user:admin:read',
-        //         ],
-        //     ],
-        //     security: "is_granted('ROLE_ADMIN')"
-        // ),
+        new Post(
+            uriTemplate: '/admin/users',
+            controller: AdminController::class,
+            denormalizationContext: [
+                'groups' => [
+                    'user:admin:write',
+                ],
+            ],
+            normalizationContext: [
+                'groups' => [
+                    'user:admin:read',
+                ],
+            ],
+            security: "is_granted('ROLE_ADMIN')"
+        ),
         new Patch(
             denormalizationContext: [
                 'groups' => [
@@ -115,7 +115,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:admin:read'])]
     private ?int $id = null;
     
-    #[Groups(['user:read', 'user:write', 'user:update', 'user:admin:write', 'user:admin:update', 'user:admin:read','coach:read:email', 'client:read', 'client:write', 'coach:read', 'coach:write', 'manager:read', 'manager:update'])]
+    #[Groups(['user:read', 'user:write', 'user:update', 'user:admin:write', 'user:admin:update', 'user:admin:read','coach:read:email', 'company:read:franchise', 'client:read', 'client:write', 'coach:read', 'coach:write', 'manager:read', 'manager:update', 'franchise:read'])]
     #[ORM\Column(length: 180, unique: true, nullable: false)]
     private ?string $email = null;
     
@@ -142,15 +142,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $lastname = null;
     
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read', 'user:write', 'user:admin:write'])]
+    #[Groups(['user:read', 'user:write'])]
     private ?Client $client = null;
 
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read', 'user:write', 'user:admin:write'])]
+    #[Groups(['user:read', 'user:write', 'company:read:franchise'])]
     private ?Coach $coach = null;
     
     #[ORM\OneToOne(mappedBy: 'auth', cascade: ['persist', 'remove'])]
-    #[Groups(['user:read', 'user:write', 'user:admin:write'])]
+    #[Groups(['user:read', 'user:write'])]
     private ?Manager $manager = null;
 
     #[ORM\Column(length: 255, nullable: true)]

@@ -1,23 +1,22 @@
-import {useState} from 'react';
-import {useNavigate} from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import {useTranslation} from "react-i18next";
 import {Viewer, Worker} from '@react-pdf-viewer/core';
 import {defaultLayoutPlugin} from '@react-pdf-viewer/default-layout';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import GetPdf from "./../GetPdf.jsx";
 import '@css/Company.css';
-import {useTranslation} from "react-i18next";
 
 const env = import.meta.env;
 
-function AddCompany() {
+function AddCompany({ companyStatus, setCompanyStatus }) {
     const navigate = useNavigate();
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [baseFile, setBaseFile] = useState("");
     const [pdfFile, setPdfFile] = useState(null);
     const [viewPdf, setViewPdf] = useState(false);
-    const { t } = useTranslation();
 
     const fileType = ['application/pdf'];
     const handleChange = async (e) => {
@@ -62,6 +61,8 @@ function AddCompany() {
     // const test = decodeBase64(baseFile);
 
 
+    const{ t, i18n } = useTranslation();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -87,7 +88,8 @@ function AddCompany() {
             } else if (!result.ok) {
                 setError('Une erreur est survenue');
             } else {
-                // navigate("/login");
+                setCompanyStatus('pending');
+                // navigate("/manager");
             }
         } catch (error) {
             setError('Une erreur est survenue');
@@ -101,6 +103,8 @@ function AddCompany() {
     return (
         <main className="add-company">
             <div className="login-signup">
+                {companyStatus === 'none' && (
+                    <>
                 <p className="form-title">{t('RequestCompany')}&nbsp;:</p>
 
                 <form className="login-signup__form" onSubmit={handleSubmit}>
@@ -114,11 +118,19 @@ function AddCompany() {
                         <input type="submit" value={t('Request')} disabled={loading}/>
                     </div>
                 </form>
+                        <GetPdf file={pdfFile} viewPdf={viewPdf} />
+                    </>
+                )}
+                {companyStatus === 'pending' && (
+                    <p>{t('PendingCompany')}</p>
+                )}
+                {companyStatus === 'accepted' && (
+                    <p>{t('AcceptedCompany')}</p>
+                )}
             </div>
-
-            <GetPdf file={pdfFile} viewPdf={viewPdf} />
         </main>
     );
+
 }
 
 export default AddCompany;

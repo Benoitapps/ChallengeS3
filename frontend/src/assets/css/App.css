@@ -35,6 +35,16 @@
     font-family: "Inter", sans-serif;
 }
 
+*::-webkit-scrollbar {
+    width: 10px;
+    appearance: none;
+    background: var(--system);
+}
+
+*::-webkit-scrollbar-thumb {
+    background: var(--primary);
+}
+
 html {
     height: 100%;
 }
@@ -57,11 +67,8 @@ li {
 }
 
 a {
-    text-decoration: none;
-}
-
-a {
     color: var(--primary);
+    text-decoration: none;
 }
 
 a:hover {
@@ -72,7 +79,9 @@ input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="number"],
-input[type="search"] {
+input[type="search"],
+input[type="time"],
+input[type="date"]{
     height: 50px;
     padding: 0 18px;
     background: var(--background);
@@ -86,7 +95,10 @@ input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
 input[type="number"]:focus,
-input[type="search"]:focus {
+input[type="search"]:focus,
+input[type="time"]:focus,
+input[type="date"]:focus,
+select {
     outline: none;
 }
 
@@ -94,8 +106,21 @@ input[type="text"]::placeholder,
 input[type="email"]::placeholder,
 input[type="password"]::placeholder,
 input[type="number"]::placeholder,
-input[type="search"]::placeholder {
+input[type="search"]::placeholder,
+input[type="time"]::placeholder,
+input[type="date"]::placeholder {
     color: var(--text-grey);
+}
+
+select {
+    position: relative;
+    height: 50px;
+    padding: 0 18px;
+    background: var(--background);
+    border: none;
+    box-shadow: var(--input-shadow);
+    font-size: 1rem; /* 16px */
+    width: 250px;
 }
 
 button,
