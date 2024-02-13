@@ -28,7 +28,6 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
     const { coachId, prestationId } = useParams();
     const [loading, setLoading] = useState(true);
 
-
     const [idPrestation, setIdPrestation] = useState(prestationId);
     const [idCoach, setIdCoach] = useState(coachId);
     const [idClient, setIdClient] = useState(null);
@@ -139,11 +138,6 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
                 const time2start = new Date("2000-01-01T"+DateFormat.timeCompareStart+":00Z");//click
                 const time2end = new Date("2000-01-01T"+DateFormat.timeCompareEnd+":00Z");
 
-                // console.log("heur Debut Coach",time1start)
-                // console.log("heur fin coach",time1end)
-                // console.log("Heur debut click",time2start)
-                // console.log("heur fin click",time2end)
-
                 i = scheduleHeur.length;
                 click = (time2start >= time1start && time2end < time1end) && (dateBaseStart > now);
             }
@@ -252,8 +246,6 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
         }
 
     };
-
-
 
     return (
         <main>
