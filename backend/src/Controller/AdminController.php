@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Manager;
 use Resend;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -44,6 +45,14 @@ class AdminController extends AbstractController
         // save user in database
         $entityManager = $doctrine->getManager();
         $entityManager->persist($user);
+
+        // if role is ROLE_MANAGER so create manager in the database manager table
+        if (in_array('ROLE_MANAGER', $userData['roles'])) {
+            $manager = new Manager();
+            $manager->setAuth($user);
+            $entityManager->persist($manager);
+        }
+
         $entityManager->flush();
 
         return new Response(
