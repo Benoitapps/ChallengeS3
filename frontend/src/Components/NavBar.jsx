@@ -127,12 +127,12 @@ function NavBar({ isConnected, handleDisconnect, isAdmin, isManager, isCoach }) 
                 ) : (
                   <>
                     <li>
-                      <Link to="/login">
+                      <Link to="/login" id="login">
                         {t('LogIn')}
                       </Link>
                     </li>
                     <li>
-                      <Link to="/signup" className="signup">
+                      <Link to="/signup" className="signup" id="signup">
                         {t('SignUp')}
                       </Link>
                     </li>
