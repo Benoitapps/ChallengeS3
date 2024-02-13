@@ -1,0 +1,51 @@
+.coach-content__head__add-prestations select {
+    margin: 30px 20px 0 0;
+}
+
+.schedule-editor {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    max-width: 590px;
+}
+
+.schedule-editor__line {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.schedule-editor__line label,
+.schedule-editor__line p {
+    margin-bottom: 5px;
+}
+
+.schedule-editor__line span {
+    color: var(--primary);
+}
+
+.schedule-editor__line.checkbox {
+    flex-direction: initial;
+    align-items: center;
+    gap: 10px;
+}
+
+.schedule-editor__line.time {
+    width: calc(50% - 10px);
+}
+
+.schedule-editor__line button {
+    width: fit-content;
+}
+
+.schedule-editor .popup__content__texts__datetime {
+    background-color: var(--background);
+    border-radius: var(--radius-card);
+    padding: 20px 25px;
+    width: calc(50% - 10px);
+}
+
+.schedule-editor .popup__content__texts__datetime button {
+    margin-top: 10px;
+}

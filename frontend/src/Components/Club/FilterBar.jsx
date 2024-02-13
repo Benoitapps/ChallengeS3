@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
+import { useTranslation } from "react-i18next";
 
 function FilterBar({addFilter}) {
+    const{ t } = useTranslation();
     const [name, setName] = useState('');
     const [filters, setFilters] = useState(['']);
 
@@ -14,7 +16,9 @@ function FilterBar({addFilter}) {
             <form onSubmit={handleSubmit} style={{margin: "15px 10px"}}>
                 <input className="preferences__input" type="text"
                        value={name} onChange={(e) => setName(e.target.value)}/>
-                <button type="submit" className="preferences__button">Search</button>
+                <button type="submit" className="preferences__button">
+                    {t("Search")}
+                </button>
             </form>
         </div>
     );

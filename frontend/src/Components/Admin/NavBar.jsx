@@ -24,6 +24,12 @@ function NavBar({ isAdmin }) {
                                         <li>
                                             <Link to="companies">Companies</Link>
                                         </li>
+                                        <li>
+                                            <Link to="franchises">Franchises</Link>
+                                        </li>
+                                        <li>
+                                            <Link to="coaches">Coaches</Link>
+                                        </li>
                                     </div>
                                 </ul>
                             </nav>

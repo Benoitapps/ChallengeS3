@@ -15,6 +15,9 @@ import {useTranslation, Trans} from "react-i18next";
 import frLocale from '@fullcalendar/core/locales/fr';
 import {getCoachEmail} from "../../hook/coach/getCoach.js";
 import {postEmail} from "../../hook/Mail/postEmail.js";
+import {sheduleCoach} from "../../services/sheduleCoachGet.js";
+import { getUserId} from "../User/DecodeUser.jsx";
+
 
 
 function Schedule({ onButtonClick, isCoach, ...otherProps }) {
@@ -46,6 +49,15 @@ function Schedule({ onButtonClick, isCoach, ...otherProps }) {
 
     //recuperation des evenements
     async function fetchData() {
+        if(isCoach)
+        {
+            let idCoach = await getUserId();
+            let tabHorraire = await sheduleCoach(idCoach, calendarFilterStart, calendarFilterEnd,lang);
+            if (calendarRef && calendarRef.current.getApi()) {
+                const api = calendarRef.current.getApi();
+                api.setOption('businessHours', tabHorraire);
+            }
+        }
         let events = await tab(calendarFilterStart, calendarFilterEnd);
         setEvents(events);
         setLoading(false);
@@ -164,17 +176,8 @@ function Schedule({ onButtonClick, isCoach, ...otherProps }) {
 
         navigate(route);
     };
-    const asyncDeleteSlot = async () => {
-        if(isCoach) {
-        }else {
-            const coachEmail = await getCoachEmail(idCoach);
-            await postEmail(emailClient, "Suppression  de cours", "Votre cours du " + formatReadableDate(dateStart).date + " de " + formatReadableDate(dateStart).time) + "avec le coach " + coachEmail.auth.email + " a ete supprimer";
-            await postEmail(coachEmail.auth.email, "Suppression  de cours", "Votre cours du " + formatReadableDate(dateStart).date + " de " + formatReadableDate(dateStart).time) + "avec le client " + emailClient + " a ete supprimer";
-        }
-    }
 
     const deleteSlotbyID = (e) => {
-        asyncDeleteSlot();
         deleteSlot(eventId);
         fetchData();
         closeModal();

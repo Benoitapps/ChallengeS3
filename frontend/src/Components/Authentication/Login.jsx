@@ -5,6 +5,7 @@ const env = import.meta.env;
 
 function Login({ handleConnect }) {
     const navigate = useNavigate();
+    const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
@@ -14,6 +15,7 @@ function Login({ handleConnect }) {
         const data = new FormData(e.target);
 
         try {
+            setError(null);
             const result = await fetch(`${env.VITE_URL_BACK}/auth`, {
                 method: 'POST',
                 headers: {
@@ -26,7 +28,11 @@ function Login({ handleConnect }) {
             });
 
             if (!result.ok) {
-                alert('Une erreur est survenue. Veuillez vérifier vos informations de connexion.');
+                if(result.status === 401) {
+                    setError('Email ou mot de passe incorrect.');
+                } else {
+                    setError('Une erreur est survenue lors de la tentative de connexion. Veuillez réessayer plus tard.')
+                }
                 setLoading(false);
                 return;
             }
@@ -34,12 +40,10 @@ function Login({ handleConnect }) {
             const body = await result.json();
 
             localStorage.setItem('token', body.token);
-            // const decodedToken = jwtDecode(body.token);
-            // console.log("decode", decodedToken);
             handleConnect();
             navigate("/");
         } catch (error) {
-            alert('Une erreur est survenue lors de la tentative de connexion. Veuillez réessayer plus tard.');
+            setError('Une erreur est survenue lors de la tentative de connexion. Veuillez réessayer plus tard.');
             setLoading(false);
         }
     };
@@ -47,7 +51,6 @@ function Login({ handleConnect }) {
 
     return (
         <>
-
             <main className="authentification">
                 <div className="login-signup">
                     <svg className="login-signup__svg" xmlns="http://www.w3.org/2000/svg" width="220" height="48" viewBox="0 0 220 48" fill="none">
@@ -60,6 +63,9 @@ function Login({ handleConnect }) {
                     </svg>
 
                     <form className="login-signup__form" onSubmit={handleSubmit}>
+                        {
+                            error && <p className="error">{error}</p>
+                        }
                         <input type="email" id="email" name="email" placeholder="Email" autoComplete="email" required />
                         <input type="password" id="password" name="password" placeholder="Mot de passe" autoComplete="current-password" required/>
                         <div className="login-signup__form__submit">

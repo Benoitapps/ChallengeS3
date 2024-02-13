@@ -25,7 +25,6 @@ function SignUp() {
             setLoading(false);
             return;
         }
-        console.log(userType, e)
 
         try {
             const result = await fetch(`${env.VITE_URL_BACK}/api/users`, {
@@ -41,9 +40,7 @@ function SignUp() {
                     userType: userType,
                 }),
             });
-            console.log(result);
             const body = await result.json();
-            console.log(body);
             if (result.status === 422) {
                 setError(body.violations[0].message + ' ' + body.violations[0].propertyPath);
             } else if (!result.ok) {

@@ -17,12 +17,11 @@ class CoachPrestationFixture extends Fixture implements DependentFixtureInterfac
     public function load(ObjectManager $manager): void
     {
 
-        $coach1 = $manager->getRepository(Coach::class)->findOneBy(['biography' => "Biography1"]);
-        $coach2 = $manager->getRepository(Coach::class)->findOneBy(['biography' => "Biography2"]);
+        $coach1 = $manager->getRepository(Coach::class)->findAll()[0];
+        $coach2 = $manager->getRepository(Coach::class)->findAll()[1];
 
-        $prestation1 = $manager->getRepository(Prestation::class)->findOneBy(['name' => "Prestation1"]);
-        $prestation2 = $manager->getRepository(Prestation::class)->findOneBy(['name' => "Prestation2"]);
-
+        $prestation1 = $manager->getRepository(Prestation::class)->findAll()[0];
+        $prestation2 = $manager->getRepository(Prestation::class)->findAll()[1];
 
         $coach1->addPrestation($prestation1);
         $coach2->addPrestation($prestation1);

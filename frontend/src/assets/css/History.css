@@ -20,14 +20,6 @@
     box-shadow: var(--input-shadow);
 }
 
-.lineList a {
-    color: var(--primary);
-}
-
-.lineList a:hover {
-    color: var(--primary-hover);
-}
-
 .history-head th,
 .partSlot {
     text-align: left;

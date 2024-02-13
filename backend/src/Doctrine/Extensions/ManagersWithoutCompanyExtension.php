@@ -33,9 +33,6 @@ final class ManagersWithoutCompanyExtension implements QueryCollectionExtensionI
     
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (Manager::class !== $resourceClass || $operation->getUriTemplate() !== '/managers-without-company') {
-            return;
-        }
         $rootAlias = $queryBuilder->getRootAliases()[0];
 
         // get all managers without relation with company

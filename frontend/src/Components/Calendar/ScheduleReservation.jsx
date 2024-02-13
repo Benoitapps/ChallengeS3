@@ -28,7 +28,6 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
     const { coachId, prestationId } = useParams();
     const [loading, setLoading] = useState(true);
 
-
     const [idPrestation, setIdPrestation] = useState(prestationId);
     const [idCoach, setIdCoach] = useState(coachId);
     const [idClient, setIdClient] = useState(null);
@@ -139,11 +138,6 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
                 const time2start = new Date("2000-01-01T"+DateFormat.timeCompareStart+":00Z");//click
                 const time2end = new Date("2000-01-01T"+DateFormat.timeCompareEnd+":00Z");
 
-                // console.log("heur Debut Coach",time1start)
-                // console.log("heur fin coach",time1end)
-                // console.log("Heur debut click",time2start)
-                // console.log("heur fin click",time2end)
-
                 i = scheduleHeur.length;
                 click = (time2start >= time1start && time2end < time1end) && (dateBaseStart > now);
             }
@@ -245,29 +239,13 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
         };
 
         if(isUpdate){
-            // console.log("le update")
             upadateSlot(dateStartModal, dateEndModal,eventDetail.slotId);
         }else{
-            // console.log("le add")
-            // console.log("idClient",idClient);
+
             addslot(dateStartModal, dateEndModal,idPrestation,idCoach,idClient);
         }
 
     };
-
-    const asyncDeleteSlot = async () => {
-        const coachEmail = await getCoachEmail(idCoach);
-        await postEmail(emailClient,"Suppression  de cours","Votre cours du "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le coach "+coachEmail.auth.email+" a ete supprimer";
-        await postEmail(coachEmail.auth.email,"Suppression  de cours","Votre cours du "+formatReadableDate(dateStart).date+" de "+formatReadableDate(dateStart).time)+"avec le client "+emailClient+" a ete supprimer";
-
-    }
-    const deleteSlotbyID = (e) => {
-        deleteSlot(eventId);
-        asyncDeleteSlot();
-        fetchData();
-        closeModal();
-    };
-
 
     return (
         <main>
@@ -307,10 +285,6 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
             />
                 </div>
             <PopUp show={isModalOpen} showButton1={true} onClose={() => closeModal()} button1={() => reserveModal()} nameButton1={t("Book")} annuler={t("Cancel")}>
-                {modalContent}
-            </PopUp>
-            <PopUp show={isModalOpenDetail} showButton={true} onClose={() => closeModal()} button1={() => reserveModal()} button2={() => deleteSlotbyID()}
-                   nameButton1={t("Update")} nameButton2={t("Delete")} annuler={t("Cancel")}>
                 {modalContent}
             </PopUp>
             <PopUp show={isModalOpenErreur}  onClose={() => closeModal()}

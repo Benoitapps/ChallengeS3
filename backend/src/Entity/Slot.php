@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Coach;
 use App\Entity\Schedule;
 use App\Validator\ContainsSlot as ContainsSlotConstraint;
+use App\Controller\SlotVacationController;
 
 
 
@@ -55,6 +56,14 @@ use App\Validator\ContainsSlot as ContainsSlotConstraint;
             'groups' => ['slot:write']
         ]
     ),
+    new Post(
+        uriTemplate: '/slots/vacation',
+        controller: SlotVacationController::class,
+        security: "is_granted('ROLE_MANAGER')",
+        denormalizationContext: [
+            'groups' => ['slot:vacation:write']
+        ]),
+
     new Patch(
         security: "is_granted('ROLE_USER')",
         denormalizationContext: [
@@ -78,12 +87,12 @@ class Slot
     private ?int $id = null;
 
     #[ApiFilter(DateFilter::class)]
-    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots','slot:history:read:collection'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots','slot:history:read:collection','slot:vacation:write'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\GreaterThan('today')]
     private ?\DateTimeInterface $startDate = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots','slot:history:read:collection'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','slot:update','coach:read:slots','slot:history:read:collection','slot:vacation:write'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $endDate = null;
 
@@ -95,7 +104,7 @@ class Slot
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Client $client = null;
 
-    #[Groups(['slot:read','slot:read:collection','slot:write','slot:history:read:collection'])]
+    #[Groups(['slot:read','slot:read:collection','slot:write','slot:history:read:collection','slot:vacation:write'])]
     #[ORM\ManyToOne(inversedBy: 'slots')]
     private ?Coach $coach = null;
 
