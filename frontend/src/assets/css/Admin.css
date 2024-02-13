@@ -14,6 +14,10 @@
     box-shadow: var(--input-shadow);
 }
 
+.user-list-loading {
+    height: 3rem;
+}
+
 .user-list__table__head th,
 .user-list__table__body__line__column {
     text-align: left;
