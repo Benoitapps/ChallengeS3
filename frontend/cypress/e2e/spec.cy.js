@@ -21,8 +21,8 @@ describe('Simple test', () => {
 
     it('Sign up', () => {
         cy.visit('http://localhost:5173')
-        cy.contains('Inscription')
-        cy.contains('Inscription').click()
+        cy.contains("S'inscrire")
+        cy.contains("S'inscrire").click()
         cy.url().should('include', '/signup')
         cy.get('#firstname').type('user')
         cy.get('#lastname').type('user')
