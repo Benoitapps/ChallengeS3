@@ -17,19 +17,19 @@ class CoachFixtures extends Fixture implements DependentFixtureInterface
         $user1 = $manager->getRepository(User::class)->findOneBy(['email' => "coach@user.fr"]);
         $user2 = $manager->getRepository(User::class)->findOneBy(['email' => "coach2@user.fr"]);
 
-        $franchise1 = $manager->getRepository(Franchise::class)->findOneBy(['name' => "Franchise1"]);
+        $franchise1 = $manager->getRepository(Franchise::class)->findAll()[0];
 
         $object = (new Coach())
             ->setAuth($user1)
             ->setFranchise($franchise1)
-            ->setBiography("Biography1");
+            ->setBiography("Je suis un coach sportif professionnel, je suis passionné par mon métier et je suis là pour vous aider à atteindre vos objectifs. Je suis spécialisé dans la perte de poids, la prise de masse et la préparation physique. Je suis également diplômé en nutrition et je peux vous aider à établir un régime alimentaire adapté à vos besoins. N'hésitez pas à me contacter pour plus d'informations.");
 
         $manager->persist($object);
 
         $object = (new Coach())
             ->setAuth($user2)
             ->setFranchise($franchise1)
-            ->setBiography("Biography2");
+            ->setBiography("Je suis toujours à l'écoute de mes clients et je m'adapte à leurs besoins. Je suis spécialisé dans la perte de poids, la prise de masse et la préparation physique. Je suis également diplômé en nutrition et je peux vous aider à établir un régime alimentaire adapté à vos besoins. N'hésitez pas à me contacter pour plus d'informations.");
 
         $manager->persist($object);
 

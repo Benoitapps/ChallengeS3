@@ -12,23 +12,18 @@ class ManagerFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $user1 = $manager->getRepository(User::class)->findOneBy(['email' => "manager@user.fr"]);
-        $user2 = $manager->getRepository(User::class)->findOneBy(['email' => "manager2@user.fr"]);
-
-
+        $user1 = $manager->getRepository(User::class)->findAll()[0];
+        $user2 = $manager->getRepository(User::class)->findAll()[1];
 
         $object = (new Manager())
             ->setAuth($user1);
 
-
         $manager->persist($object);
 
-
-        $object = (new manager())
+        $object2 = (new manager())
             ->setAuth($user2);
 
-
-        $manager->persist($object);
+        $manager->persist($object2);
         $manager->flush();
     }
     public function getDependencies(): array
