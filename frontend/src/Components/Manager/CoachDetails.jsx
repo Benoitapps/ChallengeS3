@@ -1,17 +1,14 @@
 import {useEffect, useState} from 'react';
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import { getCoachDetails } from "../../hook/coach/getCoach.js";
 import { getFranchisePrestations } from "../../hook/manager/getFranchisePrestations.js";
 import ScheduleEditor from "./ScheduleEditor.jsx";
-import VacationEditor from "./VacationEditor.jsx";
 import '@css/CoachDetailsManager.css';
 import { useTranslation } from "react-i18next";
 
 const env = import.meta.env;
 
 function CoachDetails() {
-    const navigate = useNavigate();
-    const [error, setError] = useState(null);
     const [coachLoading, setCoachLoading] = useState(false);
     const { coachId } = useParams();
     const [coach, setCoach] = useState([]);
@@ -31,7 +28,6 @@ function CoachDetails() {
             const franchiseId = coach.franchise.id;
 
             let franchisePrestations = await getFranchisePrestations(franchiseId);
-            // let availablePrestations = franchisePrestations.filter(prestation => !coach.prestations.includes(prestation));
             let availablePrestations = franchisePrestations.filter(prestation => !coach.prestations.map(p => p.id).includes(prestation.id));
             setPrestations(availablePrestations);
             if (availablePrestations.length > 0) {
@@ -77,11 +73,12 @@ function CoachDetails() {
         return data;
     };
 
-    const saveSchedule = (schedule) => {
-        // Logique pour sauvegarder les horaires de travail et les jours de congé
-        console.log("Horaires de travail et jours de congé sauvegardés :", schedule);
-    };
-                
+    const getImage = (image) => {
+        if (image) {
+            return image;
+        }
+        return 'https://picsum.photos/300/300';
+    }
 
     return (
         <main>
@@ -91,7 +88,7 @@ function CoachDetails() {
                 <div className="container-coach" key={coach.id}>
                     <div className="coach-profile-card">
                         <div className="coach-profile-card__img">
-                            <img src="https://thispersondoesnotexist.com/"/>
+                            <img src="../../../src/assets/img/user-coach.jpg"/>
                         </div>
                         {
                             coach.auth &&
@@ -148,7 +145,7 @@ function CoachDetails() {
                             </ul>
 
                             <ScheduleEditor coachId={coachId}/>
-                            <VacationEditor coachId={coachId}/>
+                            {/*<VacationEditor coachId={coachId}/>*/}
                         </div>
                     </div>
                 </div>

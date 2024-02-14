@@ -23,6 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             uriTemplate: '/coaches/prestations',
             controller: LinkPrestationController::class,
             denormalizationContext: ['groups' => ['coach-prestation:link']],
+            security: "is_granted('ROLE_MANAGER')",
         ),
         new Get(
             normalizationContext: ['groups' => ['coach:read']],
@@ -47,13 +48,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
             normalizationContext: [
                 'groups' => ['coach:read:shedules']
             ]
-        ),
-        new Get(
-            uriTemplate: '/coaches/email/{id}',
-            normalizationContext: [
-                'groups' => ['coach:read:email']
-            ],
-            security: "is_granted('ROLE_CLIENT')"
         ),
     ]
 

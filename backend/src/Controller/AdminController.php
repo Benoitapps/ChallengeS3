@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Manager;
+use App\Entity\Client;
 use Resend;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -51,6 +52,12 @@ class AdminController extends AbstractController
             $manager = new Manager();
             $manager->setAuth($user);
             $entityManager->persist($manager);
+        }
+
+        if (in_array('ROLE_CLIENT', $userData['roles'])) {
+            $client = new Client();
+            $client->setAuth($user);
+            $entityManager->persist($client);
         }
 
         $entityManager->flush();

@@ -5,11 +5,10 @@ namespace App\DataFixtures;
 use App\Entity\Client;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use App\DataFixtures\UserFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ClientFixtures extends Fixture
+class ClientFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -32,6 +31,13 @@ class ClientFixtures extends Fixture
 
         $manager->persist($object);
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            UserFixtures::class,
+        ];
     }
 }
 

@@ -21,30 +21,37 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ),
         new Get(
             normalizationContext: ['groups' => ['manager:read']],
+            security: 'is_granted("ROLE_ADMIN") or (object.getAuth() === user and is_granted("ROLE_MANAGER"))',
         ),
         new Get(
             uriTemplate: '/managers/{id}/stats/coach',
             normalizationContext: ['groups' => ['stat:coach:read']],
+            security: 'is_granted("ROLE_ADMIN") or (object.getAuth() === user and is_granted("ROLE_MANAGER"))',
         ),
         new Get(
             uriTemplate: '/managers/{id}/stats/prestation',
             normalizationContext: ['groups' => ['stat:prestation:read']],
+            security: 'is_granted("ROLE_ADMIN") or (object.getAuth() === user and is_granted("ROLE_MANAGER"))',
         ),
         new Get(
             uriTemplate: '/managers/{id}/stats/reservation',
             normalizationContext: ['groups' => ['stat:reservation:read']],
+            security: 'is_granted("ROLE_ADMIN") or (object.getAuth() === user and is_granted("ROLE_MANAGER"))',
         ),
         new Get(
             uriTemplate: '/managers/{id}/stats/money',
             normalizationContext: ['groups' => ['stat:money:read']],
+            security: 'is_granted("ROLE_ADMIN") or (object.getAuth() === user and is_granted("ROLE_MANAGER"))',
         ),
         new Post(
             denormalizationContext: ['groups' => ['manager:write']],
         ),
-        new Delete(),
+        new Delete(
+            security: 'is_granted("ROLE_ADMIN")',
+        ),
         new Patch(
             denormalizationContext: ['groups' => ['manager:update']],
-            security: 'is_granted("ROLE_ADMIN") or object.getAuth() === user',
+            security: 'is_granted("ROLE_ADMIN") or (object.getAuth() === user and is_granted("ROLE_MANAGER"))',
         ),
     ],
 )]

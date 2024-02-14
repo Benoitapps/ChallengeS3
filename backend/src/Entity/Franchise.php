@@ -32,7 +32,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
             uriTemplate: '/franchises/with-prestations',
             paginationItemsPerPage: 4,
             normalizationContext: ['groups' => ['franchise:read']],
-//            security: "is_granted('ROLE_MANAGER')",
 
         ),
         new GetCollection(
@@ -44,7 +43,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ),
         new Get(
             normalizationContext: ['groups' => ['franchise:read']],
-//            security: "is_granted('ROLE_MANAGER')",
         ),
         new Get(
             uriTemplate: 'franchises/{id}/prestations',
@@ -55,15 +53,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
             denormalizationContext: ['groups' => ['franchise:write']],
             security: "is_granted('ROLE_MANAGER')",
         ),
-        new Delete(),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN')",
+        ),
         new Patch(
             denormalizationContext: ['groups' => ['franchise:update']],
             security: "is_granted('ROLE_MANAGER') and object.getCompany().getManager().getAuth().getId() === user.getId()",
         ),
     ],
-//    normalizationContext: ['groups' => ['franchise:read']],
-//    denormalizationContext: ['groups' => ['franchise:write']],
-//    security: "is_granted('ROLE_ADMIN')",
+
 )]
 
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'partial', 'whiteList' => ['franchise:read']])]
@@ -120,7 +118,7 @@ class Franchise
     #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'franchise:update'])]
     private ?float $lng = null;
 
-    #[Groups(['franchise:read','franchise:write'])]
+    #[Groups(['franchise:read','franchise:write', 'coach:read', 'company:read:franchise'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $image = null;
 

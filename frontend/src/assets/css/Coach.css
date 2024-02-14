@@ -119,10 +119,15 @@
 .coach-content__prestations__item__img {
   border-radius: var(--radius-picture);
   overflow: hidden;
-  object-fit: cover;
   max-width: 280px;
   width: 100%;
   aspect-ratio: 1/1;
+}
+
+.coach-content__prestations__item__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .coach-content__prestations__item__content {
