@@ -23,11 +23,20 @@ class LinkPrestationController
     {
         $data = json_decode($request->getContent(), true);
 
+        if (!isset($data['coachId'])) {
+            return new JsonResponse(['error' => 'Missing coachId'], 400);
+        }
+
         if (!isset($data['prestationId'])) {
             return new JsonResponse(['error' => 'Missing prestationId'], 400);
         }
+        $coach = $this->entityManager->getRepository(Coach::class)->find($data['coachId']);
 
         $prestation = $this->entityManager->getRepository(Prestation::class)->find($data['prestationId']);
+
+        if (!$coach) {
+            return new JsonResponse(['error' => 'Coach not found'], 404);
+        }
 
         if (!$prestation) {
             return new JsonResponse(['error' => 'Prestation not found'], 404);
