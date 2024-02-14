@@ -8,7 +8,7 @@ function CoachProfile({coach, getCoach, isConnected}) {
     return (
         <div className="coach-profile-card">
             <div className="coach-profile-card__img">
-                <img src="https://thispersondoesnotexist.com/" alt={coach.auth.firstname}/>
+                <img src="../../../src/assets/img/user-coach.jpg" alt={coach.auth.firstname}/>
             </div>
             <h2 className="coach-profile-card__name">{coach.auth.firstname}</h2>
             <div className="coach-profile-card__note">

@@ -3,16 +3,18 @@ import {getUserId} from "../User/DecodeUser.jsx";
 import {getCoachDetails} from "../../hook/coach/getCoach.js";
 import {getClientDetails} from "../../hook/client/getClient.js";
 import {getManagerDetails} from "../../hook/manager/getManager.js";
+import {getAdminDetails} from "../../hook/admin/getAdmin.js";
 import {updateCoachProfile} from "../../hook/coach/updateCoachProfile.js";
 import {updateClientProfile} from "../../hook/client/updateClientProfile.js";
 import {updateManagerProfile} from "../../hook/manager/updateManagerProfile.js";
+import {updateAdminProfile} from "../../hook/admin/updateAdminProfile.js";
 import ProfileCard from "./ProfileCard.jsx";
 import ProfileContent from "./ProfileContent.jsx";
 import '@css/Profile.css';
 import Alert from "../Alert.jsx";
 import {useNavigate} from "react-router-dom";
 
-export default function Profile({isManager, isCoach, handleDisconnect}) {
+export default function Profile({isManager, isCoach, isAdmin, handleDisconnect}) {
   const [user, setUser] = useState({});
   const [userProfile, setUserProfile] = useState({});
   const [loading, setLoading] = useState(true);
@@ -70,8 +72,21 @@ export default function Profile({isManager, isCoach, handleDisconnect}) {
               setError(true);
               removeAlertOnError();
           }
-      }
-      else {
+      } else if(isAdmin) {
+          setIsLoading(true);
+          const result = await updateAdminProfile(user.id, userProfile);
+          setIsLoading(false);
+
+          if (result.status === 200) {
+              setSuccess(true);
+              setError(false);
+              removeAlertOnSuccess();
+          } else {
+              setSuccess(false);
+              setError(true);
+              removeAlertOnError();
+          }
+      } else {
             setIsLoading(true);
             const result = await updateClientProfile(user.id, userProfile);
             setIsLoading(false);
@@ -117,6 +132,9 @@ export default function Profile({isManager, isCoach, handleDisconnect}) {
           } else if(isManager) {
             setUser(await getManagerDetails(userId));
             setLoading(false);
+          } else if(isAdmin) {
+              setUser(await getAdminDetails(userId));
+              setLoading(false);
           } else {
               setUser(await getClientDetails(userId));
               setLoading(false);
@@ -134,9 +152,9 @@ export default function Profile({isManager, isCoach, handleDisconnect}) {
                   ? <div className="loading">Chargement...</div>
                   :
                   <div className="container-profile">
-                      <ProfileCard user={user} submitProfile={submitProfile} isLoading={isLoading}/>
+                      <ProfileCard user={user} isManager={isManager} isCoach={isCoach} isAdmin={isAdmin} submitProfile={submitProfile} isLoading={isLoading}/>
                       <div className="user-content">
-                          <ProfileContent user={user} isManager={isManager} isCoach={isCoach} updateProfile={updateProfile}/>
+                          <ProfileContent user={user} isManager={isManager} isCoach={isCoach} isAdmin={isAdmin} updateProfile={updateProfile}/>
                       </div>
                   </div>
           }
