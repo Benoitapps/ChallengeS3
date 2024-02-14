@@ -102,7 +102,6 @@ function Schedule({ onButtonClick, isCoach, ...otherProps }) {
 
     //avoir les details de l'evenement
     const handleEventInfo = (info) => {
-        console.log("lance loader");
         setLoading(true);
 
 
@@ -167,8 +166,6 @@ function Schedule({ onButtonClick, isCoach, ...otherProps }) {
             onButtonClick(eventDetail);
         }
 
-        // console.log("changement de page");
-        // console.log(eventDetail);
         const route = `/prestation/${eventDetail.idPrestation}/coach/${eventDetail.idCoach}/update`;
 
         navigate(route);

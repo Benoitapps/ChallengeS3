@@ -17,7 +17,6 @@ const patchSlot = async (dateStart, dateEnd, id) => {
         });
 
         let data = await result.json();
-        // console.log(data);
         return data;
     } catch (error) {
         console.error("Erreur lors de la mise à jour des slots :", error);

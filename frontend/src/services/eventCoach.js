@@ -19,23 +19,10 @@ const transformData = (initialData,lang) => {
         };
     });
 };
-    // const transHorraire = (initialData) => {
-    //     for (let i = 0; i < initialData.slots.length-1; i++) {
-    //         let date1 = initialData.slots[i].startDate;
-    //         initialData.slots[i].startDate = date1.setHours(date1.getHours() - 1);
-    //         let date2 = initialData.slots[i].endDate;
-    //         initialData.slots[i].endDate = date2.setHours(date2.getHours() - 1);
-    //     }
-    //     return initialData;
-    // }
-
 
 export const eventCoach = async (id,lang) => {
     const initialData = await getSlotCoach(id);
-    // console.log("initialdata", initialData);
-    // const res = transHorraire(initialData)
     const transformedData = transformData(initialData,lang);
-    // console.log("transform",transformedData);
 
     return transformedData;
 };

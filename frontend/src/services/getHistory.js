@@ -25,12 +25,8 @@ const transformData = (initialData) => {
 };
 
 export const historyGet = async (pagination ) => {
-
     const initialData = await getSlotsHistory(pagination);
 
     const transformedData = transformData(initialData['hydra:member']);
-    // console.log(transformedData, transformedData)
-
-
     return transformedData;
 };

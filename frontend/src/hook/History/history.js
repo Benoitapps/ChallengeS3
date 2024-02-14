@@ -3,7 +3,6 @@ const env = import.meta.env;
 const getSlotsHistory = async (page) => {
     try {
 
-        // console.log("filterDateStart",filterDateStart + "and" + "filterDateEnd",filterDateEnd);
         const apiUrl = `${env.VITE_URL_BACK}/api/slots/history?page=`+ page;
 
         const result = await fetch(apiUrl, {

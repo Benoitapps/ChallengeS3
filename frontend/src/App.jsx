@@ -81,22 +81,15 @@ function App() {
       },
     });
     let body = await result.json();
-    console.log(body);
 
     if (!body.name) {
-      console.log('no company');
       const newStatus = 'none';
-      console.log('newstatus', newStatus);
       setCompanyStatus(newStatus);
-      console.log('state company status', companyStatus);
     } else {
-      console.log('company found');
       if (body.isVerified === false) {
-        console.log('company not verified');
         const newStatus = 'pending';
         setCompanyStatus(newStatus);
       } else {
-        console.log('company verified');
         const newStatus = 'accepted';
         setCompanyStatus(newStatus);
       }

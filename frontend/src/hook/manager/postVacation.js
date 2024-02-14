@@ -19,7 +19,6 @@ const postVacation = async (dateStart,dateEnd, idCoach) => {
 
         });
         let data = await result.json();
-        // console.log(data);
         return data;
     } catch (error) {
         console.error("Erreur lors de la creation des slots:", error);
