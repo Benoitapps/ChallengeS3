@@ -74,6 +74,24 @@ class UserFixtures extends Fixture
         $manager->persist($object);
 
         $object = (new User())
+            ->setEmail('coach3@user.fr')
+            ->setPassword($pwd)
+            ->setRoles(["ROLE_COACH"])
+            ->setFirstname('Michel')
+            ->setLastname('Polnareff')
+        ;
+        $manager->persist($object);
+
+        $object = (new User())
+            ->setEmail('coach4@user.fr')
+            ->setPassword($pwd)
+            ->setRoles(["ROLE_COACH"])
+            ->setFirstname('Marie')
+            ->setLastname('Popins')
+        ;
+        $manager->persist($object);
+
+        $object = (new User())
             ->setEmail('admin@user.fr')
             ->setPassword($pwd)
             ->setRoles(["ROLE_ADMIN"])
