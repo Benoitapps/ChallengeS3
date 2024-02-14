@@ -57,7 +57,11 @@ function App() {
     const token = localStorage.getItem('token');
     if (token !== null) {
       if (accountService.getValuesToken().roles.includes('ROLE_MANAGER') === true)
-        checkCompany();
+        try {
+          checkCompany();
+        } catch (error) {
+          console.error("N'a pas encore de company.");
+        }
       return accountService.getValuesToken()
           .roles.includes('ROLE_MANAGER');
     }
@@ -73,33 +77,30 @@ function App() {
   }
 
   const checkCompany = async () => {
-    let result = await fetch(`${env.VITE_URL_BACK}/api/companies/myCompany`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    let body = await result.json();
-    console.log(body);
-
-    if (!body.name) {
-      console.log('no company');
-      const newStatus = 'none';
-      console.log('newstatus', newStatus);
-      setCompanyStatus(newStatus);
-      console.log('state company status', companyStatus);
-    } else {
-      console.log('company found');
-      if (body.isVerified === false) {
-        console.log('company not verified');
-        const newStatus = 'pending';
+    try {
+      let result = await fetch(`${env.VITE_URL_BACK}/api/companies/myCompany`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      let body = await result.json();
+  
+      if (!body.name) {
+        const newStatus = 'none';
         setCompanyStatus(newStatus);
       } else {
-        console.log('company verified');
-        const newStatus = 'accepted';
-        setCompanyStatus(newStatus);
+        if (body.isVerified === false) {
+          const newStatus = 'pending';
+          setCompanyStatus(newStatus);
+        } else {
+          const newStatus = 'accepted';
+          setCompanyStatus(newStatus);
+        }
       }
+    } catch (error) {
+      console.error("N'a pas encore de company.");
     }
   };
 
@@ -192,12 +193,12 @@ function App() {
             element={(
                 <Routes>
                   <Route path="/" element={<NavBarManager isConnected={isConnected} handleDisconnect={handleDisconnect} isManager={isManager} companyStatus={companyStatus} />}>
-                    <Route path="home" element={<ManagerRoute component={HomeManager} isManager={isManager} companyStatus={companyStatus} />} />
-                    <Route index element={<ManagerRoute index component={Dashboard} isManager={isManager} companyStatus={companyStatus} />} />
+                    <Route index element={<ManagerRoute index component={HomeManager} isManager={isManager} companyStatus={companyStatus} />} />
+                    <Route path="dashboard" element={<ManagerRoute component={Dashboard} isManager={isManager} companyStatus={companyStatus} />} />
                     <Route path="company" element={<ManagerRoute component={AddCompany} isManager={isManager} companyStatus={companyStatus} setCompanyStatus={setCompanyStatus} />} />
                     <Route path="franchise" element={<ManagerRoute component={AddFranchise} isManager={isManager} companyStatus={companyStatus} />} />
                     <Route path="addCoach/:franchiseId" element={<ManagerRoute component={AddCoach} isManager={isManager} companyStatus={companyStatus} />} />
-                    <Route path="home/club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected} isAdmin={isAdmin} update={true}/>} />
+                    <Route path="club/:id" element={<ClubDetails isCoach={isCoach} isManager={isManager} isConnected={isConnected} isAdmin={isAdmin} update={true}/>} />
                     <Route path="addPrestation/:franchiseId" element={<ManagerRoute component={AddPrestation} isManager={isManager} companyStatus={companyStatus} />} />
                     <Route path="coach/:coachId" element={<ManagerRoute component={CoachDetails} isManager={isManager} companyStatus={companyStatus} />} />
                   </Route>

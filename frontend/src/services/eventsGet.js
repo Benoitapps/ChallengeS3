@@ -1,8 +1,6 @@
 import { getSlots } from "../hook/Schedule/events.js";
 
 const transformData = (initialData) => {
-    console.log("initialData",initialData);
-
     return initialData.map((item, index) => {
         const startDate = new Date(item.startDate);
         const endDate = new Date(item.endDate);
@@ -25,6 +23,5 @@ export const tab = async (filterDateStart , filterDateEnd ) => {
 
     const initialData = await getSlots(filterDateStart, filterDateEnd);
     const transformedData = transformData(initialData);
-    // console.log(transformedData, transformedData)
     return transformedData;
 };

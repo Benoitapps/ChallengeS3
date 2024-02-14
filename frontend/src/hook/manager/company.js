@@ -10,8 +10,6 @@ const getCompanies = async () => {
             },
         });
         let data = await result.json();
-        console.log('getCompany');
-        console.log(data);
         if (data?.message){
             throw data;
         }

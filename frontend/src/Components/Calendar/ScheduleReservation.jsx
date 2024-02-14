@@ -6,8 +6,6 @@ import interactionPlugin from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
 import PopUp from "./Popup.jsx";
 import '@css/SheduleReservation.css';
-import {addslot} from '../../services/eventCreate.js';
-import { deleteSlot } from "../../hook/Schedule/eventDelete.js";
 import { eventCoach } from "../../services/eventCoach.js";
 import { sheduleCoach } from "../../services/sheduleCoachGet.js"
 import {postSlot} from "../../hook/Schedule/eventPost.js";
@@ -15,7 +13,6 @@ import {patchSlot} from "../../hook/Schedule/eventPatch.js";
 import {postEmail} from "../../hook/Mail/postEmail.js";
 import { useNavigate, useParams } from 'react-router-dom';
 import {getUserEmail, getUserId} from "../User/DecodeUser.jsx";
-import {getCoachEmail} from "../../hook/coach/getCoach.js";
 import loadingGIF from "@img/loading.gif";
 import {useTranslation, Trans} from "react-i18next";
 import frLocale from '@fullcalendar/core/locales/fr';
@@ -75,8 +72,6 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
     //recuperation des evenement et des horraires du coach au chargement de la page
     useEffect(() => {
-        // console.log("eventDetail",eventDetail);
-        // console.log("isUpdate",isUpdate);
         if (calendarFilterStart !== null && calendarFilterEnd !== null) {
             fetchData();
 
@@ -219,7 +214,6 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
             const getData = await postSlot(dateStart, dateEnd,idPrestation,idCoach,idClient);
 
             if (getData && getData?.status === 500) {
-                console.log("ya une erreur")
                 const modalContentreserve = (
 
                     <h2>Le créneau est déjà réservé</h2>
@@ -232,7 +226,6 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
             }
 
             setLoading(true);
-            // console.log("loading lancer a ",loading);
 
             fetchData();
             closeModal();

@@ -12,9 +12,6 @@ import {eventDetails} from '../../services/eventDetails.js';
 import { deleteSlot } from "../../hook/Schedule/eventDelete.js";
 import loadingGIF from "@img/loading.gif";
 import {useTranslation, Trans} from "react-i18next";
-import frLocale from '@fullcalendar/core/locales/fr';
-import {getCoachEmail} from "../../hook/coach/getCoach.js";
-import {postEmail} from "../../hook/Mail/postEmail.js";
 import {sheduleCoach} from "../../services/sheduleCoachGet.js";
 import { getUserId} from "../User/DecodeUser.jsx";
 
@@ -105,7 +102,6 @@ function Schedule({ onButtonClick, isCoach, ...otherProps }) {
 
     //avoir les details de l'evenement
     const handleEventInfo = (info) => {
-        console.log("lance loader");
         setLoading(true);
 
 
@@ -170,8 +166,6 @@ function Schedule({ onButtonClick, isCoach, ...otherProps }) {
             onButtonClick(eventDetail);
         }
 
-        // console.log("changement de page");
-        // console.log(eventDetail);
         const route = `/prestation/${eventDetail.idPrestation}/coach/${eventDetail.idCoach}/update`;
 
         navigate(route);

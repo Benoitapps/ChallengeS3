@@ -17,7 +17,6 @@ const transformData = (initialData) => {
         });
         tab.push({"name":item.name, "nbFranchise":nbFranchise});
     });
-    // console.log("NBFranchise",tab)
 
 
     forEach(initialData, (item) => {
@@ -32,10 +31,8 @@ const transformData = (initialData) => {
         tab2.push({"name":item.name, "nbCours":resNbCours, "price":resPrice});
 
     });
-    // console.log("tab2",tab2)
 
     tab3.push(tab,tab2);
-    // console.log("tab3",tab3)
 
     return tab3;
 };
@@ -43,7 +40,6 @@ const transformData = (initialData) => {
 
 const statAdminAll = async () => {
     const initialData = await getStatsAdmin();
-    // console.log("init",initialData)
 
     const transformedData = transformData(initialData);
     return transformedData;

@@ -1,17 +1,14 @@
 import {useEffect, useState} from 'react';
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import { getCoachDetails } from "../../hook/coach/getCoach.js";
 import { getFranchisePrestations } from "../../hook/manager/getFranchisePrestations.js";
 import ScheduleEditor from "./ScheduleEditor.jsx";
-import VacationEditor from "./VacationEditor.jsx";
 import '@css/CoachDetailsManager.css';
 import { useTranslation } from "react-i18next";
 
 const env = import.meta.env;
 
 function CoachDetails() {
-    const navigate = useNavigate();
-    const [error, setError] = useState(null);
     const [coachLoading, setCoachLoading] = useState(false);
     const { coachId } = useParams();
     const [coach, setCoach] = useState([]);
@@ -31,7 +28,6 @@ function CoachDetails() {
             const franchiseId = coach.franchise.id;
 
             let franchisePrestations = await getFranchisePrestations(franchiseId);
-            // let availablePrestations = franchisePrestations.filter(prestation => !coach.prestations.includes(prestation));
             let availablePrestations = franchisePrestations.filter(prestation => !coach.prestations.map(p => p.id).includes(prestation.id));
             setPrestations(availablePrestations);
             if (availablePrestations.length > 0) {
@@ -49,13 +45,13 @@ function CoachDetails() {
     };
 
     const saveCoachPrestation = async (coachId, prestationId) => {
-        const response = await fetch(`${env.VITE_URL_BACK}/api/coaches/${coachId}/prestations`, {
+        const response = await fetch(`${env.VITE_URL_BACK}/api/coaches/prestations`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            body: JSON.stringify({ prestationId: prestationId }),
+            body: JSON.stringify({ prestationId: prestationId, coachId: coachId }),
         });
     
         if (!response.ok) {
@@ -64,17 +60,25 @@ function CoachDetails() {
             const newCoachInfos = await getCoachDetails(coachId);
 
             setCoach(newCoachInfos);
+            const franchiseId = newCoachInfos.franchise.id;
+            let franchisePrestations = await getFranchisePrestations(franchiseId);
+            let availablePrestations = franchisePrestations.filter(prestation => !coach.prestations.map(p => p.id).includes(prestation.id));
+            setPrestations(availablePrestations);
+            if (availablePrestations.length > 0) {
+                setSelectedPrestation(availablePrestations[0].id);
+            }
         }
     
         const data = await response.json();
         return data;
     };
 
-    const saveSchedule = (schedule) => {
-        // Logique pour sauvegarder les horaires de travail et les jours de congé
-        console.log("Horaires de travail et jours de congé sauvegardés :", schedule);
-    };
-                
+    const getImage = (image) => {
+        if (image) {
+            return image;
+        }
+        return 'https://picsum.photos/300/300';
+    }
 
     return (
         <main>
@@ -121,20 +125,16 @@ function CoachDetails() {
                                         {
                                             coach.prestations && coach.prestations.map((prestation, index) => {
                                                 return (
-                                                    <li key={index} className="coach-content__prestations__item">
-                                                        <div className="coach-content__prestations__item__img">
-                                                            <img src="https://picsum.photos/300/300"
-                                                                 alt={prestation.franchise.name}/>
-                                                        </div>
-                                                        <div className="coach-content__prestations__item__content">
-                                                            <div
-                                                                className="coach-content__prestations__item__content__top">
-                                                                <h5 className="coach-content__prestations__name">{prestation.name}</h5>
-                                                                <p className="coach-content__franchises__name">{prestation.franchise.name}</p>
-                                                                <p className="coach-content__franchises__address">{prestation.franchise.address}</p>
+                                                    <li key={index}>
+                                                        <div className="coach-content__prestations__item">
+                                                            <div className="coach-content__prestations__item__content">
+                                                                <div
+                                                                    className="coach-content__prestations__item__content__top">
+                                                                    <h5 className="coach-content__prestations__name">{prestation.name}</h5>
+                                                                </div>
+                                                                <p className="coach-content__prestations__price">
+                                                                    <span>{prestation.price}€</span> / séance</p>
                                                             </div>
-                                                            <p className="coach-content__prestations__price">
-                                                                <span>{prestation.price}€</span> / séance</p>
                                                         </div>
                                                     </li>
                                                 )
