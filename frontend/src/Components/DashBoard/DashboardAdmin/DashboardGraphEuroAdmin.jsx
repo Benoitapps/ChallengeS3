@@ -15,7 +15,6 @@ function DashboardGraphEuroAdmin({valueData}) {
 
     useEffect(() => {
         if(valueData !== undefined) {
-            console.log("valueData", valueData)
             const tabName = valueData.map(objet => objet.name);
             setLabel(tabName)
             const tabcours = valueData.map(objet => objet.nbCours);

@@ -28,7 +28,6 @@ function ClubDetails({isCoach,isManager,isConnected,isAdmin,update}) {
     const handleClick = (prestation) => {
         setIsModalOpenDetail(true);
         setThePrestation(prestation);
-        console.log(prestation);
     };
 
     const handleSubmit = async (e) => {

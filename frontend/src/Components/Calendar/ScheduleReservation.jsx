@@ -72,8 +72,6 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
 
     //recuperation des evenement et des horraires du coach au chargement de la page
     useEffect(() => {
-        // console.log("eventDetail",eventDetail);
-        // console.log("isUpdate",isUpdate);
         if (calendarFilterStart !== null && calendarFilterEnd !== null) {
             fetchData();
 
@@ -216,7 +214,6 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
             const getData = await postSlot(dateStart, dateEnd,idPrestation,idCoach,idClient);
 
             if (getData && getData?.status === 500) {
-                console.log("ya une erreur")
                 const modalContentreserve = (
 
                     <h2>Le créneau est déjà réservé</h2>
@@ -229,7 +226,6 @@ function ScheduleReservation({ eventDetail, isUpdate, }) {
             }
 
             setLoading(true);
-            // console.log("loading lancer a ",loading);
 
             fetchData();
             closeModal();

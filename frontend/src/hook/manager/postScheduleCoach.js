@@ -21,7 +21,6 @@ const postScheduleCoach = async ( dateStartTime, dateStartEndTime,dateStart,date
 
         });
         let data = await result.json();
-        // console.log(data);
         return data;
     } catch (error) {
         console.error("Erreur lors de la creation des slots:", error);

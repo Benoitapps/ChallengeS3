@@ -21,13 +21,9 @@ const getUserId = async () => {
             idUser = user.manager.id;
         } else if(user.roles.map(role => role === 'ROLE_ADMIN')) {
             idUser = user.id;
-        } else {
-            console.log('No value found in local storage for the specified key');
         }
 
         return idUser;
-    } else {
-        console.log('No value found in local storage for the specified key');
     }
 
 };
@@ -41,8 +37,6 @@ const getUserEmail = async () => {
         const emailClient = decodedToken.username;
 
         return emailClient;
-    } else {
-        console.log('No value found in local storage for the specified key');
     }
 
 };

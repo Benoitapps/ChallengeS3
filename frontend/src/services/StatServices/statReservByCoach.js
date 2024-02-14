@@ -31,7 +31,6 @@ const statCoachReservation = async (id) => {
     const initialData = await getCoachReservation(manager.id);
 
     const transformedData = transformData(initialData);
-    // console.log(transformedData)
 
     return transformedData;
 };

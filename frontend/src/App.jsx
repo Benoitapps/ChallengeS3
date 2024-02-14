@@ -62,7 +62,6 @@ function App() {
         } catch (error) {
           console.error("N'a pas encore de company.");
         }
-        // checkCompany();
       return accountService.getValuesToken()
           .roles.includes('ROLE_MANAGER');
     }
@@ -87,7 +86,6 @@ function App() {
         },
       });
       let body = await result.json();
-      console.log(body);
   
       if (!body.name) {
         const newStatus = 'none';
