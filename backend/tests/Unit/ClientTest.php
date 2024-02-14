@@ -17,12 +17,28 @@ class ClientTest extends TestCase
         $this->assertSame('123 rue de Paris', $client->getAddress());
     }
 
+    public function testSetGetAddress2()
+    {
+        $client = new Client();
+        $client->setAddress('10 chemin de thiou');
+
+        $this->assertSame('10 chemin de thiou', $client->getAddress());
+    }
+
     public function testSetGetCity()
     {
         $client = new Client();
         $client->setCity('Paris');
 
         $this->assertSame('Paris', $client->getCity());
+    }
+
+    public function testSetGetCity2()
+    {
+        $client = new Client();
+        $client->setCity('Lyon');
+
+        $this->assertSame('Lyon', $client->getCity());
     }
 
     public function testSetGetZipCode()
