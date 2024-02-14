@@ -18,6 +18,14 @@ class FranchiseTest extends TestCase
         $this->assertSame('Franchise A', $franchise->getName());
     }
 
+    public function testSetGetName2()
+    {
+        $franchise = new Franchise();
+        $franchise->setName('Franchise B');
+
+        $this->assertSame('Franchise B', $franchise->getName());
+    }
+
     public function testSetAndGetDescription()
     {
         $franchise = new Franchise();
