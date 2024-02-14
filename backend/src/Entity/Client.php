@@ -20,7 +20,7 @@ use ApiPlatform\Metadata\GetCollection;
         ),
         new Get(
             normalizationContext: ['groups' => ['client:read']],
-            security: "is_granted('ROLE_ADMIN') or (object.getAuth() === user and is_granted('ROLE_CLIENT'))",
+            security: "is_granted('ROLE_ADMIN') or (object.getAuth() === user and is_granted('ROLE_CLIENT')) or is_granted('ROLE_COACH')",
         ),
         new Patch(
             denormalizationContext: ['groups' => ['client:write']],
