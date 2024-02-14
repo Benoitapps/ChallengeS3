@@ -27,8 +27,8 @@ module.exports = {
             "version": "detect"
         }
     },
-    "rules": {
-        "semi": ["error", "always"],
-        "quotes": ["error", "double"]
-    }
+    // "rules": {
+    //     "semi": ["error", "always"],
+    //     "quotes": ["error", "double"]
+    // }
 };
