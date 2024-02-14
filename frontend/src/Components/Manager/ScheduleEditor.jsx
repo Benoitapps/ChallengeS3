@@ -35,13 +35,18 @@ function ScheduleEditor({coachId}) {
 
     return (
         <>
-            <form className="login-signup__forme" onSubmit={handleSubmit}>
+            <form className="schedule-editor" onSubmit={handleSubmit}>
+                <div className="schedule-editor__line">
                     <label>Date de début:</label>
-                    <input type="date" name="dateStart"  />
+                    <input type="date" name="dateStart"/>
+                </div>
 
+                <div className="schedule-editor__line">
                     <label>Date de fin:</label>
-                    <input type="date" name="dateEnd"   />
+                    <input type="date" name="dateEnd"/>
+                </div>
 
+                <div className="schedule-editor__line time">
                     <label>Heure de début:</label>
                     <select name="timeStart" id="timeStart" >
                         {hours.map((hour) => (
@@ -50,7 +55,9 @@ function ScheduleEditor({coachId}) {
                             </option>
                         ))}
                     </select>
+                </div>
 
+                <div className="schedule-editor__line time">
                     <label>Heure de fin:</label>
                     <select name="timeEnd" id="timeEnd" >
                         {hours.map((hour) => (
@@ -59,6 +66,7 @@ function ScheduleEditor({coachId}) {
                             </option>
                         ))}
                     </select>
+                </div>
 
                 <input type="submit" value="Update" />
             </form>
