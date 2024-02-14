@@ -15,7 +15,7 @@ function Dashboard({ companyStatus }) {
     const navigate = useNavigate();
 
     if (companyStatus === 'none' || companyStatus === 'pending') {
-        navigate('/manager/home');
+        navigate('/manager');
     }
 
 

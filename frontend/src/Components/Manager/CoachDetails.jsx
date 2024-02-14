@@ -64,6 +64,13 @@ function CoachDetails() {
             const newCoachInfos = await getCoachDetails(coachId);
 
             setCoach(newCoachInfos);
+            const franchiseId = newCoachInfos.franchise.id;
+            let franchisePrestations = await getFranchisePrestations(franchiseId);
+            let availablePrestations = franchisePrestations.filter(prestation => !coach.prestations.map(p => p.id).includes(prestation.id));
+            setPrestations(availablePrestations);
+            if (availablePrestations.length > 0) {
+                setSelectedPrestation(availablePrestations[0].id);
+            }
         }
     
         const data = await response.json();
