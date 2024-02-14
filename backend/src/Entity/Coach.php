@@ -19,7 +19,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
     operations: [
         new Post(
-            uriTemplate: '/coaches/{id}/prestations',
+//            uriTemplate: '/coaches/{id}/prestations',
+            uriTemplate: '/coaches/prestations',
             controller: LinkPrestationController::class,
             denormalizationContext: ['groups' => ['coach-prestation:link']],
             security: "is_granted('ROLE_MANAGER')",

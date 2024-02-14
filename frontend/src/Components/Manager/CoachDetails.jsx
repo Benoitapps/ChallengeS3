@@ -45,13 +45,13 @@ function CoachDetails() {
     };
 
     const saveCoachPrestation = async (coachId, prestationId) => {
-        const response = await fetch(`${env.VITE_URL_BACK}/api/coaches/${coachId}/prestations`, {
+        const response = await fetch(`${env.VITE_URL_BACK}/api/coaches/prestations`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            body: JSON.stringify({ prestationId: prestationId }),
+            body: JSON.stringify({ prestationId: prestationId, coachId: coachId }),
         });
     
         if (!response.ok) {
@@ -60,6 +60,13 @@ function CoachDetails() {
             const newCoachInfos = await getCoachDetails(coachId);
 
             setCoach(newCoachInfos);
+            const franchiseId = newCoachInfos.franchise.id;
+            let franchisePrestations = await getFranchisePrestations(franchiseId);
+            let availablePrestations = franchisePrestations.filter(prestation => !coach.prestations.map(p => p.id).includes(prestation.id));
+            setPrestations(availablePrestations);
+            if (availablePrestations.length > 0) {
+                setSelectedPrestation(availablePrestations[0].id);
+            }
         }
     
         const data = await response.json();
@@ -118,20 +125,16 @@ function CoachDetails() {
                                         {
                                             coach.prestations && coach.prestations.map((prestation, index) => {
                                                 return (
-                                                    <li key={index} className="coach-content__prestations__item">
-                                                        <div className="coach-content__prestations__item__img">
-                                                            <img src={getImage(prestation.franchise.image)}
-                                                                 alt={prestation.franchise.name}/>
-                                                        </div>
-                                                        <div className="coach-content__prestations__item__content">
-                                                            <div
-                                                                className="coach-content__prestations__item__content__top">
-                                                                <h5 className="coach-content__prestations__name">{prestation.name}</h5>
-                                                                <p className="coach-content__franchises__name">{prestation.franchise.name}</p>
-                                                                <p className="coach-content__franchises__address">{prestation.franchise.address}</p>
+                                                    <li key={index}>
+                                                        <div className="coach-content__prestations__item">
+                                                            <div className="coach-content__prestations__item__content">
+                                                                <div
+                                                                    className="coach-content__prestations__item__content__top">
+                                                                    <h5 className="coach-content__prestations__name">{prestation.name}</h5>
+                                                                </div>
+                                                                <p className="coach-content__prestations__price">
+                                                                    <span>{prestation.price}€</span> / séance</p>
                                                             </div>
-                                                            <p className="coach-content__prestations__price">
-                                                                <span>{prestation.price}€</span> / séance</p>
                                                         </div>
                                                     </li>
                                                 )

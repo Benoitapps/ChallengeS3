@@ -36,7 +36,7 @@ function AddCoach() {
             } else if (!result.ok) {
                 setError('Une erreur est survenue');
             } else {
-                navigate('/manager/home/club/'+franchiseId);
+                navigate('/manager/club/'+franchiseId);
             }
         } catch (error) {
             setError('Une erreur est survenue');
