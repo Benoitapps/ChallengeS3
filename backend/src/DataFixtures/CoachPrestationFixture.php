@@ -37,24 +37,6 @@ class CoachPrestationFixture extends Fixture implements DependentFixtureInterfac
         $coach2->addPrestation($prestation2);
         $coach3->addPrestation($prestation2);
 
-        $coach3->addPrestation($prestation3);
-        $coach2->addPrestation($prestation3);
-
-        $coach4->addPrestation($prestation4);
-        $coach1->addPrestation($prestation4);
-
-        $coach1->addPrestation($prestation5);
-        $coach2->addPrestation($prestation5);
-
-        $coach2->addPrestation($prestation6);
-        $coach3->addPrestation($prestation6);
-
-        $coach3->addPrestation($prestation7);
-        $coach4->addPrestation($prestation7);
-
-        $coach4->addPrestation($prestation8);
-        $coach1->addPrestation($prestation8);
-
         $manager->flush();
     }
     public function getDependencies(): array
