@@ -36,6 +36,7 @@ use App\Controller\AdminController;
                     'user:admin:read',
                 ],
             ],
+            paginationItemsPerPage: 20,
             security: "is_granted('ROLE_ADMIN')"
         ),
         new Get(
