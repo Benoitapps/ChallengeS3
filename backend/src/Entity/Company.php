@@ -19,8 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new GetCollection(
-//            juste pour tester, à supprimer ensuite
-            security: "is_granted('ROLE_MANAGER')",
+            security: "is_granted('ROLE_ADMIN')",
         ),
         new Get(
             uriTemplate: 'companies/myCompany',
@@ -30,16 +29,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ),
         new Get(
             normalizationContext: ['groups' => ['company:read']],
-            security: "is_granted('ROLE_MANAGER')",
+            security: "is_granted('ROLE_ADMIN')",
         ),
         new Post(
             denormalizationContext: ['groups' => ['company:write']],
             security: "is_granted('ROLE_MANAGER')",
         ),
-        new Delete(),
-        new Patch(
-            denormalizationContext: ['groups' => ['company:update']],
+        new Delete(
+            security: "is_granted('ROLE_ADMIN')",
         ),
+
         new Patch(
             denormalizationContext: [
                 'groups' => ['company:admin:update']
@@ -53,8 +52,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             normalizationContext: ['groups' => ['stat:admin:read']],
         ),
     ],
-//    normalizationContext: ['groups' => ['company:read','company:read:user-is-logged']],
-//    denormalizationContext: ['groups' => ['company:write']],
+
     security: "is_granted('ROLE_ADMIN')",
 )]
 

@@ -2,6 +2,13 @@ import { Link } from 'react-router-dom';
 import '@css/Coach.css';
 
 function CoachContent({id, coach}) {
+    const getImage = (image) => {
+        if (image) {
+            return image;
+        }
+        return 'https://picsum.photos/300/300';
+    }
+
     return (
         <>
             <div className="coach-content__head">
@@ -26,7 +33,7 @@ function CoachContent({id, coach}) {
                                     <li key={index}>
                                         <Link to={`/prestation/${prestation.id}/coach/${id}/add`} className="coach-content__prestations__item">
                                             <div className="coach-content__prestations__item__img">
-                                                <img src="https://picsum.photos/300/300" alt={prestation.franchise.name} />
+                                                <img src={getImage(prestation.franchise.image)} alt={prestation.franchise.name} />
                                             </div>
                                             <div className="coach-content__prestations__item__content">
                                                 <div className="coach-content__prestations__item__content__top">

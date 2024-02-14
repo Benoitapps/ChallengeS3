@@ -26,13 +26,18 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['review-client:read']],
     denormalizationContext: ['groups' => ['review-client:write']],
     operations: [
-        new Post(),
+        new Post(
+            security: "is_granted('ROLE_COACH)"
+        ),
         new Patch(
             denormalizationContext: [
                 'groups' => ['review-client:update']
-            ]
+            ],
+            security: "is_granted('ROLE_COACH') and object.getCoach().getAuth().getId() === user.getId()"
         ),
-        new Delete(),
+        new Delete(
+            security: "is_granted('ROLE_COACH') and object.getCoach().getAuth().getId() === user.getId()"
+        ),
     ]
 )]
 #[ORM\Entity(repositoryClass: ReviewClientRepository::class)]

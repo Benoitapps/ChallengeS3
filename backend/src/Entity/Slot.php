@@ -45,27 +45,27 @@ use App\Controller\SlotVacationController;
         ]
     ),
     new Get(
-        security: "(is_granted('ROLE_USER') and object.getClient() === user.getClient()) or (is_granted('ROLE_COACH') and object.getCoach() === user.getCoach())",
+        security: "(is_granted('ROLE_CLIENT') and object.getClient() === user.getClient()) or (is_granted('ROLE_COACH') and object.getCoach() === user.getCoach())",
         normalizationContext: [
             'groups' => ['slot:read']
         ],
     ),
     new Post(
-//        security: "object.getClient() === user.getClient()",
         denormalizationContext: [
             'groups' => ['slot:write']
-        ]
+        ],
+        security: "is_granted('ROLE_CLIENT')",
     ),
-    new Post(
-        uriTemplate: '/slots/vacation',
-        controller: SlotVacationController::class,
-        security: "is_granted('ROLE_MANAGER')",
-        denormalizationContext: [
-            'groups' => ['slot:vacation:write']
-        ]),
+//    new Post(
+//        uriTemplate: '/slots/vacation',
+//        controller: SlotVacationController::class,
+//        security: "is_granted('ROLE_MANAGER')",
+//        denormalizationContext: [
+//            'groups' => ['slot:vacation:write']
+//        ]),
 
     new Patch(
-        security: "(is_granted('ROLE_USER') and object.getClient() === user.getClient()) or (is_granted('ROLE_COACH') and object.getCoach() === user.getCoach())",
+        security: "(is_granted('ROLE_USER') and object.getClient() === user.getClient()) ",
         denormalizationContext: [
             'groups' => ['slot:update']
         ]
