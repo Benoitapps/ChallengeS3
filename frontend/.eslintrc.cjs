@@ -3,7 +3,7 @@ module.exports = {
         "browser": true,
         "es2021": true
     },
-    "extends": "plugin:react/recommended",
+    "extends": ["plugin:react/recommended"],
     "overrides": [
         {
             "env": {
@@ -21,9 +21,14 @@ module.exports = {
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
-    "plugins": [
-        "react"
-    ],
+    "plugins": ["react"],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
     "rules": {
+        "semi": ["error", "always"],
+        "quotes": ["error", "double"]
     }
-}
+};
