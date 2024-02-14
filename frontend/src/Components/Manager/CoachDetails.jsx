@@ -84,7 +84,7 @@ function CoachDetails() {
                 <div className="container-coach" key={coach.id}>
                     <div className="coach-profile-card">
                         <div className="coach-profile-card__img">
-                            <img src="https://thispersondoesnotexist.com/"/>
+                            <img src="../../../src/assets/img/user-coach.jpg"/>
                         </div>
                         {
                             coach.auth &&
