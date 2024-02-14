@@ -23,7 +23,7 @@ use App\Validator\ContainsSchedulePerso as ContainsSchedulePerso;
         new Post(
             controller: ScheduleController::class,
             denormalizationContext: ['groups' => ['ShedulePerso:write']],
-//            security: "is_granted('ROLE_MANAGER') and object.getCoach().getFranchise.getCompany().getId() === user.getCompany().getId()",
+            security: "is_granted('ROLE_MANAGER')"
 
         )
     ]

@@ -45,13 +45,13 @@ use App\Controller\SlotVacationController;
         ]
     ),
     new Get(
-        security: "is_granted('ROLE_USER')",
+        security: "(is_granted('ROLE_USER') and object.getClient() === user.getClient()) or (is_granted('ROLE_COACH') and object.getCoach() === user.getCoach())",
         normalizationContext: [
             'groups' => ['slot:read']
-        ]
+        ],
     ),
     new Post(
-        security: "is_granted('ROLE_USER')",
+//        security: "object.getClient() === user.getClient()",
         denormalizationContext: [
             'groups' => ['slot:write']
         ]
@@ -65,12 +65,14 @@ use App\Controller\SlotVacationController;
         ]),
 
     new Patch(
-        security: "is_granted('ROLE_USER')",
+        security: "(is_granted('ROLE_USER') and object.getClient() === user.getClient()) or (is_granted('ROLE_COACH') and object.getCoach() === user.getCoach())",
         denormalizationContext: [
             'groups' => ['slot:update']
         ]
     ),
-    new Delete()
+    new Delete(
+        security: "(is_granted('ROLE_USER') and object.getClient() === user.getClient()) or (is_granted('ROLE_COACH') and object.getCoach() === user.getCoach())",
+    )
 
 ],
 )]

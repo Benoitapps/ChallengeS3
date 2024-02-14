@@ -31,12 +31,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Post(
             normalizationContext: [
                 'groups' => ['schedule:write']
-            ]
+            ],
+            security: "is_granted('Role_MANAGER') and object.getCoach().getFranchise().getCompany().getId() === user.getManager().getCompany().getId()",
+
         ),
         new Patch(
             normalizationContext: [
                 'groups' => ['schedule:update']
-            ]
+            ],
+            security: "is_granted('Role_MANAGER') and object.getCoach().getFranchise().getCompany().getId() === user.getManager().getCompany().getId()",
+
         ),
     ],
 )]
