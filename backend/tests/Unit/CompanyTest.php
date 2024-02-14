@@ -15,12 +15,28 @@ class CompanyTest extends TestCase
         $this->assertSame('Company A', $company->getName());
     }
 
+    public function testSetGetName2()
+    {
+        $company = new Company();
+        $company->setName('Company B');
+
+        $this->assertSame('Company B', $company->getName());
+    }
+
     public function testSetAndGetDescription()
     {
         $company = new Company();
         $company->setDescription('Description for company A');
 
         $this->assertSame('Description for company A', $company->getDescription());
+    }
+
+    public function testSetAndGetDescription2()
+    {
+        $company = new Company();
+        $company->setDescription('Description for company B');
+
+        $this->assertSame('Description for company B', $company->getDescription());
     }
 
     public function testSetAndGetKbis()

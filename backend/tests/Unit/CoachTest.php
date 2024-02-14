@@ -21,6 +21,14 @@ class CoachTest extends TestCase
         $this->assertSame('Biography for oach A', $coach->getBiography());
     }
 
+    public function testSetGetBiography2()
+    {
+        $coach = new Coach();
+        $coach->setBiography('Biography for coach B');
+
+        $this->assertSame('Biography for oach B', $coach->getBiography());
+    }
+
     public function testSetAndGetAuth()
     {
         $coach = new Coach();
