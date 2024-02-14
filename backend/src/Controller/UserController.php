@@ -31,16 +31,11 @@ class UserController extends AbstractController
         $user->setFirstName($userData['firstname']);
         $user->setLastName($userData['lastname']);
 
-
-
         $userType = $userData['userType'];
 
         if ($this->isManager($userType)) {
             $user->setRoles(['ROLE_MANAGER']);
-        }
-
-
-        if ($this->isClient($userType)) {
+        } else {
             $user->setRoles(['ROLE_CLIENT']);
         }
 
@@ -65,9 +60,7 @@ class UserController extends AbstractController
             $entityManager->persist($manager);
             $entityManager->flush();
             $this->sendEmail($userData['email'],"Bienvenue chez MyCoach","Bonjour ".$userData['firstname']." ".$userData['lastname'].", Votre compte MyCoach a bien été créé. Vous pouvez vous connecter à l'application MyCoach avec l'adresse email suivante : ".$userData['email'].".A bientôt sur MyCoach ! Ce message vous a été envoyé via une adresse mail n'acceptant pas les réponses.");
-        }
-
-        if ($this->isClient($userType)) {
+        } else {
             $client = new Client();
             $client->setAuth($user);
             $entityManager->persist($client);
@@ -76,14 +69,10 @@ class UserController extends AbstractController
         }
 
         $userData = [
-            // 'id' => $user->getId(),
             'email' => $user->getEmail(),
             'firstname' => $user->getFirstName(),
             'lastname' => $user->getLastName(),
-            // 'roles' => $user->getRoles(),
         ];
-
-
 
         return new Response(
             json_encode($userData),

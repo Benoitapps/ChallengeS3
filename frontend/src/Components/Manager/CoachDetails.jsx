@@ -84,7 +84,7 @@ function CoachDetails() {
                 <div className="container-coach" key={coach.id}>
                     <div className="coach-profile-card">
                         <div className="coach-profile-card__img">
-                            <img src="https://thispersondoesnotexist.com/"/>
+                            <img src="../../../src/assets/img/user-coach.jpg"/>
                         </div>
                         {
                             coach.auth &&
@@ -121,24 +121,21 @@ function CoachDetails() {
                                         {
                                             coach.prestations && coach.prestations.map((prestation, index) => {
                                                 return (
-                                                    <li key={index}>
-                                                        <Link to={`/prestation/${prestation.id}/coach/${coachId}/add`}
-                                                              className="coach-content__prestations__item">
-                                                            <div className="coach-content__prestations__item__img">
-                                                                <img src="https://picsum.photos/300/300"
-                                                                     alt={prestation.franchise.name}/>
+                                                    <li key={index} className="coach-content__prestations__item">
+                                                        <div className="coach-content__prestations__item__img">
+                                                            <img src="https://picsum.photos/300/300"
+                                                                 alt={prestation.franchise.name}/>
+                                                        </div>
+                                                        <div className="coach-content__prestations__item__content">
+                                                            <div
+                                                                className="coach-content__prestations__item__content__top">
+                                                                <h5 className="coach-content__prestations__name">{prestation.name}</h5>
+                                                                <p className="coach-content__franchises__name">{prestation.franchise.name}</p>
+                                                                <p className="coach-content__franchises__address">{prestation.franchise.address}</p>
                                                             </div>
-                                                            <div className="coach-content__prestations__item__content">
-                                                                <div
-                                                                    className="coach-content__prestations__item__content__top">
-                                                                    <h5 className="coach-content__prestations__name">{prestation.name}</h5>
-                                                                    <p className="coach-content__franchises__name">{prestation.franchise.name}</p>
-                                                                    <p className="coach-content__franchises__address">{prestation.franchise.address}</p>
-                                                                </div>
-                                                                <p className="coach-content__prestations__price">
-                                                                    <span>{prestation.price}€</span> / séance</p>
-                                                            </div>
-                                                        </Link>
+                                                            <p className="coach-content__prestations__price">
+                                                                <span>{prestation.price}€</span> / séance</p>
+                                                        </div>
                                                     </li>
                                                 )
                                             })

@@ -45,7 +45,7 @@ use App\Controller\AdminController;
                     'user:admin:read' => "is_granted('ROLE_ADMIN')"
                 ],
             ],
-            security: "is_granted('ROLE_ADMIN') or user.getId() == id"
+            security: "is_granted('ROLE_ADMIN') or ((user and user.getId() == id) or is_granted('ROLE_COACH'))"
 
         ),
         new Post(

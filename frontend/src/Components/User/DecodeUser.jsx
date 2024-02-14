@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { jwtDecode } from "jwt-decode";
 import { getIdClient } from "../../hook/user/idClientUser.js";
 
@@ -20,8 +19,8 @@ const getUserId = async () => {
             idUser = user.coach.id;
         } else if(user.manager) {
             idUser = user.manager.id;
-        } else if(user.admin) {
-            idUser = user.admin.id;
+        } else if(user.roles.map(role => role === 'ROLE_ADMIN')) {
+            idUser = user.id;
         } else {
             console.log('No value found in local storage for the specified key');
         }
