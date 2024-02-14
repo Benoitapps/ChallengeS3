@@ -50,8 +50,8 @@ const transformData = (initialData, date1 , date2, lang) => {
         const endDate = new Date(objet.endDate);
 
         // Soustraire deux heures aux dates
-        startDate.setHours(startDate.getHours() -1);
-        endDate.setHours(endDate.getHours() - 1);
+        // startDate.setHours(startDate.getHours() +1);
+        // endDate.setHours(endDate.getHours() + 1);
         endDate.setMinutes(endDate.getMinutes() +1);
 
         return {
