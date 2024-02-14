@@ -35,14 +35,26 @@ function Home({ isManager, companyStatus }) {
             {/*<div style={{width: '50%'}}>*/}
             {companyStatus === 'accepted' ? (
                 <>
-                    <h1>{t('MyFranchises')} :</h1>
-                    <div style={{ width: '100%', display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px', marginTop: '20px'}}>
-                        {franchisesLoading && <div>{t('Loading')}...</div>}
-                        {franchises.map((franchise, index) => (
-                            <PrestaManagerItem club={franchise} key={index} reload={reload}/>
-                        ))}
-                    </div>
-                </>
+                <h1>{t('MyFranchises')} :</h1>
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px', marginTop: '20px'}}>
+                    {franchisesLoading ? (
+                        <div>{t('Loading')}...</div>
+                    ) : (
+                        franchises.length > 0 ? (
+                            franchises.map((franchise, index) => (
+                                <PrestaManagerItem club={franchise} key={index} reload={reload}/>
+                            ))
+                        ) : (
+                            <div>
+                                <p>{t('NoFranchisesMessage')}</p>
+                                <Link to="/manager/franchise">
+                                    <button>{t('AddFranchise')}</button>
+                                </Link>
+                            </div>
+                        )
+                    )}
+                </div>
+            </>
             ) : (
                 <div>
                     <p>{t('CompanyNotApplied')}</p>

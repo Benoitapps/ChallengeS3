@@ -6,9 +6,6 @@ import { Navigate, useLocation } from "react-router-dom";
 function ManagerRoute({ component: Component, isManager, ...props}) {
   const location = useLocation();
 
-  console.log('location', location.pathname);
-  console.log('companyStatus', props.companyStatus);
-
 
   const locationWantToGo = location.pathname;
   if (location.pathname !== '/manager/company' && (props.companyStatus === 'none' || props.companyStatus === 'pending')) {

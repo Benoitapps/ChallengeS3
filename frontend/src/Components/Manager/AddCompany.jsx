@@ -118,7 +118,7 @@ function AddCompany({ companyStatus, setCompanyStatus }) {
                         <input type="submit" value={t('Request')} disabled={loading}/>
                     </div>
                 </form>
-                        <GetPdf file={pdfFile} viewPdf={viewPdf} />
+                        <GetPdf file={pdfFile} viewPdf={viewPdf} header={true} />
                     </>
                 )}
                 {companyStatus === 'pending' && (

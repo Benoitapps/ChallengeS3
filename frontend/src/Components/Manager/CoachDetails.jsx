@@ -3,6 +3,7 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import { getCoachDetails } from "../../hook/coach/getCoach.js";
 import { getFranchisePrestations } from "../../hook/manager/getFranchisePrestations.js";
 import ScheduleEditor from "./ScheduleEditor.jsx";
+import VacationEditor from "./VacationEditor.jsx";
 import '@css/CoachDetailsManager.css';
 import { useTranslation } from "react-i18next";
 
@@ -147,6 +148,7 @@ function CoachDetails() {
                             </ul>
 
                             <ScheduleEditor coachId={coachId}/>
+                            {/*<VacationEditor coachId={coachId}/>*/}
                         </div>
                     </div>
                 </div>

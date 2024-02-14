@@ -16,7 +16,7 @@ function AddCoach() {
         const data = new FormData(e.target);
 
         try {
-            const result = await fetch(`${env.VITE_URL_BACK}/api/users`, {
+            const result = await fetch(`${env.VITE_URL_BACK}/api/coach/users`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -27,7 +27,6 @@ function AddCoach() {
                     lastname: data.get('lastname'),
                     email: data.get('email'),
                     plainPassword: data.get('password'),
-                    userType: 'coach',
                     franchiseId: franchiseId,
                 }),
             });
