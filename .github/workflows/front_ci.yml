@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - dev
+      - linter
     paths:
       - 'frontend/**'
       - '.github/workflows/**'
@@ -34,6 +35,10 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: ESLint
+        run: |
+          npm run eslint
 
       - name: Run website
         run: |
