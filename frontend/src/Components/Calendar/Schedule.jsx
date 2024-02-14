@@ -12,9 +12,6 @@ import {eventDetails} from '../../services/eventDetails.js';
 import { deleteSlot } from "../../hook/Schedule/eventDelete.js";
 import loadingGIF from "@img/loading.gif";
 import {useTranslation, Trans} from "react-i18next";
-import frLocale from '@fullcalendar/core/locales/fr';
-import {getCoachEmail} from "../../hook/coach/getCoach.js";
-import {postEmail} from "../../hook/Mail/postEmail.js";
 import {sheduleCoach} from "../../services/sheduleCoachGet.js";
 import { getUserId} from "../User/DecodeUser.jsx";
 
