@@ -19,11 +19,12 @@ use ApiPlatform\Metadata\GetCollection;
             security: "is_granted('ROLE_ADMIN')",
         ),
         new Get(
-            normalizationContext: ['groups' => ['client:read']]
+            normalizationContext: ['groups' => ['client:read']],
+            security: "is_granted('ROLE_ADMIN') or (object.getAuth() === user and is_granted('ROLE_CLIENT'))",
         ),
         new Patch(
             denormalizationContext: ['groups' => ['client:write']],
-            security: "is_granted('ROLE_ADMIN') or object.getAuth() === user",
+            security: "is_granted('ROLE_ADMIN') or (object.getAuth() === user and is_granted('ROLE_CLIENT'))",
         ),
     ],
 )]
@@ -49,7 +50,7 @@ class Client
     #[ORM\Column(length: 5, nullable: true)]
     private ?string $zip_code = null;
 
-    #[Groups(['slot:read','coach:read', 'client:write', 'client:read', 'slot:history:read:collection'])]
+    #[Groups(['slot:read', 'client:write', 'client:read', 'slot:history:read:collection'])]
     #[ORM\OneToOne(inversedBy: 'client', cascade: ['persist', 'remove'])]
     private ?User $auth = null;
 

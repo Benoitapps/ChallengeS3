@@ -21,6 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ),
         new Get(
             normalizationContext: ['groups' => ['manager:read']],
+            security: 'is_granted("ROLE_ADMIN") or (object.getAuth() === user and is_granted("ROLE_MANAGER"))',
         ),
         new Get(
             uriTemplate: '/managers/{id}/stats/coach',
@@ -44,7 +45,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Delete(),
         new Patch(
             denormalizationContext: ['groups' => ['manager:update']],
-            security: 'is_granted("ROLE_ADMIN") or object.getAuth() === user',
+            security: 'is_granted("ROLE_ADMIN") or (object.getAuth() === user and is_granted("ROLE_MANAGER"))',
         ),
     ],
 )]
