@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Coach;
 use App\Entity\Prestation;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +16,7 @@ class LinkPrestationController
 {
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, private readonly Security $security)
     {
         $this->entityManager = $entityManager;
     }
@@ -24,7 +25,7 @@ class LinkPrestationController
     {
         $data = json_decode($request->getContent(), true);
 
-        $currentUser = $this->getUser();
+        $currentUser = $this->security->getUser();
         if (!$currentUser) {
             return new Response(
                 json_encode(['error' => 'Vous devez être connecté.']),
