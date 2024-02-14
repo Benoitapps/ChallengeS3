@@ -13,6 +13,7 @@ function CoachDetails() {
     const [coachLoading, setCoachLoading] = useState(false);
     const { coachId } = useParams();
     const [coach, setCoach] = useState([]);
+    const [image, setImage] = useState(ImageCoach);
     const [prestations, setPrestations] = useState([]);
     const [selectedPrestation, setSelectedPrestation] = useState(null);
     const { t } = useTranslation();
@@ -82,7 +83,7 @@ function CoachDetails() {
                 <div className="container-coach" key={coach.id}>
                     <div className="coach-profile-card">
                         <div className="coach-profile-card__img">
-                            <img src={ImageCoach}/>
+                            <img src={image}/>
                         </div>
                         {
                             coach.auth &&
