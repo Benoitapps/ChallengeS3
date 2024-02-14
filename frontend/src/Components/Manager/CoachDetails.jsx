@@ -5,6 +5,7 @@ import { getFranchisePrestations } from "../../hook/manager/getFranchisePrestati
 import ScheduleEditor from "./ScheduleEditor.jsx";
 import '@css/CoachDetailsManager.css';
 import { useTranslation } from "react-i18next";
+import ImageCoach from '../../../src/assets/img/user-coach.jpg';
 
 const env = import.meta.env;
 
@@ -73,13 +74,6 @@ function CoachDetails() {
         return data;
     };
 
-    const getImage = (image) => {
-        if (image) {
-            return image;
-        }
-        return 'https://picsum.photos/300/300';
-    }
-
     return (
         <main>
             {coachLoading ? (
@@ -88,7 +82,7 @@ function CoachDetails() {
                 <div className="container-coach" key={coach.id}>
                     <div className="coach-profile-card">
                         <div className="coach-profile-card__img">
-                            <img src="../../../src/assets/img/user-coach.jpg"/>
+                            <img src={ImageCoach}/>
                         </div>
                         {
                             coach.auth &&
