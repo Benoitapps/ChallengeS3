@@ -118,7 +118,7 @@ class Franchise
     #[Groups(['franchise:read', 'company:read:franchise', 'franchise:write', 'franchise:update'])]
     private ?float $lng = null;
 
-    #[Groups(['franchise:read','franchise:write'])]
+    #[Groups(['franchise:read','franchise:write', 'coach:read', 'company:read:franchise'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $image = null;
 

@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 
-export default function ProfileContent({user, isManager, isCoach, updateProfile}) {
+export default function ProfileContent({user, isManager, isCoach, isAdmin, updateProfile}) {
     const [email, setEmail] = useState('');
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
@@ -19,6 +19,10 @@ export default function ProfileContent({user, isManager, isCoach, updateProfile}
             setEmail(user.auth.email);
             setFirstname(user.auth.firstname);
             setLastname(user.auth.lastname);
+        } else if(isAdmin) {
+            setEmail(user.email);
+            setFirstname(user.firstname);
+            setLastname(user.lastname);
         } else {
             setEmail(user.auth.email)
             setFirstname(user.auth.firstname);
@@ -78,7 +82,7 @@ export default function ProfileContent({user, isManager, isCoach, updateProfile}
                     : null
             }
             {
-                isManager ? (
+                isManager || isAdmin ? (
                         <>
                             <input type="email" className="user-content__head__email" placeholder="Email" value={email}
                                    onInput={
@@ -116,7 +120,7 @@ export default function ProfileContent({user, isManager, isCoach, updateProfile}
                     : null
             }
             {
-                !isCoach && !isManager ? (
+                !isCoach && !isManager && !isAdmin ? (
                         <>
                             <input type="email" className="user-content__head__email" placeholder="Email" value={email}
                                    onInput={

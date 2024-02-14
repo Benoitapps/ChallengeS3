@@ -8,7 +8,7 @@ function ClientProfile({client, getClient}) {
     return (
         <div className="client-profile-card">
             <div className="client-profile-card__img">
-                <img src="https://thispersondoesnotexist.com/" alt={client.auth.firstname}/>
+                <img src="../../../src/assets/img/user-client.jpg" alt={client.auth.firstname}/>
             </div>
             <h2 className="client-profile-card__name">{client.auth.firstname}</h2>
             <div className="client-profile-card__note">
