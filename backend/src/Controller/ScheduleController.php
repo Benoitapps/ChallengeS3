@@ -26,6 +26,14 @@ class ScheduleController extends AbstractController
     public function __invoke(Request $request, ManagerRegistry $doctrine, PersoSchedule $persoSchedule )
     {
 
+        $user = $this->getUser();
+        $userCompany = $user->getManager()->getCompany()->getId();
+        $idCoachtest = $persoSchedule->getCoach()->getFranchise()->getCompany()->getId();
+
+        if ($userCompany !== $idCoachtest) {
+            return new JsonResponse(['message' => 'Vous n\'avez pas les droits pour effectuer cette action ce coach n est pas le votre'], 403);
+        }
+
 
         $coach = $persoSchedule->getCoach();
         $dateStart = $persoSchedule->getDateStart();
