@@ -36,30 +36,9 @@ function AddCompany({ companyStatus, setCompanyStatus }) {
             }
         }
         else{
-            console.log('select your file');
+            alert('select your file');
         }
     }
-
-    // const convertBase64 = (file) => {
-    //     return new Promise((resolve, reject) => {
-    //         const fileReader = new FileReader();
-    //         fileReader.readAsDataURL(file);
-    //         fileReader.onload = () => {
-    //             resolve(fileReader.result);
-    //             console.log("fileReader.result",fileReader.result)
-    //         };
-    //         fileReader.onerror = (error) => {
-    //             reject(error);
-    //         };
-    //     });
-    // }
-
-    // const decodeBase64 = (base64) => {
-    //     return atob(base64);
-    // }
-    //
-    // const test = decodeBase64(baseFile);
-
 
     const{ t, i18n } = useTranslation();
 

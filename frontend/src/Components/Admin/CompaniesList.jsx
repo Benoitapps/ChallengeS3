@@ -24,7 +24,6 @@ function CompaniesList() {
             setCompaniesLoading(true);
 
             let companies = await getCompanies();
-            console.log(companies)
             setCompanies(companies);
             setCompaniesLoading(false);
 

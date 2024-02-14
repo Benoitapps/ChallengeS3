@@ -26,7 +26,6 @@ function ScheduleEditor({coachId}) {
         const hourEnd = event.target.timeEnd.value
         dateEndTime.setHours(hourEnd);
 
-        // console.log(dateStartTime,dateEndTime,dateStartSimple,dateEndSimple)
         postShedule(dateStartTime,dateEndTime,dateStartSimple,dateEndSimple)
 
     };

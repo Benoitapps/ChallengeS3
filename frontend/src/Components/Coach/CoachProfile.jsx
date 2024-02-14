@@ -1,14 +1,17 @@
 import '@css/Coach.css';
 import CoachReview from "./CoachReview.jsx";
 import { useParams } from 'react-router-dom';
+import {useState} from "react";
+import ImageCoach from '../../../src/assets/img/user-coach.jpg';
 
 function CoachProfile({coach, getCoach, isConnected}) {
+    const [image, setImage] = useState(ImageCoach);
     const { id } = useParams();
 
     return (
         <div className="coach-profile-card">
             <div className="coach-profile-card__img">
-                <img src="../../../src/assets/img/user-coach.jpg" alt={coach.auth.firstname}/>
+                <img src={image} alt={coach.auth.firstname}/>
             </div>
             <h2 className="coach-profile-card__name">{coach.auth.firstname}</h2>
             <div className="coach-profile-card__note">

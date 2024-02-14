@@ -23,7 +23,6 @@ const patchCompany = async (id,name,description,adress,city,zip,lat,lng) => {
 
         });
         let data = await result.json();
-        console.log(data);
         return data;
     } catch (error) {
         console.error("Erreur de la modification de la Franchise", error);

@@ -89,7 +89,7 @@ function AddFranchise() {
             }
         }
         else{
-            console.log('select your file');
+            alert('select your file');
         }
     }
 

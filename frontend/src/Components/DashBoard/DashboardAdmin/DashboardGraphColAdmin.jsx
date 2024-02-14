@@ -20,7 +20,6 @@ function DashboardGraphColAdmin({valueData}) {
 
     useEffect(() => {
         if(valueData !== undefined) {
-            console.log("valueDataFR", valueData)
             const tabName = valueData.map(objet => objet.name);
             setLabel(tabName)
             const tabPrice = valueData.map(objet => objet.nbFranchise);

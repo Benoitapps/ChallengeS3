@@ -16,6 +16,8 @@ class CoachFixtures extends Fixture implements DependentFixtureInterface
     {
         $user1 = $manager->getRepository(User::class)->findOneBy(['email' => "coach@user.fr"]);
         $user2 = $manager->getRepository(User::class)->findOneBy(['email' => "coach2@user.fr"]);
+        $user3 = $manager->getRepository(User::class)->findOneBy(['email' => "coach3@user.fr"]);
+        $user4 = $manager->getRepository(User::class)->findOneBy(['email' => "coach4@user.fr"]);
 
         $franchise = $manager->getRepository(Franchise::class)->findAll();
 
@@ -33,21 +35,21 @@ class CoachFixtures extends Fixture implements DependentFixtureInterface
 
         $manager->persist($coach2);
 
+        $coach3 = (new Coach())
+            ->setAuth($user3)
+            ->setFranchise($franchise[0])
+            ->setBiography("Je suis un coach sportif professionnel, je suis passionné par mon métier et je suis là pour vous aider à atteindre vos objectifs. Je suis spécialisé dans la perte de poids, la prise de masse et la préparation physique. Je suis également diplômé en nutrition et je peux vous aider à établir un régime alimentaire adapté à vos besoins. N'hésitez pas à me contacter pour plus d'informations.");
+
+        $manager->persist($coach3);
+
+        $coach4 = (new Coach())
+            ->setAuth($user4)
+            ->setFranchise($franchise[1])
+            ->setBiography("Je suis toujours à l'écoute de mes clients et je m'adapte à leurs besoins. Je suis spécialisé dans la perte de poids, la prise de masse et la préparation physique. Je suis également diplômé en nutrition et je peux vous aider à établir un régime alimentaire adapté à vos besoins. N'hésitez pas à me contacter pour plus d'informations.");
+
+        $manager->persist($coach4);
+
         $manager->flush();
-
-        // for ($i = 0; $i <= 3; $i++) {
-        //     $franchise = $manager->getRepository(Franchise::class)->findAll()[$i];
-        //     $prestations = $franchise->getPrestations();
-
-        //     foreach ($prestations as $key => $prestation) {
-        //         $coach = $manager->getRepository(Coach::class)->findAll()[$key];
-        //         $prestation->addCoach($coach1);
-        //     }
-
-        //     $manager->persist($prestation);
-        // }
-
-        // $manager->flush();
     }
     
     public function getDependencies(): array

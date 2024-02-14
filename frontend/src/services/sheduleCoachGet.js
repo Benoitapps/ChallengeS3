@@ -117,7 +117,6 @@ const transformData = (initialData, date1 , date2, lang) => {
 
 export const sheduleCoach = async (id, date1, date2,lang) => {
     const initialData = await getScheduleCoach(id);
-    console.log(initialData);
     const transformedData = transformData(initialData,  date1 ,date2,lang);
     return transformedData;
 };

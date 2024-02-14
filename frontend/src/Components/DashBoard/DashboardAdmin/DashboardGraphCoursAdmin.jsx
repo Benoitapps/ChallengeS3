@@ -15,7 +15,6 @@ function DashboardGraphCoursAdmin({valueData}) {
 
     useEffect(() => {
         if(valueData !== undefined) {
-            console.log("valueData", valueData)
             const tabName = valueData.map(objet => objet.name);
             setLabel(tabName)
             const tabPrice = valueData.map(objet => objet.price);
