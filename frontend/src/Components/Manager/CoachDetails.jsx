@@ -148,7 +148,7 @@ function CoachDetails() {
                             </ul>
 
                             <ScheduleEditor coachId={coachId}/>
-                            <VacationEditor coachId={coachId}/>
+                            {/*<VacationEditor coachId={coachId}/>*/}
                         </div>
                     </div>
                 </div>
