@@ -16,7 +16,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     normalizationContext: ['groups' => ['schedule:read']],
-//    denormalizationContext: ['groups' => ['schedule:write']],
     operations: [
         new GetCollection(
             normalizationContext: [
@@ -32,7 +31,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             normalizationContext: [
                 'groups' => ['schedule:write']
             ],
-            security: "is_granted('Role_MANAGER') and object.getCoach().getFranchise().getCompany().getId() === user.getManager().getCompany().getId()",
+            security: "is_granted('Role_MANAGER')",
 
         ),
         new Patch(
@@ -45,7 +44,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
 )]
 
-#[UniqueEntity(fields: ['startDate','endDate','coach'], message: 'Ces horraires sont deja programer est déjà pris')]
+#[UniqueEntity(fields: ['startDate','endDate','coach'], message: 'Ces horaires sont déjà pris')]
 #[ORM\Entity(repositoryClass: ScheduleRepository::class)]
 class Schedule
 {
