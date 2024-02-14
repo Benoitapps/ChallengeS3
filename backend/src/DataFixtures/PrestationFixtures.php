@@ -59,19 +59,19 @@ class PrestationFixtures extends Fixture implements DependentFixtureInterface
             ->setDescription("Le crossfit est une discipline qui permet de travailler la force, la vitesse, l'endurance, la coordination et la souplesse. C'est une activité qui permet de se défouler et de se dépenser tout en s'amusant.")
             ->setPrice(rand(10, 100));
 
-        for ($i = 2; $i <= 7; $i++) {
-            $franchise = $manager->getRepository(Franchise::class)->findAll()[$i];
+        // for ($i = 2; $i <= 7; $i++) {
+        //     $franchise = $manager->getRepository(Franchise::class)->findAll()[$i];
 
-            for ($j=0; $j < 2; $j++) { 
-                $object = (new Prestation())
-                    ->setFranchise($franchise)
-                    ->setName("Hockey sur glace" . $j)
-                    ->setDescription("Description de la prestation")
-                    ->setPrice(rand(10, 100));
+        //     for ($j=0; $j < 2; $j++) { 
+        //         $object = (new Prestation())
+        //             ->setFranchise($franchise)
+        //             ->setName("Hockey sur glace" . $j)
+        //             ->setDescription("Description de la prestation")
+        //             ->setPrice(rand(10, 100));
 
-                $manager->persist($object);
-            }
-        }
+        //         $manager->persist($object);
+        //     }
+        // }
 
         $manager->flush();
     }

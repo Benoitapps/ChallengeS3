@@ -24,7 +24,7 @@ class CoachPrestationFixture extends Fixture implements DependentFixtureInterfac
         $prestation2 = $manager->getRepository(Prestation::class)->findAll()[1];
 
         $coach1->addPrestation($prestation1);
-        $coach2->addPrestation($prestation1);
+        $coach2->addPrestation($prestation2);
 
         $manager->flush();
     }
@@ -33,7 +33,6 @@ class CoachPrestationFixture extends Fixture implements DependentFixtureInterfac
         return [
             CoachFixtures::class,
             PrestationFixtures::class
-
         ];
     }
 }
