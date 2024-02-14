@@ -24,13 +24,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     operations: [
-        new Post(),
+        new Post(
+            security: "is_granted('ROLE_CLIENT')"
+        ),
         new Patch(
             denormalizationContext: [
                 'groups' => ['review-coach:update']
-            ]
+            ],
+            security: "is_granted('ROLE_CLIENT') and object.getClient().getAuth().getId() === user.getId()"
         ),
-        new Delete(),
+        new Delete(
+            security: "is_granted('ROLE_CLIENT') and object.getClient().getAuth().getId() === user.getId()"
+        ),
     ]
 )]
 #[ORM\Entity(repositoryClass: ReviewCoachRepository::class)]
