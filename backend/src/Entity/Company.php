@@ -80,7 +80,7 @@ class Company
     private ?string $kbis = null;
 
     #[ORM\Column]
-    #[Groups(['company:read', 'company:write', 'company:read:myCompany', 'company:admin:update'])]
+    #[Groups(['company:read', 'company:read:myCompany', 'company:admin:update'])]
     private ?bool $isVerified = false;
 
     #[ORM\OneToOne(inversedBy: 'company', cascade: ['persist', 'remove'])]

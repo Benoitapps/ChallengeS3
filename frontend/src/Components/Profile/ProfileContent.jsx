@@ -1,4 +1,5 @@
 import {useState, useEffect} from "react";
+import {useTranslation} from "react-i18next";
 
 export default function ProfileContent({user, isManager, isCoach, isAdmin, updateProfile}) {
     const [email, setEmail] = useState('');
@@ -8,6 +9,7 @@ export default function ProfileContent({user, isManager, isCoach, isAdmin, updat
     const [address, setAddress] = useState('');
     const [city, setCity] = useState('');
     const [zipCode, setZipCode] = useState('');
+    const {t} = useTranslation();
 
     useEffect(() => {
         if(isCoach) {
@@ -46,14 +48,7 @@ export default function ProfileContent({user, isManager, isCoach, isAdmin, updat
                                        }
                                    }
                             />
-                            {/*<input type="password" className="user-content__head__password" placeholder="Mot de passe"
-                                   onInput={
-                                       (e) => {
-                                           updateProfile({password: e.target.value});
-                                       }
-                                   }
-                            />*/}
-                            <input type="text" className="user-content__head__name" placeholder="Prénom" value={firstname}
+                            <input type="text" className="user-content__head__name" placeholder={t('FirstName')} value={firstname}
                                    onInput={
                                        (e) => {
                                            setFirstname(e.target.value);
@@ -61,7 +56,7 @@ export default function ProfileContent({user, isManager, isCoach, isAdmin, updat
                                        }
                                    }
                             />
-                            <input type="text" className="user-content__head__name" placeholder="Nom" value={lastname}
+                            <input type="text" className="user-content__head__name" placeholder={t('LastName')} value={lastname}
                                    onInput={
                                        (e) => {
                                            setLastname(e.target.value);
@@ -92,14 +87,7 @@ export default function ProfileContent({user, isManager, isCoach, isAdmin, updat
                                        }
                                    }
                             />
-                            {/*<input type="password" className="user-content__head__password" placeholder="Mot de passe"
-                                   onInput={
-                                       (e) => {
-                                           updateProfile({password: e.target.value});
-                                       }
-                                   }
-                            />*/}
-                            <input type="text" className="user-content__head__name" placeholder="Prénom" value={firstname}
+                            <input type="text" className="user-content__head__name" placeholder={t('FirstName')} value={firstname}
                                    onInput={
                                        (e) => {
                                            setFirstname(e.target.value);
@@ -107,7 +95,7 @@ export default function ProfileContent({user, isManager, isCoach, isAdmin, updat
                                        }
                                    }
                             />
-                            <input type="text" className="user-content__head__name" placeholder="Nom" value={lastname}
+                            <input type="text" className="user-content__head__name" placeholder={t('LastName')} value={lastname}
                                    onInput={
                                        (e) => {
                                            setLastname(e.target.value);
@@ -130,14 +118,7 @@ export default function ProfileContent({user, isManager, isCoach, isAdmin, updat
                                        }
                                    }
                             />
-                            {/*<input type="password" className="user-content__head__password" placeholder="Mot de passe"
-                                   onInput={
-                                       (e) => {
-                                           updateProfile({password: e.target.value});
-                                       }
-                                   }
-                            />*/}
-                            <input type="text" className="user-content__head__name" placeholder="Prénom" value={firstname}
+                            <input type="text" className="user-content__head__name" placeholder={t('FirstName')} value={firstname}
                                    onInput={
                                        (e) => {
                                            setFirstname(e.target.value);
@@ -145,7 +126,7 @@ export default function ProfileContent({user, isManager, isCoach, isAdmin, updat
                                        }
                                    }
                             />
-                            <input type="text" className="user-content__head__name" placeholder="Nom" value={lastname}
+                            <input type="text" className="user-content__head__name" placeholder={t('LastName')} value={lastname}
                                    onInput={
                                        (e) => {
                                            setLastname(e.target.value);
@@ -153,7 +134,7 @@ export default function ProfileContent({user, isManager, isCoach, isAdmin, updat
                                        }
                                    }
                             />
-                            <input type="text" className="user-content__head__adress" placeholder="Adresse" value={address}
+                            <input type="text" className="user-content__head__adress" placeholder={t('Adress')} value={address}
                                    onInput={
                                        (e) => {
                                            setAddress(e.target.value);
@@ -161,7 +142,7 @@ export default function ProfileContent({user, isManager, isCoach, isAdmin, updat
                                        }
                                    }
                             />
-                            <input type="text" className="user-content__head__city" placeholder="Ville" value={city}
+                            <input type="text" className="user-content__head__city" placeholder={t('City')} value={city}
                                    onInput={
                                        (e) => {
                                            setCity(e.target.value);
@@ -169,7 +150,7 @@ export default function ProfileContent({user, isManager, isCoach, isAdmin, updat
                                        }
                                    }
                             />
-                            <input type="text" className="user-content__head__zip-code" placeholder="Code postal"
+                            <input type="text" className="user-content__head__zip-code" placeholder={t('ZipCode')}
                                    value={zipCode}
                                    onInput={
                                        (e) => {

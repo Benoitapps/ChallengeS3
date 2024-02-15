@@ -4,6 +4,7 @@ namespace App\EventSubscriber;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\Client;
+use App\Entity\Company;
 use App\Entity\Slot;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -36,14 +37,27 @@ final class EventMail implements EventSubscriberInterface
         $book = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (!$book instanceof Slot || (Request::METHOD_POST !== $method && Request::METHOD_PATCH !== $method && Request::METHOD_DELETE !== $method)) {
+        if (
+            (!$book instanceof Slot && !$book instanceof Company) 
+            || (Request::METHOD_POST !== $method && Request::METHOD_PATCH !== $method && Request::METHOD_DELETE !== $method)
+        ) {
             return;
+        }
+
+        //POST COMPANY
+        if ($book instanceof Company && (Request::METHOD_POST == $method)) {
+            $resend = Resend::client($this->secret);
+
+            $resend->emails->send([
+                'from' => 'admin@mycoach.bendc.site',
+                'to' => $_ENV['APP_ENV'] == 'dev' ? $_ENV['MAIL_TO'] : 'admin@user.fr',
+                'subject' => "Une demande de création d'entreprise est en cours",
+                'html' => 'Vous avez une demande de création d\'entreprise en attente de validation: <a href="' . $_ENV['URL_FRONT'] . '/login">Cliquez ici pour la valider</a>',
+            ]);
         }
 
         //POST
         if ($book instanceof Slot && (Request::METHOD_POST == $method)) {
-
-
             $requestData = json_decode($event->getRequest()->getContent(), true);
 
             $resend = Resend::client($this->secret);
