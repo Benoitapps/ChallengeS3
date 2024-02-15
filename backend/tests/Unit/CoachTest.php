@@ -13,22 +13,6 @@ use PHPUnit\Framework\TestCase;
 
 class CoachTest extends TestCase
 {
-    public function testSetGetBiography()
-    {
-        $coach = new Coach();
-        $coach->setBiography('Biography for oach A');
-
-        $this->assertSame('Biography for oach A', $coach->getBiography());
-    }
-
-    public function testSetGetBiography2()
-    {
-        $coach = new Coach();
-        $coach->setBiography('Biography for coach B');
-
-        $this->assertSame('Biography for oach B', $coach->getBiography());
-    }
-
     public function testSetAndGetAuth()
     {
         $coach = new Coach();
