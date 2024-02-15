@@ -92,10 +92,10 @@ class UserFixtures extends Fixture
         $manager->persist($object);
 
         $object = (new User())
-            ->setEmail('admin@user.fr')
+            ->setEmail('fusion.delta73@gmail.com')
             ->setPassword($pwd)
             ->setRoles(["ROLE_ADMIN"])
-            ->setFirstname('Michel')
+            ->setFirstname('Nicolas')
             ->setLastname('Dupont')
         ;
         $manager->persist($object);
