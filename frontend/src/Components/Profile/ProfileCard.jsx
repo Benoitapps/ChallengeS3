@@ -8,6 +8,7 @@ import {useTranslation} from "react-i18next";
 export default function ProfileCard({user, submitProfile, isLoading, isCoach, isManager, isAdmin}) {
     const [image, setImage] = useState('');
     const [firstname, setFirstname] = useState('');
+    const {t} = useTranslation();
 
     useEffect(() => {
         if (isCoach) {
