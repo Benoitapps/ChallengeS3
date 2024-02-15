@@ -30,12 +30,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ),
         new GetCollection(
             uriTemplate: '/franchises/with-prestations',
+            openapiContext: [
+                'description' => 'Retrieves a collection of Franchise resources with Prestation resources informations',
+            ],
             paginationItemsPerPage: 4,
             normalizationContext: ['groups' => ['franchise:read']],
 
         ),
         new GetCollection(
             uriTemplate: 'companies/myCompany/franchises',
+            openapiContext: [
+                'summary' => 'Retrieves a collection of Franchise resources for my company',
+                'description' => 'Retrieves a collection of Franchise resources for my company',
+            ],
             shortName: 'Company',
             normalizationContext: ['groups' => ['company:read:franchise']],
             security: "is_granted('ROLE_MANAGER')",
