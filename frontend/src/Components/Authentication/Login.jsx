@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import '@css/Authentification.css';
 import { Link, useNavigate } from 'react-router-dom';
+import {useTranslation} from "react-i18next";
+
 const env = import.meta.env;
 
 function Login({ handleConnect }) {
     const navigate = useNavigate();
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const {t} = useTranslation();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,9 +32,9 @@ function Login({ handleConnect }) {
 
             if (!result.ok) {
                 if(result.status === 401) {
-                    setError('Email ou mot de passe incorrect.');
+                    setError(t('EmailOrPasswordIncorrect'));
                 } else {
-                    setError('Une erreur est survenue lors de la tentative de connexion. Veuillez réessayer plus tard.')
+                    setError(t('ErrorOccured'));
                 }
                 setLoading(false);
                 return;
@@ -43,7 +46,7 @@ function Login({ handleConnect }) {
             handleConnect();
             navigate("/");
         } catch (error) {
-            setError('Une erreur est survenue lors de la tentative de connexion. Veuillez réessayer plus tard.');
+            setError(t('ErrorOccured'));
             setLoading(false);
         }
     };
@@ -67,13 +70,13 @@ function Login({ handleConnect }) {
                             error && <p className="error">{error}</p>
                         }
                         <input type="email" id="email" name="email" placeholder="Email" autoComplete="email" required />
-                        <input type="password" id="password" name="password" placeholder="Mot de passe" autoComplete="current-password" required/>
+                        <input type="password" id="password" name="password" placeholder={t('Password')} autoComplete="current-password" required/>
                         <div className="login-signup__form__submit">
-                            <input type="submit" value={loading ? 'Connexion en cours...' : 'Se connecter'} disabled={loading} />
-                            <p>Vous n’avez pas encore de compte ? <Link to="/signup">Inscrivez-vous</Link></p>
+                            <input type="submit" value={loading ? t('ConnexionInProgress') : t('LogIn')} disabled={loading} />
+                            <p>{t('DontHaveAccount')} <Link to="/signup">{t('Register')}</Link></p>
                         </div>
                         <Link to="/forgot-password">
-                            Mot de passe oublié ?
+                            {t('ForgotPassword')}
                         </Link>
                     </form>
                 </div>

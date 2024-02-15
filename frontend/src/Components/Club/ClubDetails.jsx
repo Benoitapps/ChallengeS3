@@ -4,6 +4,7 @@ import { getClubDetails } from '../../hook/clubs/getClub';
 import '@css/Clubs.css';
 import PopUp from "../Calendar/Popup.jsx";
 import {patchPrestation} from "../../hook/manager/patchPrestation.js";
+import {useTranslation} from "react-i18next";
 
 function ClubDetails({isCoach,isManager,isConnected,isAdmin,update}) {
 
@@ -14,7 +15,7 @@ function ClubDetails({isCoach,isManager,isConnected,isAdmin,update}) {
     const [isModalOpenDetail, setIsModalOpenDetail] = useState(false);
     const [thePrestation, setThePrestation] = useState("");
     const [reload, setReload] = useState(false);
-
+    const {t} = useTranslation();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -46,7 +47,7 @@ function ClubDetails({isCoach,isManager,isConnected,isAdmin,update}) {
         <main>
             {
                 loading
-                    ? <div className="loading">Chargement...</div>
+                    ? <div className="loading">{t('Loading')}...</div>
                     :
                     <div className="container-club">
                         <div className="club-card">
@@ -58,22 +59,19 @@ function ClubDetails({isCoach,isManager,isConnected,isAdmin,update}) {
                             </div>
                             {isConnected&&isManager?<Link to={{
                                 pathname: `/manager/addCoach/${id}`,
-                                // state: { franchiseName: franchise.name }
                             }}>
-                                <button>Ajouter un coach</button>
+                                <button>{t('AddCoach')}</button>
                             </Link>:null}
                             {isConnected&&isManager?<Link to={{
                                 pathname: `/manager/addPrestation/${id}`,
-                                // state: { franchiseName: franchise.name }
                             }}>
-                                <button>Ajouter une prestation</button>
+                                <button>{t('AddService')}</button>
                             </Link>:null}
                             {isConnected && isManager &&
                             <div className="coach-list">
                                 {
-
                                     club.coachs.length === 0
-                                        ? 'Il n\'y a pas encore de coachs pour cette franchise.'
+                                        ? <p>{t('NoCoachForThisService')}</p>
                                         :
                                         club.coachs.map((coach, index) => {
                                             return (
@@ -81,7 +79,7 @@ function ClubDetails({isCoach,isManager,isConnected,isAdmin,update}) {
                                                     <div className="coach-name">{coach.auth.firstname} {coach.auth.lastname}</div>
                                                     <div className="coach-name">{coach.auth.email}</div>
                                                     <Link to={`/manager/coach/${coach.id}`} className="view-coach-button">
-                                                        Voir coach
+                                                        {t('UpdateCoach')}
                                                     </Link>
                                                 </div>
                                             )
@@ -92,27 +90,27 @@ function ClubDetails({isCoach,isManager,isConnected,isAdmin,update}) {
                             <div className="prestations">
                                 {
                                     club.prestations.length === 0
-                                    ? 'Il n\'y a pas encore de prestations pour cette franchise.'
+                                        ? <p>{t('NoServiceForThisFranchise')}</p>
                                     : club.prestations.map((prestation, index) => {
                                         return (
                                             <div className="prestation-card" key={index}>
                                                 <div className="prestation-name">{prestation.name}</div>
-                                                <div className="prestation-price">Prix : {prestation.price}€</div>
-                                                {isManager && update?<button onClick={() =>handleClick(prestation)}>Modifier</button>:null}
+                                                <div className="prestation-price">{t('Price')} : {prestation.price}€</div>
+                                                {isManager && update?<button onClick={() =>handleClick(prestation)}>{t('Update')}</button>:null}
                                                 <div className="coach-list">
                                                     {
                                                         prestation.coach.length === 0
-                                                            ? 'Pas de coach disponible'
+                                                            ? <p>{t('NoCoachAvailable')}</p>
                                                             :
                                                             prestation.coach.map((coach, index) => {
                                                                 return (
                                                                     <div className="coach-card" key={index}>
                                                                         <div className="coach-name">{coach.auth.firstname} {coach.auth.lastname}</div>
                                                                         <Link to={"/coach/" + coach.id} className="view-coach-button">
-                                                                            Voir coach
+                                                                            {t('ViewCoach')}
                                                                         </Link>
                                                                         {isConnected&&!isManager&&!isCoach&&!isAdmin?<Link to={"/prestation/" + prestation.id + "/coach/" + coach.id + "/add"} className="view-coach-button">
-                                                                            Réserver un créneau
+                                                                            {t('BookASlot')}
                                                                         </Link>:null}
                                                                     </div>
                                                                 )
@@ -120,19 +118,19 @@ function ClubDetails({isCoach,isManager,isConnected,isAdmin,update}) {
                                                     }
                                                 </div>
                                                 <PopUp show={isModalOpenDetail}  onClose={() => closeModal()}
-                                                       annuler={"Cancel"}>
+                                                       annuler={t("Cancel")}>
                                                     {<div className="login-signup">
 
-                                                        <span>Modifier la Prestation</span>
+                                                        <span>{t('UpdateService')}</span>
 
                                                         <form className="login-signup__form" onSubmit={handleSubmit}>
                                                             {
                                                                 error && <p className="error">{error}</p>
                                                             }
-                                                            <input type="text" id="name" name="name" placeholder="Libellé" defaultValue={thePrestation.name}></input>
+                                                            <input type="text" id="name" name="name" placeholder={t('CompanyName')} defaultValue={thePrestation.name}></input>
                                                             <input type="text" id="description" name="description" placeholder="Description" defaultValue={thePrestation.price}></input>
                                                             <div className="login-signup__form__submit">
-                                                                <input type="submit" value="Update" />
+                                                                <input type="submit" value={t('Update')} />
                                                             </div>
                                                         </form>
                                                     </div>}
