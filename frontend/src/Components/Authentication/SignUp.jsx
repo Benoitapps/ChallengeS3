@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '@css/Authentification.css';
 import { Link } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 const env = import.meta.env;
 
 function SignUp() {
     const navigate = useNavigate();
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-
-    const clickRef = React.useRef(null)
+    const clickRef = React.useRef(null);
+    const { t } = useTranslation();
 
     useEffect(() => {
         clickRef.current.click()
@@ -21,7 +22,7 @@ function SignUp() {
         const data = new FormData(e.target);
 
         if (data.get('password') !== data.get('passwordConfirm')) {
-            alert('Les mots de passe ne correspondent pas');
+            setError(t('PasswordDontMatch'));
             setLoading(false);
             return;
         }
@@ -44,12 +45,12 @@ function SignUp() {
             if (result.status === 422) {
                 setError(body.violations[0].message + ' ' + body.violations[0].propertyPath);
             } else if (!result.ok) {
-                setError('Une erreur est survenue');
+                setError(t('ErrorOccured'));
             } else {
                 navigate("/login");
             }
         } catch (error) {
-            setError('Une erreur est survenue');
+            setError(t('ErrorOccured'));
         } finally {
             setLoading(false);
         }
@@ -74,10 +75,10 @@ function SignUp() {
     }
 
     return (
-        <main>
+        <main className="sign-up">
             <div className="tab">
                 <button className="tablinks" onClick={(event) => openTab(event, 'Client')} ref={clickRef}>Client</button>
-                <button className="tablinks" onClick={(event) => openTab(event, 'Entreprise')}>Entreprise</button>
+                <button className="tablinks" onClick={(event) => openTab(event, 'Entreprise')}>{t('Company')}</button>
             </div>
             <div id="Client" className="tabcontent">
                 <div className="login-signup">
@@ -94,14 +95,14 @@ function SignUp() {
                         {
                             error && <p className="error">{error}</p>
                         }
-                        <input type="text" id="firstname" name="firstname" placeholder="Prénom" autoComplete="lastname" required></input>
-                        <input type="text" id="lastname" name="lastname" placeholder="Nom" autoComplete="firstname" required></input>
+                        <input type="text" id="firstname" name="firstname" placeholder={t('FirstName')} autoComplete="lastname" required></input>
+                        <input type="text" id="lastname" name="lastname" placeholder={t('LastName')} autoComplete="firstname" required></input>
                         <input type="email" id="email" name="email" placeholder="Email" autoComplete="email" required></input>
-                        <input type="password" id="password" name="password" placeholder="Mot de passe" autoComplete="current-password" required></input>
-                        <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="Confirmation du mot de passe" autoComplete="confirm-password" required></input>
+                        <input type="password" id="password" name="password" placeholder={t('Password')} autoComplete="current-password" required></input>
+                        <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder={t('ConfirmationPassword')} autoComplete="confirm-password" required></input>
                         <div className="login-signup__form__submit">
-                            <input type="submit" value="Inscription" disabled={loading}/>
-                            <p>Vous avez déjà un compte ? <Link to="/login">Connectez-vous</Link></p>
+                            <input type="submit" value={t('SignUp')} disabled={loading}/>
+                            <p>{t('AlreadyHaveAccount')} <Link to="/login">{t('ConnectYou')}</Link></p>
                         </div>
                     </form>
                 </div>
