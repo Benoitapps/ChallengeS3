@@ -22,9 +22,11 @@ function ScheduleEditor({coachId}) {
 
         const hourStart = event.target.timeStart.value
         dateStartTime.setHours(hourStart);
+        dateStartTime.setHours(dateStartTime.getHours() + 1);
 
         const hourEnd = event.target.timeEnd.value
         dateEndTime.setHours(hourEnd);
+        dateEndTime.setHours(dateEndTime.getHours() + 1);
 
         postShedule(dateStartTime,dateEndTime,dateStartSimple,dateEndSimple)
 
