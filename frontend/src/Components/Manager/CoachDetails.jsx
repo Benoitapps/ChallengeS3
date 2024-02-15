@@ -46,7 +46,7 @@ function CoachDetails() {
     };
 
     const saveCoachPrestation = async (coachId, prestationId) => {
-        const response = await fetch(`${env.VITE_URL_BACK}/api/coaches/prestations`, {
+        const response = await fetch(`${env.VITE_URL_BACK}/api/link-coach-prestation`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
