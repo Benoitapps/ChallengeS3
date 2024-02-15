@@ -43,7 +43,6 @@ function CoachDetails() {
 
     const handleSave = async () => {
         await saveCoachPrestation(coachId, selectedPrestation);
-        setPrestations(prestations.filter(prestation => prestation !== selectedPrestation));
     };
 
     const saveCoachPrestation = async (coachId, prestationId) => {
@@ -63,8 +62,8 @@ function CoachDetails() {
 
             setCoach(newCoachInfos);
             const franchiseId = newCoachInfos.franchise.id;
-            let franchisePrestations = await getFranchisePrestations(franchiseId);
-            let availablePrestations = franchisePrestations.filter(prestation => !coach.prestations.map(p => p.id).includes(prestation.id));
+            const franchisePrestations = await getFranchisePrestations(franchiseId);
+            const availablePrestations = franchisePrestations.filter(prestation => !newCoachInfos.prestations.map(p => p.id).includes(prestation.id));
             setPrestations(availablePrestations);
             if (availablePrestations.length > 0) {
                 setSelectedPrestation(availablePrestations[0].id);
@@ -94,7 +93,6 @@ function CoachDetails() {
                         <div className="coach-content__head">
                             <div className="coach-content__head__add-prestations">
                                 <h3 className="coach-content__head__biography">Ajouter une prestation</h3>
-
                                 {prestations.length > 0 ? (
                                     <>
                                         <select value={selectedPrestation || ''}
@@ -140,7 +138,6 @@ function CoachDetails() {
                             </ul>
 
                             <ScheduleEditor coachId={coachId}/>
-                            {/*<VacationEditor coachId={coachId}/>*/}
                         </div>
                     </div>
                 </div>
