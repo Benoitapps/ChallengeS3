@@ -59,11 +59,10 @@ function CoachDetails() {
             throw new Error(`HTTP error! status: ${response.status}`);
         } else {
             const newCoachInfos = await getCoachDetails(coachId);
-
-            setCoach(newCoachInfos);
             const franchiseId = newCoachInfos.franchise.id;
             const franchisePrestations = await getFranchisePrestations(franchiseId);
             const availablePrestations = franchisePrestations.filter(prestation => !newCoachInfos.prestations.map(p => p.id).includes(prestation.id));
+            setCoach(newCoachInfos);
             setPrestations(availablePrestations);
             if (availablePrestations.length > 0) {
                 setSelectedPrestation(availablePrestations[0].id);
