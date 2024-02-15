@@ -1,4 +1,3 @@
 .login-signup__form__submit input:disabled {
-    background-color: #013a74 !important;
     cursor: not-allowed;
 }

@@ -3,10 +3,12 @@ import imageCoach from '../../../src/assets/img/user-coach.jpg';
 import imageAdmin from '../../../src/assets/img/user-admin.jpg';
 import imageManager from '../../../src/assets/img/user-manager.jpg';
 import {useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
 
 export default function ProfileCard({user, submitProfile, isLoading, isCoach, isManager, isAdmin}) {
     const [image, setImage] = useState('');
     const [firstname, setFirstname] = useState('');
+    const {t} = useTranslation();
 
     useEffect(() => {
         if (isCoach) {
@@ -34,8 +36,8 @@ export default function ProfileCard({user, submitProfile, isLoading, isCoach, is
             <button className="profile-card__submit primary-button" type="submit" onClick={submitProfile}>
                 {
                     isLoading
-                        ? 'En cours de sauvegarde...'
-                        : 'Sauvegarder'
+                        ? t('SaveInProgress')
+                        : t('Save')
                 }
             </button>
         </div>
