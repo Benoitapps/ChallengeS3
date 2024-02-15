@@ -50,7 +50,7 @@ final class EventMail implements EventSubscriberInterface
 
             $resend->emails->send([
                 'from' => 'admin@mycoach.bendc.site',
-                'to' => $_ENV['APP_ENV'] == 'dev' ? $_ENV['MAIL_TO'] : 'admin@user.fr',
+                'to' => $_ENV['APP_ENV'] == 'dev' ? $_ENV['MAIL_TO'] : 'fusion.delta73@gmail.com',
                 'subject' => "Une demande de création d'entreprise est en cours",
                 'html' => 'Vous avez une demande de création d\'entreprise en attente de validation: <a href="' . $_ENV['URL_FRONT'] . '/login">Cliquez ici pour la valider</a>',
             ]);
