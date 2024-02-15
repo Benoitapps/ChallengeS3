@@ -3,7 +3,7 @@
     padding: 13px 15px;
     gap: 18px;
     width: 100%;
-    max-width: 700px;
+    max-width: 600px;
     background: var(--background);
     border-radius: var(--radius-card);
 }

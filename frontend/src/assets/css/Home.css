@@ -31,6 +31,9 @@
 .home-club-card {
     display: flex;
     padding: 13px 15px;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
     gap: 18px;
     background: var(--background);
     border-radius: var(--radius-card);
