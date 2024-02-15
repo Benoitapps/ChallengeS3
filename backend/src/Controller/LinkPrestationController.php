@@ -90,6 +90,6 @@ class LinkPrestationController
         $this->entityManager->persist($coach);
         $this->entityManager->flush();
 
-        return new JsonResponse(['status' => 'Prestation linked successfully']);
+        return new JsonResponse(['status' => 'Prestation linked successfully'], 201);
     }
 }

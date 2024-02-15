@@ -19,9 +19,44 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
     operations: [
         new Post(
-//            uriTemplate: '/coaches/{id}/prestations',
-            uriTemplate: '/coaches/prestations',
+            uriTemplate: '/link-coach-prestation',
             controller: LinkPrestationController::class,
+            openapiContext: [
+                'summary' => 'Link a Coach with a Prestation',
+                'description' => 'Link a Coach with a Prestation',
+                'requestBody' => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'prestationId' => [
+                                        'type' => 'integer',
+                                        'example' => '1',
+                                    ],
+                                    'coachId' => [
+                                        'type' => 'integer',
+                                        'example' => '1',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'responses' => [
+                    '201' => [
+                        'description' => 'Successfully linked Coach with Prestation',
+                        'content' => [
+                            'application/json' => [
+                                'example' => [
+                                    'status' => 'Prestation linked successfully',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            shortName: 'Link coach with prestation',
             denormalizationContext: ['groups' => ['coach-prestation:link']],
             security: "is_granted('ROLE_MANAGER')",
         ),

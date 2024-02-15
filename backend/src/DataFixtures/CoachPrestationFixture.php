@@ -22,20 +22,19 @@ class CoachPrestationFixture extends Fixture implements DependentFixtureInterfac
         $coach3 = $manager->getRepository(Coach::class)->findAll()[2];
         $coach4 = $manager->getRepository(Coach::class)->findAll()[3];
 
-        $prestation1 = $manager->getRepository(Prestation::class)->findAll()[0];
-        $prestation2 = $manager->getRepository(Prestation::class)->findAll()[1];
-        $prestation3 = $manager->getRepository(Prestation::class)->findAll()[2];
-        $prestation4 = $manager->getRepository(Prestation::class)->findAll()[3];
-        $prestation5 = $manager->getRepository(Prestation::class)->findAll()[4];
-        $prestation6 = $manager->getRepository(Prestation::class)->findAll()[5];
-        $prestation7 = $manager->getRepository(Prestation::class)->findAll()[6];
-        $prestation8 = $manager->getRepository(Prestation::class)->findAll()[7];
+        $prestation1 = $manager->getRepository(Prestation::class)->findOneBy(['name'=> "Football"]);
+        $prestation2 = $manager->getRepository(Prestation::class)->findOneBy(['name'=> "Basketball"]);
+        $prestation3 = $manager->getRepository(Prestation::class)->findOneBy(['name'=> "Yoga"]);;
+        $prestation4 = $manager->getRepository(Prestation::class)->findOneBy(['name'=> "Pilates"]);
+        $prestation5 = $manager->getRepository(Prestation::class)->findOneBy(['name'=> "Crossfit"]);
+        $prestation6 = $manager->getRepository(Prestation::class)->findOneBy(['name'=> "Boxe"]);
+        $prestation7 = $manager->getRepository(Prestation::class)->findOneBy(['name'=> "MusculationMusculation"]);
 
         $coach1->addPrestation($prestation1);
-        $coach4->addPrestation($prestation1);
+        $coach3->addPrestation($prestation1);
 
         $coach2->addPrestation($prestation2);
-        $coach3->addPrestation($prestation2);
+        $coach4->addPrestation($prestation2);
 
         $manager->flush();
     }

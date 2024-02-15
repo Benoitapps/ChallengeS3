@@ -16,14 +16,13 @@ class PrestationFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $franchiseOne = $manager->getRepository(Franchise::class)->findAll()[0];
-        $franchiseTwo = $manager->getRepository(Franchise::class)->findAll()[1];
-        $franchiseThree = $manager->getRepository(Franchise::class)->findAll()[2];
-        $franchiseFour = $manager->getRepository(Franchise::class)->findAll()[3];
-        $franchiseFive = $manager->getRepository(Franchise::class)->findAll()[4];
-        $franchiseSix = $manager->getRepository(Franchise::class)->findAll()[5];
-        $franchiseSeven = $manager->getRepository(Franchise::class)->findAll()[6];
-        $lastFranchise = $manager->getRepository(Franchise::class)->findAll()[count($manager->getRepository(Franchise::class)->findAll()) - 1];
+        $franchiseOne = $manager->getRepository(Franchise::class)->findOneBy(['name' => "Fitness Park Paris"]);
+        $franchiseTwo = $manager->getRepository(Franchise::class)->findOneBy(['name' => "Fitness Park Lyon"]);
+        $franchiseThree = $manager->getRepository(Franchise::class)->findOneBy(['name' => "Fitness Park Marseille"]);
+        $franchiseFour = $manager->getRepository(Franchise::class)->findOneBy(['name' => "Fitness Park Bordeaux"]);
+        $franchiseFive = $manager->getRepository(Franchise::class)->findOneBy(['name' => "Fitness Park Lille"]);
+        $franchiseSix = $manager->getRepository(Franchise::class)->findOneBy(['name' => "Fitness Park Toulouse"]);
+        $franchiseSeven = $manager->getRepository(Franchise::class)->findOneBy(['name' => "Fitness Park Nantes"]);
 
         $object = (new Prestation())
             ->setFranchise($franchiseOne)
@@ -80,14 +79,6 @@ class PrestationFixtures extends Fixture implements DependentFixtureInterface
             ->setPrice(rand(10, 100));
 
         $manager->persist($object7);
-
-        $object8 = (new Prestation())
-            ->setFranchise($lastFranchise)
-            ->setName("Cardio")
-            ->setDescription("Le cardio est une discipline qui permet de travailler la force, la vitesse, l'endurance, la coordination et la souplesse. C'est une activité qui permet de se défouler et de se dépenser tout en s'amusant.")
-            ->setPrice(rand(10, 100));
-
-        $manager->persist($object8);
 
         $manager->flush();
     }
