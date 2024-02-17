@@ -72,7 +72,7 @@ class CoachController extends AbstractController
         $this->sendEmail(
             $userData['email'],
             'Bienvenue sur MyCoach',
-            "Bonjour ".$userData['firstname']." ".$userData['lastname'].", Votre compte MyCoach vient d'être créé par votre entreprise. Vous pouvez vous connecter à l'application MyCoach avec l'adresse email suivante : ".$userData['email'].". Votre mot de passe provisoire est : ".$userData['plainPassword']." . Veuillez le changer lors de votre première connexion sur votre profil. A bientôt sur MyCoach ! Ce message vous a été envoyé via une adresse mail n'acceptant pas les réponses. Pour toute question veuillez contacter votre entreprise."
+            "Bonjour ".$userData['firstname']." ".$userData['lastname'].", Votre compte MyCoach vient d'être créé par votre entreprise. Vous pouvez vous connecter à l'application MyCoach avec l'adresse email suivante : ".$userData['email'].". Pour vous connecter pour la première fois sur votre compte, veuillez faire 'mot de pass oublié'. A bientôt sur MyCoach ! Ce message vous a été envoyé via une adresse mail n'acceptant pas les réponses. Pour toute question veuillez contacter votre entreprise."
         );
 
         $user->setPassword($hashedPassword);
